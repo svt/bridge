@@ -1,0 +1,16 @@
+.ContextMenuItem {
+  padding: 0.2em;
+}
+
+.ContextMenuItem-text {
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+.ContextMenuItem:hover > .ContextMenuItem-text {
+  background: rgb(228, 228, 228);
+}
+
+.ContextMenuItem:active > .ContextMenuItem-text {
+  background: rgb(211, 211, 211);
+}

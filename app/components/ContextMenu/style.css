@@ -1,0 +1,15 @@
+.ContextMenu {
+  position: fixed;
+  width: 120px;
+
+  background: white;
+  color: black;
+
+  border-radius: 5px;
+  overflow: hidden;
+
+  box-sizing: border-box;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  z-index: 100;
+}

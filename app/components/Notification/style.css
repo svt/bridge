@@ -1,0 +1,19 @@
+.Notification {
+  display: flex;
+  width: 100%;
+  padding: 1.1em 1.5em;
+
+  box-sizing: border-box;
+  justify-content: space-between;
+
+  --color-warning: #FFDC8C;
+}
+
+.Notification--warning {
+  background-color: var(--color-warning);
+}
+
+.Notification--warning *,
+.Notification--warning .Notification-hideBtn {
+  color: black;
+}

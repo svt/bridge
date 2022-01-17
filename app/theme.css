@@ -1,0 +1,29 @@
+:root {
+  --base-color: white;
+  --base-color--accent1: #b9b9b9;
+  --base-color--accent2: #465055;
+  --base-color--accent3: #fafafa;
+  --base-color--grey1: #101012;
+  --base-color--grey2: #404144;
+  --base-color--grey3: #232427;
+
+  --base-color--shade: rgba(255, 255, 255, 0.1);
+
+  --base-color--background: #232427;
+  --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', sans-serif;
+}
+
+.u-theme--light {
+  --base-color: black;
+
+  --base-color--accent1: #b9b9b9;
+  --base-color--accent2: #7D9196;
+  --base-color--accent3: #fafafa;
+  --base-color--grey1: #ebebeb;
+  --base-color--grey2: #dedede;
+  --base-color--grey3: #cccccc;
+
+  --base-color--shade: rgba(0, 0, 0, 0.1);
+
+  --base-color--background: white;
+}

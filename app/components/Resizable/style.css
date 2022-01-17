@@ -1,0 +1,75 @@
+.Resizable {
+  position: relative;
+  display: inline-block;
+
+  overflow: hidden;
+}
+
+.Resizable-border {
+  position: absolute;
+  background: blue;
+}
+
+.Resizable-border--top,
+.Resizable-border--bottom {
+  width: 100%;
+  height: 3px;
+}
+
+.Resizable-border--right,
+.Resizable-border--left {
+  width: 3px;
+  height: 100%;
+}
+
+.Resizable-border--top {
+  top: 0;
+  left: 0;
+  cursor: n-resize;
+}
+
+.Resizable-border--right {
+  top: 0;
+  right: 0;
+  cursor: e-resize;
+}
+
+.Resizable-border--bottom {
+  bottom: 0;
+  left: 0;
+  cursor: s-resize;
+}
+
+.Resizable-border--left {
+  top: 0;
+  left: 0;
+  cursor: w-resize;
+}
+
+.Resizable-corner {
+  position: absolute;
+  background: red;
+
+  width: 10px;
+  height: 10px;
+}
+
+.Resizable-corner--tl {
+  top: 0;
+  left: 0;
+}
+
+.Resizable-corner--tr {
+  top: 0;
+  right: 0;
+}
+
+.Resizable-corner--bl {
+  bottom: 0;
+  left: 0;
+}
+
+.Resizable-corner--br {
+  bottom: 0;
+  right: 0;
+}

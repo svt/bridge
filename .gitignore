@@ -1,0 +1,13 @@
+# macos
+*.DS_Store
+
+# npm
+node_modules
+
+# build
+assets.json
+dist
+bin
+
+# temporary files
+data

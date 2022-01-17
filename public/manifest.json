@@ -1,0 +1,33 @@
+{
+  "version": 0.1,
+  "notifications": [
+    {
+      "type": "warning",
+      "content": "Tack för att du testar nya Bridge <a href=\"https://svt.se\" target=\"_blank\" rel=\"noreferrer\">Lämna feedback</a>"
+    }
+  ],
+  "blocks": [
+    {
+      "id": "bridge.rundown",
+      "type": "iframe",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "width": 0.5,
+        "height": 1
+      },
+      "url": "http://localhost:8081"
+    },
+    {
+      "id": "bridge.rundown.1",
+      "type": "iframe",
+      "frame": {
+        "x": 0.5,
+        "y": 0,
+        "width": 0.5,
+        "height": 1
+      },
+      "url": "http://localhost:8081"
+    }
+  ]
+}

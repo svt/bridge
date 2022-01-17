@@ -1,0 +1,9 @@
+.PopupConfirm-actions {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-around;
+}
+
+.PopupConfirm-confirmAction {
+  font-weight: 500;
+}

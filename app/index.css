@@ -1,0 +1,91 @@
+@import "./fonts.css";
+@import "./theme.css";
+
+html, body, #root {
+  position: relative;
+  margin: 0;
+  padding: 0;
+
+  min-height: 100vh;
+
+  font-family: var(--base-fontFamily--primary);
+  color: var(--base-color);
+
+  background: var(--base-color--background);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+a, .Link {
+  padding: 0;
+
+  color: var(--base-color);
+  font-size: 1em;
+  text-decoration: underline;
+
+  border: none;
+  background: none;
+
+  cursor: pointer;
+}
+
+/* Buttons */
+
+.Button,
+.Button--primary,
+.Button--secondary,
+.Button--tertiary {
+  padding: 0.8em 1.5em;
+
+  font-size: 1em;
+  font-family: var(--base-fontFamily--primary);
+  text-decoration: none;
+
+  border: none;
+  border-radius: 50px;
+
+  color: var(--base-color--accent3);
+  background: var(--base-color--accent2);
+
+  cursor: default;
+  white-space: nowrap;
+}
+
+.Button:active,
+.Button--primary:active,
+.Button--secondary:active,
+.Button--tertiary:active {
+  box-shadow: inset 0 0 0 2px var(--base-color--shade);
+}
+
+.Button--secondary {
+  color: var(--base-color);
+  background: var(--base-color--grey1);
+}
+
+.Button--tertiary {
+  color: var(--base-color);
+  background: var(--base-color--grey3);
+}
+
+/* Headings */
+
+h2, .u-heading--2 {
+  margin: 0.4em 0;
+  font-weight: 400;
+}
+
+h3, .u-heading--3 {
+  margin: 0.5em 0;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+/* Text */
+
+.u-textAlign--center {
+  text-align: center;
+}
