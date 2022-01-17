@@ -9,7 +9,8 @@ export function Header ({ title = 'Bridge' }) {
         {title}
       </div>
       <div>
-        <button className='Header-editBtn' />
+        <button className='Header-button Header-editBtn' />
+        <button className='Header-button Header-preferencesBtn' />
       </div>
     </header>
   )
