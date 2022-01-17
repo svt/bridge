@@ -4,9 +4,12 @@ import './style.css'
 export function Header ({ title = 'Bridge' }) {
   return (
     <header className='Header'>
+      <div />
       <div className='Header-center'>
-        <button className='Button--primary'>Edit</button>
-        <button className='Button--primary'>Playout</button>
+        {title}
+      </div>
+      <div>
+        <button className='Header-editBtn' />
       </div>
     </header>
   )

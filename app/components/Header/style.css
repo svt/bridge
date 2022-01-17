@@ -3,11 +3,16 @@
   display: flex;
   top: 0;
   width: 100%;
-  height: 50px;
+  height: 44px;
 
-  background: red;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  background: var(--base-color--shade);
 
   align-items: center;
+  justify-content: space-between;
+
   -webkit-app-region: drag;
 }
 
@@ -15,4 +20,16 @@
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+}
+
+.Header-editBtn {
+  width: 25px;
+  height: 25px;
+
+  background: none;
+
+  background-image: url('../../assets/icons/placeholder.svg');
+  background-size: 100% 100%;
+
+  border: none;
 }
