@@ -11,8 +11,8 @@
     "build": "npm run clean | webpack --config webpack.prod.js",
     "clean": "rm -r ./dist",
     "electron:start": "NODE_ENV=production electron index.js",
-    "electron:build:mac": "electron-packager . \"Bridge\" --platform=darwin --arch=x64 --icon=appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
-    "electron:build:win": "electron-packager . \"Bridge\" --platform=win32 --arch=x64 --overwrite --ignore=\"webpack.*\\.js\" --out ./bin"
+    "electron:build:mac": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --icon=appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
+    "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --overwrite --ignore=\"webpack.*\\.js\" --out ./bin"
   },
   "repository": {
     "type": "git",

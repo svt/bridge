@@ -32,7 +32,7 @@ const electron = require('./lib/electron')
  * caching issues
  */
 ;(function () {
-  const assetsExist = fs.existsSync('./assets.json')
+  const assetsExist = fs.existsSync(path.join(__dirname, './assets.json'))
   assert(
     assetsExist,
     'No assets file found, the project must be built before it\'s run: \'npm build\''
