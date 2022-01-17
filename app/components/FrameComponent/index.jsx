@@ -2,9 +2,27 @@ import React from 'react'
 
 import { SharedContext } from '../../sharedContext'
 
+import * as browser from '../../utils/browser'
+
 import './style.css'
 
-export function IframeComponent ({ data }) {
+/**
+ * Create a string for embedding a url as
+ * a frame in the current environment
+ *
+ * Will render an iframe if running in a web browser
+ * and a webview if running inside Electron
+ * @param { String } url
+ * @returns { String }
+ */
+function getFrameHtml (url) {
+  if (browser.isElectron()) {
+    return `<webview class='FrameComponent-frame' src='${url}' />`
+  }
+  return `<iframe class='FrameComponent-frame' src='${url}' />`
+}
+
+export function FrameComponent ({ data }) {
   const [shared, applyShared] = React.useContext(SharedContext)
 
   const snapshotRef = React.useRef()
@@ -16,15 +34,9 @@ export function IframeComponent ({ data }) {
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
-    console.log('Iframe', data)
-
-    function renderFrame (url) {
-      return `<iframe class='IframeComponent-frame' src="${url}" />`
-    }
-
     const url = `/plugins/${data.bundle}/components/${data.id}`
 
-    wrapperRef.current.innerHTML = renderFrame(url)
+    wrapperRef.current.innerHTML = getFrameHtml(url)
     frameRef.current = wrapperRef.current.firstChild
   }, [data])
 
@@ -58,6 +70,6 @@ export function IframeComponent ({ data }) {
   }, [])
 
   return (
-    <div ref={wrapperRef} className='IframeComponent' />
+    <div ref={wrapperRef} className='FrameComponent' />
   )
 }

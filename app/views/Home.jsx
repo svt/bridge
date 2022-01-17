@@ -17,7 +17,7 @@ import { Grid } from '../components/Grid'
 import { GridItem } from '../components/GridItem'
 import { Notification } from '../components/Notification'
 
-import { IframeComponent } from '../components/IframeComponent'
+import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
 
@@ -82,7 +82,7 @@ export const Home = () => {
     }
 
     if (sharedRef.current?.components?.[data.component]) {
-      return <IframeComponent data={data.data} />
+      return <FrameComponent data={data.data} />
     }
 
     return <MissingComponent data={data} />
