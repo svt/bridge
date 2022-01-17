@@ -171,7 +171,6 @@ app.get('*', (req, res, next) => {
     app: req.state,
     base,
     apiHost: utils.stripTrailingSlash(base),
-    analyticsId: process.env.ANALYTICS_ID,
     hostProtocol: process.env.HOST_PROTOCOL,
     socketHost: `ws://127.0.0.1:${PORT}`,
     port: PORT
