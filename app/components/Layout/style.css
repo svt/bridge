@@ -1,5 +1,11 @@
 .Layout--master {
   display: flex;
+  width: 100%;
+}
+
+.Layout--master-main,
+.Layout--master-sidebar {
+  overflow-y: scroll;
 }
 
 .Layout--master-sidebar {
@@ -12,5 +18,8 @@
 }
 
 .Layout--master-main {
+  width: 100%;
   padding: 20px;
+
+  flex: 1;
 }

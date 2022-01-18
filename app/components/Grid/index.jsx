@@ -86,13 +86,16 @@ export function Grid ({ layout = {}, children, onChange }) {
       <div className='Grid' onContextMenu={handleContextMenu}>
         <ReactGridLayout
           className='Grid-layout'
+          autoSize={false}
           containerPadding={[5, 5]}
           margin={[2, 2]}
           verticalCompact={false}
           layout={layoutArray}
+          allowOverlap={false}
           onDragStop={handleItemChange}
           onResizeStop={handleItemChange}
           useCSSTransforms
+          preventCollision
         >
           {
             childrenArr

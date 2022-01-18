@@ -120,33 +120,35 @@ export function Preferences ({ onClose = () => {} }) {
   )
 
   return (
-    <div className='Preferences u-theme--light'>
-      <Layout.Master sidebar={sidebar}>
-        {
-          (pane?.items || [])
-            .map((setting, i) => {
-              return (
-                <Preference key={i} title={setting.title} description={setting.description}>
-                  {
-                    (setting.inputs || [])
-                      .filter(input => INPUT_TYPES[input.type])
-                      .map((input, i) => {
-                        const InputComponent = INPUT_TYPES[input.type]
-                        return (
-                          <InputComponent
-                            key={i}
-                            {...input}
-                            value={valueFromPath(input.bind)}
-                            onChange={value => handleValueChange(input.bind, value)}
-                          />
-                        )
-                      })
-                  }
-                </Preference>
-              )
-            })
-        }
-      </Layout.Master>
+    <div className='Preferences'>
+      <div className='Preferences-content'>
+        <Layout.Master sidebar={sidebar}>
+          {
+            (pane?.items || [])
+              .map((setting, i) => {
+                return (
+                  <Preference key={i} title={setting.title} description={setting.description}>
+                    {
+                      (setting.inputs || [])
+                        .filter(input => INPUT_TYPES[input.type])
+                        .map((input, i) => {
+                          const InputComponent = INPUT_TYPES[input.type]
+                          return (
+                            <InputComponent
+                              key={i}
+                              {...input}
+                              value={valueFromPath(input.bind)}
+                              onChange={value => handleValueChange(input.bind, value)}
+                            />
+                          )
+                        })
+                    }
+                  </Preference>
+                )
+              })
+          }
+        </Layout.Master>
+      </div>
       <footer className='Preferences-footer'>
         <div>
           Settings are saved automatically

@@ -1,7 +1,32 @@
+.Preferences {
+  display: flex;
+  position: relative;
+
+  height: 100%;
+
+  flex-direction: column;
+}
+
+.Preferences > * {
+  display: flex;
+}
+
+.Preferences-content {
+  /*
+  Setting the height to 1px
+  lets the pane grow to fit
+  the parent rather than shrink,
+  which would result in issues
+  with the scrolling views
+  */
+  height: 1px;
+  flex: 1;
+}
+
 .Preferences-footer {
   display: flex;
-
   width: 100%;
+
   padding: 10px 10px 10px 30px;
 
   border-top: 1px solid var(--base-color--shade);

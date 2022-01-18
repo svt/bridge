@@ -31,7 +31,8 @@
   width: calc(100% - 20px);
   max-width: 960px;
 
-  height: auto;
+  height: calc(100% - 150px);
+  max-height: 700px;
 
   text-align: center;
 
