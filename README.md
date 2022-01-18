@@ -1,10 +1,8 @@
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)  
 
----  
-<img src="appicon.png" alt="drawing" width="100"/>  
+# Bridge  
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) 
 
-# Bridge
-An extensible graphics playout client  
+An extendable graphics playout client that's both a desktop app and cloud service
 
 **This project is still in early development**
 
