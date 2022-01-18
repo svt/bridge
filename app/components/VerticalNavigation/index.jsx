@@ -13,19 +13,19 @@ import './style.css'
  * @example
  * [
  *  {
- *   label: 'Section 1',
+ *   title: 'Section 1',
  *   items: [
- *     'Item 1',
- *     'Item 2',
- *     'Item 3'
+ *     { title: 'Item 1' },
+ *     { title: 'Item 2' },
+ *     { title: 'Item 3' }
  *   ]
  *  },
  *  {
- *   label: 'Section 2',
+ *   title: 'Section 2',
  *   items: [
- *     'Item 1',
- *     'Item 2',
- *     'Item 3'
+ *     { title: 'Item 1' },
+ *     { title: 'Item 2' },
+ *     { title: 'Item 3' }
  *   ]
  *  }
  * ]
@@ -57,8 +57,8 @@ export function VerticalNavigation ({ sections = [], active = [0, 0], onClick = 
                 Render the section's
                 label if it has one
                 */
-                section.label
-                  ? <div className='VerticalNavigation-sectionLabel u-text--label'>{section.label}</div>
+                section.title
+                  ? <div className='VerticalNavigation-sectionLabel u-text--label'>{section.title}</div>
                   : <></>
               }
               {
@@ -79,7 +79,7 @@ export function VerticalNavigation ({ sections = [], active = [0, 0], onClick = 
                       className={`VerticalNavigation-item ${isActive ? 'is-active' : ''}`}
                       onClick={e => handleClick(e, i, j)}
                     >
-                      {item}
+                      {item.title}
                     </a>
                   )
                 })

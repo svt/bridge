@@ -10,7 +10,7 @@ export function Header ({ title = 'Bridge' }) {
   return (
     <>
       <Modal open={prefsOpen}>
-        <Preferences />
+        <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
       <header className='Header'>
         <div />

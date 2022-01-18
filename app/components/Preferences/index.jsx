@@ -5,59 +5,51 @@ import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
 import * as Layout from '../Layout'
-import { VerticalNavigation } from '../VerticalNavigation'
-import { Notification } from '../Notification'
 
 import { Preference } from './preference'
+import { VerticalNavigation } from '../VerticalNavigation'
 
-import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
+import general from './panes/general.json'
+import appearance from './panes/appearance.json'
+
+import inputs from './inputs'
 
 import './style.css'
 
 const INPUT_TYPES = {
-  boolean: PreferencesBooleanInput
+  boolean: inputs.PreferencesBooleanInput,
+  theme: inputs.PreferencesThemeInput
 }
 
-const DEBUG_PANE = [
+const PANES = [
   {
-    type: 'boolean',
-    title: 'Setting',
-    description: 'A description',
-    inputs: [
-      { type: 'boolean', bind: 'shared.settings.test', label: 'A checkbox' },
-      { type: 'boolean', bind: 'shared.settings.test2', label: 'A second checkbox' },
-      { type: 'boolean', bind: 'shared.settings.test3', label: 'A third checkbox' }
+    items: [
+      { title: 'General', items: general },
+      { title: 'Appearance', items: appearance }
     ]
   },
   {
-    type: 'divider'
-  }
-]
-
-const NAVIGATION = [
-  {
+    title: 'Plugins',
     items: [
-      'General',
-      'Appearance',
-      'Keyboard shortcuts',
-      'Version'
-    ]
-  },
-  {
-    label: 'Plugins',
-    items: [
-      'Rundown',
-      'Caspar'
+      { title: 'General', items: general },
+      { title: 'Appearance', items: appearance }
     ]
   }
 ]
 
-export function Preferences () {
+export function Preferences ({ onClose = () => {} }) {
   const [shared, applyShared] = React.useContext(SharedContext)
   const [local, applyLocal] = React.useContext(LocalContext)
 
+  const [pane, setPane] = React.useState(PANES[0]?.items[0])
+
   function handleSidebarClick (path) {
-    console.log('Clicked', path)
+    const pane = PANES[path[0]]?.items[path[1]]
+    setPane(pane)
+  }
+
+  function handleCloseClick () {
+    onClose()
   }
 
   /**
@@ -102,7 +94,7 @@ export function Preferences () {
 
   const sidebar = (
     <div className='Preferences-sidebar'>
-      <VerticalNavigation sections={NAVIGATION} onClick={handleSidebarClick} />
+      <VerticalNavigation sections={PANES} onClick={handleSidebarClick} />
     </div>
   )
 
@@ -110,16 +102,23 @@ export function Preferences () {
     <div className='Preferences u-theme--light'>
       <Layout.Master sidebar={sidebar}>
         {
-          DEBUG_PANE
-            .map((preference, i) => {
+          (pane?.items || [])
+            .map((setting, i) => {
               return (
-                <Preference key={i} title={preference.title} description={preference.description}>
+                <Preference key={i} title={setting.title} description={setting.description}>
                   {
-                    (preference.inputs || [])
+                    (setting.inputs || [])
                       .filter(input => INPUT_TYPES[input.type])
                       .map((input, i) => {
-                        const InputComponent = INPUT_TYPES[preference.type]
-                        return <InputComponent key={i} label={input.label} value={valueFromPath(input.bind)} onChange={value => handleValueChange(input.bind, value)} />
+                        const InputComponent = INPUT_TYPES[input.type]
+                        return (
+                          <InputComponent
+                            key={i}
+                            {...input}
+                            value={valueFromPath(input.bind)}
+                            onChange={value => handleValueChange(input.bind, value)}
+                          />
+                        )
                       })
                   }
                 </Preference>
@@ -127,7 +126,12 @@ export function Preferences () {
             })
         }
       </Layout.Master>
-      <Notification type='warning' content='Settings are saved automatically' size='small' disableInteraction />
+      <footer className='Preferences-footer'>
+        <div>
+          Settings are saved automatically
+        </div>
+        <button className='Button--primary' onClick={() => handleCloseClick()}>OK</button>
+      </footer>
     </div>
   )
 }

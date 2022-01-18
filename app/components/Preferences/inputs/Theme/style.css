@@ -1,0 +1,21 @@
+.PreferencesThemeInput-item {
+  display: inline-block;
+  margin: 15px 15px 10px 0;
+  width: 80px;
+  text-align: center;
+}
+
+.PreferencesThemeInput-itemColor {
+  width: 100%;
+  height: 50px;
+
+  border-radius: 8px;
+}
+
+.PreferencesThemeInput-item.is-active .PreferencesThemeInput-itemColor {
+  box-shadow: 0 0 0 3px var(--base-color--accent1);
+}
+
+.PreferencesThemeInput-itemLabel {
+  margin-top: 5px;
+}

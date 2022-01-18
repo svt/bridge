@@ -1,0 +1,13 @@
+.Preferences-footer {
+  display: flex;
+
+  width: 100%;
+  padding: 10px 10px 10px 30px;
+
+  border-top: 1px solid var(--base-color--shade);
+
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+}
