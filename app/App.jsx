@@ -202,6 +202,25 @@ export default function App () {
     return () => { window.history.pushState = pushState }
   }, [])
 
+  /*
+  Listen for changes to the theme and
+  update the body's class accordingly
+  */
+  React.useEffect(() => {
+    if (!local.theme) return
+    document.body.className = `u-theme--${local.theme}`
+    window.localStorage.setItem('bridge.theme', local.theme)
+  }, [local.theme])
+
+  /*
+  Load the theme from localstorage
+  into the local context
+  */
+  React.useEffect(() => {
+    const theme = window.localStorage.getItem('bridge.theme') || 'dark'
+    applyLocal({ theme })
+  }, [])
+
   return (
     <LocalContext.Provider value={[local, applyLocal]}>
       <SharedContext.Provider value={[shared, applyShared, applySharedKey]}>

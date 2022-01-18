@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Setting",
+    "description": "A description",
+    "inputs": [
+      { "type": "boolean", "bind": "shared.settings.test", "label": "A checkbox" }
+    ]
+  }
+]

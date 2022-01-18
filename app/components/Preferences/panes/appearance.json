@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Theme",
+    "description": "The application's color theme",
+    "inputs": [
+      {
+        "type": "theme",
+        "bind": "local.theme",
+        "items": [
+          { "label": "Dark", "color": "#232427", "value": "dark" },
+          { "label": "Light", "color": "#EBEBEB", "value": "light" }
+        ]
+      }
+    ]
+  }
+]
