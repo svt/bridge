@@ -1,17 +1,27 @@
 import React from 'react'
 import './style.css'
 
+import { Modal } from '../Modal'
+import { Preferences } from '../Preferences'
+
 export function Header ({ title = 'Bridge' }) {
+  const [prefsOpen, setPrefsOpen] = React.useState(false)
+
   return (
-    <header className='Header'>
-      <div />
-      <div className='Header-center'>
-        {title}
-      </div>
-      <div>
-        <button className='Header-button Header-editBtn' />
-        <button className='Header-button Header-preferencesBtn' />
-      </div>
-    </header>
+    <>
+      <Modal open={prefsOpen}>
+        <Preferences />
+      </Modal>
+      <header className='Header'>
+        <div />
+        <div className='Header-center'>
+          {title}
+        </div>
+        <div>
+          <button className='Header-button Header-editBtn' />
+          <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)} />
+        </div>
+      </header>
+    </>
   )
 }

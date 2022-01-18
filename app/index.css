@@ -22,7 +22,7 @@ html, body, #root {
 a, .Link {
   padding: 0;
 
-  color: var(--base-color);
+  color: inherit;
   font-size: 1em;
   text-decoration: underline;
 
@@ -88,4 +88,12 @@ h3, .u-heading--3 {
 
 .u-textAlign--center {
   text-align: center;
+}
+
+.u-text--label {
+  font-size: 0.9em;
+  font-weight: 500;
+
+  opacity: 0.5;
+  text-transform: uppercase;
 }
