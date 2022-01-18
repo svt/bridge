@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/person</title>
+    <g id="icons/person" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M13,12.6 C14.7673112,12.6 16.3673112,13.3163444 17.5254834,14.4745166 C18.6836556,15.6326888 19.4,17.2326888 19.4,19 L19.4,19 L19.4,20.5429306 C17.2430154,21.1149173 14.9429263,21.4 12.5,21.4 C10.0570737,21.4 7.7569846,21.1149173 5.6,20.5429306 L5.6,20.5429306 L5.6,19 C5.6,17.2326888 6.3163444,15.6326888 7.4745166,14.4745166 C8.6326888,13.3163444 10.2326888,12.6 12,12.6 L12,12.6 Z" id="Rectangle" stroke="#FFFFFF" stroke-width="1.2"></path>
+        <rect id="Rectangle" stroke="#FFFFFF" stroke-width="1.2" x="9.1" y="3.6" width="6.8" height="6.8" rx="3.4"></rect>
+    </g>
+</svg>
