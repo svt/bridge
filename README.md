@@ -23,4 +23,4 @@ As developers of production software we found ourselves in a position of rebuild
 - [ ] Can be used by many operators simultaneously with real time sync
 - [ ] A fully customizable grid layout
 
-<img src="docs/footer.png" alt="drawing"/>
+<img src="media/footer.png" alt="drawing"/>
