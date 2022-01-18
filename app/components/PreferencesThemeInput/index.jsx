@@ -8,7 +8,7 @@ import './style.css'
  *   { "label": "Light", "color": "#EBEBEB", "value": "light" }
  * ]
  */
-export function PreferencesThemeInput ({ label, items = [], value, onChange = () => {} }) {
+export function PreferencesThemeInput ({ items = [], value, onChange = () => {} }) {
   return (
     <div className='PreferencesThemeInput'>
       {

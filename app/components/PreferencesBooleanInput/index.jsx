@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css'
 
-import * as random from '../../../../utils/random'
+import * as random from '../../utils/random'
 
 export function PreferencesBooleanInput ({ label, value = false, onChange = () => {} }) {
   const id = `checkbox-${random.number()}`
