@@ -1,0 +1,12 @@
+.Preferences-preference {
+  text-align: left;
+}
+
+.Preferences-preferenceTitle,
+.Preferences-preferenceDescription {
+  display: block;
+}
+
+.Preferences-preferenceDescription {
+  max-width: 500px;
+}

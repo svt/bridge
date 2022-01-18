@@ -15,18 +15,10 @@ import { Header } from '../components/Header'
 
 import { Grid } from '../components/Grid'
 import { GridItem } from '../components/GridItem'
-import { Notification } from '../components/Notification'
 
 import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
-
-const NOTIFICATIONS = [
-  {
-    type: 'warning',
-    content: 'Tack för att du testar nya Bridge <a href="https://svt.se" target="_blank" rel="noreferrer">Lämna feedback</a>'
-  }
-]
 
 export const Home = () => {
   const [shared,, applySharedKey] = React.useContext(SharedContext)
@@ -102,12 +94,6 @@ export const Home = () => {
   return (
     <>
       <Header />
-      {
-        NOTIFICATIONS
-          .map((attr, i) => {
-            return <Notification key={i} {...attr} />
-          })
-      }
       <div>
         {
           /*

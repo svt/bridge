@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css'
 
-export function Notification ({ type, content }) {
+export function Notification ({ type, size = 'normal', content, disableInteraction }) {
   const [isHidden, setIsHidden] = React.useState(false)
 
   function handleHideBtnClick () {
@@ -17,11 +17,17 @@ export function Notification ({ type, content }) {
   }
 
   return (
-    <div className={`Notification Notification--${type}`}>
+    <div className={`Notification Notification--${type} Notification-size--${size}`}>
       <div className='Notification-content' dangerouslySetInnerHTML={{ __html: content }} />
-      <div className='Notification-controls'>
-        <button className='Notification-hideBtn Link' onClick={handleHideBtnClick}>Dölj</button>
-      </div>
+      {
+        !disableInteraction
+          ? (
+            <div className='Notification-controls'>
+              <button className='Notification-hideBtn Link' onClick={handleHideBtnClick}>Dölj</button>
+            </div>
+            )
+          : <></>
+      }
     </div>
   )
 }
