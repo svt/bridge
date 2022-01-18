@@ -8,6 +8,7 @@
   --base-color--grey3: #232427;
 
   --base-color--shade: rgba(255, 255, 255, 0.1);
+  --base-color--shade1: rgba(255, 255, 255, 0.03);
 
   --base-color--background: #232427;
   --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', sans-serif;
@@ -24,6 +25,7 @@
   --base-color--grey3: #cccccc;
 
   --base-color--shade: rgba(0, 0, 0, 0.1);
+  --base-color--shade1: rgba(0, 0, 0, 0.03);
 
   --base-color--background: white;
 }

@@ -1,0 +1,30 @@
+.VerticalNavigation-section {
+  padding: 0;
+  margin: 0;
+}
+
+.VerticalNavigation-section:not(:first-child) {
+  margin-top: 2em;
+}
+
+.VerticalNavigation-sectionLabel {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.VerticalNavigation-item {
+  display: block;
+  padding: 0.55em 0.5em;
+  border-radius: 6px;
+
+  text-decoration: none;
+}
+
+.VerticalNavigation-item:hover {
+  background: var(--base-color--shade1);
+}
+
+.VerticalNavigation-item.is-active {
+  font-weight: 500;
+  background: var(--base-color--shade);
+}

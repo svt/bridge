@@ -1,0 +1,16 @@
+.Layout--master {
+  display: flex;
+}
+
+.Layout--master-sidebar {
+  width: 250px;
+  padding: 20px;
+
+  border-right: 1px solid var(--base-color--shade);
+
+  text-align: left;
+}
+
+.Layout--master-main {
+  padding: 20px;
+}

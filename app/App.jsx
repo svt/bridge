@@ -58,21 +58,21 @@ export default function App () {
   const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws`, true)
   /**
     * Setup a reference to hold
-    * the current value of the shared
-    * state in order to access it from
+    * the current value of the
+    * states in order to access it from
     * within the apply functions
     * @type { React.Ref }
-    *
-    * @todo
-    * Is this really necessary when we
-    * can use 'useCallback' with specified
-    * deps?
     */
   const sharedRef = React.useRef({})
+  const localRef = React.useRef({})
 
   React.useEffect(() => {
     sharedRef.current = shared
   }, [shared])
+
+  React.useEffect(() => {
+    localRef.current = local
+  }, [local])
 
   React.useEffect(() => {
     if (readyState !== 1) return
@@ -137,10 +137,13 @@ export default function App () {
    * @param { Object.<> } data An object containing data to apply
    */
   function applyLocal (data = {}) {
-    setLocal({
-      ...local,
-      ...data
-    })
+    /*
+    Calculate the new local state and
+    be sure to copy the current state
+    or React won't treat it as an update
+    */
+    const newLocal = deepApply({ ...localRef.current }, data)
+    setLocal(newLocal)
   }
 
   /*
