@@ -3,7 +3,7 @@
 ![Test](https://github.com/svt/bridge/actions/workflows/.github/workflows/test.yml/badge.svg?branch=main)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)  
 
-An extendable graphics playout client that's both a desktop app and cloud service
+An extendable graphics playout client that's both a desktop app and a cloud service
 
 **This project is still in early development**
 
@@ -24,7 +24,7 @@ As developers of production software we found ourselves in a position of rebuild
 - [ ] Can be used by many operators simultaneously with real time sync
 - [ ] A fully customizable grid layout
 
-## Full documentation
+## Full documentation and API
 
 The full documentation is hosted in this repository under the [`docs`](/docs/README.md) directory. Whether you want to build your own extension or learn more about the internal structure of Bridge - that's probably where you should head to start your journey.
 
