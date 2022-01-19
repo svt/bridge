@@ -10,3 +10,14 @@
   width: 100%;
   height: 100%;
 }
+
+/*
+Modify the color of the resize
+handles to be more clearly visible
+
+The class is otherwise controlled
+by react-grid-layout
+*/
+.Grid .react-resizable-handle::after {
+  border-color: var(--base-color);
+}
