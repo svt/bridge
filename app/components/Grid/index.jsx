@@ -1,6 +1,9 @@
 import React from 'react'
 import RGL, { WidthProvider } from 'react-grid-layout'
 
+import { SharedContext } from '../../sharedContext'
+import { LocalContext } from '../../localContext'
+
 import { ContextMenu } from '../ContextMenu'
 import { ContextMenuItem } from '../ContextMenuItem'
 
@@ -12,7 +15,17 @@ import './style.css'
 const ReactGridLayout = WidthProvider(RGL)
 
 export function Grid ({ layout = {}, children, onChange }) {
+  const [shared] = React.useContext(SharedContext)
+  const [local] = React.useContext(LocalContext)
+
   const [contextPos, setContextPos] = React.useState()
+
+  /**
+   * Indicating whether or not the user
+   * is currently in layout edit mode
+   * @type { Boolean }
+   */
+  const userIsEditingLayout = shared[local.id]?.isEditingLayout
 
   const childrenArr = Array.isArray(children)
     ? children
@@ -86,12 +99,22 @@ export function Grid ({ layout = {}, children, onChange }) {
       <div className='Grid' onContextMenu={handleContextMenu}>
         <ReactGridLayout
           className='Grid-layout'
-          autoSize={false}
-          containerPadding={[5, 5]}
           margin={[2, 2]}
-          verticalCompact={false}
           layout={layoutArray}
+          autoSize={false}
           allowOverlap={false}
+          verticalCompact={false}
+          containerPadding={[5, 5]}
+          /*
+          Only enable resize and drag if the user
+          is currently in the edit-mode, otherwise
+          display the grid as static
+
+          Make sure to only pass proper boolean values
+          as undefined or null will default to true
+          */
+          isDraggable={!!userIsEditingLayout}
+          isResizable={!!userIsEditingLayout}
           onDragStop={handleItemChange}
           onResizeStop={handleItemChange}
           useCSSTransforms
