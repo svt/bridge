@@ -12,7 +12,7 @@ As a result of enabling classic server deployments all communication MUST use th
 
 ## The shared state
 
-This application relies on a state named often referred to as the "shared context" as its main source of truth for project data. The term "context" in this sense is derived from React and its use of the word.
+This application relies on a state often referred to as the "shared context" as its main source of truth for project data. The term "context" in this sense is derived from React and its use of the word.
 
 The shared context is simply a react context that's shared between clients. If one client writes data it becomes immediately available to other clients using the context. This enables a natural way to serialize the current application state into a project file that can be imported at a later time, as well as writing "dumb" ui components that include far less internal states.
 
