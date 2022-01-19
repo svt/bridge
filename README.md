@@ -24,4 +24,10 @@ As developers of production software we found ourselves in a position of rebuild
 - [ ] Can be used by many operators simultaneously with real time sync
 - [ ] A fully customizable grid layout
 
+## Full documentation
+
+The full documentation is hosted in this repository under the [`docs`](/docs/README.md) directory. Whether you want to build your own extension or learn more about the internal structure of Bridge - that's probably where you should head to start your journey.
+
+[Full documentation](/docs/README.md)
+
 <img src="media/footer.png" alt="drawing"/>
