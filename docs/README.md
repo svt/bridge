@@ -7,3 +7,4 @@ Welcome to the full documentation for Bridge. Whether you're want to build your 
 ## Internals
 
 - [Architecture](/docs/architecture.md)
+- [Project structure](/docs/structure.md)
