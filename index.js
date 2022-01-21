@@ -91,7 +91,7 @@ server.on('upgrade', (req, sock, head) => {
     return
   }
 
-  Workspace.socket.upgrade(req, sock, head)
+  workspace.socket.upgrade(req, sock, head)
 })
 
 app.get('/new', (req, res, next) => {
@@ -114,7 +114,7 @@ app.use('/:workspace', (req, res, next) => {
   to the request object for further
   requests to make use of
   */
-  req.workspace = Workspace
+  req.workspace = workspace
   next()
 })
 
