@@ -4,24 +4,21 @@
  */
 
 const fs = require('fs')
+const url = require('url')
 const path = require('path')
 const assert = require('assert')
 
 const express = require('express')
 const app = express()
 
-const PluginLoader = require('./lib/plugin/PluginLoader')
-const ContextStore = require('./lib/plugin/ContextStore')
-const Logger = require('./lib/Logger')
-
-const paths = require('./lib/paths')
-const utils = require('./lib/utils')
-const socket = require('./lib/socket')
-const template = require('./app/template')
-
-const State = require('./lib/State')
+const WorkspaceRegistry = require('./lib/WorkspaceRegistry')
+const Workspace = require('./lib/Workspace')
 
 const HttpError = require('./lib/error/HttpError')
+const Logger = require('./lib/Logger')
+const State = require('./lib/State')
+
+const template = require('./app/template')
 
 const electron = require('./lib/electron')
 
@@ -41,35 +38,6 @@ const electron = require('./lib/electron')
 
 const ASSETS = require('./assets.json')
 const PORT = process.env.PORT || 3000
-
-/**
- * Load internal plugins
- */
-;(async function () {
-  const loader = new PluginLoader({ path: paths.internalPlugins })
-  const plugins = await loader.list()
-
-  for (const plugin of plugins) {
-    loader.load(plugin._path)
-  }
-})()
-
-/**
- * Create the application data directory
- * if it doesn't already exist and load
- * external plugins
- */
-;(async function () {
-  await utils.createDirectoryRecursively(paths.appData)
-  await utils.createDirectoryRecursively(paths.plugins)
-
-  const loader = new PluginLoader({ path: paths.plugins })
-  const plugins = await loader.list()
-
-  for (const plugin of plugins) {
-    loader.load(plugin._path)
-  }
-})()
 
 app.disable('x-powered-by')
 app.use(express.static(path.join(__dirname, 'public')))
@@ -107,44 +75,47 @@ Forward websocket requests
 to the socket handler
 */
 server.on('upgrade', (req, sock, head) => {
-  if (req.url !== '/api/v1/ws') return
-  socket.handleUpgrade(req, sock, head)
+  /*
+  Parse the url to get a clean
+  pathname and Workspace id
+  */
+  const _url = new url.URL(req.url, 'http://localhost')
+  if (_url.pathname !== '/api/v1/ws') return
+
+  const workspaceId = _url.searchParams.get('workspace')
+  const workspace = WorkspaceRegistry.getInstance().get(workspaceId)
+
+  if (!workspace) {
+    Logger.warn('Closed websocket connection to a non existing workspace')
+    sock.end()
+    return
+  }
+
+  Workspace.socket.upgrade(req, sock, head)
 })
 
-/*
-Serve static files
-registered by plugins
-*/
-app.get('/plugins/:bundle/static/:file', (req, res, next) => {
-  const ctx = ContextStore.getInstance().get(req.params.bundle)
-  const file = ctx?._files[req.params.file]
-
-  try {
-    const rs = fs.createReadStream(file)
-    rs.pipe(res)
-  } catch (_) {
-    const err = new HttpError('Bundle or file not found', 'ERR_BUNDLE_OR_FILE_NOT_FOUND', 404)
-    return next(err)
-  }
+app.get('/new', (req, res, next) => {
+  const workspace = new Workspace()
+  WorkspaceRegistry.getInstance().add(workspace)
+  res.redirect(`/${workspace.id}`)
 })
 
-app.get('/plugins/:bundle/components/:component', (req, res, next) => {
-  const ctx = ContextStore.getInstance().get(req.params.bundle)
-  const component = ctx._components[req.params.component]
+app.use('/:workspace', (req, res, next) => {
+  const id = req.params.workspace
+  const workspace = WorkspaceRegistry.getInstance().get(id)
 
-  if (!component) {
-    const err = new HttpError('Component not found', 'ERR_COMPONENT_NOT_FOUND', 404)
+  if (!workspace) {
+    const err = new HttpError('Workspace not found', 'ERR_WORKSPACE_NOT_FOUND', 404)
     return next(err)
   }
 
-  if (typeof component.getHtml !== 'function') {
-    const err = new HttpError('Component is missing the required getHTML function', 'ERR_INVALID_COMPONENT', 400)
-    return next(err)
-  }
-
-  res
-    .contentType('html')
-    .send(component.getHtml())
+  /*
+  Set a reference to the Workspace
+  to the request object for further
+  requests to make use of
+  */
+  req.workspace = Workspace
+  next()
 })
 
 /*
@@ -152,28 +123,13 @@ Fallback to responding
 with the client app
 */
 app.get('*', (req, res, next) => {
-  /*
-  Use the original host and protocol as base
-  to ensure that assets are loaded from the
-  correct host
-  */
-  const base = (function () {
-    const host = req.get('X-SVT-App-Host')
-    const proto = req.get('X-Forwarded-Proto')
-
-    if (!host) return '/'
-    return `${proto || 'http'}://${host}/`
-  })()
-
   res.send(template({
-    version: process.env.npm_package_version,
     env: process.env.NODE_ENV,
-    app: req.state,
-    base,
-    apiHost: utils.stripTrailingSlash(base),
-    hostProtocol: process.env.HOST_PROTOCOL,
+    port: PORT,
+    version: process.env.npm_package_version,
+    workspace: req.workspace?.id,
     socketHost: `ws://127.0.0.1:${PORT}`,
-    port: PORT
+    hostProtocol: process.env.HOST_PROTOCOL
   }, ASSETS.assets))
 })
 

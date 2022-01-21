@@ -20,7 +20,7 @@ import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
 
-export const Home = () => {
+export const Workspace = () => {
   const [shared,, applySharedKey] = React.useContext(SharedContext)
   const sharedRef = React.useRef(shared)
 

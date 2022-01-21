@@ -1,3 +1,4 @@
 {
-  "bundle": "bridge.plugin.rundown"
+  "bundle": "bridge.plugin.rundown",
+  "main": "index.js"
 }
