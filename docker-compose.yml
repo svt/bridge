@@ -11,3 +11,4 @@ services:
       - APP_DATA_BASE_PATH=../data
     ports:
       - 3000:3000
+      - 9229:9229
