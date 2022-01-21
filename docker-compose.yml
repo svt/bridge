@@ -1,17 +1,13 @@
 version: '3.9'
 services:
   app:
-    build:
-      context: .
-      args:
-        - NPM_TOKEN=$SVT_NPM_READONLY_AUTH
+    build: .
     command: npm run nodemon
     volumes:
       - .:/app
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - MANIFEST_URL=http://localhost:3000/manifest.json
       - APP_DATA_BASE_PATH=../data
     ports:
       - 3000:3000
