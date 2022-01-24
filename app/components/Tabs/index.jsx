@@ -6,7 +6,6 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
   const [activeTab, setActiveTab] = React.useState(0)
 
   const children = Object.entries(data?.children) || []
-  console.log(children)
 
   function handleTabClick (i) {
     setActiveTab(i)
@@ -22,12 +21,13 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
 
   return (
     <div className='Tabs'>
-      <div className='Tabs-tabbar'>
+      <div className='Tabs-bar'>
         {
           children
             .map(([id, child], i) => {
+              const isActive = i === activeTab
               return (
-                <div key={id} className='Tabs-tab' onClick={() => handleTabClick(i)}>
+                <div key={id} className={`Tabs-tab ${isActive ? 'is-active' : ''}`} onClick={() => handleTabClick(i)}>
                   {id}
                 </div>
               )

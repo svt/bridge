@@ -1,75 +1,24 @@
-.Header {
-  position: sticky;
+.Tabs-bar {
   display: flex;
-  top: 0;
-  width: 100%;
-  height: 38px;
-
-  padding: 0 15px 0 20px;
-  box-sizing: border-box;
-
-  border-bottom: 1px solid var(--base-color--shade);
-
-  align-items: center;
-  justify-content: space-between;
-
-  -webkit-app-region: drag;
-}
-
-.Header-center {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.Header-block {
-  display: flex;
-  align-items: center;
-}
-
-.Header-connections {
   position: relative;
 
-  margin-right: 30px;
-  padding-left: 1.8em;
-
-  align-content: center;
-  opacity: 0.6;
+  width: 100%;
+  background: var(--base-color--shade1);
 }
 
-.Header-connections::before {
-  content: '';
-  position: absolute;
-  display: block;
+.Tabs-tab {
+  width: 100%;
+  padding: 0.25em;
 
-  left: 0;
-  top: 50%;
-  
-  transform: translate(0, -50%);
-
-  width: 25px;
-  height: 25px;
-
-  background-image: url('../../assets/icons/person.svg');
-  background-repeat: no-repeat;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-.Header-button {
-  width: 25px;
-  height: 25px;
-
-  margin-left: 10px;
-
-  background: none;
-  background-size: 100% 100%;
-
-  border: none;
+.Tabs-tab.is-active {
+  background: var(--base-color--shade);
 }
 
-.Header-editBtn {
-  background-image: url('../../assets/icons/edit.svg');
-}
-
-.Header-preferencesBtn {
-  background-image: url('../../assets/icons/preferences.svg');
+.Tabs-tab:active {
+  background: var(--base-color--shade);
+  opacity: 0.5;
 }

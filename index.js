@@ -115,8 +115,9 @@ app.use('/:workspace', (req, res, next) => {
   const workspace = WorkspaceRegistry.getInstance().get(id)
 
   if (!workspace) {
-    const err = new HttpError('Workspace not found', 'ERR_WORKSPACE_NOT_FOUND', 404)
-    return next(err)
+    Logger.debug('Tried to access non-existing workspace, redirecting to new')
+    res.redirect('/new')
+    return
   }
 
   /*
