@@ -16,7 +16,6 @@ const Workspace = require('./lib/Workspace')
 
 const HttpError = require('./lib/error/HttpError')
 const Logger = require('./lib/Logger')
-const State = require('./lib/State')
 
 const template = require('./app/template')
 
