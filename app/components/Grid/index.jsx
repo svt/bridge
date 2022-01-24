@@ -102,7 +102,7 @@ export function Grid ({ layout = {}, children, onChange }) {
           autoSize={false}
           allowOverlap={false}
           verticalCompact={false}
-          containerPadding={[5, 5]}
+          containerPadding={[2, 2]}
           /*
           Only enable resize and drag if the user
           is currently in the edit-mode, otherwise
