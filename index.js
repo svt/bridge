@@ -20,6 +20,8 @@ const State = require('./lib/State')
 
 const template = require('./app/template')
 
+const utils = require('./lib/utils')
+const paths = require('./lib/paths')
 const electron = require('./lib/electron')
 
 /**
@@ -34,6 +36,15 @@ const electron = require('./lib/electron')
     assetsExist,
     'No assets file found, the project must be built before it\'s run: \'npm build\''
   )
+})()
+
+/**
+ * Create the plugin directories
+ * if they don't already exist
+ */
+;(function () {
+  Logger.debug('Creating plugin directory')
+  utils.createDirectoryRecursively(paths.plugins)
 })()
 
 const ASSETS = require('./assets.json')
@@ -135,7 +146,8 @@ app.get('*', (req, res, next) => {
 
 app.use((err, req, res, next) => {
   let _err = err
-  Logger.error(_err)
+  Logger.error(_err.message)
+  Logger.raw(_err)
 
   if (!err.status || err.status === 500) {
     _err = new HttpError('Internal server error', 'ERR_INTERNAL_SERVER_ERROR', 500)

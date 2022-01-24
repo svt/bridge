@@ -3,16 +3,14 @@
 FROM node:14.16.0-alpine3.10
 WORKDIR /app
 
-ARG NPM_TOKEN
 COPY package*.json ./
-
-RUN npm config set @svt:registry https://svtrepo.jfrog.io/svtrepo/api/npm/svt-npm-virtual \
- && npm config set //svtrepo.jfrog.io/svtrepo/api/npm/:_authToken ${NPM_TOKEN}
 
 RUN npm ci
 
 COPY . ./
 RUN npm run build
+
+CMD ["npm", "start"]
 
 # Create a second image
 # to force-squash the history
@@ -22,4 +20,3 @@ FROM node:14.16.0-alpine3.10
 WORKDIR /app
 
 COPY --from=0 /app /app
-CMD ["npm", "start"]
