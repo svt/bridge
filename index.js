@@ -160,27 +160,3 @@ in an electron context
 
   electron.initWindow('http://localhost:3000')
 })()
-
-/*
-A dummy function for setting up
-the interface during development
-*/
-;(function () {
-  State.getInstance().apply({
-    children: {
-      a: {
-        component: 'bridge.internals.grid',
-        data: {
-          children: {
-            b: {
-              component: 'bridge.internals.selection'
-            },
-            c: {
-              component: 'bridge.plugin.missing'
-            }
-          }
-        }
-      }
-    }
-  })
-})()
