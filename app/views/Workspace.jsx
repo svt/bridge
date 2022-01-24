@@ -13,6 +13,7 @@ import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
 
+import { Tabs } from '../components/Tabs'
 import { Grid } from '../components/Grid'
 import { GridItem } from '../components/GridItem'
 
@@ -43,10 +44,8 @@ export const Workspace = () => {
                 <GridItem key={id}>
                   {
                     renderComponent(component, data => onUpdate({
-                      data: {
-                        children: {
-                          [id]: data
-                        }
+                      children: {
+                        [id]: data
                       }
                     }))
                   }
@@ -55,6 +54,9 @@ export const Workspace = () => {
           }
         </Grid>
       )
+    },
+    'bridge.internals.tabs': (data, onUpdate) => {
+      return <Tabs data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
     },
     'bridge.internals.selection': (_, onUpdate) => {
       return <SelectionComponent onChange={onUpdate} />
@@ -70,11 +72,11 @@ export const Workspace = () => {
    */
   function renderComponent (data, onUpdate) {
     if (INTERNAL_COMPONENTS.current[data.component]) {
-      return INTERNAL_COMPONENTS.current[data.component](data.data, onUpdate)
+      return INTERNAL_COMPONENTS.current[data.component](data, onUpdate)
     }
 
     if (sharedRef.current?.components?.[data.component]) {
-      return <FrameComponent data={data.data} />
+      return <FrameComponent data={data} />
     }
 
     return <MissingComponent data={data} />
