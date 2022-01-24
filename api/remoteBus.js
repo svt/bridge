@@ -3,10 +3,6 @@
  * @author Axel Boberg <axel.boberg@svt.se>
  */
 
-const EventEmitter = require('events')
-
-const bus = new EventEmitter()
-
 function emit (event, ...args) {
   /*
     1. Find the correct kernel
