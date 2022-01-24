@@ -1,0 +1,24 @@
+.Tabs-bar {
+  display: flex;
+  position: relative;
+
+  width: 100%;
+  background: var(--base-color--shade1);
+}
+
+.Tabs-tab {
+  width: 100%;
+  padding: 0.25em;
+
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.Tabs-tab.is-active {
+  background: var(--base-color--shade);
+}
+
+.Tabs-tab:active {
+  background: var(--base-color--shade);
+  opacity: 0.5;
+}

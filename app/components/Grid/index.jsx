@@ -69,9 +69,7 @@ export function Grid ({ layout = {}, children, onChange }) {
     })
 
     onChange({
-      data: {
-        layout: newLayout
-      }
+      layout: newLayout
     })
   }
 

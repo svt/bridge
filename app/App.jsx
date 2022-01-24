@@ -1,5 +1,6 @@
 import React from 'react'
-import { Home } from './views/Home'
+import { Start } from './views/Start'
+import { Workspace } from './views/Workspace'
 
 import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
@@ -52,10 +53,17 @@ const socketProtocol = (function () {
   */
 const socketHost = window.initialState.socketHost || `${socketProtocol}://${window.location.host}`
 
+/**
+ * The workspace id for
+ * the current workspace
+ * @type { String }
+ */
+const workspace = window.initialState.workspace
+
 export default function App () {
   const [local, setLocal] = React.useState({})
   const [shared, setShared] = React.useState({})
-  const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws`, true)
+  const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws?workspace=${workspace}`, true)
   /**
     * Setup a reference to hold
     * the current value of the
@@ -226,8 +234,11 @@ export default function App () {
       <SharedContext.Provider value={[shared, applyShared, applySharedKey]}>
         <Router>
           <Switch>
+            <Route path='/:workspace'>
+              <Workspace />
+            </Route>
             <Route path='/'>
-              <Home />
+              <Start />
             </Route>
           </Switch>
         </Router>

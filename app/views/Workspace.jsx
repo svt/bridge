@@ -13,6 +13,7 @@ import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
 
+import { Tabs } from '../components/Tabs'
 import { Grid } from '../components/Grid'
 import { GridItem } from '../components/GridItem'
 
@@ -20,7 +21,7 @@ import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
 
-export const Home = () => {
+export const Workspace = () => {
   const [shared,, applySharedKey] = React.useContext(SharedContext)
   const sharedRef = React.useRef(shared)
 
@@ -43,10 +44,8 @@ export const Home = () => {
                 <GridItem key={id}>
                   {
                     renderComponent(component, data => onUpdate({
-                      data: {
-                        children: {
-                          [id]: data
-                        }
+                      children: {
+                        [id]: data
                       }
                     }))
                   }
@@ -55,6 +54,9 @@ export const Home = () => {
           }
         </Grid>
       )
+    },
+    'bridge.internals.tabs': (data, onUpdate) => {
+      return <Tabs data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
     },
     'bridge.internals.selection': (_, onUpdate) => {
       return <SelectionComponent onChange={onUpdate} />
@@ -70,11 +72,11 @@ export const Home = () => {
    */
   function renderComponent (data, onUpdate) {
     if (INTERNAL_COMPONENTS.current[data.component]) {
-      return INTERNAL_COMPONENTS.current[data.component](data.data, onUpdate)
+      return INTERNAL_COMPONENTS.current[data.component](data, onUpdate)
     }
 
     if (sharedRef.current?.components?.[data.component]) {
-      return <FrameComponent data={data.data} />
+      return <FrameComponent data={data} />
     }
 
     return <MissingComponent data={data} />

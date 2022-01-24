@@ -6,6 +6,9 @@
 const manifest = require('./manifest.json')
 const assets = require('../../assets.json')
 
+const bridge = require('bridge')
+const fs = require('fs')
+
 class RundownComponent {
   get name () {
     return 'Rundown'
@@ -27,9 +30,11 @@ class RundownComponent {
   }
 }
 
-exports.init = context => {
-  context.component.register('rundown', new RundownComponent())
-
-  const url = context.file.serve(`/dist/${assets.hash}.${context.manifest.bundle}.bundle.js`)
-  console.log(url)
+exports.activate = () => {
+  console.log('Activated plugin in worker', bridge)
+  /*
+    context.component.register('rundown', new RundownComponent())
+    const url = context.file.serve(`/dist/${assets.hash}.${context.manifest.bundle}.bundle.js`)
+    console.log(url)
+  */
 }
