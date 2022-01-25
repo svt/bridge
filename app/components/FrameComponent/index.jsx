@@ -7,6 +7,20 @@ import * as browser from '../../utils/browser'
 import './style.css'
 
 /**
+ * Whether or not to enable
+ * Chromium webviews and use
+ * them when running in Electron
+ * instead of iFrames
+ *
+ * This currently disables
+ * the api completely when
+ * run on the browser
+ *
+ * @type { Boolean }
+ */
+const ENABLE_WEBVIEW = false
+
+/**
  * Create a string for embedding a url as
  * a frame in the current environment
  *
@@ -16,7 +30,7 @@ import './style.css'
  * @returns { String }
  */
 function getFrameHtml (url) {
-  if (browser.isElectron()) {
+  if (ENABLE_WEBVIEW && browser.isElectron()) {
     return `<webview class='FrameComponent-frame' src='${url}' />`
   }
   return `<iframe class='FrameComponent-frame' src='${url}' />`
