@@ -21,6 +21,7 @@ const template = require('./app/template')
 
 const utils = require('./lib/utils')
 const paths = require('./lib/paths')
+const router = require('./lib/routes')
 const electron = require('./lib/electron')
 
 /**
@@ -128,6 +129,8 @@ app.use('/:workspace', (req, res, next) => {
   req.workspace = workspace
   next()
 })
+
+app.use('/:workspace/api/v1', router)
 
 /*
 Fallback to responding

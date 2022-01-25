@@ -9,7 +9,8 @@ const assets = require('../../assets.json')
 const bridge = require('bridge')
 
 exports.activate = () => {
-  console.log('Activated plugin in worker', bridge)
+  bridge.communicator.send({ foo: 'bar' })
+
   /*
     context.component.register('rundown', new RundownComponent())
     const url = context.file.serve(`/dist/${assets.hash}.${context.manifest.bundle}.bundle.js`)
