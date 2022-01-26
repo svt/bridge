@@ -234,7 +234,7 @@ export default function App () {
       <SharedContext.Provider value={[shared, applyShared, applySharedKey]}>
         <Router>
           <Switch>
-            <Route path='/:workspace'>
+            <Route path='/workspaces/:workspace'>
               <Workspace />
             </Route>
             <Route path='/'>

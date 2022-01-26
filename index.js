@@ -108,10 +108,15 @@ server.on('upgrade', (req, sock, head) => {
 app.get('/new', (req, res, next) => {
   const workspace = new Workspace()
   WorkspaceRegistry.getInstance().add(workspace)
-  res.redirect(`/${workspace.id}`)
+  res.redirect(`/workspaces/${workspace.id}`)
 })
 
-app.use('/:workspace', (req, res, next) => {
+/*
+Keep workspaces under /workspaces/:id
+in order to not trigger their creation
+when going to paths such as /favicon.ico
+*/
+app.use('/workspaces/:workspace', (req, res, next) => {
   const id = req.params.workspace
   const workspace = WorkspaceRegistry.getInstance().get(id)
 
@@ -130,7 +135,7 @@ app.use('/:workspace', (req, res, next) => {
   next()
 })
 
-app.use('/:workspace/api/v1', router)
+app.use('/workspaces/:workspace/api/v1', router)
 
 /*
 Fallback to responding
