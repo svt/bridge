@@ -42,7 +42,7 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
   return (
     <>
       <PopupConfirm open={tabToRemove} onChange={handleConfirmChange} confirmText='Close tab' abortText='Cancel'>
-        <div className='u-heading--2'>Do you want to close the tab?</div>
+        <div className='u-heading--2'>Do you want to<br />close the tab?</div>
         Its layout will be erased
       </PopupConfirm>
       <div className='Tabs'>
