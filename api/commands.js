@@ -54,7 +54,8 @@ communicator.onMessage(async message => {
  */
 function executeCommand (command, ...args) {
   return new Promise(resolve => {
-    const transaction = `${command}._transaction:${random.string(12)}`
+    const transactionId = random.string(12)
+    const transaction = `transaction:${transactionId}:${command}`
 
     registerCommand(transaction, data => {
       unregisterCommand(transaction)
