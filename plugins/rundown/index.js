@@ -8,8 +8,18 @@ const assets = require('../../assets.json')
  */
 const bridge = require('bridge')
 
-exports.activate = () => {
-  bridge.communicator.send({ foo: 'bar' })
+exports.activate = async () => {
+  bridge.state.apply({
+    title: 'Titel satt från plugin'
+  })
+
+  let i = 0
+  setInterval(() => {
+    i++
+    bridge.state.apply({
+      title: i
+    })
+  }, 1000)
 
   /*
     context.component.register('rundown', new RundownComponent())

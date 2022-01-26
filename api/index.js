@@ -5,10 +5,12 @@
  *              which is consumed by internal as well as external plugins
  */
 
-const communicator = require('./communicator')
+const commands = require('./commands')
+const state = require('./state')
 
 const api = {
-  communicator
+  commands,
+  state
 }
 
 module.exports = api

@@ -95,7 +95,7 @@ export const Workspace = () => {
 
   return (
     <>
-      <Header />
+      <Header title={shared.title} />
       <div>
         {
           /*
