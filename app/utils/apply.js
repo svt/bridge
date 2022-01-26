@@ -24,6 +24,15 @@ export function deepApply (targetObj, sourceObj) {
     }
 
     /*
+    Delete the key if the
+    $delete keyword is present
+    */
+    if (sourceObj[key]?.$delete) {
+      delete targetObj[key]
+      continue
+    }
+
+    /*
     If the target object doesn't have
     the property, assign it directly
     */

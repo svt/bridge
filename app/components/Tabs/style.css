@@ -3,22 +3,63 @@
   position: relative;
 
   width: 100%;
-  background: var(--base-color--shade1);
 }
 
 .Tabs-tab {
+  position: relative;
   width: 100%;
-  padding: 0.25em;
+  padding: 0.5em;
+  margin: 0 0.1em;
 
   text-align: center;
   box-sizing: border-box;
+
+  border-radius: 3px;
+  border: 1px solid var(--base-color--shade);
 }
 
 .Tabs-tab.is-active {
-  background: var(--base-color--shade);
+  border-color: transparent;
+}
+
+.Tabs-tab.is-active::before {
+  content: '';
+  position: absolute;
+  width: calc(100% - 6px);
+  height: 3px;
+
+  left: 3px;
+  top: 0;
+
+  border-radius: 5px;
+  background: var(--base-color--accent4);
 }
 
 .Tabs-tab:active {
   background: var(--base-color--shade);
   opacity: 0.5;
+}
+
+.Tabs-tab:hover .Tabs-tabCloseBtn {
+  opacity: 1;
+}
+
+.Tabs-tabCloseBtn {
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 1.8em;
+  height: 1.8em;
+
+  transform: translate(0, -50%);
+
+  border: none;
+  background: none;
+
+  background-image: url('../../assets/icons/close.svg');
+  background-size: contain;
+  background-position: center;
+
+  opacity: 0;
+  transition: 0.1s;
 }
