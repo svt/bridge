@@ -9,15 +9,23 @@ const random = require('./random')
 const handlers = new Map()
 
 /**
- * @class Handler
- * @description A helper class for treating
- *              a handler function and a
- *              return indicator as a touple
+ * Create a handler touple
+ * from a function and a
+ * return indicator
+ *
+ * @typedef {{
+ *  call: (...Any) => Promise.<Any> | (...Any) => Void,
+ *  returns: Boolean
+ * }} HandlerTouple
+ *
+ * @param { (...Any) => Promise.<Any> | (...Any) => Void } fn
+ * @param { Boolean } returns
+ * @returns {{ HandlerTouple }}
  */
-class Handler {
-  constructor (fn, returns) {
-    this.call = fn
-    this.returns = returns
+function handlerFactory (fn, returns) {
+  return {
+    call: fn,
+    returns
   }
 }
 
@@ -88,8 +96,7 @@ exports.executeRawCommand = executeRawCommand
  * with a handler
  * @param { String } command The command to register, should be scoped
  * @param {
- *  (...Any) => Promise.<Any> |
- *  (...Any) => Void
+ *  (...Any) => Promise.<Any> | (...Any) => Void
  * } handler A handler to invoke whenever
  *           the command is run
  * @param { Boolean } returns Indicate whether or not
@@ -97,7 +104,7 @@ exports.executeRawCommand = executeRawCommand
  *                            defaults to false
  */
 function registerCommand (command, handler, returns = true) {
-  handlers.set(command, new Handler(handler, returns))
+  handlers.set(command, handlerFactory(handler, returns))
   communicator.send({
     command: 'commands.registerCommand',
     args: [command]
