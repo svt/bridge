@@ -61,13 +61,15 @@ communicator.onMessage(async message => {
  * @returns { Promise.<any> }
  */
 function executeCommand (command, ...args) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const transactionId = random.string(12)
     const transaction = `transaction:${transactionId}:${command}`
 
-    registerCommand(transaction, data => {
+    registerCommand(transaction, (res, err) => {
       unregisterCommand(transaction)
-      resolve(data)
+
+      if (err) return reject(err)
+      resolve(res)
     }, false)
 
     executeRawCommand(command, transaction, ...args)

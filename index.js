@@ -21,8 +21,8 @@ const template = require('./app/template')
 
 const utils = require('./lib/utils')
 const paths = require('./lib/paths')
-const router = require('./lib/routes')
 const electron = require('./lib/electron')
+const apiRoutes = require('./lib/routes')
 
 /**
  * Verify that an assets file is
@@ -105,8 +105,23 @@ server.on('upgrade', (req, sock, head) => {
   workspace.socket.upgrade(req, sock, head)
 })
 
-app.get('/new', (req, res, next) => {
+app.get('/workspaces/new', (req, res, next) => {
   const workspace = new Workspace()
+
+  /*
+  Unload the workspace when it
+  no longer has any connections
+  */
+  function conditionalUnload (state) {
+    Logger.debug('Conditionally unload', state.connections)
+    if (state.connections.length === 0) {
+      WorkspaceRegistry.getInstance().delete(workspace.id)
+      workspace.unload()
+    }
+    workspace.state.off('change', conditionalUnload)
+  }
+  workspace.state.on('change', conditionalUnload)
+
   WorkspaceRegistry.getInstance().add(workspace)
   res.redirect(`/workspaces/${workspace.id}`)
 })
@@ -122,7 +137,7 @@ app.use('/workspaces/:workspace', (req, res, next) => {
 
   if (!workspace) {
     Logger.debug('Tried to access non-existing workspace, redirecting to new')
-    res.redirect('/new')
+    /*     res.redirect('/new') */
     return
   }
 
@@ -135,7 +150,23 @@ app.use('/workspaces/:workspace', (req, res, next) => {
   next()
 })
 
-app.use('/workspaces/:workspace/api/v1', router)
+/*
+Redirect all users requesting
+the root to a new workspace
+*/
+app.get('/', (req, res, next) => {
+/*   console.log(req.headers)
+  if (req.headers['content-type'] !== 'text/html') {
+    return next()
+  } */
+  return res.redirect('/workspaces/new')
+})
+
+/*
+Attach the main routes
+to the Express application
+*/
+app.use('/api/v1', apiRoutes)
 
 /*
 Fallback to responding

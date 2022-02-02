@@ -6,6 +6,7 @@
 const manifest = require('./manifest.json')
 const assets = require('../../assets.json')
  */
+const path = require('path')
 const bridge = require('bridge')
 
 exports.activate = async () => {
@@ -20,6 +21,9 @@ exports.activate = async () => {
       title: i
     })
   }, 1000)
+
+  const p = await bridge.widgets.serveFile(path.join(__dirname, 'manifest.json'))
+  console.log('Got path', p)
 
   /*
     context.component.register('rundown', new RundownComponent())
