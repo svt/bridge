@@ -5,12 +5,14 @@
  *              which is consumed by internal as well as external plugins
  *
  * @typedef {{
- *  widgets: widgets
+ *  widgets: widgets,
+ *  server: server
  * }} Api
  */
 
 const commands = require('./commands')
 const widgets = require('./widgets')
+const server = require('./server')
 const state = require('./state')
 
 /**
@@ -21,6 +23,7 @@ const state = require('./state')
 const api = {
   commands,
   widgets,
+  server,
   state
 }
 

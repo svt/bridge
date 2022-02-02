@@ -3,20 +3,25 @@
  * @author Axel Boberg <axel.boberg@svt.se>
  *
  * @typedef {{
- *  serveFile: serveFile
- * }} WidgetsApi
+ *  registerWidget: registerWidget
+ * }} Widgets
  */
 
-const commands = require('./commands')
+const state = require('./state')
 
 /**
- * Serve a static file
- * through the web server
- * @param { String } filePath An absolute path to the file to serve
- * @returns { String } A path to the file as served by the web server
+ * Make a widget available
+ * to the application
+ * @param { String } id A unique identifier for the widget, SHOULD follow
+ *                      the format of [plugin bundle id].widget-name
+ * @param { String } name A human readable name for the widget
+ * @param { String } uri The widget's entrypoint uri
  */
-function serveFile (filePath) {
-  return commands.executeCommand('widgets.serveFile', filePath)
-    .then(hash => `/api/v1/serve/${hash}`)
+function registerWidget (id, name, uri) {
+  state.apply({
+    _widgets: {
+      [id]: { name, uri }
+    }
+  })
 }
-exports.serveFile = serveFile
+exports.registerWidget = registerWidget

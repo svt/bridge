@@ -47,6 +47,21 @@ const apiRoutes = require('./lib/routes')
   utils.createDirectoryRecursively(paths.plugins)
 })()
 
+/**
+ * Remove and recreate the temporary directory
+ * in order to make sure that it's cleared and
+ * exists
+ */
+;(function () {
+  Logger.debug('Recreating temporary directory')
+  try {
+    fs.rmdirSync(paths.temp, { force: true, recursive: true })
+  } catch (err) {
+    Logger.warn('Failed to remove temporary files directory', err)
+  }
+  utils.createDirectoryRecursively(paths.temp)
+})()
+
 const ASSETS = require('./assets.json')
 const PORT = process.env.PORT || 3000
 
