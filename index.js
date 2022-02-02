@@ -132,17 +132,22 @@ app.get('/workspaces/new', (req, res, next) => {
   const workspace = new Workspace()
   const creationTimeStamp = Date.now()
 
-  function conditionalUnload (state) {
+  function conditionalUnload () {
+    /*
+    Make sure that we've given clients
+    a timeframe to connect before
+    terminating the workspace
+    */
     if (Date.now() - creationTimeStamp < WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS) {
       return
     }
-    if (state.connections.length > 0) {
+    if (workspace?.state?.data?.connections?.length > 0) {
       return
     }
     WorkspaceRegistry.getInstance().delete(workspace.id)
     workspace.teardown()
   }
-  workspace.state.on('change', conditionalUnload)
+  workspace.on('cleanup', () => conditionalUnload())
 
   WorkspaceRegistry.getInstance().add(workspace)
   res.redirect(`/workspaces/${workspace.id}`)

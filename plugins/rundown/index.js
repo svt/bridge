@@ -35,14 +35,6 @@ exports.activate = async () => {
     title: 'Titel satt från plugin'
   })
 
-  let i = 0
-  setInterval(() => {
-    i++
-    bridge.state.apply({
-      title: i
-    })
-  }, 1000)
-
   initMyWidget()
 
   /*
