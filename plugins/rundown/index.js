@@ -26,8 +26,7 @@ async function initMyWidget () {
   `
 
   const htmlPath = await bridge.server.serveString(html)
-  console.log('HTML', htmlPath)
-  bridge.widgets.registerWidget('myWidget', htmlPath)
+  bridge.widgets.registerWidget('rundown', 'Rundown', htmlPath)
 }
 
 exports.activate = async () => {
