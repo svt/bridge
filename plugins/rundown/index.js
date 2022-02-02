@@ -36,40 +36,4 @@ exports.activate = async () => {
   })
 
   initMyWidget()
-
-  /*
-  Should this function write the HTML to a file and wrap the serveFile function
-  rather than sending the contents over the API?
-
-  The widget object in the state could just
-  contain the URL in that case such that
-
-  [State]: {
-    _widgets: {
-      [id]: {
-        name: 'My widget',
-        url: '/api/v1/serve/hash
-      }
-    }
-  }
-  */
-  bridge.widgets.registerWidget('bridge.plugins.rundown.rundown', 'Rundown', () => {
-    return `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Widget</title>
-        </head>
-        <body>
-          A test body
-        </body>
-      </html>
-    `
-  })
-
-  /*
-    context.component.register('rundown', new RundownComponent())
-    const url = context.file.serve(`/dist/${assets.hash}.${context.manifest.bundle}.bundle.js`)
-    console.log(url)
-  */
 }
