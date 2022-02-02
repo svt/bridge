@@ -48,9 +48,13 @@ communicator.onMessage(async message => {
   } else {
     const args = message.args
     const transaction = args.shift()
-    const res = await handler.call(...args)
 
-    executeRawCommand(transaction, res)
+    try {
+      const res = await handler.call(...args)
+      executeRawCommand(transaction, res)
+    } catch (err) {
+      executeRawCommand(transaction, undefined, err)
+    }
   }
 })
 
