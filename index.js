@@ -65,6 +65,14 @@ const apiRoutes = require('./lib/routes')
 const ASSETS = require('./assets.json')
 const PORT = process.env.PORT || 3000
 
+/**
+ * The minimum threshold after creation
+ * that a workspace can be teared down,
+ * assuming no connections
+ * @type { Number }
+ */
+const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
+
 app.disable('x-powered-by')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'dist')))
@@ -122,18 +130,16 @@ server.on('upgrade', (req, sock, head) => {
 
 app.get('/workspaces/new', (req, res, next) => {
   const workspace = new Workspace()
+  const creationTimeStamp = Date.now()
 
-  /*
-  Unload the workspace when it
-  no longer has any connections
-  */
   function conditionalUnload (state) {
-    Logger.debug('Conditionally unload', state.connections)
+    if (Date.now() - creationTimeStamp < WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS) {
+      return
+    }
     if (state.connections.length === 0) {
       WorkspaceRegistry.getInstance().delete(workspace.id)
-      workspace.unload()
+      workspace.teardown()
     }
-    workspace.state.off('change', conditionalUnload)
   }
   workspace.state.on('change', conditionalUnload)
 
