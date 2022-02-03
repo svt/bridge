@@ -52,7 +52,12 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
               .map(([id], i) => {
                 const isActive = i === activeTab
                 return (
-                  <div key={id} className={`Tabs-tab ${isActive ? 'is-active' : ''}`} onClick={(e) => handleTabClick(i)}>
+                  <div
+                    key={id}
+                    className={`Tabs-tab ${isActive ? 'is-active' : ''}`}
+                    onClick={(e) => handleTabClick(i)}
+                    draggable
+                  >
                     {
                       children.length > 1
                         ? <button className='Tabs-tabCloseBtn' onClick={e => handleTabClose(e, id)} />
@@ -63,6 +68,7 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
                 )
               })
           }
+          <div className='Tabs-filler' />
         </div>
         <div className='Tabs-content'>
           {
