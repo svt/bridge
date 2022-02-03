@@ -1,5 +1,7 @@
 import React from 'react'
 
+import * as random from '../../utils/random'
+
 import { PopupConfirm } from '../Popup/confirm'
 import './style.css'
 
@@ -35,6 +37,22 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
       order: childIds
     })
   }, [])
+
+  /**
+   * Create a new tab and place
+   * it last in the tab order
+   */
+  function createTab () {
+    const id = random.number(5)
+    onUpdate({
+      order: { $replace: [...data.order, id] },
+      children: {
+        [id]: {
+          component: 'bridge.internals.grid'
+        }
+      }
+    })
+  }
 
   /**
    * Reorder a tab to a new index
@@ -127,10 +145,15 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
     */
     if (!data?.children[id]) return
     reorderTab(id, i)
+    setActiveTab(id)
   }
 
   function handleTabDragStart (e, id) {
     e.dataTransfer.setData('id', id)
+  }
+
+  function handleCreateTabClick () {
+    createTab()
   }
 
   return (
@@ -144,7 +167,7 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
           {
             (data?.order || [])
               .map(id => [id, data?.children[id]])
-              .map(([id, { title }], i) => {
+              .map(([id, child], i) => {
                 const isActive = id === activeTab
                 return (
                   <div
@@ -164,11 +187,14 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
                           />
                         : <></>
                     }
-                    {title || 'Untitled'}
+                    {child?.title || 'Untitled'}
                   </div>
                 )
               })
           }
+          <div className='Tabs-actions'>
+            <button className='Tabs-tabCreateBtn' onClick={() => handleCreateTabClick()} />
+          </div>
           <div
             className='Tabs-filler'
             onDragOver={e => handleTabDragOver(e)}
