@@ -75,7 +75,7 @@ export const Workspace = () => {
       return INTERNAL_COMPONENTS.current[data.component](data, onUpdate)
     }
 
-    if (sharedRef.current?.components?.[data.component]) {
+    if (sharedRef.current?._widgets?.[data.component]) {
       return <FrameComponent data={data} />
     }
 

@@ -44,15 +44,15 @@ export function FrameComponent ({ data }) {
   const frameRef = React.useRef()
 
   React.useEffect(() => {
-    const snapshot = JSON.stringify(data)
+    const uri = shared?._widgets[data.component]?.uri
+
+    const snapshot = JSON.stringify([data, uri])
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
-    const url = `/plugins/${data.bundle}/components/${data.id}`
-
-    wrapperRef.current.innerHTML = getFrameHtml(url)
+    wrapperRef.current.innerHTML = getFrameHtml(uri)
     frameRef.current = wrapperRef.current.firstChild
-  }, [data])
+  }, [data, shared])
 
   /*
   Keep the frame updated
