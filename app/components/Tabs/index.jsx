@@ -3,13 +3,90 @@ import React from 'react'
 import { PopupConfirm } from '../Popup/confirm'
 import './style.css'
 
+/**
+ * A tab widget
+ * @param { params } param0
+ * @returns { React.Component }
+ */
 export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} }) {
-  const [activeTab, setActiveTab] = React.useState(0)
+  const [activeTab, setActiveTab] = React.useState()
   const [tabToRemove, setTabToRemove] = React.useState()
 
-  const children = Object
-    .entries(data?.children) || []
-    .filter(([, child]) => child)
+  const elRef = React.useRef()
+
+  /*
+  Make sure that data.order is an array
+  and that it contains ids of children
+  every time the component is loaded
+  */
+  React.useEffect(() => {
+    if (data.order) return
+    const childIds = Object.keys(data?.children)
+
+    const order = (data.order || childIds)
+      .filter(id => data?.children[id])
+
+    childIds.forEach(id => {
+      if (order.includes(id)) return
+      order.push(id)
+    })
+
+    onUpdate({
+      order: childIds
+    })
+  }, [])
+
+  /**
+   * Reorder a tab to a new index
+   * @param { String } id The id of a child
+   * @param { Number } index The tab's new index
+   */
+  function reorderTab (id, index) {
+    const newOrder = data?.order
+    const curIndex = data?.order.indexOf(id)
+
+    newOrder.splice(curIndex, 1)
+    newOrder.splice(index, 0, id)
+
+    onUpdate({
+      order: { $replace: newOrder }
+    })
+  }
+
+  /**
+   * Remove a tab completely,
+   * will update the order and
+   * remove the child from the
+   * component tree
+   * @param { String } id The id of a child to remove
+   */
+  function removeTab (id) {
+    const newOrder = data?.order
+    const curIndex = data?.order.indexOf(id)
+
+    newOrder.splice(curIndex, 1)
+
+    onUpdate({
+      order: { $replace: newOrder },
+      children: {
+        [id]: { $delete: true }
+      }
+    })
+  }
+
+  React.useEffect(() => {
+    if (activeTab !== undefined && data.children?.[activeTab]) {
+      return
+    }
+    setActiveTab(data.order?.[0])
+  }, [data.order])
+
+  function clearDragOverClass () {
+    const elements = elRef.current.querySelectorAll('.is-draggedOver')
+    for (const element of elements) {
+      element.classList.remove('is-draggedOver')
+    }
+  }
 
   function handleTabClick (i) {
     setActiveTab(i)
@@ -21,13 +98,7 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
   }
 
   function handleConfirmChange (confirmed) {
-    if (confirmed) {
-      onUpdate({
-        children: {
-          [tabToRemove]: { $delete: true }
-        }
-      })
-    }
+    if (confirmed) removeTab(tabToRemove)
     setTabToRemove(undefined)
   }
 
@@ -39,41 +110,75 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
     })
   }
 
+  function handleTabDragOver (e) {
+    e.preventDefault()
+    clearDragOverClass()
+    e.target.classList.add('is-draggedOver')
+  }
+
+  function handleTabDrop (e, i) {
+    clearDragOverClass()
+    const id = e.dataTransfer.getData('id')
+    /*
+    Only allow tabs to be dropped
+
+    If the dropped item's id doesn't
+    exist as a child we return
+    */
+    if (!data?.children[id]) return
+    reorderTab(id, i)
+  }
+
+  function handleTabDragStart (e, id) {
+    e.dataTransfer.setData('id', id)
+  }
+
   return (
     <>
       <PopupConfirm open={tabToRemove} onChange={handleConfirmChange} confirmText='Close tab' abortText='Cancel'>
         <div className='u-heading--2'>Do you want to<br />close the tab?</div>
         Its layout will be erased
       </PopupConfirm>
-      <div className='Tabs'>
+      <div className='Tabs' ref={elRef}>
         <div className='Tabs-bar'>
           {
-            children
-              .map(([id], i) => {
-                const isActive = i === activeTab
+            (data?.order || [])
+              .map(id => [id, data?.children[id]])
+              .map(([id, { title }], i) => {
+                const isActive = id === activeTab
                 return (
                   <div
-                    key={id}
+                    key={i}
                     className={`Tabs-tab ${isActive ? 'is-active' : ''}`}
-                    onClick={(e) => handleTabClick(i)}
+                    onDrop={e => handleTabDrop(e, i)}
+                    onClick={() => handleTabClick(id)}
+                    onDragOver={e => handleTabDragOver(e)}
+                    onDragStart={e => handleTabDragStart(e, id)}
                     draggable
                   >
                     {
-                      children.length > 1
-                        ? <button className='Tabs-tabCloseBtn' onClick={e => handleTabClose(e, id)} />
+                      data.order?.length > 1
+                        ? <button
+                            className='Tabs-tabCloseBtn'
+                            onClick={e => handleTabClose(e, id)}
+                          />
                         : <></>
                     }
-                    {id}
+                    {title || 'Untitled'}
                   </div>
                 )
               })
           }
-          <div className='Tabs-filler' />
+          <div
+            className='Tabs-filler'
+            onDragOver={e => handleTabDragOver(e)}
+            onDrop={e => handleTabDrop(e, data.order?.length)}
+          />
         </div>
         <div className='Tabs-content'>
           {
-            children[activeTab]
-              ? renderComponent(children[activeTab][1], data => handleChildUpdate(children[activeTab][0], data))
+            data?.children[activeTab]
+              ? renderComponent(data?.children[activeTab], data => handleChildUpdate(activeTab, data))
               : <></>
           }
         </div>

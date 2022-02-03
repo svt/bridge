@@ -13,6 +13,11 @@
   width: 100%;
 }
 
+.Tabs-tab.is-draggedOver,
+.Tabs-filler.is-draggedOver {
+  background: var(--base-color--shade);
+}
+
 .Tabs-tab,
 .Tabs-filler {
   position: relative;
