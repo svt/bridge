@@ -21,7 +21,20 @@ const prod = {
         Overwrite the default hash with out own
         as that's what we are using for filenames
         */
-        hash
+        hash,
+
+        /*
+        Statically declare which files should be
+        included in the application's html
+
+        These are passed through
+        the server to /app/template.js
+        */
+        assets: [
+          `${hash}.app.bundle.css`,
+          `${hash}.app.bundle.js`,
+          `${hash}.api.bundle.js`
+        ]
       }
     }),
     new MiniCssExtractPlugin({

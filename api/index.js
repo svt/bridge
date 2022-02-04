@@ -28,3 +28,11 @@ const api = {
 }
 
 module.exports = api
+
+/*
+Expose the api as window.bridge
+if we're running in a browser
+*/
+if (typeof window !== 'undefined') {
+  window.bridge = api
+}

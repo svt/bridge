@@ -10,5 +10,8 @@
   */
 module.exports = {
   onMessage: handler => window.addEventListener('message', handler),
-  send: msg => window.parent.postMessage(msg)
+  send: msg => {
+    console.log('[API] Sending', msg)
+    window.parent.postMessage(msg)
+  }
 }

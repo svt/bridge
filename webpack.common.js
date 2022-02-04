@@ -1,14 +1,47 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { merge } = require('webpack-merge')
 
 const plugins = require('./plugins/webpack.config')
 
+const DEFAULT_CONFIG = {
+  target: 'web',
+  resolve: {
+    extensions: ['.jsx', '.js', '.css', '.svg']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(svg|woff2)$/,
+        use: {
+          loader: 'url-loader'
+        }
+      }, {
+        test: /\.(gif|png|jp(e*)g)$/,
+        use: {
+          loader: 'url-loader'
+        }
+      }, {
+        test: /\.(css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      }
+    ]
+  }
+}
+
+/*
+Create slightly different configs
+for the app and api chunks as the
+api is using commonjs syntax and
+the app es6 syntax
+*/
 module.exports = [
-  {
-    name: 'main',
-    entry: './app',
-    node: { global: true },
-    resolve: {
-      extensions: ['.jsx', '.js', '.css', '.svg', '.glsl']
+  merge({ ...DEFAULT_CONFIG }, {
+    name: 'app',
+    entry: {
+      app: './app'
     },
     module: {
       rules: [
@@ -22,33 +55,48 @@ module.exports = [
               plugins: [
                 [
                   '@babel/plugin-transform-runtime',
-                  {
-                    regenerator: true
-                  }
+                  { regenerator: true }
                 ]
-              ]
+              ],
+              sourceType: 'module'
             }
           }
-        }, {
-          test: /\.(svg|woff2)$/,
-          use: {
-            loader: 'url-loader'
-          }
-        }, {
-          test: /\.(gif|png|jp(e*)g)$/,
-          use: {
-            loader: 'url-loader'
-          }
-        }, {
-          test: /\.(css)$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader'
-          ]
         }
       ]
     }
-  },
+  }),
+  merge({ ...DEFAULT_CONFIG }, {
+    name: 'api',
+    entry: {
+      api: './api'
+    },
+    resolve: {
+      alias: {
+        worker_threads: false
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: [
+                [
+                  '@babel/plugin-transform-runtime',
+                  { regenerator: true }
+                ]
+              ],
+              sourceType: 'script'
+            }
+          }
+        }
+      ]
+    }
+  }),
 
   /*
   Include the internal plugins
