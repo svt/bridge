@@ -3,7 +3,7 @@
  * @copyright SVT Design © 2022
  */
 
-const communicator = require('./communicator')
+const transport = require('./transport')
 const random = require('./random')
 
 const handlers = new Map()
@@ -39,16 +39,16 @@ for executing any transactions
 if the handler provides a
 return value
 */
-communicator.onMessage(async message => {
+transport.onMessage(async message => {
   const handler = handlers.get(message.command)
   if (!handler) return
 
-  if (!handler.returns) {
-    handler.call(...message.args)
-  } else {
-    const args = message.args
-    const transaction = args.shift()
+  const args = message.args || []
 
+  if (!handler.returns) {
+    handler.call(...args)
+  } else {
+    const transaction = args.shift()
     try {
       const res = await handler.call(...args)
       executeRawCommand(transaction, res)
@@ -93,7 +93,7 @@ exports.executeCommand = executeCommand
  * @param { ...any } args Arguments to pass to the command
  */
 function executeRawCommand (command, ...args) {
-  communicator.send({ command, args: [...args] })
+  transport.send({ command, args: [...args] })
 }
 exports.executeRawCommand = executeRawCommand
 
@@ -111,7 +111,7 @@ exports.executeRawCommand = executeRawCommand
  */
 function registerCommand (command, handler, returns = true) {
   handlers.set(command, handlerFactory(handler, returns))
-  communicator.send({
+  transport.send({
     command: 'commands.registerCommand',
     args: [command]
   })
@@ -131,7 +131,7 @@ function unregisterCommand (command) {
   if (!handlers.has(command)) return
 
   handlers.delete(command)
-  communicator.send({
+  transport.send({
     command: 'commands.unregisterCommand',
     args: [command]
   })

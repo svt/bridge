@@ -8,15 +8,15 @@
  * }} Communicator
  */
 
-const communicator = (function () {
+const transport = (function () {
   if (module.parent) {
-    console.log('[API] Using node communicator')
-    return require('./node/communicator')
+    console.log('[API] Using node transport')
+    return require('./node/transport')
   }
   if (typeof window !== 'undefined') {
-    console.log('[API] Using browser communicator')
-    return require('./browser/communicator')
+    console.log('[API] Using browser transport')
+    return require('./browser/transport')
   }
 })()
 
-module.exports = communicator
+module.exports = transport

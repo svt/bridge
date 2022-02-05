@@ -10,6 +10,7 @@
  * }} Api
  */
 
+const transport = require('./transport')
 const commands = require('./commands')
 const widgets = require('./widgets')
 const server = require('./server')
@@ -21,6 +22,7 @@ const state = require('./state')
  * @type { Api }
  */
 const api = {
+  transport,
   commands,
   widgets,
   server,

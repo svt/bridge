@@ -8,7 +8,7 @@
 const { parentPort } = require('worker_threads')
 
 /**
- * @type { import('../communicator').Communicator }
+ * @type { import('../transport').Communicator }
  */
 module.exports = {
   onMessage: handler => parentPort.on('message', handler),
