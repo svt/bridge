@@ -65,6 +65,10 @@ const apiRoutes = require('./lib/routes')
 const ASSETS = require('./assets.json')
 const PORT = process.env.PORT || 3000
 
+const NODE_ENV = electron.isCompatible()
+  ? 'electron'
+  : process.env.NODE_ENV
+
 /**
  * The minimum threshold after creation
  * that a workspace can be teared down,
@@ -147,7 +151,10 @@ app.get('/workspaces/new', (req, res, next) => {
     WorkspaceRegistry.getInstance().delete(workspace.id)
     workspace.teardown()
   }
-  workspace.on('cleanup', () => conditionalUnload())
+
+  if (NODE_ENV !== 'electron') {
+    workspace.on('cleanup', () => conditionalUnload())
+  }
 
   WorkspaceRegistry.getInstance().add(workspace)
   res.redirect(`/workspaces/${workspace.id}`)
