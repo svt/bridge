@@ -70,7 +70,7 @@ export default function App () {
       {
         view === 'latency'
           ? <span className='Clock-digits'>{Math.floor(latency * 10) / 10}ms</span>
-          : <CurrentTime className='Clock-digits' base={time} offset={-latency} />
+          : <CurrentTime className='Clock-digits' base={time} offset={latency} />
       }
     </div>
   )
