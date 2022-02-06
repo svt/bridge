@@ -4,10 +4,13 @@ import { Workspace } from './views/Workspace'
 
 import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
+import { SocketContext } from './socketContext'
 
 import { useWebsocket } from './hooks/useWebsocket'
 
 import { deepApply } from './utils/apply'
+
+import * as api from './api'
 
 import {
   BrowserRouter as Router,
@@ -85,6 +88,18 @@ export default function App () {
   React.useEffect(() => {
     if (readyState !== 1) return
     send({ type: 'id', data: local.id })
+  }, [readyState])
+
+  React.useEffect(() => {
+    async function setup () {
+      const bridge = await api.load()
+
+      bridge.transport.send = msg => {
+        send(msg)
+      }
+    }
+    if (readyState !== 1) return
+    setup()
   }, [readyState])
 
   /*
@@ -174,7 +189,8 @@ export default function App () {
       case 'state':
         setShared(json?.data)
         break
-        /*
+
+      /*
       Keep track of this connection's
       unique identifier and set the
       current path to the shared state
@@ -182,6 +198,17 @@ export default function App () {
       case 'id':
         applyLocal({ id: json?.data })
         applySharedKey(json?.data, { path: window.location.pathname })
+        break
+
+      /*
+      Forward the message to
+      the api for processing
+      */
+      default:
+        ;(async function () {
+          const bridge = await api.load()
+          bridge.transport.receive(json)
+        })()
         break
     }
   }, [data])
@@ -230,19 +257,21 @@ export default function App () {
   }, [])
 
   return (
-    <LocalContext.Provider value={[local, applyLocal]}>
-      <SharedContext.Provider value={[shared, applyShared, applySharedKey]}>
-        <Router>
-          <Switch>
-            <Route path='/workspaces/:workspace'>
-              <Workspace />
-            </Route>
-            <Route path='/'>
-              <Start />
-            </Route>
-          </Switch>
-        </Router>
-      </SharedContext.Provider>
-    </LocalContext.Provider>
+    <SocketContext.Provider value={[send, data]}>
+      <LocalContext.Provider value={[local, applyLocal]}>
+        <SharedContext.Provider value={[shared, applyShared, applySharedKey]}>
+          <Router>
+            <Switch>
+              <Route path='/workspaces/:workspace'>
+                <Workspace />
+              </Route>
+              <Route path='/'>
+                <Start />
+              </Route>
+            </Switch>
+          </Router>
+        </SharedContext.Provider>
+      </LocalContext.Provider>
+    </SocketContext.Provider>
   )
 }

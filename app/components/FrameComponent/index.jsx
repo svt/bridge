@@ -1,8 +1,8 @@
 import React from 'react'
-
 import { SharedContext } from '../../sharedContext'
 
 import * as browser from '../../utils/browser'
+import * as api from '../../api'
 
 import './style.css'
 
@@ -37,51 +37,37 @@ function getFrameHtml (url) {
 }
 
 export function FrameComponent ({ data }) {
-  const [shared, applyShared] = React.useContext(SharedContext)
+  const [shared] = React.useContext(SharedContext)
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
 
   React.useEffect(() => {
+    async function setup () {
+      const bridge = await api.load()
+
+      wrapperRef.current.innerHTML = getFrameHtml(uri)
+      frameRef.current = wrapperRef.current.firstChild
+
+      /*
+      Shim window.require for the loaded
+      iframe in order to return the api
+      */
+      frameRef.current.contentWindow.require = module => {
+        if (module === 'bridge') return bridge
+        return {}
+      }
+    }
+
     const uri = shared?._widgets[data.component]?.uri
 
     const snapshot = JSON.stringify([data, uri])
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
-    wrapperRef.current.innerHTML = getFrameHtml(uri)
-    frameRef.current = wrapperRef.current.firstChild
+    setup()
   }, [data, shared])
-
-  /*
-  Keep the frame updated
-  with the shared store
-  whenever it changes
-  */
-  React.useEffect(() => {
-    if (!frameRef.current) return
-    frameRef.current.contentWindow.postMessage({
-      type: 'state',
-      data: shared
-    }, '*')
-  }, [shared])
-
-  /*
-  Listen for messages sent with PostMessage
-  from the frame's window and apply any changes
-  to the shared context
-  */
-  React.useEffect(() => {
-    function handleMessage (e) {
-      if (e.source !== frameRef.current?.contentWindow) return
-      if (e.data.type !== 'state') return
-      applyShared(e.data.data)
-    }
-
-    window.addEventListener('message', handleMessage)
-    return () => window.removeEventListener('message', handleMessage)
-  }, [])
 
   return (
     <div ref={wrapperRef} className='FrameComponent' />
