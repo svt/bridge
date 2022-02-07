@@ -8,6 +8,8 @@ const random = require('./random')
 
 const handlers = new Map()
 
+const NoLocalHandlerError = require('./error/NoLocalHandlerError')
+
 /**
  * Create a handler touple
  * from a function and a
@@ -128,7 +130,9 @@ function unregisterCommand (command) {
   A plugin can only unregister
   its own commands
   */
-  if (!handlers.has(command)) return
+  if (!handlers.has(command)) {
+    throw new NoLocalHandlerError('Command cannot be unregistered as it wasn\'t created by this plugin')
+  }
 
   handlers.delete(command)
   transport.send({
