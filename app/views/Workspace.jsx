@@ -96,19 +96,17 @@ export const Workspace = () => {
   return (
     <>
       <Header title={shared.title} />
-      <div>
-        {
-          /*
-          Loop through the components from the store
-          and render them all in the interface
-          */
-          (shared.children ? Object.entries(shared.children) : [])
-            .map(([id, component]) => renderComponent(
-              component,
-              data => handleComponentUpdate({ [id]: data })
-            ))
-        }
-      </div>
+      {
+        /*
+        Loop through the components from the store
+        and render them all in the interface
+        */
+        (shared.children ? Object.entries(shared.children) : [])
+          .map(([id, component]) => renderComponent(
+            component,
+            data => handleComponentUpdate({ [id]: data })
+          ))
+      }
     </>
   )
 }

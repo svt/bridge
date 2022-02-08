@@ -14,11 +14,25 @@ import './style.css'
 
 const ReactGridLayout = WidthProvider(RGL)
 
+/**
+ * Define the grid's
+ * properties, these
+ * are used in calculations
+ * as well as element
+ * attributes
+ */
+const GRID_COL_COUNT = 12
+const GRID_ROW_COUNT = 6
+const GRID_MARGIN_PX = 5
+
 export function Grid ({ layout = {}, children, onChange }) {
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
   const [contextPos, setContextPos] = React.useState()
+  const [rowHeight, setRowHeight] = React.useState(0)
+
+  const elRef = React.useRef()
 
   /**
    * Indicating whether or not the user
@@ -35,6 +49,28 @@ export function Grid ({ layout = {}, children, onChange }) {
     e.preventDefault()
     setContextPos([e.pageX, e.pageY])
   }
+
+  /*
+  Update the row height whenever the grid
+  is resized in order to keep the correct
+  number of rows at all times
+  */
+  React.useEffect(() => {
+    const observer = new window.ResizeObserver(entries => {
+      const entry = entries[0]
+      if (!entry) return
+
+      const height = entry.contentRect.height
+      /*
+      Calculate the new height and
+      take the margin into account
+      which will be added around each row
+      */
+      setRowHeight((height - (GRID_ROW_COUNT + 1) * GRID_MARGIN_PX) / GRID_ROW_COUNT)
+    })
+    observer.observe(elRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   React.useEffect(() => {
     function handleWindowClick () {
@@ -94,15 +130,18 @@ export function Grid ({ layout = {}, children, onChange }) {
             )
           : <></>
       }
-      <div className='Grid' onContextMenu={handleContextMenu}>
+      <div ref={elRef} className='Grid' onContextMenu={handleContextMenu}>
         <ReactGridLayout
           className='Grid-layout'
-          margin={[2, 2]}
+          cols={GRID_COL_COUNT}
+          maxRows={GRID_ROW_COUNT}
+          rowHeight={rowHeight}
+          margin={[GRID_MARGIN_PX, GRID_MARGIN_PX]}
           layout={layoutArray}
           autoSize={false}
           allowOverlap={false}
           verticalCompact={false}
-          containerPadding={[2, 2]}
+          containerPadding={[GRID_MARGIN_PX, GRID_MARGIN_PX]}
           /*
           Only enable resize and drag if the user
           is currently in the edit-mode, otherwise
