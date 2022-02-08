@@ -13,6 +13,7 @@
 const transport = require('./transport')
 const commands = require('./commands')
 const widgets = require('./widgets')
+const events = require('./events')
 const server = require('./server')
 const state = require('./state')
 
@@ -25,6 +26,7 @@ const api = {
   transport,
   commands,
   widgets,
+  events,
   server,
   state
 }

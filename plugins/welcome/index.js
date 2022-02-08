@@ -27,5 +27,8 @@ async function initWidget () {
 }
 
 exports.activate = async () => {
+  bridge.events.on('state.change', () => {
+    console.log('State did change')
+  })
   initWidget()
 }

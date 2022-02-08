@@ -97,6 +97,10 @@ export default function App () {
       bridge.transport.send = msg => {
         send(msg)
       }
+
+      bridge.events.on('state.change', () => {
+        console.log('State did change')
+      })
     }
     if (readyState !== 1) return
     setup()
