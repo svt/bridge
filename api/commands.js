@@ -72,7 +72,7 @@ function executeCommand (command, ...args) {
     const transaction = `transaction:${transactionId}:${command}`
 
     registerCommand(transaction, (res, err) => {
-      unregisterCommand(transaction)
+      removeCommand(transaction)
 
       if (err) return reject(err)
       resolve(res)
@@ -121,23 +121,23 @@ function registerCommand (command, handler, returns = true) {
 exports.registerCommand = registerCommand
 
 /**
- * Unregister a command
+ * Remove a command
  * and remove its handler
- * @param { String } command The command to unregister
+ * @param { String } command The command to remove
  */
-function unregisterCommand (command) {
+function removeCommand (command) {
   /*
-  A plugin can only unregister
+  A plugin can only remove
   its own commands
   */
   if (!handlers.has(command)) {
-    throw new NoLocalHandlerError('Command cannot be unregistered as it wasn\'t created by this plugin')
+    throw new NoLocalHandlerError('Command cannot be removeed as it wasn\'t created by this plugin')
   }
 
   handlers.delete(command)
   transport.send({
-    command: 'commands.unregisterCommand',
+    command: 'commands.removeCommand',
     args: [command]
   })
 }
-exports.unregisterCommand = unregisterCommand
+exports.removeCommand = removeCommand

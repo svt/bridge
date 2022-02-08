@@ -104,11 +104,11 @@ function off (event, handler) {
     localHandlers.delete(event)
 
     /*
-    Unregister the command completely as we don't
+    Remove the command completely as we don't
     have any handlers for this event anymore
     */
     const [command, handlerId] = remoteHandlers.get(event)
-    commands.unregisterCommand(command)
+    commands.removeCommand(command)
     commands.executeRawCommand('events.off', event, handlerId)
 
     remoteHandlers.delete(event)
