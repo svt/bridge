@@ -21,11 +21,6 @@
   max-width: 250px;
 }
 
-.Tabs-filler {
-  width: 100%;
-  flex-shrink: 2;
-}
-
 .Tabs-tab.is-draggedOver,
 .Tabs-filler.is-draggedOver {
   background: var(--base-color--shade);
@@ -43,6 +38,12 @@
   border-right: 1px solid;
   border-bottom: 1px solid;
   border-color: var(--base-color--shade);
+}
+
+.Tabs-filler {
+  width: 100%;
+  flex-shrink: 2;
+  border-right: none;
 }
 
 .Tabs-tab.is-active {
