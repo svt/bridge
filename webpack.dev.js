@@ -14,6 +14,7 @@ const dev = {
     new HtmlWebpackPlugin({
       templateContent: template({
         version: 'N/A',
+        socketHost: 'ws://localhost:3000',
         apiHost: 'http://localhost:3000',
         env: 'development'
       }, [], '/')
