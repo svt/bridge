@@ -97,6 +97,7 @@ export default function App () {
       bridge.transport.send = msg => {
         send(msg)
       }
+      bridge.transport.replayQueue()
 
       bridge.events.on('state.change', () => {
         console.log('State did change')
