@@ -109,7 +109,7 @@ exports.executeRawCommand = executeRawCommand
  *           the command is run
  * @param { Boolean } returns Indicate whether or not
  *                            the handler returns a value,
- *                            defaults to false
+ *                            defaults to true
  */
 function registerCommand (command, handler, returns = true) {
   handlers.set(command, handlerFactory(handler, returns))

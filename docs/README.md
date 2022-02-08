@@ -19,7 +19,9 @@ Widgets are web views hosted by plugins. They provide a user interface that can 
 ### Plugin
 Plugins are extensions to Bridge that add specific functionality. They are primarily run in the main process and have access to the full Bridge and Nodejs apis. A plugin can register none, one or multiple widgets that are available in the workspace. They can also react to events and provide their own functionality through commands.
 
-## Internals
+## Plugins
+- [API](/docs/api/README.md)
 
+## Internals
 - [Architecture](/docs/architecture.md)
 - [Project structure](/docs/structure.md)
