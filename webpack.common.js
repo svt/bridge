@@ -99,6 +99,30 @@ module.exports = [
   }),
 
   /*
+  Bundle the base stylesheet
+  for inclusion in widgets
+  */
+  {
+    entry: {
+      style: './app/bridge.css'
+    },
+    resolve: {
+      extensions: ['.css']
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(css)$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader'
+          ]
+        }
+      ]
+    }
+  },
+
+  /*
   Include the internal plugins
   to be compiled as well
   */
