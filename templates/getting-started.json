@@ -1,0 +1,13 @@
+{
+  "children": {
+    "root": {
+      "component": "bridge.internals.tabs",
+      "children": {
+        "Welcome": {
+          "component": "bridge.internals.gettingStarted",
+          "children": {}
+        }
+      }
+    }
+  }
+}

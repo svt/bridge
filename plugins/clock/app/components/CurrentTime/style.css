@@ -1,0 +1,8 @@
+.CurrentTime-char {
+  display: inline-block;
+  width: 0.6em;
+}
+
+.CurrentTime-faded {
+  opacity: 0.4;
+}

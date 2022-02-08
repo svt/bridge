@@ -30,4 +30,7 @@ The full documentation is hosted in this repository under the [`docs`](/docs/REA
 
 [Full documentation](/docs/README.md)
 
+## Security  
+Always keep an eye open when interacting with third party code. As a general rule, **never run code you don't trust.** This includes third party plugins as they have a great amount of access when running on your computer or server.
+
 <img src="media/footer.png" alt="drawing"/>

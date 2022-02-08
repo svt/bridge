@@ -1,10 +1,24 @@
 import React from 'react'
-
 import { SharedContext } from '../../sharedContext'
 
 import * as browser from '../../utils/browser'
+import * as api from '../../api'
 
 import './style.css'
+
+/**
+ * Whether or not to enable
+ * Chromium webviews and use
+ * them when running in Electron
+ * instead of iFrames
+ *
+ * This currently disables
+ * the api completely when
+ * run on the browser
+ *
+ * @type { Boolean }
+ */
+const ENABLE_WEBVIEW = false
 
 /**
  * Create a string for embedding a url as
@@ -16,58 +30,44 @@ import './style.css'
  * @returns { String }
  */
 function getFrameHtml (url) {
-  if (browser.isElectron()) {
+  if (ENABLE_WEBVIEW && browser.isElectron()) {
     return `<webview class='FrameComponent-frame' src='${url}' />`
   }
   return `<iframe class='FrameComponent-frame' src='${url}' />`
 }
 
 export function FrameComponent ({ data }) {
-  const [shared, applyShared] = React.useContext(SharedContext)
+  const [shared] = React.useContext(SharedContext)
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
 
   React.useEffect(() => {
-    const snapshot = JSON.stringify(data)
+    async function setup () {
+      const bridge = await api.load()
+
+      wrapperRef.current.innerHTML = getFrameHtml(uri)
+      frameRef.current = wrapperRef.current.firstChild
+
+      /*
+      Shim window.require for the loaded
+      iframe in order to return the api
+      */
+      frameRef.current.contentWindow.require = module => {
+        if (module === 'bridge') return bridge
+        return {}
+      }
+    }
+
+    const uri = shared?._widgets[data.component]?.uri
+
+    const snapshot = JSON.stringify([data, uri])
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
-    const url = `/plugins/${data.bundle}/components/${data.id}`
-
-    wrapperRef.current.innerHTML = getFrameHtml(url)
-    frameRef.current = wrapperRef.current.firstChild
-  }, [data])
-
-  /*
-  Keep the frame updated
-  with the shared store
-  whenever it changes
-  */
-  React.useEffect(() => {
-    if (!frameRef.current) return
-    frameRef.current.contentWindow.postMessage({
-      type: 'state',
-      data: shared
-    }, '*')
-  }, [shared])
-
-  /*
-  Listen for messages sent with PostMessage
-  from the frame's window and apply any changes
-  to the shared context
-  */
-  React.useEffect(() => {
-    function handleMessage (e) {
-      if (e.source !== frameRef.current?.contentWindow) return
-      if (e.data.type !== 'state') return
-      applyShared(e.data.data)
-    }
-
-    window.addEventListener('message', handleMessage)
-    return () => window.removeEventListener('message', handleMessage)
-  }, [])
+    setup()
+  }, [data, shared])
 
   return (
     <div ref={wrapperRef} className='FrameComponent' />

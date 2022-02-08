@@ -70,6 +70,9 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
             ]
           }
         ]
+      },
+      externals: {
+        bridge: 'commonjs bridge'
       }
     }
   })

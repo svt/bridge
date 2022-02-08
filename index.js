@@ -22,6 +22,7 @@ const template = require('./app/template')
 const utils = require('./lib/utils')
 const paths = require('./lib/paths')
 const electron = require('./lib/electron')
+const apiRoutes = require('./lib/routes')
 
 /**
  * Verify that an assets file is
@@ -46,8 +47,35 @@ const electron = require('./lib/electron')
   utils.createDirectoryRecursively(paths.plugins)
 })()
 
+/**
+ * Remove and recreate the temporary directory
+ * in order to make sure that it's cleared and
+ * exists
+ */
+;(function () {
+  Logger.debug('Recreating temporary directory')
+  try {
+    fs.rmdirSync(paths.temp, { force: true, recursive: true })
+  } catch (err) {
+    Logger.warn('Failed to remove temporary files directory', err)
+  }
+  utils.createDirectoryRecursively(paths.temp)
+})()
+
 const ASSETS = require('./assets.json')
 const PORT = process.env.PORT || 3000
+
+const NODE_ENV = electron.isCompatible()
+  ? 'electron'
+  : process.env.NODE_ENV
+
+/**
+ * The minimum threshold after creation
+ * that a workspace can be teared down,
+ * assuming no connections
+ * @type { Number }
+ */
+const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
 
 app.disable('x-powered-by')
 app.use(express.static(path.join(__dirname, 'public')))
@@ -104,19 +132,46 @@ server.on('upgrade', (req, sock, head) => {
   workspace.socket.upgrade(req, sock, head)
 })
 
-app.get('/new', (req, res, next) => {
+app.get('/workspaces/new', (req, res, next) => {
   const workspace = new Workspace()
+  const creationTimeStamp = Date.now()
+
+  function conditionalUnload () {
+    /*
+    Make sure that we've given clients
+    a timeframe to connect before
+    terminating the workspace
+    */
+    if (Date.now() - creationTimeStamp < WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS) {
+      return
+    }
+    if (workspace?.state?.data?.connections?.length > 0) {
+      return
+    }
+    WorkspaceRegistry.getInstance().delete(workspace.id)
+    workspace.teardown()
+  }
+
+  if (NODE_ENV !== 'electron') {
+    workspace.on('cleanup', () => conditionalUnload())
+  }
+
   WorkspaceRegistry.getInstance().add(workspace)
-  res.redirect(`/${workspace.id}`)
+  res.redirect(`/workspaces/${workspace.id}`)
 })
 
-app.use('/:workspace', (req, res, next) => {
+/*
+Keep workspaces under /workspaces/:id
+in order to not trigger their creation
+when going to paths such as /favicon.ico
+*/
+app.use('/workspaces/:workspace', (req, res, next) => {
   const id = req.params.workspace
   const workspace = WorkspaceRegistry.getInstance().get(id)
 
   if (!workspace) {
     Logger.debug('Tried to access non-existing workspace, redirecting to new')
-    res.redirect('/new')
+    /*     res.redirect('/new') */
     return
   }
 
@@ -128,6 +183,24 @@ app.use('/:workspace', (req, res, next) => {
   req.workspace = workspace
   next()
 })
+
+/*
+Redirect all users requesting
+the root to a new workspace
+*/
+app.get('/', (req, res, next) => {
+/*   console.log(req.headers)
+  if (req.headers['content-type'] !== 'text/html') {
+    return next()
+  } */
+  return res.redirect('/workspaces/new')
+})
+
+/*
+Attach the main routes
+to the Express application
+*/
+app.use('/api/v1', apiRoutes)
 
 /*
 Fallback to responding

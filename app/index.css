@@ -75,7 +75,8 @@ a, .Link {
 
 h2, .u-heading--2 {
   margin: 0.4em 0;
-  font-weight: 400;
+  font-size: 1.2em;
+  font-weight: 500;
 }
 
 h3, .u-heading--3 {
