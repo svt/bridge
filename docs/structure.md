@@ -5,6 +5,9 @@ This repository contains the code needed for the node process (Electron main), t
 The file tree looks like the following:
 ```sh
 bridge
+  |- api      # The plugin api, shared between processes
+      |- browser    # Browser specific code
+      |- node       # Node specific code
   |- app      # Frontend code
       |- assets     # Bundled assets
       |- components # React components
