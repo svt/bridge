@@ -10,7 +10,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Widgets](#widgets)
 
 ## Getting started  
-The plugin is available for plugins and widgets running in either the main process or browser processes and can be included as follows. The module will be provided by Bridge at runtime.
+The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
 
 ### Using CommonJS
 `const bridge = require('bridge')`
