@@ -15,10 +15,10 @@ export const SelectionComponent = ({ onChange = () => {} }) => {
 
   function handleButtonClick () {
     onChange({
-      component: `${selectedComponent.bundle}.${selectedComponent.id}`,
+      component: `${selectedComponent.name}.${selectedComponent.id}`,
       data: {
         id: selectedComponent.id,
-        bundle: selectedComponent.bundle
+        bundle: selectedComponent.name
       }
     })
   }

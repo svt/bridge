@@ -1,0 +1,28 @@
+{
+  "$id": "https://bridge.svt.se/schema/plugin.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Plugin",
+  "description": "The declaration of a plugin",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "The name of the plugin, must be unique, lowercase, and cannot contain spaces",
+      "type": "string"
+    },
+    "version": {
+      "description": "The plugin's version number as a semver string",
+      "type": "string"
+    },
+    "engines": {
+      "type": "object",
+      "properties": {
+        "bridge": {
+          "type": "string",
+          "description": "The minimum version of Bridge that's required to run the plugin"
+        }
+      },
+      "required": [ "bridge" ]
+    }
+  },
+  "required": [ "name", "engines" ]
+}
