@@ -28,18 +28,22 @@
   "author": "Axel Boberg (axel.boberg@svt.se)",
   "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
+    "ajv": "^8.10.0",
     "electron": "^12.2.3",
     "express": "^4.17.1",
     "node-fetch": "^2.6.1",
     "object-path": "^0.11.8",
     "react-grid-layout": "^1.3.1",
     "react-router-dom": "^5.2.0",
+    "semver": "^7.3.5",
     "uuid": "^8.3.2",
     "ws": "^8.2.3"
   },
   "standard": {
     "enable": true,
-    "env": ["jest"]
+    "env": [
+      "jest"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",

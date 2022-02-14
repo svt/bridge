@@ -23,12 +23,12 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
      * Require the plugin's manifest in order to
      * take actions based on its values
      */
-    const manifest = require(path.join(__dirname, plugin, '/manifest.json'))
+    const manifest = require(path.join(__dirname, plugin, '/package.json'))
 
     return {
-      name: manifest.bundle,
+      name: manifest.name,
       entry: {
-        [manifest.bundle]: `./plugins/${plugin}/app`
+        [manifest.name]: `./plugins/${plugin}/app`
       },
       resolve: {
         extensions: ['.jsx', '.js', '.css', '.svg', '.glsl']
