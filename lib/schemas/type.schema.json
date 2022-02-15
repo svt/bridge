@@ -1,0 +1,29 @@
+{
+  "$id": "https://bridge.svt.se/schemas/type",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Type",
+  "description": "The declaration of a type",
+  "type": "object",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "description": "A unique identifier for the type"
+    },
+    "$extends": {
+      "type": "string",
+      "description": "Extend an already existing type"
+    },
+    "$inherits": {
+      "type": "string",
+      "description": "Inherit fields from another type"
+    },
+    "name": {
+      "type": "string",
+      "description": "A human readable name of the type"
+    }
+  },
+  "oneOf": [
+    { "required": [ "$id", "name" ] },
+    { "required": [ "$extends" ] }
+  ]
+}
