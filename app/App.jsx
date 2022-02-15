@@ -91,6 +91,10 @@ export default function App () {
   }, [readyState])
 
   React.useEffect(() => {
+    /**
+     * Setup the Bridge api
+     * and attach listeners
+     */
     async function setup () {
       const bridge = await api.load()
 
@@ -98,6 +102,10 @@ export default function App () {
         send(msg)
       }
       bridge.transport.replayQueue()
+
+      bridge.events.on('state.change', state => {
+        setShared(state)
+      })
     }
     if (readyState !== 1) return
     setup()
@@ -180,17 +188,6 @@ export default function App () {
     if (!data) return
     const json = JSON.parse(data)
     switch (json?.type) {
-      /*
-      Update the local copy
-      of the shared state,
-      the server will send
-      the complete state
-      as an object
-      */
-      case 'state':
-        setShared(json?.data)
-        break
-
       /*
       Keep track of this connection's
       unique identifier and set the
