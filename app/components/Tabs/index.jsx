@@ -34,7 +34,7 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
     })
 
     onUpdate({
-      order: childIds
+      order: { $replace: childIds }
     })
   }, [])
 
