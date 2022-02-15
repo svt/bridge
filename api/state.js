@@ -1,9 +1,30 @@
 /**
  * @author Axel Boberg <axel.boberg@svt.se>
  * @copyright SVT Design © 2022
+ *
+ * @typedef { any } State
  */
 
 const commands = require('./commands')
+const events = require('./events')
+
+/**
+ * Keep a local
+ * copy of the state
+ * @type { State }
+ */
+let state = {}
+
+/*
+Listen for changes to the
+state and update the local
+copy
+*/
+;(function () {
+  events.on('state.change', newState => {
+    state = newState
+  })
+})()
 
 /**
  * Apply some data to the state,
@@ -16,3 +37,12 @@ function apply (set) {
   commands.executeRawCommand('state.apply', set)
 }
 exports.apply = apply
+
+/**
+ * Get the current state
+ * @returns { Promise.<State> }
+ */
+async function get () {
+  return state
+}
+exports.get = get

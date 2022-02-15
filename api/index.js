@@ -16,6 +16,7 @@ const widgets = require('./widgets')
 const events = require('./events')
 const server = require('./server')
 const state = require('./state')
+const types = require('./types')
 
 /**
  * The api entrypoint
@@ -28,7 +29,8 @@ const api = {
   widgets,
   events,
   server,
-  state
+  state,
+  types
 }
 
 module.exports = api

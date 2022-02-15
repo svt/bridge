@@ -213,6 +213,8 @@ export default function App () {
         ;(async function () {
           const bridge = await api.load()
           bridge.transport.receive(json)
+
+          console.log('Image', await bridge.types.getType('bridge.types.image'))
         })()
         break
     }
