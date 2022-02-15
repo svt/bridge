@@ -1,0 +1,80 @@
+{
+  "name": "bridge-plugin-types",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "contributes": {
+    "types": [
+      {
+        "id": "bridge.types.media",
+        "properties": [
+          {
+            "name": "Name",
+            "bind": "name",
+            "type": "string"
+          },
+          {
+            "name": "Notes",
+            "bind": "notes",
+            "type": "string"
+          },
+          {
+            "name": "Color",
+            "bind": "color",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "bridge.types.video",
+        "name": "Video",
+        "inherits": "bridge.types.media",
+        "properties": [
+          {
+            "name": "Timing",
+            "type": "group"
+          },
+          {
+            "name": "Duration",
+            "bind": "time.duration",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "bridge.types.audio",
+        "name": "Audio",
+        "inherits": "bridge.types.media",
+        "properties": [
+          {
+            "name": "Timing",
+            "type": "group",
+            "properties": [
+              {
+                "name": "Duration",
+                "bind": "time.duration",
+                "type": "number"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge.types.image",
+        "name": "Image",
+        "inherits": "bridge.types.media"
+      }
+    ]
+  },
+  "author": "Axel Boberg (axel.boberg@svt.se)",
+  "license": "UNLICENSED"
+}

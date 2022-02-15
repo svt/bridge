@@ -6,6 +6,7 @@
 const bridge = require('bridge')
 
 const assets = require('../../assets.json')
+const manifest = require('./package.json')
 
 async function initWidget () {
   const html = `
@@ -13,8 +14,8 @@ async function initWidget () {
     <html>
       <head>
         <title>Getting started</title>
-        <link rel="stylesheet" href="/${assets.hash}.bridge.plugin.welcome.bundle.css" />
-        <script src="/${assets.hash}.bridge.plugin.welcome.bundle.js" defer></script>
+        <link rel="stylesheet" href="/${assets.hash}.${manifest.name}.bundle.css" />
+        <script src="/${assets.hash}.${manifest.name}.bundle.js" defer></script>
       </head>
       <body>
         <div id="root"></div>

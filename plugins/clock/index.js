@@ -5,10 +5,11 @@
 
 const bridge = require('bridge')
 const assets = require('../../assets.json')
+const manifest = require('./package.json')
 
 async function initWidget () {
-  const cssPath = `${assets.hash}.bridge.plugin.clock.bundle.css`
-  const jsPath = `${assets.hash}.bridge.plugin.clock.bundle.js`
+  const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
+  const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
 
   const html = `
     <!DOCTYPE html>

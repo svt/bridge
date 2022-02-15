@@ -189,10 +189,6 @@ Redirect all users requesting
 the root to a new workspace
 */
 app.get('/', (req, res, next) => {
-/*   console.log(req.headers)
-  if (req.headers['content-type'] !== 'text/html') {
-    return next()
-  } */
   return res.redirect('/workspaces/new')
 })
 
