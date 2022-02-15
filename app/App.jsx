@@ -98,10 +98,6 @@ export default function App () {
         send(msg)
       }
       bridge.transport.replayQueue()
-
-      bridge.events.on('state.change', () => {
-        console.log('State did change')
-      })
     }
     if (readyState !== 1) return
     setup()
@@ -213,8 +209,6 @@ export default function App () {
         ;(async function () {
           const bridge = await api.load()
           bridge.transport.receive(json)
-
-          console.log('Image', await bridge.types.getType('bridge.types.image'))
         })()
         break
     }
