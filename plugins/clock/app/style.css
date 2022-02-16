@@ -7,9 +7,6 @@ html, body, #root {
   margin: 0;
 
   font-size: min(8vw, 30vh);
-
-  color: white;
-  font-family: 'Publik';
 }
 
 .Clock-wrapper {

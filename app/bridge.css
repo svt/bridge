@@ -4,7 +4,6 @@ as well as separately for widgets to include
 */
 
 @import "./fonts.css";
-@import "./theme.css";
 
 html, body, #root {
   position: relative;
@@ -16,8 +15,6 @@ html, body, #root {
 
   font-family: var(--base-fontFamily--primary);
   color: var(--base-color);
-
-  background: var(--base-color--background);
 }
 
 a, .Link {

@@ -3,12 +3,26 @@
  * @author Axel Boberg <axel.boberg@svt.se>
  *
  * @typedef {{
+ *  STYLE_RESET: String
+ * }} StaticUris
+ *
+ * @typedef {{
+ *  uris: StaticUris,
  *  serveFile: serveFile,
  *  serveString: serveString
  * }} Server
  */
 
 const commands = require('./commands')
+
+/**
+ * Access uris for
+ * static assets
+ * @type { String }
+ */
+exports.uris = Object.freeze({
+  STYLE_RESET: '/bridge.bundle.css'
+})
 
 /**
  * Serve a static file

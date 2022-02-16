@@ -5,8 +5,8 @@
  *              which is consumed by internal as well as external plugins
  *
  * @typedef {{
- *  widgets: widgets,
- *  server: server
+ *  widgets: import('./widgets').Widgets,
+ *  server: import('./server').Server
  * }} Api
  */
 

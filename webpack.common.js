@@ -104,7 +104,7 @@ module.exports = [
   */
   {
     entry: {
-      style: './app/bridge.css'
+      bridge: './app/bridge.css'
     },
     resolve: {
       extensions: ['.css']
@@ -119,7 +119,12 @@ module.exports = [
           ]
         }
       ]
-    }
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].bundle.css'
+      })
+    ]
   },
 
   /*

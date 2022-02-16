@@ -243,6 +243,7 @@ export default function App () {
     if (!local.theme) return
     document.body.className = `u-theme--${local.theme}`
     window.localStorage.setItem('bridge.theme', local.theme)
+    applyLocal({ appliedTheme: local.theme })
   }, [local.theme])
 
   /*

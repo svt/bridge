@@ -1,4 +1,9 @@
+@import "./theme.css";
 @import "./bridge.css";
+
+html, body, #root {
+  background: var(--base-color--background);
+}
 
 #root {
   display: flex;

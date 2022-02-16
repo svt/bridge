@@ -3,7 +3,11 @@
  * @author Axel Boberg <axel.boberg@svt.se>
  */
 
+/**
+ * @type { import('../../api').Api }
+ */
 const bridge = require('bridge')
+
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
@@ -17,6 +21,7 @@ async function initWidget () {
       <head>
         <title>Clock</title>
         <base href="/"></base>
+        <link rel="stylesheet" href="${bridge.server.uris.STYLE_RESET}" />
         <link rel="stylesheet" href="${cssPath}" />
         <script src="${jsPath}" defer></script>
       </head>

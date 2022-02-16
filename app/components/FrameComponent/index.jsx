@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { SharedContext } from '../../sharedContext'
+import { LocalContext } from '../../localContext'
 
 import * as browser from '../../utils/browser'
 import * as api from '../../api'
@@ -21,6 +23,26 @@ import './style.css'
 const ENABLE_WEBVIEW = false
 
 /**
+ * Declare all theme variables
+ * that should be copties to
+ * the frame
+ */
+const COPY_THEME_VARIABLES = [
+  '--base-color',
+  '--base-color--accent1',
+  '--base-color--accent2',
+  '--base-color--accent3',
+  '--base-color--accent4',
+  '--base-color--grey1',
+  '--base-color--grey2',
+  '--base-color--grey3',
+  '--base-color--shade',
+  '--base-color--shade1',
+  '--base-color--background',
+  '--base-fontFamily--primary'
+]
+
+/**
  * Create a string for embedding a url as
  * a frame in the current environment
  *
@@ -36,8 +58,22 @@ function getFrameHtml (url) {
   return `<iframe class='FrameComponent-frame' src='${url}' />`
 }
 
+/**
+ * Copy theme variables from the host
+ * document to an iframe's document
+ * @param { HTMLIFrameElement } iframe
+ */
+function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
+  const style = window.getComputedStyle(document.body)
+  for (const variable of variables) {
+    const value = style.getPropertyValue(variable)
+    iframe.contentDocument.documentElement.style.setProperty(variable, value)
+  }
+}
+
 export function FrameComponent ({ data }) {
   const [shared] = React.useContext(SharedContext)
+  const [local] = React.useContext(LocalContext)
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
@@ -58,6 +94,13 @@ export function FrameComponent ({ data }) {
         if (module === 'bridge') return bridge
         return {}
       }
+
+      frameRef.current.onload = () => {
+        /*
+        Setup the theme variable
+        */
+        copyThemeVariables(frameRef.current)
+      }
     }
 
     const uri = shared?._widgets[data.component]?.uri
@@ -68,6 +111,16 @@ export function FrameComponent ({ data }) {
 
     setup()
   }, [data, shared])
+
+  /*
+  Copy the theme variables from
+  the current document whenever
+  its theme changes
+  */
+  React.useEffect(() => {
+    if (!frameRef.current) return
+    copyThemeVariables(frameRef.current)
+  }, [local.appliedTheme])
 
   return (
     <div ref={wrapperRef} className='FrameComponent' />
