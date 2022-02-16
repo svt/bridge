@@ -97,7 +97,7 @@ export function FrameComponent ({ data }) {
 
       frameRef.current.onload = () => {
         /*
-        Setup the theme variable
+        Setup the theme variables
         */
         copyThemeVariables(frameRef.current)
       }

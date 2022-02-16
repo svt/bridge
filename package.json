@@ -10,8 +10,9 @@
     "start": "node index.js",
     "nodemon": "nodemon --inspect=0.0.0.0 index.js",
     "build": "npm run clean | webpack --config webpack.prod.js",
+    "build:plugins": "node plugins/bundle.js",
     "clean": "rm -r ./dist",
-    "electron:start": "NODE_ENV=production electron index.js",
+    "electron": "NODE_ENV=development electron index.js",
     "electron:build:mac": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
     "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --overwrite --ignore=\"webpack.*\\.js\" --out ./bin"
   },
@@ -60,7 +61,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "standard": "^16.0.4",
-    "url-loader": "^4.1.1",
     "webpack": "^5.28.0",
     "webpack-asset-map": "^1.0.1",
     "webpack-cli": "^4.5.0",
