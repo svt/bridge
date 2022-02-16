@@ -32,6 +32,10 @@ a, .Link {
 
 /* Buttons */
 
+button {
+  padding: 0;
+}
+
 .Button,
 .Button--primary,
 .Button--secondary,

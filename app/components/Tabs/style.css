@@ -82,7 +82,7 @@
 
 .Tabs-tabCloseBtn {
   position: absolute;
-  left: 0;
+  left: 3px;
   top: 50%;
   width: 1.8em;
   height: 1.8em;
