@@ -6,6 +6,8 @@ import { LocalContext } from '../../localContext'
 import { Modal } from '../Modal'
 import { Preferences } from '../Preferences'
 
+import { Icon } from '../Icon'
+
 import './style.css'
 
 export function Header ({ title = 'Bridge' }) {
@@ -54,10 +56,17 @@ export function Header ({ title = 'Bridge' }) {
         </div>
         <div className='Header-block'>
           <div className='Header-connections'>
+            <div className='Header-connectionsIcon'>
+              <Icon name='person' />
+            </div>
             {connections || 0}
           </div>
-          <button className='Header-button Header-editBtn' onClick={() => handleEdit(!shared[local.id]?.isEditingLayout)} />
-          <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)} />
+          <button className='Header-button Header-editBtn' onClick={() => handleEdit(!shared[local.id]?.isEditingLayout)}>
+            <Icon name='edit' />
+          </button>
+          <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)}>
+            <Icon name='preferences' />
+          </button>
         </div>
       </header>
     </>

@@ -61,15 +61,11 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
               }
             }
           }, {
-            test: /\.(svg|woff2)$/,
-            use: {
-              loader: 'url-loader'
-            }
+            test: /\.(svg)$/,
+            type: 'asset/source'
           }, {
-            test: /\.(gif|png|jp(e*)g)$/,
-            use: {
-              loader: 'url-loader'
-            }
+            test: /\.(gif|png|jp(e*)g|woff2)$/,
+            type: 'asset/resource'
           }, {
             test: /\.(css)$/,
             use: [

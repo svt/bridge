@@ -3,6 +3,8 @@ import React from 'react'
 import * as random from '../../utils/random'
 
 import { PopupConfirm } from '../Popup/confirm'
+import { Icon } from '../Icon'
+
 import './style.css'
 
 /**
@@ -181,10 +183,14 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
                   >
                     {
                       data.order?.length > 1
-                        ? <button
+                        ? (
+                          <button
                             className='Tabs-tabCloseBtn'
                             onClick={e => handleTabClose(e, id)}
-                          />
+                          >
+                            <Icon name='close' />
+                          </button>
+                          )
                         : <></>
                     }
                     {child?.title || 'Untitled'}

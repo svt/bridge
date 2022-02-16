@@ -29,29 +29,18 @@
 
 .Header-connections {
   position: relative;
+  display: flex;
 
   margin-right: 30px;
   padding-left: 1.8em;
 
-  align-content: center;
+  align-items: center;
   opacity: 0.6;
 }
 
-.Header-connections::before {
-  content: '';
-  position: absolute;
-  display: block;
-
-  left: 0;
-  top: 50%;
-  
-  transform: translate(0, -50%);
-
+.Header-connectionsIcon {
   width: 25px;
   height: 25px;
-
-  background-image: url('../../assets/icons/person.svg');
-  background-repeat: no-repeat;
 }
 
 .Header-button {
@@ -59,17 +48,7 @@
   height: 25px;
 
   margin-left: 10px;
+  border: none;
 
   background: none;
-  background-size: 100% 100%;
-
-  border: none;
-}
-
-.Header-editBtn {
-  background-image: url('../../assets/icons/edit.svg');
-}
-
-.Header-preferencesBtn {
-  background-image: url('../../assets/icons/preferences.svg');
 }
