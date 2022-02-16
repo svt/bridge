@@ -8,7 +8,8 @@
         "bind": "local.theme",
         "items": [
           { "label": "Dark", "color": "#232427", "value": "dark" },
-          { "label": "Light", "color": "#EBEBEB", "value": "light" }
+          { "label": "Light", "color": "#EBEBEB", "value": "light" },
+          { "label": "Purple", "color": "#641E78", "value": "purple" }
         ]
       }
     ]
