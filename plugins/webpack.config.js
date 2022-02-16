@@ -18,6 +18,14 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
     const pluginPath = path.join(PLUGINS_DIR, pathname)
     return fs.statSync(pluginPath).isDirectory()
   })
+  .filter(pathname => {
+    /*
+    Filter out paths that don't
+    contain widgets
+    */
+    const widgetPath = path.join(PLUGINS_DIR, pathname, '/app')
+    return fs.existsSync(widgetPath)
+  })
   .map(plugin => {
     /**
      * Require the plugin's manifest in order to
