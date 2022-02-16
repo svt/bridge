@@ -199,7 +199,9 @@ export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} })
               })
           }
           <div className='Tabs-actions'>
-            <button className='Tabs-tabCreateBtn' onClick={() => handleCreateTabClick()} />
+            <button className='Tabs-tabCreateBtn' onClick={() => handleCreateTabClick()}>
+              <Icon name='add' />
+            </button>
           </div>
           <div
             className='Tabs-filler'
