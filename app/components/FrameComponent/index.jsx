@@ -1,9 +1,3 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 
 import { SharedContext } from '../../sharedContext'
@@ -13,6 +7,12 @@ import * as browser from '../../utils/browser'
 import * as api from '../../api'
 
 import './style.css'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 /**
  * Whether or not to enable

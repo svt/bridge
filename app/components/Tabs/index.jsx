@@ -1,9 +1,3 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 
 import * as random from '../../utils/random'
@@ -12,6 +6,12 @@ import { PopupConfirm } from '../Popup/confirm'
 import { Icon } from '../Icon'
 
 import './style.css'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 /**
  * A tab widget

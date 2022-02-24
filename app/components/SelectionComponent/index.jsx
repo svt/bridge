@@ -1,13 +1,13 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 export const SelectionComponent = ({ onChange = () => {} }) => {
   const [shared] = React.useContext(SharedContext)

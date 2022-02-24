@@ -1,9 +1,3 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 import RGL, { WidthProvider } from 'react-grid-layout'
 
@@ -17,6 +11,12 @@ import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
 
 import './style.css'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 const ReactGridLayout = WidthProvider(RGL)
 

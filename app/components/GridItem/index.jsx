@@ -1,14 +1,14 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 export const GridItem = ({ children }) => {
   const [shared] = React.useContext(SharedContext)

@@ -1,14 +1,14 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 import bridge from 'bridge'
 
 import Average from './Average'
 import { CurrentTime } from './components/CurrentTime'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 /**
  * Declare how large our running

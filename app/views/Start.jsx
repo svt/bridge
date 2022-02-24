@@ -1,15 +1,15 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 /**
  * @copyright Copyright © 2022 SVT Design
  * @author Axel Boberg <axel.boberg@svt.se>
  */
 
 import React from 'react'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 export const Start = () => {
   return (

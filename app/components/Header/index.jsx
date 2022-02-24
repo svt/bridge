@@ -1,9 +1,3 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 
 import { SharedContext } from '../../sharedContext'
@@ -15,6 +9,12 @@ import { Preferences } from '../Preferences'
 import { Icon } from '../Icon'
 
 import './style.css'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 export function Header ({ title = 'Bridge' }) {
   const [shared,, applySharedKey] = React.useContext(SharedContext)

@@ -1,0 +1,64 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+
+Files: .gitignore
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: .dockerignore
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: .env.example
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+
+Files: .husky/commit-msg
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: .npmrc
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: */robots.txt
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: .appicon.icns
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: Dockerfile 
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: *.json
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: *.md
+Copyright: 2021 Sveriges Television AB
+License: CC0-1.0
+
+Files: *.yml
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: *.css
+Copyright: 2022 Sveriges Television AB
+License: CC0-1.0
+
+Files: */icons/*.svg 
+Copyright: 2022 Sveriges Television AB
+License: CC-BY-SA-4.0
+
+Files: media/*.png 
+Copyright: 2022 Sveriges Television AB
+License: CC-BY-SA-4.0
+
+Files: media/*icns
+Copyright: 2022 Sveriges Television AB
+License: CC-BY-SA-4.0
+
+

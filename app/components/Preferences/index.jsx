@@ -1,9 +1,3 @@
-{/*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/}
-
 import React from 'react'
 import objectPath from 'object-path'
 
@@ -22,6 +16,12 @@ import appearance from './panes/appearance.json'
 import general from './panes/general.json'
 
 import './style.css'
+
+{ /*
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+*/ }
 
 /**
  * Map typenames to components

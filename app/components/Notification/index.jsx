@@ -1,11 +1,11 @@
-{/*
+import React from 'react'
+import './style.css'
+
+{ /*
 SPDX-FileCopyrightText: 2022 Sveriges Television AB
 
 SPDX-License-Identifier: MIT
-*/}
-
-import React from 'react'
-import './style.css'
+*/ }
 
 export function Notification ({ type, size = 'normal', content, disableInteraction }) {
   const [isHidden, setIsHidden] = React.useState(false)
