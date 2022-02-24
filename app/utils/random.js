@@ -1,7 +1,6 @@
-/**
- * @copyright Copyright © 2022 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 /**
  * Generate a random number

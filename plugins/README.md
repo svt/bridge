@@ -1,3 +1,5 @@
+
+
 # Internal plugins  
 This directory holds the plugins that are bundled with Bridge and should not include external plugins.
 

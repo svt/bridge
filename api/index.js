@@ -1,14 +1,6 @@
-/**
- * @author Axel Boberg <axel.boberg@svt.se>
- * @copyright SVT Design © 2022
- * @description This is the entrypoint for the extension api of Bridge,
- *              which is consumed by internal as well as external plugins
- *
- * @typedef {{
- *  widgets: import('./widgets').Widgets,
- *  server: import('./server').Server
- * }} Api
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const transport = require('./transport')
 const commands = require('./commands')

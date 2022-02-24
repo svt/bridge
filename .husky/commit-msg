@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+
+# Does the commit have a signoff?
+if [ "1" != "$(grep -c '^Signed-off-by: ' "$1")" ]; then
+    printf >&2 "%sMissing Signed-off-by line, commit with --signoff or -s. %s\n"
+    exit 1
+fi

@@ -1,3 +1,4 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/svt/bridge)](https://api.reuse.software/info/github.com/svt/bridge)
 
 # Bridge  
 ![Test](https://github.com/svt/bridge/actions/workflows/.github/workflows/test.yml/badge.svg?branch=main)
@@ -36,3 +37,18 @@ The full documentation is hosted in this repository under the [`docs`](/docs/REA
 Always keep an eye open when interacting with third party code. As a general rule, **never run code you don't trust.** This includes third party plugins as they have a great amount of access when running on your computer or server.
 
 <img src="media/footer.png" alt="drawing"/>
+
+## License
+
+Bridge source code is released under the:
+
+[MIT License](LICENSE)
+
+Most of the other material as icons are relased under a Creative Commons License, see .reuse/dep5 for further information about them.
+
+
+----
+
+## Primary Maintainer
+
+[Axel Boberg](https://github.com/axelboberg)

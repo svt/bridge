@@ -1,3 +1,5 @@
+
+
 # Architecture
 
 As with other Electron apps and classic web apps Bridge is run on two types of processes. Node processes with access to the full node api, such as Electron's main process, and browser processes.

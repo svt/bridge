@@ -1,9 +1,6 @@
-/**
- * @copyright Copyright © 2022 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- *
- * @typedef { (...Any[]) -> Void } EventHandler
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const commands = require('./commands')
 const random = require('./random')

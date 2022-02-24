@@ -1,7 +1,6 @@
-/**
- * @author Axel Boberg <axel.boberg@svt.se>
- * @copyright SVT Design © 2022
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const DEFAULT_CHARACTER_MAP = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 

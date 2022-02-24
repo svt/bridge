@@ -1,9 +1,6 @@
-/**
- * @author Axel Boberg <axel.boberg@svt.se>
- * @copyright SVT Design © 2022
- *
- * @typedef { any } State
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const commands = require('./commands')
 const events = require('./events')

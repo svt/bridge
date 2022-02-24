@@ -1,7 +1,6 @@
-/**
- * @copyright Copyright © 2021 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const fs = require('fs')
 const url = require('url')
