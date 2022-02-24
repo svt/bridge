@@ -1,5 +1,4 @@
 /**
- * @copyright Copyright © 2021 SVT Design
  * @author Axel Boberg <axel.boberg@svt.se>
  *
  * @typedef {{
@@ -20,12 +19,6 @@ import { GridItem } from '../components/GridItem'
 import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
-
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
 
 export const Workspace = () => {
   const [shared,, applySharedKey] = React.useContext(SharedContext)

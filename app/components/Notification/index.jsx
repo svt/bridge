@@ -1,12 +1,6 @@
 import React from 'react'
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 export function Notification ({ type, size = 'normal', content, disableInteraction }) {
   const [isHidden, setIsHidden] = React.useState(false)
 

@@ -1,12 +1,6 @@
 import React from 'react'
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 function zeroPad (num) {
   if (num < 10) return `0${num}`
   return `${num}`

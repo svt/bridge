@@ -8,12 +8,6 @@ import * as api from '../../api'
 
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 /**
  * Whether or not to enable
  * Chromium webviews and use

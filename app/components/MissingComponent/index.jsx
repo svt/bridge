@@ -3,12 +3,6 @@ import './style.css'
 
 import icon from '../../assets/icons/warning.svg'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 export const MissingComponent = ({ data = {} }) => {
   return (
     <div className='MissingComponent'>

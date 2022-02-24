@@ -12,12 +12,6 @@ import '../../../node_modules/react-resizable/css/styles.css'
 
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 const ReactGridLayout = WidthProvider(RGL)
 
 /**

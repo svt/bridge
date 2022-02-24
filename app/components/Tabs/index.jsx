@@ -7,12 +7,6 @@ import { Icon } from '../Icon'
 
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 /**
  * A tab widget
  * @param { params } param0

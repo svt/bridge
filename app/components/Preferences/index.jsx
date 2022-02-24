@@ -17,12 +17,6 @@ import general from './panes/general.json'
 
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 /**
  * Map typenames to components
  * used to render the views

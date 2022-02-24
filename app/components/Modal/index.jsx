@@ -2,12 +2,6 @@ import React from 'react'
 
 import './style.css'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 export function Modal ({ children, open, onClose = () => {} }) {
   /*
   Trigger the onClose callback

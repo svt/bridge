@@ -33,6 +33,10 @@ Files: Dockerfile
 Copyright: 2022 Sveriges Television AB
 License: CC0-1.0
 
+Files: **/*.jsx
+Copyright: 2022 Sveriges Television AB
+License: MIT
+
 Files: *.json
 Copyright: 2022 Sveriges Television AB
 License: CC0-1.0

@@ -3,12 +3,6 @@ import './style.css'
 
 import { ContextMenu } from '../ContextMenu'
 
-{ /*
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
-
-SPDX-License-Identifier: MIT
-*/ }
-
 /**
  * The x-axis offset used for
  * nested context menus
