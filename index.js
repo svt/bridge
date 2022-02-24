@@ -1,4 +1,3 @@
-// Copyright © 2021 SVT Design
 // SPDX-FileCopyrightText: 2022 Sveriges Television AB
 //
 // SPDX-License-Identifier: MIT
