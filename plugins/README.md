@@ -1,8 +1,4 @@
-<!--
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
 
-SPDX-License-Identifier: MIT
--->
 
 # Internal plugins  
 This directory holds the plugins that are bundled with Bridge and should not include external plugins.

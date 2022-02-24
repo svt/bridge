@@ -1,8 +1,4 @@
-<!--
-SPDX-FileCopyrightText: 2022 Sveriges Television AB
 
-SPDX-License-Identifier: MIT
--->
 
 # API documentation
 Bridge provides a JavaScript api for use in plugins and their widgets. 
