@@ -1,5 +1,3 @@
-
-
 # Project structure
 
 This repository contains the code needed for the node process (Electron main), the frontend (Electron renderer), the extension api and documentation.

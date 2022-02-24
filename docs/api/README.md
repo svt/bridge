@@ -1,5 +1,3 @@
-
-
 # API documentation
 Bridge provides a JavaScript api for use in plugins and their widgets. 
 
