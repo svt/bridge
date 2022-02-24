@@ -1,12 +1,7 @@
-/**
- * @copyright Copyright © 2022 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- *
- * @typedef {{
- *  onMessage: ((Any) => Void) => Void,
- *  send: (Any) => Void
- * }} Communicator
- */
+// Copyright © 2022 SVT Design
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const transport = (function () {
   if (module.parent) {

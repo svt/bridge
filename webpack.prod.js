@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
+
 const path = require('path')
 const crypto = require('crypto')
 const common = require('./webpack.common')

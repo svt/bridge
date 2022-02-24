@@ -1,8 +1,7 @@
-/**
- * @author Axel Boberg <axel.boberg@svt.se>
- * @copyright SVT Design © 2022
- * @description An index of all available icons
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+// © 2022
+//
+// SPDX-License-Identifier: MIT
 
 import add from './add.svg'
 import edit from './edit.svg'

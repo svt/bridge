@@ -1,19 +1,7 @@
-/**
- * @author Axel Boberg <axel.boberg@svt.se>
- * @copyright SVT Design © 2022
- *
- * @typedef {{
- *  type: String,
- *  bind: String,
- *  properties?: TypeProperty[]
- * }} TypeProperty
- *
- * @typedef {{
- *  id: String,
- *  name?: String,
- *  properties: TypeProperty[]
- * }} Type
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+// © 2022
+//
+// SPDX-License-Identifier: MIT
 
 const state = require('./state')
 

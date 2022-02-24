@@ -1,17 +1,7 @@
-/**
- * @copyright Copyright © 2022 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- *
- * @typedef {{
- *  STYLE_RESET: String
- * }} StaticUris
- *
- * @typedef {{
- *  uris: StaticUris,
- *  serveFile: serveFile,
- *  serveString: serveString
- * }} Server
- */
+// Copyright © 2022 SVT Design
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const commands = require('./commands')
 

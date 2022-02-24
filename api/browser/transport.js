@@ -1,11 +1,7 @@
-/**
- * @copyright Copyright © 2022 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- * @description An implementation of the transport for
- *              running in browsers, some methods should
- *              be overridden and some should be called
- *              by the consumer of this api
- */
+// Copyright © 2022 SVT Design
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const handlers = []
 

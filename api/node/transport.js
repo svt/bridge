@@ -1,9 +1,7 @@
-/**
- * @copyright Copyright © 2022 SVT Design
- * @author Axel Boberg <axel.boberg@svt.se>
- * @description An implementation of the communicator using postMessage to the
- *              parent port when running in a NodeJS worker thread
- */
+// Copyright © 2022 SVT Design
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
 
 const { parentPort } = require('worker_threads')
 

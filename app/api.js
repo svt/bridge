@@ -1,10 +1,7 @@
-/**
- * @author Axel Boberg <axel.boberg@svt.se>
- * @copyright SVT Design © 2022
- *
- * @description Accessors and utility functions for the api
- *              which is expected to populate window.bridge
- */
+// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+// © 2022
+//
+// SPDX-License-Identifier: MIT
 
 /**
  * Load the api

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+-->
+
 # Plugin documentation  
 Plugins allows Bridge to be extended with functionality, both through the backend main process or by creating UI widgets.
 

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Sveriges Television AB
+
+SPDX-License-Identifier: MIT
+-->
+
 # Project structure
 
 This repository contains the code needed for the node process (Electron main), the frontend (Electron renderer), the extension api and documentation.
