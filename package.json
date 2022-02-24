@@ -28,7 +28,7 @@
     "graphics"
   ],
   "author": "Axel Boberg (axel.boberg@svt.se)",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "MIT",
   "dependencies": {
     "ajv": "^8.10.0",
     "electron": "^12.2.3",
