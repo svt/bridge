@@ -48,7 +48,7 @@ Always keep an eye open when interacting with third party code. As a general rul
 
 Bridge source code is released under the:
 
-[MIT License](LICENSE)
+[MIT License](LICENSE.md)
 
 Most of the other material as icons are relased under a Creative Commons License, see .reuse/dep5 for further information about them.
 
