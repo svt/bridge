@@ -15,6 +15,15 @@ An extendable graphics playout client that's both a desktop app and a cloud serv
 - [ ] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
 - [ ] 💪 To provide a reliable backbone for productions
 
+## Table of contents
+- [Goals](#goals)
+- [Motivation](#motivation)
+- [Features](#features)
+- [Documentation and API](#full-documentation-and-api)
+- [Security](#security)
+- [License](#license)
+- [Maintainers](#primary-maintainer)
+
 ## Motivation  
 
 As developers of production software we found ourselves in a position of rebuilding tools with similar functionality and core features time and time again. Bridge is a collection of core tools and a platform for plugins that enables reuse of the tools we build. Not only does it encourage a mix-and-match mindset where productions can choose from a selection of already built components, it cuts down on development time and enforces stability.
@@ -35,8 +44,6 @@ The full documentation is hosted in this repository under the [`docs`](/docs/REA
 ## Security  
 Always keep an eye open when interacting with third party code. As a general rule, **never run code you don't trust.** This includes third party plugins as they have a great amount of access when running on your computer or server.
 
-<img src="media/footer.png" alt="drawing"/>
-
 ## License
 
 Bridge source code is released under the:
@@ -51,3 +58,5 @@ Most of the other material as icons are relased under a Creative Commons License
 ## Primary Maintainer
 
 [Axel Boberg](https://github.com/axelboberg)
+
+<img src="media/footer.png" alt="drawing"/>
