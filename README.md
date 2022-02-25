@@ -5,7 +5,7 @@
 
 An extendable graphics playout client that's both a desktop app and a cloud service
 
-**This project is still in early development**
+**This project is still in very early development**
 
 ![UI](/media/ui.png)
 
@@ -26,7 +26,7 @@ An extendable graphics playout client that's both a desktop app and a cloud serv
 
 ## Motivation  
 
-As developers of production software we found ourselves in a position of rebuilding tools with similar functionality and core features time and time again. Bridge is a collection of core tools and a platform for plugins that enables reuse of the tools we build. Not only does it encourage a mix-and-match mindset where productions can choose from a selection of already built components, it cuts down on development time and enforces stability.
+As developers of production software we found ourselves in a position of rebuilding tools with similar functionality and core features time and time again. Bridge is an experiment for a collection of core tools and a platform for plugins that enables reuse of the tools we build. Not only does it encourage a mix-and-match mindset where operators can choose from a selection of already built components, it cuts down on development time and enforces stability.
 
 ## Features
 
