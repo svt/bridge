@@ -61,6 +61,12 @@ async function getType (id) {
 }
 exports.getType = getType
 
+/**
+ * Create an item instance of a
+ * type definition by its id
+ * @param { String } type The id of a type definition
+ * @returns { any }
+ */
 async function createItemOfType (type) {
   const _type = await getType(type)
 
