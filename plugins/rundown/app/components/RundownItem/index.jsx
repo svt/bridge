@@ -1,10 +1,15 @@
 import React from 'react'
 import './style.css'
 
-export function RundownItem ({ item }) {
+export function RundownItem ({ index, item }) {
   return (
     <div className='RundownItem'>
-      {item.id}
+      <div className='RundownItem-index'>
+        {index}
+      </div>
+      <div className='RundownItem-name'>
+        {item.name}
+      </div>
     </div>
   )
 }

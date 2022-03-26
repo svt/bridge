@@ -13,7 +13,7 @@ export function RundownList () {
     <div className='RundownList'>
       {
         items.map((item, i) => {
-          return <RundownItem key={i} item={item} />
+          return <RundownItem key={i} index={i + 1} item={item} />
         })
       }
     </div>
