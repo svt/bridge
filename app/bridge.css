@@ -75,6 +75,14 @@ button {
   background: var(--base-color--grey3);
 }
 
+.Button--small {
+  width: 2em;
+  height: 2em;
+
+  border: none;
+  background: none;
+}
+
 /* Headings */
 
 h2, .u-heading--2 {

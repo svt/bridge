@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+const uuid = require('uuid')
 const state = require('./state')
 
 /**
@@ -59,3 +60,20 @@ async function getType (id) {
   return renderType(id, current._types)
 }
 exports.getType = getType
+
+async function createItemOfType (type) {
+  const _type = await getType(type)
+
+  const item = {
+    id: uuid.v4(),
+    type: _type.id,
+    data: {}
+  }
+
+  for (const prop of _type.properties) {
+    item.data[prop.bind] = prop.default || undefined
+  }
+
+  return item
+}
+exports.createItemOfType = createItemOfType
