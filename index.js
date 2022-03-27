@@ -30,7 +30,7 @@ const pkg = require('./package.json')
 /**
  * @type { Number }
  */
-const DEFAULT_HTTP_PORT = 3000
+const DEFAULT_HTTP_PORT = 5544
 
 /**
  * Verify that an assets file is
