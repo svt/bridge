@@ -72,7 +72,7 @@ const DEFAULT_HTTP_PORT = 3000
 
 /**
  * Restore user defaults into
- * the userdefaults-state
+ * the user defaults-state
  */
 ;(async function () {
   Logger.debug('Restoring user deafults')
@@ -272,7 +272,7 @@ in an electron context
 })()
 
 /*
-Write the userdefaults-state to disk
+Write the user defaults-state to disk
 before the process exits
 */
 ;(function () {
