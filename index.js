@@ -63,7 +63,23 @@ const pkg = require('./package.json')
   utils.createDirectoryRecursively(paths.temp)
 })()
 
+/**
+ * Restore user defaults into
+ * the userdefaults-state
+ */
+;(async function () {
+  Logger.debug('Restoring user deafults')
+  try {
+    const data = await fs.promises.readFile(paths.userDefaults, { encoding: 'utf8' })
+    const json = JSON.parse(data)
+    UserDefaults.apply(json)
+  } catch (_) {
+    Logger.warn('Failed to restore user defaults')
+  }
+})()
+
 const ASSETS = require('./assets.json')
+const UserDefaults = require('./lib/UserDefaults')
 const PORT = process.env.PORT || 3000
 
 const NODE_ENV = electron.isCompatible()
@@ -241,4 +257,33 @@ in an electron context
   await electron.isReady()
 
   electron.initWindow('http://localhost:3000')
+})()
+
+/*
+Write the userdefaults-state to disk
+before the process exits
+*/
+;(function () {
+  function writeUserDeafults () {
+    Logger.debug('Writing user defaults to disk')
+    fs.writeFileSync(paths.userDefaults, JSON.stringify(UserDefaults.data))
+  }
+
+  if (electron.isCompatible()) {
+    electron.app.once('will-quit', () => {
+      writeUserDeafults()
+    })
+  } else {
+    process.on('exit', () => writeUserDeafults())
+
+    process.on('SIGTERM', () => {
+      writeUserDeafults()
+      process.exit(0)
+    })
+
+    process.on('SIGINT', () => {
+      writeUserDeafults()
+      process.exit(0)
+    })
+  }
 })()
