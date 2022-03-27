@@ -23,6 +23,8 @@ const paths = require('./lib/paths')
 const electron = require('./lib/electron')
 const apiRoutes = require('./lib/routes')
 
+const pkg = require('./package.json')
+
 /**
  * Verify that an assets file is
  * created before running the app,
@@ -205,7 +207,7 @@ app.get('*', (req, res, next) => {
   res.send(template({
     env: process.env.NODE_ENV,
     port: PORT,
-    version: process.env.npm_package_version,
+    version: pkg.version,
     workspace: req.workspace?.id,
     socketHost: `ws://127.0.0.1:${PORT}`,
     hostProtocol: process.env.HOST_PROTOCOL
