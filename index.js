@@ -31,6 +31,11 @@ const pkg = require('./package.json')
  * @type { Number }
  */
 const DEFAULT_HTTP_PORT = 5544
+const ASSETS = require('./assets.json')
+
+const NODE_ENV = electron.isCompatible()
+  ? 'electron'
+  : process.env.NODE_ENV
 
 /**
  * Verify that an assets file is
@@ -90,14 +95,6 @@ const DEFAULT_HTTP_PORT = 5544
     Logger.warn('Failed to restore user defaults')
   }
 })()
-
-console.log(UserDefaults.data)
-
-const ASSETS = require('./assets.json')
-
-const NODE_ENV = electron.isCompatible()
-  ? 'electron'
-  : process.env.NODE_ENV
 
 /**
  * The minimum threshold after creation
