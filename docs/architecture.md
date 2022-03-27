@@ -55,6 +55,15 @@ The shared state is synced through a websocket connection between the main proce
     is currently editing the grid layout
     */
     isEditingLayout: false
+  },
+
+  /*
+  Settings written to disk between restarts,
+  these are specific to the host running 
+  the application
+  */
+  _userDefaults: {
+    httpPort: 5544
   }
 }
 ```
