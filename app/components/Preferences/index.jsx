@@ -9,6 +9,7 @@ import { Preference } from './preference'
 
 import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
+import { PreferencesNumberInput } from '../PreferencesNumberInput'
 import { PreferencesThemeInput } from '../PreferencesThemeInput'
 
 import * as Layout from '../Layout'
@@ -26,6 +27,7 @@ import './style.css'
 const INPUT_TYPES = {
   boolean: PreferencesBooleanInput,
   version: PreferencesVersionInput,
+  number: PreferencesNumberInput,
   theme: PreferencesThemeInput
 }
 

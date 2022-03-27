@@ -4,5 +4,18 @@
     "inputs": [
       { "type": "version" }
     ]
+  },
+  {
+    "title": "HTTP port",
+    "description": "This setting requires a full restart",
+    "inputs": [
+      { "type": "number", "bind": "shared._userDefaults.httpPort", "min": 3000, "max": 65535 }
+    ]
+  },
+  {
+    "title": "HTTP bind to all ip adresses",
+    "inputs": [
+      { "type": "boolean", "bind": "shared._userDefaults.httpBindToAll", "label": "Bind to all" }
+    ]
   }
 ]
