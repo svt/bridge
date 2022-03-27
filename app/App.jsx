@@ -54,14 +54,14 @@ const socketProtocol = (function () {
   * should connect to
   * @type { String }
   */
-const socketHost = window.initialState.socketHost || `${socketProtocol}://${window.location.host}`
+const socketHost = window.APP.socketHost || `${socketProtocol}://${window.location.host}`
 
 /**
  * The workspace id for
  * the current workspace
  * @type { String }
  */
-const workspace = window.initialState.workspace
+const workspace = window.APP.workspace
 
 export default function App () {
   const [local, setLocal] = React.useState({})

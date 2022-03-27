@@ -14,5 +14,14 @@
     "plugin"
   ],
   "author": "Axel Boberg (axel.boberg@svt.se)",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "contributes": {
+    "settings": [{
+        "title": "Setting",
+        "description": "A description",
+        "inputs": [
+          { "type": "boolean", "bind": "shared.settings.test", "label": "A checkbox" }
+        ]
+    }]
+  }
 }

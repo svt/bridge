@@ -1,0 +1,42 @@
+{
+  "$id": "https://bridge.svt.se/schemas/setting",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$defs": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["boolean", "theme"]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [ "type" ]
+    }
+  },
+  "title": "Setting",
+  "description": "The declaration of a setting",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A title for this setting"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description for this setting"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/input"
+      }
+    }
+  },
+  "required": [ "title" ]
+}

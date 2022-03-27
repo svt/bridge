@@ -1,0 +1,6 @@
+.PreferencesVersionInput {
+  padding: 1em;
+
+  background: var(--base-color--shade1);
+  border-radius: 6px;
+}

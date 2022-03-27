@@ -13,6 +13,8 @@ const app = express()
 const WorkspaceRegistry = require('./lib/WorkspaceRegistry')
 const Workspace = require('./lib/Workspace')
 
+const UserDefaults = require('./lib/UserDefaults')
+
 const HttpError = require('./lib/error/HttpError')
 const Logger = require('./lib/Logger')
 
@@ -22,6 +24,13 @@ const utils = require('./lib/utils')
 const paths = require('./lib/paths')
 const electron = require('./lib/electron')
 const apiRoutes = require('./lib/routes')
+
+const pkg = require('./package.json')
+
+/**
+ * @type { Number }
+ */
+const DEFAULT_HTTP_PORT = 5544
 
 /**
  * Verify that an assets file is
@@ -61,8 +70,30 @@ const apiRoutes = require('./lib/routes')
   utils.createDirectoryRecursively(paths.temp)
 })()
 
+/**
+ * Restore user defaults into
+ * the user defaults-state
+ */
+;(async function () {
+  Logger.debug('Restoring user deafults')
+  try {
+    const data = fs.readFileSync(paths.userDefaults, { encoding: 'utf8' })
+    const json = JSON.parse(data)
+
+    UserDefaults.apply({
+      ...json,
+      ...{
+        httpPort: process.env.PORT || json.httpPort || DEFAULT_HTTP_PORT
+      }
+    })
+  } catch (_) {
+    Logger.warn('Failed to restore user defaults')
+  }
+})()
+
+console.log(UserDefaults.data)
+
 const ASSETS = require('./assets.json')
-const PORT = process.env.PORT || 3000
 
 const NODE_ENV = electron.isCompatible()
   ? 'electron'
@@ -85,8 +116,8 @@ app.use(express.static(path.join(__dirname, 'dist')))
  * the main http server
  * @type { HttpError.Server }
  */
-const server = app.listen(PORT, '0.0.0.0', () => {
-  Logger.info('Listening on port', PORT)
+const server = app.listen(UserDefaults.data.httpPort, '0.0.0.0', () => {
+  Logger.info('Listening on port', UserDefaults.data.httpPort)
 })
 
 ;(function () {
@@ -204,10 +235,10 @@ with the client app
 app.get('*', (req, res, next) => {
   res.send(template({
     env: process.env.NODE_ENV,
-    port: PORT,
-    version: process.env.npm_package_version,
+    port: UserDefaults.data.httpPort,
+    version: pkg.version,
     workspace: req.workspace?.id,
-    socketHost: `ws://127.0.0.1:${PORT}`,
+    socketHost: `ws://127.0.0.1:${UserDefaults.data.httpPort}`,
     hostProtocol: process.env.HOST_PROTOCOL
   }, ASSETS.assets))
 })
@@ -237,6 +268,34 @@ in an electron context
 ;(async function () {
   if (!electron.isCompatible()) return
   await electron.isReady()
+  electron.initWindow(`http://localhost:${UserDefaults.data.httpPort}`)
+})()
 
-  electron.initWindow('http://localhost:3000')
+/*
+Write the user defaults-state to disk
+before the process exits
+*/
+;(function () {
+  function writeUserDeafults () {
+    Logger.debug('Writing user defaults to disk')
+    fs.writeFileSync(paths.userDefaults, JSON.stringify(UserDefaults.data))
+  }
+
+  if (electron.isCompatible()) {
+    electron.app.once('will-quit', () => {
+      writeUserDeafults()
+    })
+  } else {
+    process.on('exit', () => writeUserDeafults())
+
+    process.on('SIGTERM', () => {
+      writeUserDeafults()
+      process.exit(0)
+    })
+
+    process.on('SIGINT', () => {
+      writeUserDeafults()
+      process.exit(0)
+    })
+  }
 })()
