@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+const merge = require('../shared/merge')
+
 const commands = require('./commands')
 const events = require('./events')
 
@@ -10,16 +12,48 @@ const events = require('./events')
  * copy of the state
  * @type { State }
  */
-let state = {}
+let state
+
+/**
+ * The state's current
+ * revision number,
+ * this is used to ensure
+ * that the state is kept
+ * up-to-date
+ * @type { Number }
+ */
+let revision = 0
+
+/**
+ * Get the full remote state
+ * @returns { Promise.<any> }
+ */
+function getRemoteState () {
+  return commands.executeCommand('state.get')
+}
 
 /*
-Listen for changes to the
-state and update the local
-copy
+Intercept the state.change event
+to always include the full calculated
+state
 */
 ;(function () {
-  events.on('state.change', newState => {
-    state = newState
+  events.intercept('state.change', async (set, remoteRevision) => {
+    revision += 1
+
+    /*
+    Make sure the revision numbers match, and if not,
+    update the local state from the remote state
+    */
+    if (revision !== remoteRevision) {
+      const newState = await getRemoteState()
+      revision = newState._revision
+      state = newState
+    } else {
+      state = merge.deep(state, set)
+    }
+
+    return state
   })
 })()
 
@@ -40,6 +74,11 @@ exports.apply = apply
  * @returns { Promise.<State> }
  */
 async function get () {
+  if (!state) {
+    const newState = await getRemoteState()
+    revision = newState._revision
+    state = newState
+  }
   return state
 }
 exports.get = get
