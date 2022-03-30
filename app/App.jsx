@@ -104,8 +104,13 @@ export default function App () {
       bridge.transport.replayQueue()
 
       bridge.events.on('state.change', state => {
-        setShared(state)
+        setShared({ ...state })
       })
+
+      ;(async function () {
+        const initialState = await bridge.state.get()
+        setShared(initialState)
+      })()
     }
     if (readyState !== 1) return
     setup()

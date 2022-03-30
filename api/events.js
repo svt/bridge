@@ -7,6 +7,7 @@ const random = require('./random')
 
 const remoteHandlers = new Map()
 const localHandlers = new Map()
+const intercepts = new Map()
 
 /**
  * A helper function for appending an
@@ -36,6 +37,23 @@ function emit (event, ...args) {
 exports.emit = emit
 
 /**
+ * Register a function that intercepts a certain event
+ * before calling any handlers with its result
+ * @param { String } event The name of the event to intercept
+ * @param { (any[]) => any[] } handler A function intercepting the event,
+ *                                     it must resolve to an array of values
+ */
+function intercept (event, handler) {
+  const fn = async function (...args) {
+    const res = await handler(...args)
+    if (Array.isArray(res)) return res
+    return [res]
+  }
+  appendToMapArray(intercepts, event, fn)
+}
+exports.intercept = intercept
+
+/**
  * Add a handler for an event
  * @param { String } event An event to listen to
  * @param { EventHandler } handler A handler to be called
@@ -56,10 +74,21 @@ async function on (event, handler) {
     Register a command handle that will trigger
     all local handlers of the event
     */
-    commands.registerCommand(command, (...args) => {
+    commands.registerCommand(command, async (...args) => {
+      let _args = args
+
+      /*
+      Let any intercepts do their thing
+      before calling the event handlers
+      */
+      const interceptFns = intercepts.get(event) || []
+      for (const fn of interceptFns) {
+        _args = await fn(..._args)
+      }
+
       const handlers = localHandlers.get(event)
       for (const handler of handlers) {
-        handler(...args)
+        handler(..._args)
       }
     }, false)
 
