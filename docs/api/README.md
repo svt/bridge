@@ -8,6 +8,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [State](#state)
 - [Server](#server)
 - [Widgets](#widgets)
+- [Settings](#settings)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -73,3 +74,11 @@ Widgets are web views controlled by plugins. They can provide additional functio
 
 ### `bridge.widgets.registerWidget(id, name, uri)`
 Register a new widget, it will immediately be made available in the UI
+
+## Settings  
+Settings are controls bound to a specific property in the shared state that appear under the plugins section in the settings menu.
+
+There are several types of inputs available for settings; `boolean` and `number`. A setting and its type is declared through the [setting definition](/lib/schemas/setting.schema.json).
+
+### `bridge.settings.registerSetting(groupName, specification) -> Promise<Boolean>`  
+Register a new setting definition to a group name, that is the name that will appear in the settings panel's navigation.
