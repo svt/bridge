@@ -32,6 +32,13 @@
           "items": {
             "$ref": "https://bridge.svt.se/schemas/type"
           }
+        },
+        "shortcuts": {
+          "type": "array",
+          "description": "Declarations of keyboard shortcuts that this plugin contributes with",
+          "items": {
+            "$ref": "https://bridge.svt.se/schemas/shortcuts"
+          }
         }
       }
     }

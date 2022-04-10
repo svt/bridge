@@ -31,7 +31,7 @@
   "properties": {
     "id": {
       "type": "string",
-      "description": "A unique identifier for the type"
+      "description": "A globally unique identifier for the type"
     },
     "inherits": {
       "type": "string",
