@@ -20,6 +20,8 @@ export function Header () {
   }
 
   async function handleItemOnClick (typeId) {
+    setContextPos(undefined)
+
     const item = await bridge.types.createItemOfType(typeId)
     applyShared({
       plugins: {

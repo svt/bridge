@@ -8,16 +8,23 @@
   display: flex;
   width: 100%;
   padding: 0.75em;
+  margin: 2px 0;
 
-  border-radius: 6px;
+  border-top: 2px solid transparent;
+  background: var(--base-color--background);
+
   box-sizing: border-box;
 }
 
-.RundownItem:nth-child(odd) {
-  background: var(--base-color--shade1);
+.RundownItem:nth-child(even) {
+  background: var(--base-color--shade2);
 }
 
 .RundownItem-index {
   margin-right: 1em;
   opacity: 0.5;
+}
+
+.RundownItem.is-draggedOver {
+  border-color: var(--base-color--accent);
 }

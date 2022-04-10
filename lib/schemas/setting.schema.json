@@ -7,7 +7,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["boolean", "theme"]
+          "enum": ["boolean", "theme", "number"]
         },
         "bind": {
           "type": "string"
