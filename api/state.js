@@ -82,3 +82,13 @@ async function get () {
   return state
 }
 exports.get = get
+
+/**
+ * Get the current local
+ * copy of the state
+ * @returns { Object }
+ */
+function getLocalState () {
+  return state
+}
+exports.getLocalState = getLocalState
