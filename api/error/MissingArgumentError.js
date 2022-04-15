@@ -4,5 +4,5 @@
 
 const ApiError = require('./ApiError')
 
-class NoLocalHandlerError extends ApiError {}
-module.exports = NoLocalHandlerError
+class MissingArgumentError extends ApiError {}
+module.exports = MissingArgumentError

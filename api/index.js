@@ -10,6 +10,7 @@ const events = require('./events')
 const server = require('./server')
 const state = require('./state')
 const types = require('./types')
+const items = require('./items')
 
 /**
  * The api entrypoint
@@ -24,7 +25,8 @@ const api = {
   events,
   server,
   state,
-  types
+  types,
+  items
 }
 
 module.exports = api
