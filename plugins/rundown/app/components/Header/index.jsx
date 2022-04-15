@@ -10,8 +10,8 @@ import { Icon } from '../../../../../app/components/Icon'
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 
-export function Header () {
-  const [shared, applyShared] = React.useContext(SharedContext)
+export function Header ({ rundownId = 1 }) {
+  const [shared] = React.useContext(SharedContext)
   const [contextPos, setContextPos] = React.useState()
 
   function handleCreateOnClick (e) {
@@ -22,14 +22,8 @@ export function Header () {
   async function handleItemOnClick (typeId) {
     setContextPos(undefined)
 
-    const item = await bridge.types.createItemOfType(typeId)
-    applyShared({
-      plugins: {
-        'bridge-plugin-rundown': {
-          items: [item]
-        }
-      }
-    })
+    const itemId = await bridge.items.createItemOfType(typeId)
+    bridge.commands.executeCommand('rundown.appendItem', rundownId, itemId)
   }
 
   return (
@@ -54,6 +48,9 @@ export function Header () {
           <button className='Button--small' onClick={e => handleCreateOnClick(e)}>
             <Icon name='add' />
           </button>
+        </div>
+        <div className='Header-section'>
+          <span className='Header-label'>Rundown id:</span>&nbsp;{rundownId}
         </div>
       </header>
     </>

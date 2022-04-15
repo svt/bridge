@@ -1,12 +1,11 @@
 import React from 'react'
 import './style.css'
 
-import { Draggable } from '../../../../../app/components/Draggable'
-
-export function RundownItem ({ index, item }) {
+export function RundownItem ({ index, item, onDrop = () => {} }) {
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
 
   function handleDragOver (e) {
+    e.preventDefault()
     setIsDraggedOver(true)
   }
 
@@ -14,17 +13,25 @@ export function RundownItem ({ index, item }) {
     setIsDraggedOver(false)
   }
 
-  function handleDrop (e, data) {
+  function handleDragStart (e) {
+    e.dataTransfer.setData('itemId', item.id)
+  }
+
+  function handleDrop (e) {
     setIsDraggedOver(false)
+
+    const itemId = e.dataTransfer.getData('itemId')
+    onDrop(e, itemId)
   }
 
   return (
-    <Draggable
+    <div
       className={`RundownItem ${isDraggedOver ? 'is-draggedOver' : ''}`}
-      item={item}
       onDrop={(e, data) => handleDrop(e, data)}
       onDragOver={e => handleDragOver(e)}
       onDragLeave={e => handleDragLeave(e)}
+      onDragStart={e => handleDragStart(e)}
+      draggable
     >
       <div className='RundownItem-index'>
         {index}
@@ -32,6 +39,6 @@ export function RundownItem ({ index, item }) {
       <div className='RundownItem-name'>
         {item.name}
       </div>
-    </Draggable>
+    </div>
   )
 }

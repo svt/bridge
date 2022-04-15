@@ -5,5 +5,17 @@
  */
 
 .Header {
+  display: flex;
   border-bottom: 1px solid var(--base-color--shade);
+
+  justify-content: space-between;
+}
+
+.Header-section {
+  display: flex;
+  align-items: center;
+}
+
+.Header-label {
+  opacity: 0.5;
 }
