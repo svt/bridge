@@ -37,7 +37,7 @@ export const SharedContextProvider = ({ children }) => {
   */
   React.useEffect(() => {
     function onStateChange (state) {
-      setState(state)
+      setState({ ...state })
     }
     bridge.events.on('state.change', onStateChange)
     return () => bridge.events.off('state.change', onStateChange)
