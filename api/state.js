@@ -27,9 +27,14 @@ let revision = 0
 /**
  * Get the full remote state
  * @returns { Promise.<any> }
+ *//**
+ * Get a part of the remote state
+ * specified by a dot notated path
+ * @param { String } path
+ * @returns { Promise.<any> }
  */
-function getRemoteState () {
-  return commands.executeCommand('state.get')
+function getRemoteState (path) {
+  return commands.executeCommand('state.get', path)
 }
 
 /*
@@ -50,7 +55,13 @@ state
       revision = newState._revision
       state = newState
     } else {
-      state = merge.deep(state, set)
+      if (Array.isArray(set)) {
+        for (const change of set) {
+          state = merge.deep(state, change)
+        }
+      } else {
+        state = merge.deep(state, set)
+      }
     }
 
     return state
@@ -63,6 +74,13 @@ state
  * be called directly - there's probably
  * a command for what you want to do
  * @param { Object } set Data to apply to the state
+ *//**
+ * Apply some data to the state,
+ * most often this function shouldn't
+ * be called directly - there's probably
+ * a command for what you want to do
+ * @param { Object[] } set An array of data objects to
+ *                         apply to the state in order
  */
 function apply (set) {
   commands.executeRawCommand('state.apply', set)
@@ -70,16 +88,24 @@ function apply (set) {
 exports.apply = apply
 
 /**
- * Get the current state
+ * Get the full current state
+ * @returns { Promise.<State> }
+ *//**
+ * Get part of the current state
+ * specified by a dot-notated path
+ * @param { String } path
  * @returns { Promise.<State> }
  */
-async function get () {
-  if (!state) {
-    const newState = await getRemoteState()
+async function get (path) {
+  const newState = await getRemoteState(path)
+
+  if (!path) {
     revision = newState._revision
     state = newState
+    return state
+  } else {
+    return newState
   }
-  return state
 }
 exports.get = get
 

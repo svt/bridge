@@ -46,39 +46,42 @@ exports.activate = async () => {
    * @returns { String[] }
    */
   async function getItems (rundownId) {
-    const state = await bridge.state.get()
-    return state?.plugins?.[PLUGIN_STATE_SCOPE]?.rundowns?.[rundownId]?.items
+    return (await bridge.state.get(`plugins.${PLUGIN_STATE_SCOPE}.rundowns.${rundownId}.items`)) || []
   }
 
   bridge.commands.registerCommand('rundown.reorderItem', async (rundownId, itemId, newIndex) => {
     const items = await getItems(rundownId)
-    const index = items.indexOf(itemId)
+    const oldIndex = items.indexOf(itemId)
+    const weightedNewIndex = oldIndex < newIndex ? newIndex - 1 : newIndex
 
-    if (index === -1) return
+    if (oldIndex === -1) return
+    if (oldIndex === newIndex) return
 
-    /*
-    Remove the id from
-    the array of items
-    */
-    items.splice(index, 1)
-
-    /*
-    Insert the id at
-    the desired index
-    */
-    items.splice(newIndex, 0, itemId)
-
-    bridge.state.apply({
-      plugins: {
-        [PLUGIN_STATE_SCOPE]: {
-          rundowns: {
-            [rundownId]: {
-              items: { $replace: items }
+    bridge.state.apply([
+      {
+        plugins: {
+          [PLUGIN_STATE_SCOPE]: {
+            rundowns: {
+              [rundownId]: {
+                items: {
+                  [oldIndex]: { $delete: true }
+                }
+              }
+            }
+          }
+        }
+      }, {
+        plugins: {
+          [PLUGIN_STATE_SCOPE]: {
+            rundowns: {
+              [rundownId]: {
+                items: { $insert: itemId, $index: weightedNewIndex }
+              }
             }
           }
         }
       }
-    })
+    ])
   })
 
   bridge.commands.registerCommand('rundown.removeItem', async (rundownId, itemId) => {
