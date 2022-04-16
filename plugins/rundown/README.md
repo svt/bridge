@@ -33,7 +33,7 @@ Remove the item with id 41bc343f-3876-41a7-b142-2f31f768f68b from rundown 1
 bridge.commands.executeCommand('rundown.removeItem', 1, '41bc343f-3876-41a7-b142-2f31f768f68b')
 ```
 
-### `rundown.appendIten`
+### `rundown.appendItem(rundownId, itemId)`
 Append an item to the end of a rundown
 **Example**
 ```javascript
