@@ -55,7 +55,8 @@ function renderType (id, typesDict = {}) {
  * @param { String } id The id of a type
  */
 async function getType (id) {
-  const current = await state.get()
-  return renderType(id, current._types)
+  const types = state.getLocalState()?._types ||
+                await state.get('_types')
+  return renderType(id, types)
 }
 exports.getType = getType

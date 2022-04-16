@@ -9,6 +9,8 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Server](#server)
 - [Widgets](#widgets)
 - [Settings](#settings)
+- [Types](#types)
+- [Items](#items)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -169,3 +171,27 @@ There are several types of inputs available for settings; `boolean` and `number`
 
 ### `bridge.settings.registerSetting(groupName, specification): Promise<Boolean>`  
 Register a new setting definition to a group name, that is the name that will appear in the settings panel's navigation.
+
+## Types  
+Types are blueprints for items, they can be created and extended using the `contributes` property of your plugin manifest.
+
+### `bridge.types.getType(id): Promise<TypeSpec>`
+Render a full type specification from its id
+
+## Items
+Items are playable objects containing the metadata of a certain type.
+
+### `bridge.items.createItemOfType(typeId): Promise<String>`
+Create a new item of a specific type, its id will be returned as a promise.
+
+### `bridge.items.applyItem(id, item)`  
+Perform an apply operation to an item by its id - this can be seen as a save, or update, method for an item.
+
+### `bridge.items.getItem(id): Promise<any>`  
+Get an item by its id.
+
+### `bridge.items.getLocalItem(id): any`  
+Get an item from the local state representation by its id. This is useful when rendering the UI although it is not guaranteed to be up-to-date with the main process.
+
+### `bridge.items.deleteItem(id)`  
+Delete an item by its id.

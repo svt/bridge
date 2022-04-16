@@ -72,8 +72,7 @@ exports.applyItem = applyItem
  * @returns { Promise.<Item> }
  */
 function getItem (id) {
-  const curState = state.get()
-  return curState?.items?.[id]
+  return state.get(`items.${id}`)
 }
 exports.getItem = getItem
 
