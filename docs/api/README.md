@@ -28,7 +28,7 @@ Register a new command
 
 This is a global operation as commands can only be registered once per workspace. Therefore, prefer registering commands in your plugin's main process.
 
-### `bridge.commands.executeCommand(id[, ...parameters]): Promise`
+### `bridge.commands.executeCommand(id[, ...parameters]): Promise<unknown>`
 Execute a command
 
 ### `bridge.commands.removeCommand(id)`
@@ -54,16 +54,103 @@ Remove a listener for an event
 ## State
 The state is a shared object representing the workspace, this is used to render the UI as well as keeping track of settings
 
-### `bridge.state.apply(set)`
+### `bridge.state.apply(set|sets)`
 Apply an object to the state using a deep apply algorithm. Listeners for the event `state.change` will be immediately called.
+
+**Note**  
+Plugins have full access to the state and it's your responsibility as a developer to not overwrite any data needed for Bridge or other plugins. Each plugin have a reserved path (`plugins.plugin-name`) where data can be stored without impacting other plugins. 
+
+It's encouraged to abstract state operations behind custom commands in order to minimize the risk of doing unwanted operations and for better readability.
+
+**Operations**  
+Some special operations are available apart from adding data. Most of these can be replicated with logic in your plugin, however, utilizing them usually results in less data being sent between processes and will contribute to a faster end product.
+
+Operation | Example | Description
+--- | --- | ---
+`-` | `{key: 'new value'}` | Set a key to a new value. If the key is an array the new value will be appended to the end of the array.
+`$delete` | `{key: {$delete: true}}` | Delete a key completely, works for both objects and arrays.
+`$replace` | `{myArr: {$replace: ['new', 'values']}}` | Replace a value without trying to merge this key any deeper, this is useful for replacing complete arrays.
+`$insert` | `{myArr: {$insert: 'my new value', $index: 2}}` | Insert a value at an index in an array - items will be pushed back and not deleted, this is using a splice operation under the hood.
+
+**Example usage**
+```javascript
+/*
+Apply an object { "foo": "bar" } to
+the path of my-plugin
+*/
+bridge.state.apply({
+  plugins: {
+    'my-plugin': {
+      foo: 'bar'
+    }
+  }
+})
+
+/*
+Apply multiple objects in the same call.
+Operations are guaranteed to be executed in order.
+
+The following call will add { "baz": "qux" } to the plugin object and immediately remove it before notifying listeners that the state was changed.
+*/
+bridge.state.apply([
+  {
+    plugins: {
+      'my-plugin': {
+        baz: 'qux'
+      }
+    }
+  }, {
+    plugins: {
+      'my-plugin': {
+        baz: { $delete: true }
+      }
+    }
+  }
+])
+```
+
+### `bridge.state.get([path]): Promise<any>`  
+Get the current state directly from the main process. The only argument is an optional dot-notation path specifying the part of the state to be returned. If omitted, the whole state will be returned. Calling this function may also update the local representation of the state.
+
+**Example usage**
+```javascript
+const fullState = await bridge.state.get()
+/*
+Will also update the local state representation
+*/
+
+const myPlugin = await bridge.state.get('plugins.my-plugin')
+/*
+Partial calls does not update the local state representation
+*/
+```
+
+### `bridge.state.getLocalState()`  
+Get the full local state without going to the main process. This is useful for rendering the UI and for places where async operations aren't possible.
+
+**Example usage**
+```javascript
+const emptyState = bridge.state.getLocalState()
+/*
+emptyState will be undefined as the state has
+not yet been fetched from the main process
+*/
+
+await bridge.state.get()
+const fullState = bridge.state.getLocalState()
+/*
+fullState will contain the full and
+updated state as it was just fetched
+*/
+```
 
 ## Server
 The server api provides methods for serving files through Bridge's internal web server. This allows the frontend to load static resources even when running as a server deployment. It's often used together with [widgets](#widgets).
 
-### `bridge.server.serveFile(filePath) -> Promise<String>`
+### `bridge.server.serveFile(filePath): Promise<String>`
 Serve a file through the web server. Returns a Promise resolving to the path of the file as it should be requested from the server.
 
-### `bridge.server.serveString(string) -> Promise<String>`
+### `bridge.server.serveString(string): Promise<String>`
 Serve a string as a file throught the web server. Returns a Promise resolving to the path of the file as it should be requested from the server.
 
 ### `bridge.server.unserve(id)`
@@ -80,5 +167,5 @@ Settings are controls bound to a specific property in the shared state that appe
 
 There are several types of inputs available for settings; `boolean` and `number`. A setting and its type is declared through the [setting definition](/lib/schemas/setting.schema.json).
 
-### `bridge.settings.registerSetting(groupName, specification) -> Promise<Boolean>`  
+### `bridge.settings.registerSetting(groupName, specification): Promise<Boolean>`  
 Register a new setting definition to a group name, that is the name that will appear in the settings panel's navigation.
