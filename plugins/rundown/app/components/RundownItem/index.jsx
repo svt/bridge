@@ -37,7 +37,7 @@ export function RundownItem ({ index, item, onDrop = () => {} }) {
         {index}
       </div>
       <div className='RundownItem-name'>
-        {item.name}
+        {item.id}
       </div>
     </div>
   )

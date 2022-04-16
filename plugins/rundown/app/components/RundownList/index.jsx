@@ -22,7 +22,7 @@ export function RundownList ({ rundownId = 1 }) {
           const item = bridge.items.getLocalItem(id)
           return (
             <RundownItem
-              key={id}
+              key={i}
               index={i + 1}
               item={item}
               onDrop={(e, itemId) => handleDrop(e, itemId, i)}
