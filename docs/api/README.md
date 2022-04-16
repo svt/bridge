@@ -114,34 +114,34 @@ Get the current state directly from the main process. The only argument is an op
 
 **Example usage**
 ```javascript
-const fullState = await bridge.state.get()
 /*
-Will also update the local state representation
+Getting the full state will also update the local state representation
 */
+const fullState = await bridge.state.get()
 
-const myPlugin = await bridge.state.get('plugins.my-plugin')
 /*
 Partial calls does not update the local state representation
 */
+const myPlugin = await bridge.state.get('plugins.my-plugin')
 ```
 
-### `bridge.state.getLocalState()`  
+### `bridge.state.getLocalState(): any?`  
 Get the full local state without going to the main process. This is useful for rendering the UI and for places where async operations aren't possible.
 
 **Example usage**
 ```javascript
-const emptyState = bridge.state.getLocalState()
 /*
 emptyState will be undefined as the state has
 not yet been fetched from the main process
 */
+const emptyState = bridge.state.getLocalState()
 
-await bridge.state.get()
-const fullState = bridge.state.getLocalState()
 /*
 fullState will contain the full and
 updated state as it was just fetched
 */
+await bridge.state.get()
+const fullState = bridge.state.getLocalState()
 ```
 
 ## Server
