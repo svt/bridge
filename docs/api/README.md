@@ -181,7 +181,7 @@ Render a full type specification from its id
 ## Items
 Items are playable objects containing the metadata of a certain type.
 
-### `bridge.items.createItemOfType(typeId): Promise<String>`
+### `bridge.items.createItem(typeId): Promise<String>`
 Create a new item of a specific type, its id will be returned as a promise.
 
 ### `bridge.items.applyItem(id, item)`  

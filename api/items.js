@@ -23,7 +23,7 @@ const InvalidArgumentError = require('./error/InvalidArgumentError')
  * @param { String } type A type identifier to create an item from
  * @returns { Promise.<String> } A Promise resolving to the id of the created item
  */
-async function createItemOfType (type) {
+async function createItem (type) {
   const _type = await types.getType(type)
   if (!_type) {
     throw new InvalidArgumentError('Received an invalid value for the argument \'type\', no such type exist')
@@ -35,14 +35,14 @@ async function createItemOfType (type) {
     data: {}
   }
 
-  for (const prop of _type.properties) {
-    item.data[prop.bind] = prop.default || undefined
+  for (const [key, def] of Object.entries(_type.properties)) {
+    item.data[key] = def.default || undefined
   }
 
   applyItem(item.id, item)
   return item.id
 }
-exports.createItemOfType = createItemOfType
+exports.createItem = createItem
 
 /**
  * Apply changes to an
