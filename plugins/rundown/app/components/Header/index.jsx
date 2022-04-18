@@ -22,7 +22,7 @@ export function Header ({ rundownId = 1 }) {
   async function handleItemOnClick (typeId) {
     setContextPos(undefined)
 
-    const itemId = await bridge.items.createItemOfType(typeId)
+    const itemId = await bridge.items.createItem(typeId)
     bridge.commands.executeCommand('rundown.appendItem', rundownId, itemId)
   }
 

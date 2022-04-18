@@ -6,25 +6,17 @@
 
 .RundownItem {
   display: flex;
-  width: 100%;
-  padding: 0.75em;
-  margin: 2px 0;
-
-  border-top: 2px solid transparent;
-  background: var(--base-color--background);
-
-  box-sizing: border-box;
+  padding: 1em;
 }
 
-.RundownItem:nth-child(even) {
-  background: var(--base-color--shade2);
+.RundownItem-color {
+  width: 6px;
+  margin: -11px 15px -11px -9px;
+
+  border-radius: 10px;
 }
 
 .RundownItem-index {
   margin-right: 1em;
   opacity: 0.5;
-}
-
-.RundownItem.is-draggedOver {
-  border-color: var(--base-color--accent);
 }
