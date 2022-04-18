@@ -40,10 +40,10 @@ function renderType (id, typesDict = {}) {
   if (type.inherits) {
     const ancestor = renderType(type.inherits, typesDict)
 
-    type.properties = [
-      ...ancestor?.properties || [],
-      ...type.properties || []
-    ]
+    type.properties = {
+      ...ancestor?.properties || {},
+      ...type.properties || {}
+    }
   }
 
   return type
