@@ -90,18 +90,14 @@ exports.activate = async () => {
 
     if (index === -1) return
 
-    /*
-    Remove the id from
-    the array of items
-    */
-    items.splice(index, 1)
-
     bridge.state.apply({
       plugins: {
         [PLUGIN_STATE_SCOPE]: {
           rundowns: {
             [rundownId]: {
-              items: { $replace: items }
+              items: {
+                [index]: { $delete: true }
+              }
             }
           }
         }

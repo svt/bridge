@@ -3,6 +3,7 @@ import bridge from 'bridge'
 
 import './style.css'
 
+import { StoreContext } from '../../storeContext'
 import { SharedContext } from '../../sharedContext'
 
 import { Icon } from '../../../../../app/components/Icon'
@@ -10,7 +11,8 @@ import { Icon } from '../../../../../app/components/Icon'
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 
-export function Header ({ rundownId = 1 }) {
+export function Header () {
+  const [store] = React.useContext(StoreContext)
   const [shared] = React.useContext(SharedContext)
   const [contextPos, setContextPos] = React.useState()
 
@@ -20,10 +22,8 @@ export function Header ({ rundownId = 1 }) {
   }
 
   async function handleItemOnClick (typeId) {
-    setContextPos(undefined)
-
     const itemId = await bridge.items.createItem(typeId)
-    bridge.commands.executeCommand('rundown.appendItem', rundownId, itemId)
+    bridge.commands.executeCommand('rundown.appendItem', store?.id, itemId)
   }
 
   return (
@@ -31,7 +31,7 @@ export function Header ({ rundownId = 1 }) {
       {
         contextPos
           ? (
-            <ContextMenu x={contextPos[0]} y={contextPos[1]}>
+            <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
               {
                 Object.values(shared?._types || {})
                   .filter(type => type.name)
@@ -50,7 +50,7 @@ export function Header ({ rundownId = 1 }) {
           </button>
         </div>
         <div className='Header-section'>
-          <span className='Header-label'>Rundown id:</span>&nbsp;{rundownId}
+          <span className='Header-label'>Rundown id:</span>&nbsp;{store?.id}
         </div>
       </header>
     </>
