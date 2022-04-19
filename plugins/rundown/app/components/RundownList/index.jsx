@@ -9,6 +9,9 @@ import { StoreContext } from '../../storeContext'
 import { RundownDividerItem } from '../RundownDividerItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
+
+import { Icon } from '../Icon'
+
 /**
  * Type-specific components that should be
  * rendered instead of the default RundownItem
@@ -33,21 +36,35 @@ export function RundownList () {
   return (
     <div className='RundownList'>
       {
-        items
-          .map(id => bridge.items.getLocalItem(id))
-          .filter(item => item)
-          .map((item, i) => {
-            const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
-            return (
-              <RundownListItem
-                key={i}
-                item={item}
-                onDrop={(e, droppedItemId) => handleDrop(e, droppedItemId, i)}
-              >
-                <ItemComponent index={i + 1} item={item} />
-              </RundownListItem>
+        items.length > 0
+          ? (
+              items
+                .map(id => bridge.items.getLocalItem(id))
+                .filter(item => item)
+                .map((item, i) => {
+                  const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
+                  return (
+                    <RundownListItem
+                      key={i}
+                      item={item}
+                      onDrop={(e, droppedItemId) => handleDrop(e, droppedItemId, i)}
+                    >
+                      <ItemComponent index={i + 1} item={item} />
+                    </RundownListItem>
+                  )
+                })
             )
-          })
+          : (
+            <div className='RundownList-empty'>
+              <div className='RundownList-emptyContent'>
+                <Icon name='empty' />
+                <div>
+                  Drag items here or create<br />
+                  new ones by right-clicking
+                </div>
+              </div>
+            </div>
+            )
       }
     </div>
   )
