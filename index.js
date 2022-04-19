@@ -235,7 +235,6 @@ app.get('*', (req, res, next) => {
     port: UserDefaults.data.httpPort,
     version: pkg.version,
     workspace: req.workspace?.id,
-    socketHost: `ws://127.0.0.1:${UserDefaults.data.httpPort}`,
     hostProtocol: process.env.HOST_PROTOCOL
   }, ASSETS.assets))
 })
