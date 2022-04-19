@@ -6,6 +6,8 @@
 
 .Header {
   display: flex;
+  width: 100%;
+
   border-bottom: 1px solid var(--base-color--shade);
 
   justify-content: space-between;

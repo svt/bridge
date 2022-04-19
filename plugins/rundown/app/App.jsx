@@ -20,8 +20,10 @@ export default function App () {
   return (
     <SharedContextProvider>
       <StoreContext.Provider value={[store, setStore]}>
-        <Header />
-        <Rundown />
+        <div className='App'>
+          <Header />
+          <Rundown />
+        </div>
       </StoreContext.Provider>
     </SharedContextProvider>
   )
