@@ -7,6 +7,10 @@
   height: 100%;
 }
 
+.FrameComponent.is-focused {
+  box-shadow: inset 0 0 0 1px var(--base-color--accent1);
+}
+
 .FrameComponent-frame {
   position: absolute;
   width: 100%;

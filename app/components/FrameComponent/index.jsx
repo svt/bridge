@@ -76,6 +76,8 @@ export function FrameComponent ({ data }) {
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
+  const [hasFocus, setHasFocus] = React.useState(false)
+
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
@@ -114,6 +116,27 @@ export function FrameComponent ({ data }) {
   }, [data, shared])
 
   /*
+  Highligh the component
+  if it gains focus
+  */
+  React.useEffect(() => {
+    function onFocus () {
+      setHasFocus(true)
+    }
+    frameRef.current?.contentWindow.addEventListener('focus', onFocus)
+
+    function onBlur () {
+      setHasFocus(false)
+    }
+    frameRef.current?.contentWindow.addEventListener('blur', onBlur)
+
+    return () => {
+      frameRef.current?.contentWindow.removeEventListener('focus', onFocus)
+      frameRef.current?.contentWindow.removeEventListener('blur', onBlur)
+    }
+  }, [frameRef.current])
+
+  /*
   Copy the theme variables from
   the current document whenever
   its theme changes
@@ -124,6 +147,6 @@ export function FrameComponent ({ data }) {
   }, [local.appliedTheme])
 
   return (
-    <div ref={wrapperRef} className='FrameComponent' />
+    <div ref={wrapperRef} className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`} />
   )
 }
