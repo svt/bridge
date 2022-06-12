@@ -7,7 +7,6 @@ import { StoreContext } from '../../storeContext'
 
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
-import { ContextMenuDivider } from '../../../../../app/components/ContextMenuDivider'
 
 export function RundownListItem ({ children, item, onDrop = () => {} }) {
   const [store] = React.useContext(StoreContext)
@@ -49,10 +48,6 @@ export function RundownListItem ({ children, item, onDrop = () => {} }) {
     setContextPos([e.pageX, e.pageY])
   }
 
-  function handleRemoveFromRundown (id) {
-    removeItemFromRundown(id)
-  }
-
   function handleDelete (id) {
     removeItemFromRundown(id)
     bridge.items.deleteItem(id)
@@ -73,9 +68,7 @@ export function RundownListItem ({ children, item, onDrop = () => {} }) {
         contextPos
           ? (
             <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
-              <ContextMenuItem text='Remove que' onClick={() => handleRemoveFromRundown(item.id)} />
-              <ContextMenuDivider />
-              <ContextMenuItem text='Delete item from workspace' onClick={() => handleDelete(item.id)} />
+              <ContextMenuItem text='Remove' onClick={() => handleDelete(item.id)} />
             </ContextMenu>
             )
           : <></>

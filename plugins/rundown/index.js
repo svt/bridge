@@ -36,8 +36,32 @@ async function initWidget () {
   bridge.widgets.registerWidget('bridge.plugins.rundown', 'Rundown', `${htmlPath}`)
 }
 
+/**
+ * Initiate the default settings
+ * if no settings are set
+ */
+async function initSettings () {
+  if (await bridge.state.get(`plugins.${PLUGIN_STATE_SCOPE}.settings`) !== undefined) {
+    return
+  }
+
+  bridge.state.apply({
+    plugins: {
+      [PLUGIN_STATE_SCOPE]: {
+        settings: {
+          display: {
+            name: true,
+            type: true
+          }
+        }
+      }
+    }
+  })
+}
+
 exports.activate = async () => {
   initWidget()
+  initSettings()
 
   /**
    * Get the items of a rundown

@@ -17,10 +17,12 @@
   "license": "UNLICENSED",
   "contributes": {
     "settings": [{
-        "title": "Setting",
-        "description": "A description",
+        "title": "Display properties",
+        "description": "Select what properties to display in the rundown",
         "inputs": [
-          { "type": "boolean", "bind": "shared.settings.test", "label": "A checkbox" }
+          { "type": "boolean", "bind": "shared.plugins.bridge-plugin-rundown.settings.display.id", "label": "ID" },
+          { "type": "boolean", "bind": "shared.plugins.bridge-plugin-rundown.settings.display.name", "label": "Name" },
+          { "type": "boolean", "bind": "shared.plugins.bridge-plugin-rundown.settings.display.type", "label": "Type" }
         ]
     }]
   }
