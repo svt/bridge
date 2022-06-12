@@ -10,8 +10,6 @@ const bridge = require('bridge')
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
-const PLUGIN_STATE_SCOPE = 'bridge-plugin-rundown'
-
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -41,13 +39,13 @@ async function initWidget () {
  * if no settings are set
  */
 async function initSettings () {
-  if (await bridge.state.get(`plugins.${PLUGIN_STATE_SCOPE}.settings`) !== undefined) {
+  if (await bridge.state.get(`plugins.${manifest.name}.settings`) !== undefined) {
     return
   }
 
   bridge.state.apply({
     plugins: {
-      [PLUGIN_STATE_SCOPE]: {
+      [manifest.name]: {
         settings: {
           display: {
             name: true,
@@ -70,7 +68,7 @@ exports.activate = async () => {
    * @returns { String[] }
    */
   async function getItems (rundownId) {
-    return (await bridge.state.get(`plugins.${PLUGIN_STATE_SCOPE}.rundowns.${rundownId}.items`)) || []
+    return (await bridge.state.get(`plugins.${manifest.name}.rundowns.${rundownId}.items`)) || []
   }
 
   bridge.commands.registerCommand('rundown.reorderItem', async (rundownId, itemId, newIndex) => {
@@ -84,7 +82,7 @@ exports.activate = async () => {
     bridge.state.apply([
       {
         plugins: {
-          [PLUGIN_STATE_SCOPE]: {
+          [manifest.name]: {
             rundowns: {
               [rundownId]: {
                 items: {
@@ -96,7 +94,7 @@ exports.activate = async () => {
         }
       }, {
         plugins: {
-          [PLUGIN_STATE_SCOPE]: {
+          [manifest.name]: {
             rundowns: {
               [rundownId]: {
                 items: { $insert: itemId, $index: weightedNewIndex }
@@ -116,7 +114,7 @@ exports.activate = async () => {
 
     bridge.state.apply({
       plugins: {
-        [PLUGIN_STATE_SCOPE]: {
+        [manifest.name]: {
           rundowns: {
             [rundownId]: {
               items: {
@@ -132,7 +130,7 @@ exports.activate = async () => {
   bridge.commands.registerCommand('rundown.appendItem', (rundownId, itemId) => {
     bridge.state.apply({
       plugins: {
-        [PLUGIN_STATE_SCOPE]: {
+        [manifest.name]: {
           rundowns: {
             [rundownId]: {
               items: [itemId]
