@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 const API_HOST = (function () {
-  if (window.initialState.apiHost) {
-    return window.initialState.apiHost
+  if (window.APP.apiHost) {
+    return window.APP.apiHost
   }
   return ''
 })()

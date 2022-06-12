@@ -2,5 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-class NoLocalHandlerError extends Error {}
+const ApiError = require('./ApiError')
+
+class NoLocalHandlerError extends ApiError {}
 module.exports = NoLocalHandlerError

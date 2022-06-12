@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function App () {
   return (
-    <h2>Rendered from React</h2>
+    <div className='App'>
+      <h1>Welcome</h1>
+    </div>
   )
 }

@@ -16,6 +16,8 @@ function mergeDeep (targetObj, sourceObj) {
     /*
     If the $replace keyword is used,
     replace the value directly
+
+    { $replace: value }
     */
     if (sourceObj[key]?.$replace) {
       targetObj[key] = sourceObj[key].$replace
@@ -25,9 +27,32 @@ function mergeDeep (targetObj, sourceObj) {
     /*
     Delete the key if the
     $delete keyword is present
+
+    { $delete: true }
     */
     if (sourceObj[key]?.$delete) {
-      delete targetObj[key]
+      if (Array.isArray(targetObj)) {
+        targetObj.splice(key, 1)
+      } else {
+        delete targetObj[key]
+      }
+      continue
+    }
+
+    /*
+    Insert a value at an index in an array
+    using a splice operation
+
+    {
+      $insert: value,
+      $index: 2
+    }
+    */
+    if (
+      Object.prototype.hasOwnProperty.call((sourceObj[key] || {}), '$insert') &&
+      Array.isArray(targetObj[key])
+    ) {
+      targetObj[key].splice(sourceObj[key].$index, 0, sourceObj[key]?.$insert)
       continue
     }
 

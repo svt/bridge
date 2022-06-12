@@ -10,6 +10,8 @@ const bridge = require('bridge')
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
+const PLUGIN_STATE_SCOPE = 'bridge-plugin-rundown'
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -34,6 +36,110 @@ async function initWidget () {
   bridge.widgets.registerWidget('bridge.plugins.rundown', 'Rundown', `${htmlPath}`)
 }
 
+/**
+ * Initiate the default settings
+ * if no settings are set
+ */
+async function initSettings () {
+  if (await bridge.state.get(`plugins.${PLUGIN_STATE_SCOPE}.settings`) !== undefined) {
+    return
+  }
+
+  bridge.state.apply({
+    plugins: {
+      [PLUGIN_STATE_SCOPE]: {
+        settings: {
+          display: {
+            name: true,
+            type: true
+          }
+        }
+      }
+    }
+  })
+}
+
 exports.activate = async () => {
   initWidget()
+  initSettings()
+
+  /**
+   * Get the items of a rundown
+   * by the rundown's id
+   * @param { String } rundownId The id of the rundown to get items for
+   * @returns { String[] }
+   */
+  async function getItems (rundownId) {
+    return (await bridge.state.get(`plugins.${PLUGIN_STATE_SCOPE}.rundowns.${rundownId}.items`)) || []
+  }
+
+  bridge.commands.registerCommand('rundown.reorderItem', async (rundownId, itemId, newIndex) => {
+    const items = await getItems(rundownId)
+    const oldIndex = items.indexOf(itemId)
+    const weightedNewIndex = oldIndex < newIndex ? newIndex - 1 : newIndex
+
+    if (oldIndex === -1) return
+    if (oldIndex === newIndex) return
+
+    bridge.state.apply([
+      {
+        plugins: {
+          [PLUGIN_STATE_SCOPE]: {
+            rundowns: {
+              [rundownId]: {
+                items: {
+                  [oldIndex]: { $delete: true }
+                }
+              }
+            }
+          }
+        }
+      }, {
+        plugins: {
+          [PLUGIN_STATE_SCOPE]: {
+            rundowns: {
+              [rundownId]: {
+                items: { $insert: itemId, $index: weightedNewIndex }
+              }
+            }
+          }
+        }
+      }
+    ])
+  })
+
+  bridge.commands.registerCommand('rundown.removeItem', async (rundownId, itemId) => {
+    const items = await getItems(rundownId)
+    const index = items.indexOf(itemId)
+
+    if (index === -1) return
+
+    bridge.state.apply({
+      plugins: {
+        [PLUGIN_STATE_SCOPE]: {
+          rundowns: {
+            [rundownId]: {
+              items: {
+                [index]: { $delete: true }
+              }
+            }
+          }
+        }
+      }
+    })
+  })
+
+  bridge.commands.registerCommand('rundown.appendItem', (rundownId, itemId) => {
+    bridge.state.apply({
+      plugins: {
+        [PLUGIN_STATE_SCOPE]: {
+          rundowns: {
+            [rundownId]: {
+              items: [itemId]
+            }
+          }
+        }
+      }
+    })
+  })
 }

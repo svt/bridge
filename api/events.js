@@ -85,7 +85,6 @@ async function on (event, handler) {
       for (const fn of interceptFns) {
         _args = await fn(..._args)
       }
-      console.log('Did intercept', _args[0]?.settings?.test)
 
       const handlers = localHandlers.get(event)
       for (const handler of handlers) {

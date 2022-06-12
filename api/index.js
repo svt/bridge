@@ -4,11 +4,13 @@
 
 const transport = require('./transport')
 const commands = require('./commands')
+const settings = require('./settings')
 const widgets = require('./widgets')
 const events = require('./events')
 const server = require('./server')
 const state = require('./state')
 const types = require('./types')
+const items = require('./items')
 
 /**
  * The api entrypoint
@@ -18,11 +20,13 @@ const types = require('./types')
 const api = {
   transport,
   commands,
+  settings,
   widgets,
   events,
   server,
   state,
-  types
+  types,
+  items
 }
 
 module.exports = api

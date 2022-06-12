@@ -36,7 +36,7 @@ function render (state, assets) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=0">
         ${renderedAssets}
         <script>
-          window.initialState = ${JSON.stringify(state)}
+          window.APP = ${JSON.stringify(state)}
         </script>
         <title>Bridge</title>
       </head>

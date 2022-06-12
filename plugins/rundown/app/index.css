@@ -3,3 +3,16 @@
  *
  * SPDX-License-Identifier: MIT
  */
+
+.App {
+  display: flex;
+  height: 100%;
+
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.View {
+  height: 100%;
+  overflow-y: scroll;
+}

@@ -1,0 +1,22 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Sveriges Television AB
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.RundownListItem {
+  display: flex;
+  width: 100%;
+  margin: 2px 0;
+
+  background: var(--base-color--background);
+  box-sizing: border-box;
+}
+
+.RundownListItem:nth-child(even) {
+  background: var(--base-color--shade2);
+}
+
+.RundownListItem.is-draggedOver {
+  box-shadow: 0 -2px 0 0 var(--base-color);
+}
