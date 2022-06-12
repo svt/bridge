@@ -73,7 +73,10 @@ function executeCommand (command, ...args) {
     registerCommand(transaction, (res, err) => {
       removeCommand(transaction)
 
-      if (err) return reject(err)
+      if (err) {
+        console.error(err)
+        return reject(err)
+      }
       resolve(res)
     }, false)
 

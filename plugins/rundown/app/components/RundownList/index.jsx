@@ -33,6 +33,12 @@ export function RundownList () {
     bridge.commands.executeCommand('rundown.reorderItem', store?.id, itemId, toIndex)
   }
 
+  function handleMouseDown (itemId) {
+    bridge.client.setSelection(itemId)
+  }
+
+  const selection = shared?.[bridge.client.getIdentity()]?.selection
+
   return (
     <div className='RundownList'>
       {
@@ -42,12 +48,15 @@ export function RundownList () {
                 .map(id => bridge.items.getLocalItem(id))
                 .filter(item => item)
                 .map((item, i) => {
+                  const isSelected = selection?.includes(item.id)
                   const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
                   return (
                     <RundownListItem
                       key={i}
                       item={item}
                       onDrop={(e, droppedItemId) => handleDrop(e, droppedItemId, i)}
+                      onMouseDown={() => handleMouseDown(item.id)}
+                      selected={isSelected}
                     >
                       <ItemComponent index={i + 1} item={item} />
                     </RundownListItem>
