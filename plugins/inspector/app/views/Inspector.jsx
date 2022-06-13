@@ -2,6 +2,7 @@ import React from 'react'
 
 import { StoreContext } from '../storeContext'
 import { NoSelection } from '../components/NoSelection'
+import { Form } from '../components/Form'
 
 export function Inspector () {
   const [store] = React.useContext(StoreContext)
@@ -11,7 +12,7 @@ export function Inspector () {
       {
         !store?.selection?.length
           ? <NoSelection />
-          : <div />
+          : <Form />
       }
     </div>
   )

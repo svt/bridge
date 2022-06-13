@@ -1,0 +1,29 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Sveriges Television AB
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.Accordion {
+  margin: 5px;
+}
+
+.Accordion-header {
+  display: flex;
+  padding: 3px;
+
+  background: var(--base-color--shade2);
+
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.Accordion .Accordion-icon {
+  margin-right: 5px;
+  transform: translate(0, 3px);
+  transition: 0.2s;
+}
+
+.Accordion.is-open .Accordion-icon {
+  transform: translate(0, -1px) rotate(180deg);
+}

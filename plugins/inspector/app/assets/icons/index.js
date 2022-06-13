@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
-import empty from './empty.svg'
+import arrowDown from './arrow-down.svg'
 
 export default {
-  empty
+  'arrow-down': arrowDown
 }

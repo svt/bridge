@@ -49,11 +49,16 @@ export default function App () {
   const selection = state?.[bridge.client.getIdentity()]?.selection
 
   React.useEffect(() => {
+    const items = (selection || [])
+      .map(id => bridge.items.getLocalItem(id))
+      .filter(item => item)
+
     setStore({
       ...storeRef.current,
-      selection
+      selection,
+      items
     })
-  }, [selection])
+  }, [selection, state])
 
   return (
     <SharedContext.Provider value={[state, bridge.state.apply]}>
