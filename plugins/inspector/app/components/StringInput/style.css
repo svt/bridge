@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-.TextInput {
+.StringInput {
   width: 100%;
-  padding: 0.5em 0.75em;
+  padding: 0.5em;
 
   font-size: 1em;
   font-family: var(--base-fontFamily--primary);
@@ -18,9 +18,8 @@
   background: var(--base-color--shade2);
 
   box-sizing: border-box;
-  resize: vertical;
 }
 
-.TextInput--large {
+.StringInput--large {
   font-size: 1.1em;
 }

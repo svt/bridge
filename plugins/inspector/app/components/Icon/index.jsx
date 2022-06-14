@@ -3,8 +3,12 @@ import icons from '../../assets/icons'
 
 import './style.css'
 
-export function Icon ({ name = 'placeholder' }) {
+export function Icon ({ name = 'placeholder', color = 'var(--base-color)' }) {
   return (
-    <span className='Icon' dangerouslySetInnerHTML={{ __html: icons[name] || icons.placeholder }} />
+    <span
+      className='Icon'
+      style={{ '--Icon-color': color }}
+      dangerouslySetInnerHTML={{ __html: icons[name] || icons.placeholder }}
+    />
   )
 }

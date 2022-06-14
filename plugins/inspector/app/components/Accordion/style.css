@@ -4,15 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-.Accordion {
-  margin: 5px;
-}
-
 .Accordion-header {
   display: flex;
   padding: 3px;
-
-  background: var(--base-color--shade2);
 
   align-items: center;
   box-sizing: border-box;
@@ -20,7 +14,7 @@
 
 .Accordion .Accordion-icon {
   margin-right: 5px;
-  transform: translate(0, 3px);
+  transform: translate(0, 3px) scale(0.9);
   transition: 0.2s;
 }
 

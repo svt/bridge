@@ -19,15 +19,16 @@
         "properties": {
           "name": {
             "name": "Name",
-            "type": "string"
+            "type": "string",
+            "default": "Unnamed"
           },
           "notes": {
             "name": "Notes",
-            "type": "string"
+            "type": "text"
           },
           "color": {
             "name": "Color",
-            "type": "string",
+            "type": "color",
             "default": "#FF4B7D"
           }
         }
@@ -38,7 +39,8 @@
         "properties": {
           "time.duration": {
             "name": "Duration",
-            "type": "number"
+            "type": "string",
+            "group": "Timing"
           }
         }
       },

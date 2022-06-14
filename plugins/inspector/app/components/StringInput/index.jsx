@@ -7,16 +7,17 @@
 import React from 'react'
 import './style.css'
 
-export function TextInput ({
+export function StringInput ({
   htmlFor,
   value = '',
-  onChange = () => {}
+  onChange = () => {},
+  large
 }) {
   return (
-    <textarea
+    <input
       type='text'
       htmlFor={htmlFor}
-      className='TextInput'
+      className={`StringInput ${large ? 'StringInput--large' : ''}`}
       value={value}
       onChange={e => onChange(e.target.value)}
     />

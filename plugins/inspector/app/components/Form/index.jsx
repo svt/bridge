@@ -13,6 +13,11 @@
  * @typedef {{
  *  properties: [String: TypeProperty]
  * }} Type
+ *
+ * @typedef {{
+ *  name: String,
+ *  properties: TypeProperty[]
+ * }} Group
  */
 
 import React from 'react'
@@ -27,9 +32,13 @@ import { StoreContext } from '../../storeContext'
 import { Accordion } from '../Accordion'
 
 import { TextInput } from '../TextInput'
+import { ColorInput } from '../ColorInput'
+import { StringInput } from '../StringInput'
 
 const INPUT_COMPONENTS = {
-  string: TextInput
+  string: StringInput,
+  color: ColorInput,
+  text: TextInput
 }
 
 /**
@@ -84,7 +93,7 @@ function getCommonProperties (types = []) {
  * Order properties into groups
  * that are easy to render
  * @param { Object.<String, TypeProperty> } properties
- * @returns { Any[] }
+ * @returns { Object.<String, Group> }
  */
 function orderByGroups (properties) {
   const entries = Object.entries(properties)
@@ -94,7 +103,7 @@ function orderByGroups (properties) {
     const key = entry[0]
     const prop = entry[1]
 
-    const group = prop.group || '__primary'
+    const group = prop.group || '_primary'
 
     if (!groups[group]) {
       groups[group] = {
@@ -105,12 +114,12 @@ function orderByGroups (properties) {
     groups[group].properties.push({ key, ...prop })
   }
 
-  return Object.values(groups)
+  return groups
 }
 
 export function Form () {
   const [store] = React.useContext(StoreContext)
-  const [groups, setGroups] = React.useState([])
+  const [groups, setGroups] = React.useState({})
 
   /*
   Find out what the common properties
@@ -146,34 +155,70 @@ export function Form () {
     }
   }
 
+  function getValue (key) {
+    return objectPath.get(store?.items?.[0]?.data || {}, key)
+  }
+
+  /**
+   * Render a property
+   * @param { TypeProperty } property
+   * @param { String } id A unique identifier to
+   *                      use as the html tag's id
+   * @returns { import('react').ReactElement }
+   */
+  function renderProperty (property, id) {
+    const Component = INPUT_COMPONENTS[property.type]
+    return (
+      <div key={id} className='Form-input'>
+        <label id={id} className='Form-inputLabel'>{property.name}</label>
+        <Component
+          htmlFor={id}
+          value={getValue(property.key)}
+          onChange={value => handleDataChange(property.key, value)}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className='Form'>
-      {
-        groups.map((group, i) => {
-          return (
-            <Accordion key={i} title={group.name}>
-              {
-                Object.values(group.properties || {})
-                  .filter(property => INPUT_COMPONENTS[property.type])
-                  .map((property, i) => {
-                    const Component = INPUT_COMPONENTS[property.type]
-                    const id = `${group.name}_${i}`
-                    return (
-                      <div key={id} className='Form-input'>
-                        <label id={id} className='Form-inputLabel'>{property.name}</label>
-                        <Component
-                          htmlFor={id}
-                          value={objectPath.get(store?.items?.[0]?.data || {}, property.key)}
-                          onChange={value => handleDataChange(property.key, value)}
-                        />
-                      </div>
-                    )
-                  })
-              }
-            </Accordion>
-          )
-        })
-      }
+      <div className='Form-section'>
+        <div className='Form-row'>
+          <ColorInput value={getValue('color')} onChange={value => handleDataChange('color', value)} />
+          <StringInput value={getValue('name')} onChange={value => handleDataChange('name', value)} large />
+        </div>
+        <div className='Form-row'>
+          <div className='Form-input'>
+            <label className='Form-inputLabel'>Notes</label>
+            <TextInput value={getValue('notes')} onChange={value => handleDataChange('notes', value)} />
+          </div>
+        </div>
+      </div>
+      <div className='Form-section'>
+        {
+          Object.values(groups)
+            /*
+            Don't render the primary group
+            as its controls will be rendered
+            above the accordions
+            */
+            .filter(group => group.name !== '_primary')
+            .map((group, i) => {
+              return (
+                <Accordion key={i} title={group.name}>
+                  {
+                    Object.values(group.properties || {})
+                      .filter(property => INPUT_COMPONENTS[property.type])
+                      .map((property, i) => {
+                        const id = `${group.name}_${i}`
+                        return renderProperty(property, id)
+                      })
+                  }
+                </Accordion>
+              )
+            })
+        }
+      </div>
     </div>
   )
 }

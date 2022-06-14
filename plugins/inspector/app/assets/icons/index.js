@@ -3,7 +3,9 @@
 // SPDX-License-Identifier: MIT
 
 import arrowDown from './arrow-down.svg'
+import bucket from './bucket.svg'
 
 export default {
-  'arrow-down': arrowDown
+  'arrow-down': arrowDown,
+  bucket: bucket
 }

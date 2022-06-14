@@ -4,7 +4,6 @@ import bridge from 'bridge'
 import { SharedContext } from './sharedContext'
 import { StoreContext } from './storeContext'
 
-import { Header } from './components/Header'
 import { Inspector } from './views/Inspector'
 
 export default function App () {
@@ -64,7 +63,6 @@ export default function App () {
     <SharedContext.Provider value={[state, bridge.state.apply]}>
       <StoreContext.Provider value={[store, setStore]}>
         <div className='App'>
-          <Header />
           <Inspector />
         </div>
       </StoreContext.Provider>
