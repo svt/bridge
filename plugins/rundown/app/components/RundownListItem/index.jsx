@@ -8,7 +8,13 @@ import { StoreContext } from '../../storeContext'
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 
-export function RundownListItem ({ children, item, onDrop = () => {} }) {
+export function RundownListItem ({
+  children,
+  item,
+  onDrop = () => {},
+  onMouseDown = () => {},
+  selected: isSelected
+}) {
   const [store] = React.useContext(StoreContext)
 
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
@@ -74,11 +80,12 @@ export function RundownListItem ({ children, item, onDrop = () => {} }) {
           : <></>
       }
       <div
-        className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''}`}
+        className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
         onDrop={(e, data) => handleDrop(e, data)}
         onDragOver={e => handleDragOver(e)}
         onDragLeave={e => handleDragLeave(e)}
         onDragStart={e => handleDragStart(e)}
+        onMouseDown={e => onMouseDown(e)}
         onContextMenu={e => handleContextMenu(e)}
         draggable
       >

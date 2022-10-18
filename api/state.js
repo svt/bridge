@@ -37,6 +37,25 @@ function getRemoteState (path) {
   return commands.executeCommand('state.get', path)
 }
 
+/**
+ * Apply state changes to
+ * the local copy of the state
+ * @param { Object[] } set An array of objects to set
+ *//**
+ * Apply a single change to
+ * the local copy of the state
+ * @param { Object } set An object to set
+ */
+function applyLocally (set) {
+  if (Array.isArray(set)) {
+    for (const change of set) {
+      state = merge.deep(state, change)
+    }
+  } else {
+    state = merge.deep(state, set)
+  }
+}
+
 /*
 Intercept the state.change event
 to always include the full calculated
@@ -55,13 +74,7 @@ state
       revision = newState._revision
       state = newState
     } else {
-      if (Array.isArray(set)) {
-        for (const change of set) {
-          state = merge.deep(state, change)
-        }
-      } else {
-        state = merge.deep(state, set)
-      }
+      applyLocally(set)
     }
 
     return state

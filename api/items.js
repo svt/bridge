@@ -47,6 +47,7 @@ exports.createItem = createItem
 /**
  * Apply changes to an
  * item in the state
+ * @param { String } id The id of an item to update
  * @param { Item } item An item object to apply
  */
 function applyItem (id, item = {}) {
@@ -60,7 +61,7 @@ function applyItem (id, item = {}) {
 
   state.apply({
     items: {
-      [item.id]: item
+      [id]: item
     }
   })
 }

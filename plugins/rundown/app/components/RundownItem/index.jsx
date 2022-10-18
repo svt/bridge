@@ -10,7 +10,7 @@ export function RundownItem ({ index, item }) {
 
   const properties = [
     { if: displaySettings?.id, name: 'ID', value: item.id },
-    { if: displaySettings?.name, name: 'Name', value: item.name },
+    { if: displaySettings?.name, name: 'Name', value: item.data.name },
     { if: displaySettings?.type, name: 'Type', value: item.type }
   ]
 

@@ -190,30 +190,33 @@ export default function App () {
   command type
   */
   React.useEffect(() => {
-    if (!data) return
-    const json = JSON.parse(data)
-    switch (json?.type) {
-      /*
-      Keep track of this connection's
-      unique identifier and set the
-      current path to the shared state
-      */
-      case 'id':
-        applyLocal({ id: json?.data })
-        applySharedKey(json?.data, { path: window.location.pathname })
-        break
+    ;(async function () {
+      if (!data) return
+      const json = JSON.parse(data)
+      switch (json?.type) {
+        /*
+        Keep track of this connection's
+        unique identifier and set the
+        current path to the shared state
+        */
+        case 'id':
+          applyLocal({ id: json?.data })
+          applySharedKey(json?.data, { path: window.location.pathname })
+          ;(await api.load()).client.setIdentity(localRef.current.id)
+          break
 
-      /*
-      Forward the message to
-      the api for processing
-      */
-      default:
-        ;(async function () {
-          const bridge = await api.load()
-          bridge.transport.receive(json)
-        })()
-        break
-    }
+        /*
+        Forward the message to
+        the api for processing
+        */
+        default:
+          ;(async function () {
+            const bridge = await api.load()
+            bridge.transport.receive(json)
+          })()
+          break
+      }
+    })()
   }, [data])
 
   /*
