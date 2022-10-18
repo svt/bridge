@@ -193,6 +193,18 @@ export function Form () {
             <TextInput value={getValue('notes')} onChange={value => handleDataChange('notes', value)} />
           </div>
         </div>
+        <div className='Form-row'>
+          <div className='Form-input'>
+            <label className='Form-inputLabel'>ID</label>
+            <label className='Form-inputLabel'>
+              {
+                (store.items || []).length > 1
+                  ? 'Multiple items selected'
+                  : store.items?.[0]?.id
+              }
+            </label>
+          </div>
+        </div>
       </div>
       <div className='Form-section'>
         {
