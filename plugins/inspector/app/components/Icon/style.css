@@ -1,7 +1,9 @@
+
+
 .Icon svg [stroke]:not([stroke='none']) {
-  stroke: var(--base-color);
+  stroke: var(--Icon-color);
 }
 
 .Icon svg [fill]:not([fill='none']) {
-  fill: var(--base-color);
+  fill: var(--Icon-color);
 }

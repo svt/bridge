@@ -30,7 +30,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": ["string", "number"]
+              "enum": ["string", "number", "text", "color"]
             },
             "name": {
               "type": "string"

@@ -11,6 +11,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Settings](#settings)
 - [Types](#types)
 - [Items](#items)
+- [Client](#client)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -195,3 +196,19 @@ Get an item from the local state representation by its id. This is useful when r
 
 ### `bridge.items.deleteItem(id)`  
 Delete an item by its id.
+
+## Client  
+**The client api is only available within renderer processes**  
+Control aspects of the current client
+
+### `bridge.client.getIdentity(): String?`  
+Get the client's identity as set by the host app. This may be undefined if it has not yet been set. It's useful for manually getting client parameters if optimizing queries to the state.
+
+### `bridge.client.setSelection(items)`
+Select one or multiple items, will clear the current selection
+
+### `bridge.client.clearSelection()`  
+Clear the current selection
+
+### `bridge.client.getSelection(): Promise<String[]>`  
+Get the current selection
