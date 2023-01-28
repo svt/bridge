@@ -1,0 +1,31 @@
+{
+  "name": "bridge-plugin-caspar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "author": "Axel Boberg (axel.boberg@svt.se)",
+  "license": "UNLICENSED",
+  "contributes": {
+    "settings": [{
+        "title": "Server",
+        "description": "Configure Caspar servers",
+        "repeating": true,
+        "bind": "shared.plugins.bridge-plugin-caspar.settings.servers",
+        "inputs": [
+          { "type": "string", "bind": "label", "label": "Label" },
+          { "type": "string", "bind": "host", "label": "Host" },
+          { "type": "string", "bind": "port", "label": "Port" }
+        ]
+    }]
+  }
+}

@@ -7,13 +7,16 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["boolean", "theme", "number"]
+          "enum": ["boolean", "theme", "number", "string"]
         },
         "bind": {
           "type": "string"
         },
         "label": {
           "type": "string"
+        },
+        "repeating": {
+          "type": "boolean"
         }
       },
       "required": [ "type" ]

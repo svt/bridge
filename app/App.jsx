@@ -143,16 +143,9 @@ export default function App () {
    * to match
    * @param { Object.<> } data An object containing data to apply
    */
-  function applyShared (data = {}) {
-    /*
-    Calculate the new shared state
-    locally - be sure to copy the current
-    state or React won't treat it as an update
-    */
-    const newShared = deepApply({ ...sharedRef.current }, data)
-    setShared(newShared)
-
-    send({ type: 'state', data })
+  async function applyShared (data = {}) {
+    const bridge = await api.load()
+    bridge.state.apply(data)
   }
 
   /**
