@@ -94,13 +94,14 @@ function mergeDeep (targetObj, sourceObj) {
         if (
           targetObj[key][i] &&
           typeof targetObj[key][i] === 'object' &&
+
           sourceObj[key][i] &&
           typeof sourceObj[key][i] === 'object'
         ) {
           mergeDeep(targetObj[key][i], sourceObj[key][i])
           continue
         }
-        targetObj[key][i] = sourceObj[key[i]]
+        targetObj[key][i] = sourceObj[key][i]
       }
       continue
     }

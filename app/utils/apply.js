@@ -100,7 +100,7 @@ export function deepApply (targetObj, sourceObj) {
           deepApply(targetObj[key][i], sourceObj[key][i])
           continue
         }
-        targetObj[key][i] = sourceObj[key[i]]
+        targetObj[key][i] = sourceObj[key][i]
       }
       continue
     }
