@@ -127,22 +127,38 @@ exports.activate = async () => {
     })
   })
 
-  bridge.commands.registerCommand('rundown.appendItem', (rundownId, itemId) => {
-    console.log('Applying', {
-      [rundownId]: {
-        items: { $push: [itemId] }
-      }
-    })
-    bridge.state.apply({
-      plugins: {
-        [manifest.name]: {
-          rundowns: {
-            [rundownId]: {
-              items: { $push: [itemId] }
+  bridge.commands.registerCommand('rundown.appendItem', async (rundownId, itemId) => {
+    const items = await getItems(rundownId)
+
+    /*
+    If there aren't already items in an array,
+    make sure that the items-object is indeed
+    an array, otherwise, append new items
+    */
+    if (items.length === 0) {
+      bridge.state.apply({
+        plugins: {
+          [manifest.name]: {
+            rundowns: {
+              [rundownId]: {
+                items: [itemId]
+              }
             }
           }
         }
-      }
-    })
+      })
+    } else {
+      bridge.state.apply({
+        plugins: {
+          [manifest.name]: {
+            rundowns: {
+              [rundownId]: {
+                items: { $push: [itemId] }
+              }
+            }
+          }
+        }
+      })
+    }
   })
 }
