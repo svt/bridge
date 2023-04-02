@@ -1,6 +1,5 @@
 {
   "name": "bridge-plugin-rundown",
-  "displayName": "Rundown",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
