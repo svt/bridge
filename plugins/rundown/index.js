@@ -128,12 +128,17 @@ exports.activate = async () => {
   })
 
   bridge.commands.registerCommand('rundown.appendItem', (rundownId, itemId) => {
+    console.log('Applying', {
+      [rundownId]: {
+        items: { $push: [itemId] }
+      }
+    })
     bridge.state.apply({
       plugins: {
         [manifest.name]: {
           rundowns: {
             [rundownId]: {
-              items: [itemId]
+              items: { $push: [itemId] }
             }
           }
         }
