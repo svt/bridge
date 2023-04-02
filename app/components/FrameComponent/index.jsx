@@ -147,6 +147,11 @@ export function FrameComponent ({ data }) {
   }, [local.appliedTheme])
 
   return (
-    <div ref={wrapperRef} className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`} />
+    <div className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`}>
+      <header className='FrameComponent-header'>
+        {shared?._widgets[data.component]?.name}
+      </header>
+      <div ref={wrapperRef} className='FrameComponent-wrapper' />
+    </div>
   )
 }
