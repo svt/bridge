@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Layout",
+    "inputs": [
+      {
+        "type": "select",
+        "bind": "shared._userDefaults.shortcutLayout",
+        "options": ["Default", "CasparCG Client"],
+        "value": 0
+      }
+    ]
+  }
+]

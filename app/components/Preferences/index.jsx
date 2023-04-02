@@ -12,6 +12,7 @@ import { RepeatingPreference } from './repeatingPreference'
 import * as Layout from '../Layout'
 
 import appearance from './sections/appearance.json'
+import shortcuts from './sections/shortcuts.json'
 import general from './sections/general.json'
 
 import './style.css'
@@ -23,7 +24,8 @@ import './style.css'
 const INTERNAL_SETTINGS = {
   items: [
     { title: 'General', items: general },
-    { title: 'Appearance', items: appearance }
+    { title: 'Appearance', items: appearance },
+    { title: 'Keyboard shortcuts', items: shortcuts }
   ]
 }
 
@@ -101,12 +103,7 @@ export function Preferences ({ onClose = () => {} }) {
     const patch = {}
     const valuePath = parts.join('.')
 
-    console.log('Setting', valuePath, patch)
-
     objectPath.set(patch, valuePath, value)
-
-    console.log('Patching', patch)
-
     apply(patch)
   }
 

@@ -1,0 +1,8 @@
+{
+  "event.play": {
+    "code": "Space"
+  },
+  "event.stop": {
+    "code": "Space"
+  }
+}
