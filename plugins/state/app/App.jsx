@@ -51,6 +51,7 @@ export default function App () {
           base0E: getCSSVar('--base-color'),
           base0F: getCSSVar('--base-color')
         }}
+        collapsed={true}
       />
     </div>
   )
