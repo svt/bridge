@@ -1,0 +1,79 @@
+{
+  "$id": "https://bridge.svt.se/schemas/shortcuts",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Keyboard shortcut",
+  "description": "The declaration of a keyboard shortcut",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "A globally unique identifier for the shortcut"
+    },
+    "description": {
+      "type": "string",
+      "description": "A human readable description of the shortcut, this will be shown in the settings panel"
+    },
+    "trigger": {
+      "type": "array",
+      "description": "The shortcut's default trigger as an array of capitalized keys",
+      "items": {
+        "type": "string",
+        "enum": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M",
+          "N",
+          "O",
+          "P",
+          "Q",
+          "R",
+          "S",
+          "T",
+          "U",
+          "V",
+          "W",
+          "X",
+          "Y",
+          "Z",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "0",
+          "Shift",
+          "Meta",
+          "Alt",
+          "Enter",
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "F6",
+          "F7",
+          "F8",
+          "F9",
+          "F10",
+          "F11",
+          "F12"
+        ]
+      }
+    }
+  },
+  "required": [ "id", "description", "trigger" ]
+}

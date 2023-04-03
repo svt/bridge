@@ -12,6 +12,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Types](#types)
 - [Items](#items)
 - [Client](#client)
+- [Keyboard shortcuts](#keyboard-shortcuts)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -218,3 +219,18 @@ Clear the current selection
 
 ### `bridge.client.getSelection(): Promise<String[]>`  
 Get the current selection
+## Keyboard shortcuts  
+Keyboard shortcuts SHOULD be registered within the plugin's `contributes` object to give the user an index of which commands are available.
+Shortcut triggers can be overridden by the user in the settings panel.
+
+### `bridge.shortcuts.registerShortcut(spec)`
+Register a new keyboard shortcut using a shortcut specification.  
+See the [shortcut schema](/lib/schemas/shortcuts.schema.json) for available keys to use as triggers.
+
+```json
+{
+  "id": "myPlugin.shortcuts.myShortcut",
+  "description": "Trigger my command",
+  "trigger": ["Shift", "Meta", "A"]
+}
+```
