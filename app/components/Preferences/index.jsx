@@ -5,31 +5,17 @@ import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
 import { VerticalNavigation } from '../VerticalNavigation'
-import { Preference } from './preference'
 
-import { PreferencesVersionInput } from '../PreferencesVersionInput'
-import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
-import { PreferencesNumberInput } from '../PreferencesNumberInput'
-import { PreferencesThemeInput } from '../PreferencesThemeInput'
+import { Preference } from './preference'
+import { RepeatingPreference } from './repeatingPreference'
 
 import * as Layout from '../Layout'
 
 import appearance from './sections/appearance.json'
+import shortcuts from './sections/shortcuts.json'
 import general from './sections/general.json'
 
 import './style.css'
-
-/**
- * Map typenames to components
- * used to render the views
- * @type { Object.<String, React.Component> }
- */
-const INPUT_TYPES = {
-  boolean: PreferencesBooleanInput,
-  version: PreferencesVersionInput,
-  number: PreferencesNumberInput,
-  theme: PreferencesThemeInput
-}
 
 /**
  * Internal settings defined
@@ -38,13 +24,14 @@ const INPUT_TYPES = {
 const INTERNAL_SETTINGS = {
   items: [
     { title: 'General', items: general },
-    { title: 'Appearance', items: appearance }
+    { title: 'Appearance', items: appearance },
+    { title: 'Keyboard shortcuts', items: shortcuts }
   ]
 }
 
 export function Preferences ({ onClose = () => {} }) {
   const [shared, applyShared] = React.useContext(SharedContext)
-  const [local, applyLocal] = React.useContext(LocalContext)
+  const [, applyLocal] = React.useContext(LocalContext)
 
   const pluginSettings = React.useRef({
     title: 'Plugins',
@@ -115,29 +102,9 @@ export function Preferences ({ onClose = () => {} }) {
 
     const patch = {}
     const valuePath = parts.join('.')
+
     objectPath.set(patch, valuePath, value)
-
     apply(patch)
-  }
-
-  /**
-   * A helper function for getting the value
-   * from a path that either starts with
-   * 'shared' or 'local' - denoting the context
-   * to get data from
-   * @param { String } path
-   * @returns { Any }
-   */
-  function valueFromPath (path) {
-    const parts = path.split('.')
-    const sourceName = parts.shift()
-
-    let source = local
-    if (sourceName === 'shared') {
-      source = shared
-    }
-
-    return objectPath.get(source, parts.join('.'))
   }
 
   const sidebar = (
@@ -153,24 +120,13 @@ export function Preferences ({ onClose = () => {} }) {
           {
             (section?.items || [])
               .map((setting, i) => {
+                const Component = setting.repeating ? RepeatingPreference : Preference
                 return (
-                  <Preference key={i} title={setting.title} description={setting.description}>
-                    {
-                      (setting.inputs || [])
-                        .filter(input => INPUT_TYPES[input.type])
-                        .map((input, i) => {
-                          const InputComponent = INPUT_TYPES[input.type]
-                          return (
-                            <InputComponent
-                              key={i}
-                              {...input}
-                              value={input.bind ? valueFromPath(input.bind) : undefined}
-                              onChange={value => handleValueChange(input.bind, value)}
-                            />
-                          )
-                        })
-                    }
-                  </Preference>
+                  <Component
+                    key={i}
+                    setting={setting}
+                    onChange={handleValueChange}
+                  />
                 )
               })
           }

@@ -197,6 +197,12 @@ Get an item from the local state representation by its id. This is useful when r
 ### `bridge.items.deleteItem(id)`  
 Delete an item by its id.
 
+### `bridge.items.playItem(id): Promise<Void>`
+Play an item and set its state to 'playing'.
+
+### `bridge.items.stopItem(id): Promise<Void>`
+Stop an item and set its state to 'stopped'.
+
 ## Client  
 **The client api is only available within renderer processes**  
 Control aspects of the current client

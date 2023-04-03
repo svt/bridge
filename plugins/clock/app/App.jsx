@@ -18,18 +18,6 @@ const AVERAGE_TIME_SPAN_MS = 10000
  */
 const CHECK_INTERVAL_MS = 1000
 
-/**
- * Titles based on
- * the specified view,
- * these will be shown
- * in the widget
- * @type { Object.<String, String> }
- */
-const TITLES = {
-  latency: 'Command latency',
-  time: 'Current time'
-}
-
 export default function App () {
   const [latency, setLatency] = React.useState(0)
   const [time, setTime] = React.useState(Date.now())
@@ -66,7 +54,6 @@ export default function App () {
 
   return (
     <div className='Clock-wrapper'>
-      <div className='Clock-title'>{TITLES[view]}</div>
       {
         view === 'latency'
           ? <span className='Clock-digits'>{Math.floor(latency * 10) / 10}ms</span>
