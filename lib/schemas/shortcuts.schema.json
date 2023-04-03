@@ -13,11 +13,7 @@
       "type": "string",
       "description": "A human readable description of the shortcut, this will be shown in the settings panel"
     },
-    "command": {
-      "type": "string",
-      "description": "The id of the command to trigger with the shortcut"
-    },
-    "defaultTrigger": {
+    "trigger": {
       "type": "array",
       "description": "The shortcut's default trigger as an array of capitalized keys",
       "items": {
@@ -79,5 +75,5 @@
       }
     }
   },
-  "required": [ "id", "description", "command" ]
+  "required": [ "id", "description", "trigger" ]
 }
