@@ -81,7 +81,6 @@ function mergeDeep (targetObj, sourceObj) {
     $push operation is specified
     */
     if (Array.isArray(targetObj[key]) && Array.isArray(sourceObj[key].$push)) {
-      console.log('Using command $PUSH')
       targetObj[key].push(...sourceObj[key].$push)
       continue
     }
