@@ -3,7 +3,7 @@ import bridge from 'bridge'
 import ReactJson from 'react-json-view'
 
 function getCSSVar (variableName) {
-  return getComputedStyle(document.body).getPropertyValue(variableName)
+  return window.getComputedStyle(document.body).getPropertyValue(variableName)
 }
 
 export default function App () {
@@ -51,7 +51,7 @@ export default function App () {
           base0E: getCSSVar('--base-color'),
           base0F: getCSSVar('--base-color')
         }}
-        collapsed={true}
+        collapsed
       />
     </div>
   )
