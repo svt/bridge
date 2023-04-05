@@ -87,14 +87,12 @@ export function RundownListItem ({
         onDragLeave={e => handleDragLeave(e)}
         onDragStart={e => handleDragStart(e)}
         onContextMenu={e => handleContextMenu(e)}
-
         /*
         This data property is used within RundownList
         to focus the correct element based on the
         selection of items
         */
         data-item-id={item.id}
-
         tabIndex={0}
         draggable
       >

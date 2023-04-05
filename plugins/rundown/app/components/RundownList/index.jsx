@@ -29,7 +29,7 @@ export function RundownList () {
 
   const elRef = React.useRef()
 
-  const selection = shared?.[bridge.client.getIdentity()]?.selection || []
+  const selection = shared?.[bridge.client.getIdentity()]?.selection || []
   const items = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[store?.id]?.items || []
 
   /**
@@ -88,6 +88,12 @@ export function RundownList () {
           break
         case 'bridge.rundown.previous':
           select(-1)
+          break
+        case 'bridge.rundown.play':
+          selection.forEach(itemId => bridge.items.playItem(itemId))
+          break
+        case 'bridge.rundown.stop':
+          selection.forEach(itemId => bridge.items.stopItem(itemId))
           break
       }
     }
