@@ -9,6 +9,7 @@ Plugins allows Bridge to be extended with functionality, both through the backen
     - [name](#name)
     - [main](#main)
     - [engines](#engines)
+    - [contributes](#contributes)
 - [API reference](/docs/api/README.md)
 
 ## Getting started
@@ -103,4 +104,4 @@ Declare what version of Bridge is required to run the plugin. This property is r
 
 #### contributes
 **Optional**
-Optionally declare contributions made by this plugin. See the [API documentation](../api/README.md) for specifics.
+Optionally declare contributions made by this plugin. See the [API documentation](/docs/api/README.md) for specifics.
