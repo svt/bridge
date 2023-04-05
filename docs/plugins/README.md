@@ -103,5 +103,5 @@ The package's main file which will be run in the main process. If not specified 
 Declare what version of Bridge is required to run the plugin. This property is required and must contain the `bridge` key and a valid semver tag.
 
 #### contributes
-**Optional**
+**Optional**  
 Optionally declare contributions made by this plugin. See the [API documentation](/docs/api/README.md) for specifics.
