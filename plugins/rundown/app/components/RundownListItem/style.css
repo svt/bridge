@@ -11,6 +11,8 @@
 
   background: var(--base-color--background);
   box-sizing: border-box;
+
+  outline: none;
 }
 
 .RundownListItem:nth-child(even) {

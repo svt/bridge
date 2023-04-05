@@ -25,6 +25,24 @@
           { "type": "boolean", "bind": "name", "label": "Name" },
           { "type": "boolean", "bind": "type", "label": "Type" }
         ]
-    }]
+    }],
+    "shortcuts": [
+      {
+        "id": "bridge.rundown.play",
+        "trigger": ["F2"]
+      },
+      {
+        "id": "bridge.rundown.stop",
+        "trigger": ["F1"]
+      },
+      {
+        "id": "bridge.rundown.next",
+        "trigger": ["ArrowDown"]
+      },
+      {
+        "id": "bridge.rundown.previous",
+        "trigger": ["ArrowUp"]
+      }
+    ]
   }
 }

@@ -27,20 +27,87 @@ export function RundownList () {
   const [shared] = React.useContext(SharedContext)
   const [store] = React.useContext(StoreContext)
 
+  const elRef = React.useRef()
+
+  const selection = shared?.[bridge.client.getIdentity()]?.selection || []
   const items = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[store?.id]?.items || []
+
+  /**
+   * Focus a list item based on the
+   * item's id that it's rendering
+   *
+   * This is done so that we can still
+   * control the list by tabbing
+   */
+  function focusItem (id) {
+    const el = elRef.current.querySelector(`[data-item-id="${id}"]`)
+    if (!el) {
+      return
+    }
+    el.focus()
+  }
+
+  function select (deltaIndex = 0) {
+    if (items.length === 0) {
+      return
+    }
+
+    /*
+    Find the currently selected item id,
+    use the first selected item if going upwards
+    and the last if going downwards
+    */
+    const curItemId = deltaIndex < 0
+      ? selection[0]
+      : selection[selection.length - 1]
+
+    /*
+    If no item is selected,
+    select the first item
+    */
+    if (!curItemId && items.length > 0) {
+      focusItem(items[0])
+      return
+    }
+
+    /*
+    Increase or decrease the selected index,
+    clamp it to the number of current items
+    and select the new item
+    */
+    const curIndex = items.findIndex(id => id === curItemId)
+    const newIndex = Math.max(0, Math.min(items.length - 1, curIndex + deltaIndex))
+    focusItem(items[newIndex])
+  }
+
+  React.useEffect(() => {
+    function onShortcut (e) {
+      switch (e.detail.id) {
+        case 'bridge.rundown.next':
+          select(1)
+          break
+        case 'bridge.rundown.previous':
+          select(-1)
+          break
+      }
+    }
+
+    window.addEventListener('shortcut', onShortcut)
+    return () => {
+      window.removeEventListener('shortcut', onShortcut)
+    }
+  }, [items, selection])
 
   function handleDrop (e, itemId, toIndex) {
     bridge.commands.executeCommand('rundown.reorderItem', store?.id, itemId, toIndex)
   }
 
-  function handleMouseDown (itemId) {
+  function handleFocus (itemId) {
     bridge.client.setSelection(itemId)
   }
 
-  const selection = shared?.[bridge.client.getIdentity()]?.selection
-
   return (
-    <div className='RundownList'>
+    <div ref={elRef} className='RundownList'>
       {
         items.length > 0
           ? (
@@ -55,7 +122,7 @@ export function RundownList () {
                       key={i}
                       item={item}
                       onDrop={(e, droppedItemId) => handleDrop(e, droppedItemId, i)}
-                      onMouseDown={() => handleMouseDown(item.id)}
+                      onFocus={() => handleFocus(item.id)}
                       selected={isSelected}
                     >
                       <ItemComponent index={i + 1} item={item} />

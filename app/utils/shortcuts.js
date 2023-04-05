@@ -21,7 +21,11 @@ const keys = new Set()
  * @returns { String }
  */
 function normalize (key) {
-  if (/[a-z]/.test(key)) {
+  /*
+  Transform all lowercase single letters to their uppercase counterparts
+  as we don't want to require setting both 'a' and 'A' as a target
+  */
+  if (/^[a-z]$/.test(key)) {
     return key.toUpperCase()
   }
   return key

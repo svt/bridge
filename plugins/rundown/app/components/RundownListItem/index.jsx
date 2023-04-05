@@ -12,7 +12,7 @@ export function RundownListItem ({
   children,
   item,
   onDrop = () => {},
-  onMouseDown = () => {},
+  onFocus = () => {},
   selected: isSelected
 }) {
   const [store] = React.useContext(StoreContext)
@@ -81,12 +81,21 @@ export function RundownListItem ({
       }
       <div
         className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
+        onFocus={e => onFocus(e)}
         onDrop={(e, data) => handleDrop(e, data)}
         onDragOver={e => handleDragOver(e)}
         onDragLeave={e => handleDragLeave(e)}
         onDragStart={e => handleDragStart(e)}
-        onMouseDown={e => onMouseDown(e)}
         onContextMenu={e => handleContextMenu(e)}
+
+        /*
+        This data property is used within RundownList
+        to focus the correct element based on the
+        selection of items
+        */
+        data-item-id={item.id}
+
+        tabIndex={0}
         draggable
       >
         {children}
