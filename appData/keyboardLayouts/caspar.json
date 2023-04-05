@@ -1,0 +1,8 @@
+{
+  "event.play": {
+    "code": "F2"
+  },
+  "event.stop": {
+    "code": "F1"
+  }
+}

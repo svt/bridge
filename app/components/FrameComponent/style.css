@@ -1,14 +1,35 @@
 .FrameComponent {
+  display: flex;
   position: relative;
   padding: 0;
   margin: 0;
 
   width: 100%;
   height: 100%;
+
+  flex-direction: column;
 }
 
 .FrameComponent.is-focused {
   box-shadow: inset 0 0 0 1px var(--base-color--accent1);
+}
+
+.FrameComponent-header {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 40px;
+
+  padding: 0 10px;
+
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.FrameComponent-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .FrameComponent-frame {

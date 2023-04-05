@@ -13,6 +13,7 @@ const uuid = require('uuid')
 
 const state = require('./state')
 const types = require('./types')
+const events = require('./events')
 
 const MissingArgumentError = require('./error/MissingArgumentError')
 const InvalidArgumentError = require('./error/InvalidArgumentError')
@@ -100,3 +101,27 @@ function deleteItem (id) {
   })
 }
 exports.deleteItem = deleteItem
+
+/**
+ * Play the item and emit
+ * the 'playing' event
+ * @param { String } id
+ */
+async function playItem (id) {
+  const item = await getItem(id)
+  applyItem(id, { state: 'playing' })
+  events.emit('play', item)
+}
+exports.playItem = playItem
+
+/**
+ * Play the item and emit
+ * the 'stop' event
+ * @param { String } id
+ */
+async function stopItem (id) {
+  const item = await getItem(id)
+  applyItem(id, { state: 'stopped' })
+  events.emit('stop', item)
+}
+exports.stopItem = stopItem

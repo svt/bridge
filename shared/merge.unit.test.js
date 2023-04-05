@@ -4,7 +4,7 @@
 
 const merge = require('./merge')
 
-test('deep arrays', () => {
+test('concat arrays', () => {
   const source = {
     foo: {
       arr: [1, 2, 3]
@@ -13,7 +13,7 @@ test('deep arrays', () => {
 
   const apply = {
     foo: {
-      arr: [4, 5, 6]
+      arr: { $push: [4, 5, 6] }
     }
   }
 
@@ -22,4 +22,17 @@ test('deep arrays', () => {
       arr: [1, 2, 3, 4, 5, 6]
     }
   })
+})
+
+test('replace array values', () => {
+  const source = [1, 2, 3]
+
+  /*
+  Replace the value at
+  index 1 of the array
+  */
+  const apply = []
+  apply[1] = 4
+
+  expect(merge.deep(source, apply)[1]).toEqual(apply[1])
 })

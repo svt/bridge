@@ -62,7 +62,7 @@ to always include the full calculated
 state
 */
 ;(function () {
-  events.intercept('state.change', async (set, remoteRevision) => {
+  events.intercept('state.change', async (set, remoteRevision, transparent) => {
     revision += 1
 
     /*

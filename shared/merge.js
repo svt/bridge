@@ -45,7 +45,8 @@ function mergeDeep (targetObj, sourceObj) {
 
     {
       $insert: value,
-      $index: 2
+      $index: 2,
+      $delete
     }
     */
     if (
@@ -76,10 +77,32 @@ function mergeDeep (targetObj, sourceObj) {
 
     /*
     Merge arrays by appending the
-    source array to the target array
+    source array to the target array if the
+    $push operation is specified
+    */
+    if (Array.isArray(targetObj[key]) && Array.isArray(sourceObj[key].$push)) {
+      targetObj[key].push(...sourceObj[key].$push)
+      continue
+    }
+
+    /*
+    Merge arrays by using indexes (source[2] will replace target[2] e.t.c.),
+    this makes arrays behave much like dictionaries
     */
     if (Array.isArray(targetObj[key]) && Array.isArray(sourceObj[key])) {
-      targetObj[key].push(...sourceObj[key])
+      for (let i = 0; i < sourceObj[key].length; i++) {
+        if (
+          targetObj[key][i] &&
+          typeof targetObj[key][i] === 'object' &&
+
+          sourceObj[key][i] &&
+          typeof sourceObj[key][i] === 'object'
+        ) {
+          mergeDeep(targetObj[key][i], sourceObj[key][i])
+          continue
+        }
+        targetObj[key][i] = sourceObj[key][i]
+      }
       continue
     }
 

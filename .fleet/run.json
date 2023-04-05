@@ -1,0 +1,9 @@
+{
+  "configurations": [
+    {
+      "type": "docker-compose-up",
+      "name": "Run with Docker compose",
+      "files": []
+    }
+  ]
+}

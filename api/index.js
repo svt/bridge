@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 const transport = require('./transport')
+const shortcuts = require('./shortcuts')
 const commands = require('./commands')
 const settings = require('./settings')
 const widgets = require('./widgets')
@@ -20,6 +21,7 @@ const items = require('./items')
  */
 const api = {
   transport,
+  shortcuts,
   commands,
   settings,
   widgets,

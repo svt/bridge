@@ -10,6 +10,7 @@ import { useWebsocket } from './hooks/useWebsocket'
 
 import { deepApply } from './utils/apply'
 
+import * as shortcuts from './utils/shortcuts'
 import * as api from './api'
 
 import {
@@ -63,10 +64,24 @@ const socketHost = window.APP.socketHost || `${socketProtocol}://${window.locati
  */
 const workspace = window.APP.workspace
 
+/*
+Register keydown and keyup event listeners
+in order to parse shortcuts
+
+this must be done both in the application scope [here]
+and in any iframes
+*/
+;(function () {
+  window.addEventListener('keydown', e => shortcuts.registerKeyDown(e))
+  window.addEventListener('keyup', e => shortcuts.registerKeyUp(e))
+})()
+
 export default function App () {
   const [local, setLocal] = React.useState({})
   const [shared, setShared] = React.useState({})
+
   const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws?workspace=${workspace}`, true)
+
   /**
     * Setup a reference to hold
     * the current value of the
@@ -143,16 +158,9 @@ export default function App () {
    * to match
    * @param { Object.<> } data An object containing data to apply
    */
-  function applyShared (data = {}) {
-    /*
-    Calculate the new shared state
-    locally - be sure to copy the current
-    state or React won't treat it as an update
-    */
-    const newShared = deepApply({ ...sharedRef.current }, data)
-    setShared(newShared)
-
-    send({ type: 'state', data })
+  async function applyShared (data = {}) {
+    const bridge = await api.load()
+    bridge.state.apply(data)
   }
 
   /**

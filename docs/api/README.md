@@ -12,6 +12,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Types](#types)
 - [Items](#items)
 - [Client](#client)
+- [Keyboard shortcuts](#keyboard-shortcuts)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -40,7 +41,21 @@ Unregister a command
 ## Events
 Events are similar to commands however multiple handlers can listen for one event and they cannot return any data to the caller. 
 
-Events are useful when listening for global operations such as state updates or play states.
+Events are useful when listening for global operations such as state updates or play states. Such as:
+
+```javascript
+import bridge from 'bridge'
+
+bridge.events.on('play', item => {
+  console.log('Item with id', item.id, 'is now playing'
+  // React to the event
+})
+
+bridge.events.on('stop', item => {
+  console.log('Item with id', item.id, 'is now stopped'
+  // React to the event
+})
+```
 
 ### `bridge.events.emit(event, ...parameters)`
 Emit an event with or without any data
@@ -197,6 +212,12 @@ Get an item from the local state representation by its id. This is useful when r
 ### `bridge.items.deleteItem(id)`  
 Delete an item by its id.
 
+### `bridge.items.playItem(id): Promise<Void>`
+Play an item and set its state to 'playing'.
+
+### `bridge.items.stopItem(id): Promise<Void>`
+Stop an item and set its state to 'stopped'.
+
 ## Client  
 **The client api is only available within renderer processes**  
 Control aspects of the current client
@@ -212,3 +233,64 @@ Clear the current selection
 
 ### `bridge.client.getSelection(): Promise<String[]>`  
 Get the current selection
+
+## Keyboard shortcuts  
+Keyboard shortcuts SHOULD be registered within the plugin's `contributes` object to give the user an index of which commands are available.
+Shortcut triggers can be overridden by the user in the settings panel.
+
+### Listening to keyboard shortcuts
+Keyboard shortcuts are emitted using **DOM events** and **not `bridge.events`**.
+This is because keyboard shortcuts are only an alias for keyboard events and should be handled locally.
+
+Listen to a registered shortcut by subscribing to the `shortcut` DOM event, such as:
+
+```javascript
+const el = document.createElement('div')
+
+el.addEventListener('shortcut', e => {
+  console.log('Shortcut was triggered with id:', e.detail.id)
+
+  // React to action
+})
+```
+
+### Registering a shortcut using `contributes`
+A shortcut can be registered using `contributes.shortcuts` in a plugin's `package.json`.
+The field should be set to an array of shortcut-specification objects. Such as:
+
+```json
+{
+  "name": "my-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "contributes": {
+    "shortcuts": [
+      {
+        "id": "bridge.shortcuts.play",
+        "description": "My custom shortcut",
+        "trigger": ["Shift", "A"]
+      },
+      {
+        "id": "bridge.shortcuts.stop",
+        "description": "My second custom shortcut",
+        "trigger": ["Shift", "B"]
+      }
+    ]
+  }
+}
+```
+
+### `bridge.shortcuts.registerShortcut(spec)`
+Register a new keyboard shortcut using a shortcut specification.  
+See the [shortcut schema](/lib/schemas/shortcuts.schema.json) for available keys to use as triggers.
+
+```json
+{
+  "id": "myPlugin.shortcuts.myShortcut",
+  "description": "Trigger my command",
+  "trigger": ["Shift", "Meta", "A"]
+}
+```

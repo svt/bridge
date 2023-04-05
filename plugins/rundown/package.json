@@ -19,11 +19,30 @@
     "settings": [{
         "title": "Display properties",
         "description": "Select what properties to display in the rundown",
+        "bind": "shared.plugins.bridge-plugin-rundown.settings.display",
         "inputs": [
-          { "type": "boolean", "bind": "shared.plugins.bridge-plugin-rundown.settings.display.id", "label": "ID" },
-          { "type": "boolean", "bind": "shared.plugins.bridge-plugin-rundown.settings.display.name", "label": "Name" },
-          { "type": "boolean", "bind": "shared.plugins.bridge-plugin-rundown.settings.display.type", "label": "Type" }
+          { "type": "boolean", "bind": "id", "label": "ID" },
+          { "type": "boolean", "bind": "name", "label": "Name" },
+          { "type": "boolean", "bind": "type", "label": "Type" }
         ]
-    }]
+    }],
+    "shortcuts": [
+      {
+        "id": "bridge.rundown.play",
+        "trigger": ["F2"]
+      },
+      {
+        "id": "bridge.rundown.stop",
+        "trigger": ["F1"]
+      },
+      {
+        "id": "bridge.rundown.next",
+        "trigger": ["ArrowDown"]
+      },
+      {
+        "id": "bridge.rundown.previous",
+        "trigger": ["ArrowUp"]
+      }
+    ]
   }
 }

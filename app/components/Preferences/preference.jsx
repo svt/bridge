@@ -1,25 +1,69 @@
 import React from 'react'
-
 import './preference.css'
 
-export function Preference ({ children, title, description }) {
+import { SharedContext } from '../../sharedContext'
+import { LocalContext } from '../../localContext'
+
+import { inputComponents } from './shared'
+
+import objectPath from 'object-path'
+
+export function Preference ({ setting, onChange = () => {} }) {
+  const [shared] = React.useContext(SharedContext)
+  const [local] = React.useContext(LocalContext)
+
+  /**
+   * A helper function for getting the value
+   * from a path that either starts with
+   * 'shared' or 'local' - denoting the context
+   * to get data from
+   * @param { String } path
+   * @returns { Any }
+   */
+  function valueFromPath (path) {
+    const parts = path.split('.')
+    const sourceName = parts.shift()
+
+    let source = local
+    if (sourceName === 'shared') {
+      source = shared
+    }
+
+    return objectPath.get(source, parts.join('.'))
+  }
+
   return (
     <div className='Preferences-preference'>
       {
-        title
-          ? <h3 className='Preferences-preferenceTitle'>{title}</h3>
+        setting.title
+          ? <h3 className='Preferences-preferenceTitle'>{setting.title}</h3>
           : <></>
       }
       {
-        description
+        setting.description
           ? (
             <label className='Preferences-preferenceDescription'>
-              {description}
+              {setting.description}
             </label>
             )
           : <></>
       }
-      {children}
+      {
+        (setting.inputs || [])
+          .filter(input => inputComponents[input.type])
+          .map((input, i) => {
+            const InputComponent = inputComponents[input.type]
+            const bind = `${setting.bind ? `${setting.bind}.` : ''}${input.bind ?? ''}`
+            return (
+              <InputComponent
+                key={i}
+                {...input}
+                value={bind ? valueFromPath(bind) : undefined}
+                onChange={value => onChange(bind, value)}
+              />
+            )
+          })
+      }
     </div>
   )
 }
