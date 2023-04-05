@@ -75,5 +75,5 @@
       }
     }
   },
-  "required": [ "id", "description", "trigger" ]
+  "required": [ "id", "trigger" ]
 }

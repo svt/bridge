@@ -2,19 +2,20 @@
 //
 // SPDX-License-Identifier: MIT
 
+/**
+ * @typedef {{
+ *   id: String,
+ *   description: String,
+ *   trigger: String[]
+ * }} ShortcutSpec
+ */
+
 const state = require('./state')
 const commands = require('./commands')
 
 /**
  * Make a widget available
  * to the application
- *
- * @typedef {{
- *   id: String,
- *   description: String,
- *   trigger: String[]
- * }} ShortcutSpec
- *
  * @param { ShortcutSpec } spec
  */
 function registerShortcut (spec = {}) {
@@ -29,20 +30,17 @@ exports.registerWidget = registerShortcut
  * @returns { Promise.<ShortcutSpec> }
  */
 function getShortcut (id) {
-  return state.get(`_shortcuts.${id}`)
+  return state.getLocalState()?._shortcuts?.[id]
 }
+exports.getShortcut = getShortcut
 
 /**
- * Capture a shortcut from a keyboard event
- * and only execute the provided callback
- * @param { KeyboardEvent } e
- * @param { String } id The id of the shortcut to capture
- * @param { Function } callback A callback to execute when the shortcut is captured
- *
- * @todo: Match multiple keys
+ * Get all shortcuts'
+ * specifications
+ * @returns { Promise.<ShortcutSpec[]> }
  */
-async function captureShortcut (e, id, callback) {
-  const shortcut = await getShortcut(id)
-  console.log(shortcut)
+async function getShortcuts () {
+  const index = state.getLocalState()?._shortcuts
+  return Object.values(index || {})
 }
-exports.captureShortcut = captureShortcut
+exports.getShortcuts = getShortcuts

@@ -6,10 +6,12 @@ import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
 import { SocketContext } from './socketContext'
 
+import { useShortcuts } from './hooks/useShortcuts'
 import { useWebsocket } from './hooks/useWebsocket'
 
 import { deepApply } from './utils/apply'
 
+import * as shortcuts from './utils/shortcuts'
 import * as api from './api'
 
 import {
@@ -63,10 +65,25 @@ const socketHost = window.APP.socketHost || `${socketProtocol}://${window.locati
  */
 const workspace = window.APP.workspace
 
+/*
+Register keydown and keyup event listeners
+in order to parse shortcuts
+
+this must be done both in the application scope [here]
+and in any iframes
+*/
+;(function () {
+  window.addEventListener('keydown', e => shortcuts.registerKeyDown(e))
+  window.addEventListener('keyup', e => shortcuts.registerKeyUp(e))
+})()
+
 export default function App () {
   const [local, setLocal] = React.useState({})
   const [shared, setShared] = React.useState({})
+
   const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws?workspace=${workspace}`, true)
+  const [] = useShortcuts()
+
   /**
     * Setup a reference to hold
     * the current value of the

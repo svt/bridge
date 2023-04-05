@@ -3,6 +3,7 @@ import React from 'react'
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
+import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
 import * as api from '../../api'
 
@@ -133,6 +134,15 @@ export function FrameComponent ({ data }) {
     return () => {
       frameRef.current?.contentWindow.removeEventListener('focus', onFocus)
       frameRef.current?.contentWindow.removeEventListener('blur', onBlur)
+    }
+  }, [frameRef.current])
+
+  React.useEffect(() => {
+    frameRef.current?.contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
+    frameRef.current?.contentWindow.addEventListener('keyup', shortcuts.registerKeyUp)
+    return () => {
+      frameRef.current?.contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
+      frameRef.current?.contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
     }
   }, [frameRef.current])
 
