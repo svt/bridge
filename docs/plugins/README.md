@@ -22,15 +22,61 @@ Plugin root
 ```
 
 ### Plugin manifest
-Each plugin MUST contain a plugin manifest in the form of `package.json` with a few additional properties. This file is responsible for telling Bridge requirements and contributions made by the plugin in order to run it correctly and efficiently. 
+Each plugin MUST contain a plugin manifest in the form of `package.json` with a few additional properties.
+This file is responsible for telling Bridge requirements and contributions made by the plugin in order to run it correctly and efficiently.
 
-```js
+Contributions can be added either through `package.json` or using the matching api method, such as `bridge.types.registerType(typeObject)`.
+
+```json
 {
   "version": "1.0.0",
   "name": "my-plugin",
   "main": "index.js",
   "engines": {
     "bridge": "^1.0.0"
+  },
+  "contributes": {
+    "shortcuts": [
+      {
+        "id": "my-plugin.shortcuts.my-shortcut",
+        "description": "Executes my cool action",
+        "trigger": ["Shift", "A"]
+      }
+    ],
+    "settings": [
+      {
+        "title": "My repeating setting",
+        "description": "Manage multiple instances of my cool setting",
+        "repeating": true,
+        "bind": "shared.plugins.my-plugin.settings.repeating-setting",
+        "inputs": [
+          { "type": "string", "bind": "string", "label": "My setting's string" },
+          { "type": "number", "bind": "number", "label": "My setting's number" }
+        ]
+      },
+      {
+        "title": "My boolean setting",
+        "description": "Manage my boolean value",
+        "repeating": true,
+        "bind": "shared.plugins.my-plugin.settings.boolean-setting",
+        "inputs": [
+          { "type": "boolean", "bind": "value", "label": "My setting's value" }
+        ]
+      }
+    ],
+    "types": [
+      {
+        "id": "my-plugin.types.my-image-type",
+        "inherits": "bridge.types.image",
+        "properties": {
+          "my-plugin.my-property": {
+            "name": "My property",
+            "type": "string",
+            "group": "Cool settings"
+          }
+        }
+      }
+    ]
   }
 }
 ```
@@ -54,3 +100,7 @@ The package's main file which will be run in the main process. If not specified 
 **Required**  
 *See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines)*  
 Declare what version of Bridge is required to run the plugin. This property is required and must contain the `bridge` key and a valid semver tag.
+
+#### contributes
+**Optional**
+Optionally declare contributions made by this plugin. See the [API documentation](../api/README.md) for specifics.
