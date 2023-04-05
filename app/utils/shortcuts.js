@@ -11,11 +11,27 @@ import * as api from '../api'
  */
 const keys = new Set()
 
+/**
+ * Normalize a key name in order
+ * to more easily target specific keys
+ *
+ * - Lower case keys are all transformed to upper case
+ *
+ * @param { String } key The key to normalize
+ * @returns { String }
+ */
+function normalize (key) {
+  if (/[a-z]/.test(key)) {
+    return key.toUpperCase()
+  }
+  return key
+}
+
 export async function registerKeyDown (e) {
   const bridge = await api.load()
   const shortcuts = await bridge.shortcuts.getShortcuts()
 
-  keys.add(e.key)
+  keys.add(normalize(e.key))
 
   const matchedShortcuts = shortcuts.filter(shortcut => {
     for (const trigger of shortcut.trigger) {
@@ -46,5 +62,5 @@ export async function registerKeyDown (e) {
 }
 
 export function registerKeyUp (e) {
-  keys.delete(e.key)
+  keys.delete(normalize(e.key))
 }
