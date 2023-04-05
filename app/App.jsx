@@ -6,7 +6,6 @@ import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
 import { SocketContext } from './socketContext'
 
-import { useShortcuts } from './hooks/useShortcuts'
 import { useWebsocket } from './hooks/useWebsocket'
 
 import { deepApply } from './utils/apply'
@@ -82,7 +81,6 @@ export default function App () {
   const [shared, setShared] = React.useState({})
 
   const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws?workspace=${workspace}`, true)
-  const [] = useShortcuts()
 
   /**
     * Setup a reference to hold

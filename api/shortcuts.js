@@ -41,6 +41,6 @@ exports.getShortcut = getShortcut
  */
 async function getShortcuts () {
   const index = state.getLocalState()?._shortcuts
-  return Object.values(index || {})
+  return Object.values(index || {})
 }
 exports.getShortcuts = getShortcuts

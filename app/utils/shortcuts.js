@@ -35,7 +35,7 @@ export async function registerKeyDown (e) {
     Run logic to determine of we're
     triggering a shortcut
     */
-    const event = new CustomEvent('shortcut', {
+    const event = new window.CustomEvent('shortcut', {
       detail: {
         id: shortcut.id
       },
