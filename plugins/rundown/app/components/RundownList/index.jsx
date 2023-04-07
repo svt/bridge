@@ -136,7 +136,7 @@ export function RundownList ({ rundownId = '', className = '' }) {
   return (
     <div ref={elRef} className={`RundownList ${className}`} onFocus={e => handleFocusPropagation(e)}>
       {
-        (itemIds || [])
+        (itemIds || [])
           .map(id => bridge.items.getLocalItem(id))
           .filter(item => item)
           .map((item, i) => {

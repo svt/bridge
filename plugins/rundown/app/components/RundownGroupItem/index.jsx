@@ -19,7 +19,7 @@ export function RundownGroupItem ({ index, item }) {
    * Will update the state
    * with the new value
    *
-   * @param { Boolean } newState Whether or not the
+   * @param { Boolean } newState Whether or not the
    *                             group is collapsed
    */
   function setCollapsed (newState) {
@@ -98,14 +98,14 @@ export function RundownGroupItem ({ index, item }) {
         onDragOver={e => handleDragOver(e)}
       >
         {
-           (itemIds || []).length === 0 || item?.['rundown.isCollapsed']
-           ? (
+           (itemIds || []).length === 0 || item?.['rundown.isCollapsed']
+             ? (
                <div
                  className='RundownGroupItem-dropZone'
                  onDrop={e => handleDrop(e)}
                />
-             )
-           : <RundownList className='RundownGroupItem-children' rundownId={item.id} />
+               )
+             : <RundownList className='RundownGroupItem-children' rundownId={item.id} />
         }
       </div>
     </div>
