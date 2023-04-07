@@ -42,6 +42,14 @@
       {
         "id": "bridge.rundown.previous",
         "trigger": ["ArrowUp"]
+      },
+      {
+        "id": "bridge.rundown.collapse",
+        "trigger": ["ArrowLeft"]
+      },
+      {
+        "id": "bridge.rundown.expand",
+        "trigger": ["ArrowRight"]
       }
     ]
   }

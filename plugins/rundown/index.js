@@ -73,14 +73,26 @@ exports.activate = async () => {
 
   bridge.commands.registerCommand('rundown.reorderItem', async (rundownId, itemId, newIndex) => {
     const items = await getItems(rundownId)
+
+    if (items.length === 0) {
+      return appendItem(rundownId, itemId)
+    }
+
     const oldIndex = items.indexOf(itemId)
     const weightedNewIndex = oldIndex < newIndex ? newIndex - 1 : newIndex
 
-    if (oldIndex === -1) return
-    if (oldIndex === newIndex) return
+    if (oldIndex === newIndex) {
+      return
+    }
 
-    bridge.state.apply([
-      {
+    const patches = []
+
+    /*
+    Only remove the old index if it
+    is in the current rundown
+    */
+    if (oldIndex !== -1) {
+      patches.push({
         plugins: {
           [manifest.name]: {
             rundowns: {
@@ -92,12 +104,17 @@ exports.activate = async () => {
             }
           }
         }
-      }, {
+      })
+    }
+
+    bridge.state.apply([
+      ...patches,
+      {
         plugins: {
           [manifest.name]: {
             rundowns: {
               [rundownId]: {
-                items: { $insert: itemId, $index: weightedNewIndex }
+                items: { $insert: itemId, $index: Math.max(0, weightedNewIndex) }
               }
             }
           }
@@ -127,7 +144,7 @@ exports.activate = async () => {
     })
   })
 
-  bridge.commands.registerCommand('rundown.appendItem', async (rundownId, itemId) => {
+  async function appendItem (rundownId, itemId) {
     const items = await getItems(rundownId)
 
     /*
@@ -160,5 +177,6 @@ exports.activate = async () => {
         }
       })
     }
-  })
+  }
+  bridge.commands.registerCommand('rundown.appendItem', appendItem)
 }

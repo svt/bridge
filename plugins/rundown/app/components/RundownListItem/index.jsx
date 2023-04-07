@@ -3,25 +3,22 @@ import bridge from 'bridge'
 
 import './style.css'
 
-import { StoreContext } from '../../storeContext'
-
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 
 export function RundownListItem ({
   children,
   item,
+  rundownId,
   onDrop = () => {},
   onFocus = () => {},
   selected: isSelected
 }) {
-  const [store] = React.useContext(StoreContext)
-
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
   const [contextPos, setContextPos] = React.useState()
 
   function removeItemFromRundown (id) {
-    bridge.commands.executeCommand('rundown.removeItem', store?.id, id)
+    bridge.commands.executeCommand('rundown.removeItem', rundownId, id)
   }
 
   function resetContextMenu () {
@@ -39,13 +36,13 @@ export function RundownListItem ({
 
   function handleDragStart (e) {
     e.dataTransfer.setData('itemId', item.id)
+    e.dataTransfer.setData('sourceRundownId', rundownId)
+    e.stopPropagation()
   }
 
   function handleDrop (e) {
     setIsDraggedOver(false)
-
-    const itemId = e.dataTransfer.getData('itemId')
-    onDrop(e, itemId)
+    onDrop(e)
   }
 
   function handleContextMenu (e) {
@@ -56,7 +53,6 @@ export function RundownListItem ({
 
   function handleDelete (id) {
     removeItemFromRundown(id)
-    bridge.items.deleteItem(id)
   }
 
   /**

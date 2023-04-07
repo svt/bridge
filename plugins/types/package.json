@@ -34,6 +34,11 @@
         }
       },
       {
+        "id": "bridge.types.group",
+        "name": "Group",
+        "inherits": "bridge.types.root"
+      },
+      {
         "id": "bridge.types.media",
         "inherits": "bridge.types.root",
         "properties": {
