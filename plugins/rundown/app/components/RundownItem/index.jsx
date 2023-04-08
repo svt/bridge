@@ -10,7 +10,7 @@ export function RundownItem ({ index, item }) {
 
   const properties = [
     { if: displaySettings?.id, name: 'ID', value: item.id },
-    { if: displaySettings?.name, name: 'Name', value: item.data.name },
+    { if: displaySettings?.name, name: 'Name', value: item.data.name, hiddenName: true },
     { if: displaySettings?.type, name: 'Type', value: item.type }
   ]
 
@@ -25,7 +25,10 @@ export function RundownItem ({ index, item }) {
           .filter(property => property.if)
           .map((property, i) => (
             <div className='RundownItem-property' key={i}>
-              <div className='RundownItem-propertyName'>{property.name}:</div>
+              {
+                !property.hiddenName &&
+                <div className='RundownItem-propertyName'>{property.name}:</div>
+              }
               <div>{property.value}</div>
             </div>
           ))

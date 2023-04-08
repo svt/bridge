@@ -6,6 +6,7 @@ import './style.css'
 import { SharedContext } from '../../sharedContext'
 
 import { RundownList } from '../RundownList'
+import { Icon } from '../Icon'
 
 export function RundownGroupItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
@@ -82,12 +83,17 @@ export function RundownGroupItem ({ index, item }) {
   }
 
   const itemIds = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[item?.id]?.items || []
+  const isCollapsed = item?.['rundown.isCollapsed']
 
   return (
-    <div ref={elRef} className='RundownGroupItem' data-item-type={item.type}>
+    <div ref={elRef} className={`RundownGroupItem ${isCollapsed ? 'is-collapsed' : ''}`} data-item-type={item.type}>
+      <div className='RundownGroupItem-color' style={{ backgroundColor: item?.data?.color }} />
       <div className='RundownGroupItem-header'>
         <div className='RundownGroupItem-index'>
           {index}
+        </div>
+        <div className='RundownGroupItem-arrow'>
+          <Icon name='arrowDown'/>
         </div>
         <div className='RundownGroupItem-name'>
           {item?.data?.name}
@@ -98,7 +104,7 @@ export function RundownGroupItem ({ index, item }) {
         onDragOver={e => handleDragOver(e)}
       >
         {
-           (itemIds || []).length === 0 || item?.['rundown.isCollapsed']
+           (itemIds || []).length === 0 || isCollapsed
              ? (
                <div
                  className='RundownGroupItem-dropZone'

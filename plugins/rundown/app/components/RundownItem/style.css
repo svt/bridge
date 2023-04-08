@@ -6,14 +6,20 @@
 
 .RundownItem {
   display: flex;
+  position: relative;
   padding: 1em;
 }
 
 .RundownItem-color {
-  width: 6px;
-  margin: -11px 15px -11px -9px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
 
-  border-radius: 10px;
+  width: 3px;
+
+  z-index: 0;
+  pointer-events: none;
 }
 
 .RundownItem-index {
