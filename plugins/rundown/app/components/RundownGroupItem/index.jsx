@@ -82,7 +82,7 @@ export function RundownGroupItem ({ index, item }) {
     e.stopPropagation()
   }
 
-  const itemIds = shared?.items?.[item?.id]?.data?.items || []
+  const itemIds = shared?.items?.[item?.id]?.data?.items || []
   const isCollapsed = item?.['rundown.ui.collapsed']
 
   return (

@@ -79,7 +79,7 @@ exports.activate = async () => {
     }
 
     const oldIndex = items.indexOf(itemId)
-    const weightedNewIndex = oldIndex < newIndex ? newIndex - 1 : newIndex
+    const weightedNewIndex = oldIndex < newIndex && oldIndex > -1 ? newIndex - 1 : newIndex
 
     if (oldIndex === newIndex) {
       return
