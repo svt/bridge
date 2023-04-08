@@ -15,18 +15,24 @@
 
   width: 100%;
   padding: 1em;
+
+  box-sizing: border-box;
 }
 
 .RundownGroupItem-index {
-  margin-right: 2.5em;
+  margin-right: 0.4em;
   opacity: 0.5;
+}
+
+.RundownGroupItem-arrowWrapper {
+  width: 25px;
+  margin-right: 7px;
 }
 
 .RundownGroupItem-arrow {
   position: absolute;
   width: 25px;
   height: 25px;
-  margin-left: 1em;
   margin-top: -3px;
 
   transform: rotate(0deg);
@@ -63,4 +69,12 @@
 
   z-index: 0;
   pointer-events: none;
+}
+
+.RundownGroupItem-property {
+  margin-right: 10px;
+}
+
+.RundownGroupItem-notes {
+  opacity: 0.6;
 }

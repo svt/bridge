@@ -1,0 +1,39 @@
+{
+  "name": "bridge-plugin-variables",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "contributes": {
+    "types": [
+      {
+        "id": "bridge.variables.variable",
+        "name": "Variable",
+        "inherits": "bridge.types.root",
+        "properties": {
+          "variable.key": {
+            "name": "Variable name",
+            "type": "string",
+            "group": "Variable"
+          },
+          "variable.value": {
+            "name": "Variable value",
+            "type": "string",
+            "group": "Variable"
+          }
+        }
+      }
+    ]
+  },
+  "author": "Axel Boberg (axel.boberg@svt.se)",
+  "license": "UNLICENSED"
+}

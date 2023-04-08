@@ -48,7 +48,7 @@ async function initSettings () {
       [manifest.name]: {
         settings: {
           display: {
-            name: true,
+            notes: true,
             type: true
           }
         }

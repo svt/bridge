@@ -5,6 +5,7 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+import { RundownVariableItem } from '../RundownVariableItem'
 import { RundownDividerItem } from '../RundownDividerItem'
 import { RundownGroupItem } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
@@ -18,11 +19,12 @@ import { RundownItem } from '../RundownItem'
  * @type { Object.<String, ReactComponent> }
  */
 const TYPE_COMPONENTS = {
+  'bridge.variables.variable': RundownVariableItem,
   'bridge.types.divider': RundownDividerItem,
   'bridge.types.group': RundownGroupItem
 }
 
-export function RundownList ({ rundownId = '', className = '' }) {
+export function RundownList ({ rundownId = '', className = '', indexPrefix = '' }) {
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
@@ -151,7 +153,7 @@ export function RundownList ({ rundownId = '', className = '' }) {
                 onFocus={() => handleFocus(item.id)}
                 selected={isSelected}
               >
-                <ItemComponent index={i + 1} item={item} />
+                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} />
               </RundownListItem>
             )
           })

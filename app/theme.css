@@ -16,6 +16,8 @@
 
   --base-color--background: #232427;
   --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', sans-serif;
+
+  --base-color-type--variable: #0F418C;
 }
 
 .u-theme--light {
@@ -34,6 +36,8 @@
   --base-color--shade2: rgba(255, 255, 255, 0.5);
 
   --base-color--background: white;
+
+  --base-color-type--variable: #0F418C;
 }
 
 .u-theme--purple {
@@ -52,4 +56,6 @@
   --base-color--shade2: rgba(39, 16, 51, 0.5);
 
   --base-color--background: #271033;
+
+  --base-color-type--variable: #0F418C;
 }

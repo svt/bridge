@@ -7,7 +7,14 @@
 .RundownItem {
   display: flex;
   position: relative;
+  width: 100%;
   padding: 1em;
+}
+
+.RundownItem-section {
+  display: flex;
+  width: 100%;
+  align-items: center;
 }
 
 .RundownItem-color {
@@ -25,6 +32,14 @@
 .RundownItem-index {
   margin-right: 1em;
   opacity: 0.5;
+}
+
+.RundownItem-name {
+  margin-right: 10px;
+}
+
+.RundownItem-notes {
+  opacity: 0.6;
 }
 
 .RundownItem-property {
