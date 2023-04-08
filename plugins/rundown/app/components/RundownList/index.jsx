@@ -22,7 +22,7 @@ const TYPE_COMPONENTS = {
   'bridge.types.group': RundownGroupItem
 }
 
-export function RundownList ({ rundownId = '', className = '' }) {
+export function RundownList ({ rundownId = '', className = '', indexPrefix = '' }) {
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
@@ -151,7 +151,7 @@ export function RundownList ({ rundownId = '', className = '' }) {
                 onFocus={() => handleFocus(item.id)}
                 selected={isSelected}
               >
-                <ItemComponent index={i + 1} item={item} />
+                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} />
               </RundownListItem>
             )
           })

@@ -92,8 +92,10 @@ export function RundownGroupItem ({ index, item }) {
         <div className='RundownGroupItem-index'>
           {index}
         </div>
-        <div className='RundownGroupItem-arrow'>
-          <Icon name='arrowDown' />
+        <div className='RundownGroupItem-arrowWrapper'>
+          <div className='RundownGroupItem-arrow'>
+            <Icon name='arrowDown' />
+          </div>
         </div>
         <div className='RundownGroupItem-name'>
           {item?.data?.name}
@@ -111,7 +113,7 @@ export function RundownGroupItem ({ index, item }) {
                  onDrop={e => handleDrop(e)}
                />
                )
-             : <RundownList className='RundownGroupItem-children' rundownId={item.id} />
+             : <RundownList className='RundownGroupItem-children' rundownId={item.id} indexPrefix={`${index}.`} />
         }
       </div>
     </div>
