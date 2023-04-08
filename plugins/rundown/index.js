@@ -68,7 +68,7 @@ exports.activate = async () => {
    * @returns { String[] }
    */
   async function getItems (rundownId) {
-    return (await bridge.state.get(`plugins.${manifest.name}.rundowns.${rundownId}.items`)) || []
+    return (await bridge.state.get(`items.${rundownId}.data.items`)) || []
   }
 
   bridge.commands.registerCommand('rundown.reorderItem', async (rundownId, itemId, newIndex) => {
@@ -79,7 +79,7 @@ exports.activate = async () => {
     }
 
     const oldIndex = items.indexOf(itemId)
-    const weightedNewIndex = oldIndex < newIndex ? newIndex - 1 : newIndex
+    const weightedNewIndex = oldIndex < newIndex && oldIndex > -1 ? newIndex - 1 : newIndex
 
     if (oldIndex === newIndex) {
       return
@@ -93,13 +93,11 @@ exports.activate = async () => {
     */
     if (oldIndex !== -1) {
       patches.push({
-        plugins: {
-          [manifest.name]: {
-            rundowns: {
-              [rundownId]: {
-                items: {
-                  [oldIndex]: { $delete: true }
-                }
+        items: {
+          [rundownId]: {
+            data: {
+              items: {
+                [oldIndex]: { $delete: true }
               }
             }
           }
@@ -110,12 +108,10 @@ exports.activate = async () => {
     bridge.state.apply([
       ...patches,
       {
-        plugins: {
-          [manifest.name]: {
-            rundowns: {
-              [rundownId]: {
-                items: { $insert: itemId, $index: Math.max(0, weightedNewIndex) }
-              }
+        items: {
+          [rundownId]: {
+            data: {
+              items: { $insert: itemId, $index: Math.max(0, weightedNewIndex) }
             }
           }
         }
@@ -130,13 +126,11 @@ exports.activate = async () => {
     if (index === -1) return
 
     bridge.state.apply({
-      plugins: {
-        [manifest.name]: {
-          rundowns: {
-            [rundownId]: {
-              items: {
-                [index]: { $delete: true }
-              }
+      items: {
+        [rundownId]: {
+          data: {
+            items: {
+              [index]: { $delete: true }
             }
           }
         }
@@ -154,24 +148,20 @@ exports.activate = async () => {
     */
     if (items.length === 0) {
       bridge.state.apply({
-        plugins: {
-          [manifest.name]: {
-            rundowns: {
-              [rundownId]: {
-                items: [itemId]
-              }
+        items: {
+          [rundownId]: {
+            data: {
+              items: [itemId]
             }
           }
         }
       })
     } else {
       bridge.state.apply({
-        plugins: {
-          [manifest.name]: {
-            rundowns: {
-              [rundownId]: {
-                items: { $push: [itemId] }
-              }
+        items: {
+          [rundownId]: {
+            data: {
+              items: { $push: [itemId] }
             }
           }
         }

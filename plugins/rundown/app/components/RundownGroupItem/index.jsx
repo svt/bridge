@@ -54,7 +54,7 @@ export function RundownGroupItem ({ index, item }) {
     return () => {
       window.removeEventListener('shortcut', onShortcut)
     }
-  }, [elRef])
+  }, [elRef, item])
 
   function handleDrop (e) {
     e.stopPropagation()
@@ -82,7 +82,7 @@ export function RundownGroupItem ({ index, item }) {
     e.stopPropagation()
   }
 
-  const itemIds = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[item?.id]?.items || []
+  const itemIds = shared?.items?.[item?.id]?.data?.items || []
   const isCollapsed = item?.['rundown.ui.collapsed']
 
   return (
