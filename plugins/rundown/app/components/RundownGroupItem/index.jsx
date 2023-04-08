@@ -54,7 +54,7 @@ export function RundownGroupItem ({ index, item }) {
     return () => {
       window.removeEventListener('shortcut', onShortcut)
     }
-  }, [elRef])
+  }, [elRef, item])
 
   function handleDrop (e) {
     e.stopPropagation()
