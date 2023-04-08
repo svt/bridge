@@ -93,7 +93,7 @@ export function RundownGroupItem ({ index, item }) {
           {index}
         </div>
         <div className='RundownGroupItem-arrow'>
-          <Icon name='arrowDown'/>
+          <Icon name='arrowDown' />
         </div>
         <div className='RundownGroupItem-name'>
           {item?.data?.name}

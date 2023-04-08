@@ -27,7 +27,7 @@ export function RundownItem ({ index, item }) {
             <div className='RundownItem-property' key={i}>
               {
                 !property.hiddenName &&
-                <div className='RundownItem-propertyName'>{property.name}:</div>
+                  <div className='RundownItem-propertyName'>{property.name}:</div>
               }
               <div>{property.value}</div>
             </div>
