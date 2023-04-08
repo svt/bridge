@@ -5,6 +5,7 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+import { RundownVariableItem } from '../RundownVariableItem'
 import { RundownDividerItem } from '../RundownDividerItem'
 import { RundownGroupItem } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
@@ -18,6 +19,7 @@ import { RundownItem } from '../RundownItem'
  * @type { Object.<String, ReactComponent> }
  */
 const TYPE_COMPONENTS = {
+  'bridge.variables.variable': RundownVariableItem,
   'bridge.types.divider': RundownDividerItem,
   'bridge.types.group': RundownGroupItem
 }

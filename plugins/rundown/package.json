@@ -22,7 +22,6 @@
         "bind": "shared.plugins.bridge-plugin-rundown.settings.display",
         "inputs": [
           { "type": "boolean", "bind": "id", "label": "ID" },
-          { "type": "boolean", "bind": "name", "label": "Name" },
           { "type": "boolean", "bind": "type", "label": "Type" }
         ]
     }],

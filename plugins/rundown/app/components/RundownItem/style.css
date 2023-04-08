@@ -7,7 +7,13 @@
 .RundownItem {
   display: flex;
   position: relative;
+  width: 100%;
   padding: 1em;
+}
+
+.RundownItem-section {
+  display: flex;
+  align-items: center;
 }
 
 .RundownItem-color {
