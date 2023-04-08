@@ -29,7 +29,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
 
   const elRef = React.useRef()
   const selection = shared?.[bridge.client.getIdentity()]?.selection || []
-  const itemIds = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[rundownId]?.items || []
+  const itemIds = shared?.items?.[rundownId]?.data?.items || []
 
   /**
    * Focus a list item based on the
