@@ -22,7 +22,8 @@
         "bind": "shared.plugins.bridge-plugin-rundown.settings.display",
         "inputs": [
           { "type": "boolean", "bind": "id", "label": "ID" },
-          { "type": "boolean", "bind": "type", "label": "Type" }
+          { "type": "boolean", "bind": "type", "label": "Type" },
+          { "type": "boolean", "bind": "notes", "label": "Notes" }
         ]
     }],
     "shortcuts": [

@@ -11,8 +11,11 @@ export function RundownVariableItem ({ index, item }) {
           <div className='RundownVariableItem-index'>
             {index}
           </div>
-          <div className='RundownVariableItem-name'>
+          <div className='RundownVariableItem-property'>
             {item?.data?.name}
+          </div>
+          <div className='RundownVariableItem-property RundownVariableItem-notes'>
+            {item?.data?.notes}
           </div>
         </div>
         <div className='RundownVariableItem-section'>

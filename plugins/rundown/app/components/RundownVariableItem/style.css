@@ -19,6 +19,14 @@
   opacity: 0.5;
 }
 
+.RundownVariableItem-property {
+  margin-right: 10px;
+}
+
+.RundownVariableItem-notes {
+  opacity: 0.6;
+}
+
 .RundownVariableItem-section {
   display: flex;
   align-items: center;

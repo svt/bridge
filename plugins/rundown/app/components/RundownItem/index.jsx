@@ -26,6 +26,14 @@ export function RundownItem ({ index, item }) {
           <div className='RundownItem-name'>
             {item.data.name}
           </div>
+          {
+            displaySettings?.notes &&
+            (
+              <div className='RundownItem-notes'>
+                {item.data?.notes}
+              </div>
+            )
+          }
         </div>
         <div className='RundownItem-section'>
           {

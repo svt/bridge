@@ -15,6 +15,8 @@
 
   width: 100%;
   padding: 1em;
+
+  box-sizing: border-box;
 }
 
 .RundownGroupItem-index {
@@ -67,4 +69,12 @@
 
   z-index: 0;
   pointer-events: none;
+}
+
+.RundownGroupItem-property {
+  margin-right: 10px;
+}
+
+.RundownGroupItem-notes {
+  opacity: 0.6;
 }

@@ -34,7 +34,7 @@ export function RundownGroupItem ({ index, item }) {
     }
 
     bridge.items.applyItem(item.id, {
-      'rundown.isCollapsed': newState
+      'rundown.ui.collapsed': newState
     })
   }
 
@@ -83,7 +83,7 @@ export function RundownGroupItem ({ index, item }) {
   }
 
   const itemIds = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[item?.id]?.items || []
-  const isCollapsed = item?.['rundown.isCollapsed']
+  const isCollapsed = item?.['rundown.ui.collapsed']
 
   return (
     <div ref={elRef} className={`RundownGroupItem ${isCollapsed ? 'is-collapsed' : ''}`} data-item-type={item.type}>
@@ -97,8 +97,11 @@ export function RundownGroupItem ({ index, item }) {
             <Icon name='arrowDown' />
           </div>
         </div>
-        <div className='RundownGroupItem-name'>
+        <div className='RundownGroupItem-property'>
           {item?.data?.name}
+        </div>
+        <div className='RundownGroupItem-property RundownGroupItem-notes'>
+          {item?.data?.notes}
         </div>
       </div>
       <div

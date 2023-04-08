@@ -17,6 +17,14 @@
   opacity: 0.5;
 }
 
+.RundownDividerItem-property {
+  margin-right: 10px;
+}
+
+.RundownDividerItem-notes {
+  opacity: 0.6;
+}
+
 .RundownDividerItem-background {
   position: absolute;
   top: 0;
@@ -25,4 +33,5 @@
   left: 0;
 
   opacity: 0.5;
+  pointer-events: none;
 }
