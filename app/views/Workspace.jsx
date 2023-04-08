@@ -8,6 +8,8 @@
  */
 
 import React from 'react'
+import * as api from '../api'
+
 import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
@@ -55,12 +57,21 @@ export const Workspace = () => {
       )
     },
     'bridge.internals.tabs': (data, onUpdate) => {
-      return <Tabs data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
+      return <Tabs data={data} onUpdate={onUpdate} renderComponent={renderComponent} onTabChange={onTabChange} />
     },
     'bridge.internals.selection': (_, onUpdate) => {
       return <SelectionComponent onChange={onUpdate} />
     }
   })
+
+  /**
+   * Clear the current selection
+   * whenever the active tab changes
+   */
+  async function onTabChange () {
+    const bridge = await api.load()
+    bridge.client.clearSelection()
+  }
 
   /**
    * A helper function for rendering
