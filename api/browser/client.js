@@ -82,6 +82,8 @@ function clearSelection () {
 /**
  * Get the current selection
  * @returns { Promise.<String[]> }
+ *
+ * @todo: Rewrite to use the local state
  */
 function getSelection () {
   assertIdentity()

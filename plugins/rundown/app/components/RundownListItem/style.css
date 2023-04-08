@@ -9,7 +9,7 @@
   width: 100%;
   margin: 2px 0;
 
-  background: var(--base-color--background);
+  background: var(--base-color--shade1);
   box-sizing: border-box;
 
   outline: none;

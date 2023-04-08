@@ -4,13 +4,11 @@ import bridge from 'bridge'
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
-import { StoreContext } from '../../storeContext'
 
 import { RundownDividerItem } from '../RundownDividerItem'
+import { RundownGroupItem } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
-
-import { Icon } from '../Icon'
 
 /**
  * Type-specific components that should be
@@ -20,17 +18,16 @@ import { Icon } from '../Icon'
  * @type { Object.<String, ReactComponent> }
  */
 const TYPE_COMPONENTS = {
-  'bridge.types.divider': RundownDividerItem
+  'bridge.types.divider': RundownDividerItem,
+  'bridge.types.group': RundownGroupItem
 }
 
-export function RundownList () {
+export function RundownList ({ rundownId = '', className = '' }) {
   const [shared] = React.useContext(SharedContext)
-  const [store] = React.useContext(StoreContext)
 
   const elRef = React.useRef()
-
   const selection = shared?.[bridge.client.getIdentity()]?.selection || []
-  const items = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[store?.id]?.items || []
+  const itemIds = shared?.plugins?.['bridge-plugin-rundown']?.rundowns?.[rundownId]?.items || []
 
   /**
    * Focus a list item based on the
@@ -38,8 +35,11 @@ export function RundownList () {
    *
    * This is done so that we can still
    * control the list by tabbing
+   *
+   * @param { String } id The item id of
+   *                      the item to focus
    */
-  function focusItem (id) {
+  function focusItemById (id) {
     const el = elRef.current.querySelector(`[data-item-id="${id}"]`)
     if (!el) {
       return
@@ -47,8 +47,13 @@ export function RundownList () {
     el.focus()
   }
 
+  /**
+   * Select the item n steps away
+   * from the current selection
+   * @param { Number } deltaIndex
+   */
   function select (deltaIndex = 0) {
-    if (items.length === 0) {
+    if (itemIds.length === 0) {
       return
     }
 
@@ -65,8 +70,8 @@ export function RundownList () {
     If no item is selected,
     select the first item
     */
-    if (!curItemId && items.length > 0) {
-      focusItem(items[0])
+    if (!curItemId && itemIds.length > 0) {
+      focusItemById(itemIds[0])
       return
     }
 
@@ -75,9 +80,11 @@ export function RundownList () {
     clamp it to the number of current items
     and select the new item
     */
-    const curIndex = items.findIndex(id => id === curItemId)
+    const items = Array.from(document.querySelectorAll('[data-item-id]'))
+    const curItem = document.querySelector(`[data-item-id="${curItemId}"]`)
+    const curIndex = items.indexOf(curItem)
     const newIndex = Math.max(0, Math.min(items.length - 1, curIndex + deltaIndex))
-    focusItem(items[newIndex])
+    items[newIndex].focus()
   }
 
   React.useEffect(() => {
@@ -97,56 +104,57 @@ export function RundownList () {
           break
       }
     }
-
     window.addEventListener('shortcut', onShortcut)
     return () => {
       window.removeEventListener('shortcut', onShortcut)
     }
-  }, [items, selection])
+  }, [itemIds, selection])
 
-  function handleDrop (e, itemId, toIndex) {
-    bridge.commands.executeCommand('rundown.reorderItem', store?.id, itemId, toIndex)
+  function handleDrop (e, newIndex) {
+    const itemId = e.dataTransfer.getData('itemId')
+    const sourceRundownId = e.dataTransfer.getData('sourceRundownId')
+
+    /*
+    Remove the item from the source rundown
+    if it was dragged here from another list
+    */
+    if (`${sourceRundownId}` !== `${rundownId}`) {
+      bridge.commands.executeCommand('rundown.removeItem', sourceRundownId, itemId)
+    }
+    bridge.commands.executeCommand('rundown.reorderItem', rundownId, itemId, newIndex)
+    e.stopPropagation()
   }
 
   function handleFocus (itemId) {
     bridge.client.setSelection(itemId)
   }
 
+  function handleFocusPropagation (e) {
+    e.stopPropagation()
+  }
+
   return (
-    <div ref={elRef} className='RundownList'>
+    <div ref={elRef} className={`RundownList ${className}`} onFocus={e => handleFocusPropagation(e)}>
       {
-        items.length > 0
-          ? (
-              items
-                .map(id => bridge.items.getLocalItem(id))
-                .filter(item => item)
-                .map((item, i) => {
-                  const isSelected = selection?.includes(item.id)
-                  const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
-                  return (
-                    <RundownListItem
-                      key={i}
-                      item={item}
-                      onDrop={(e, droppedItemId) => handleDrop(e, droppedItemId, i)}
-                      onFocus={() => handleFocus(item.id)}
-                      selected={isSelected}
-                    >
-                      <ItemComponent index={i + 1} item={item} />
-                    </RundownListItem>
-                  )
-                })
+        (itemIds || [])
+          .map(id => bridge.items.getLocalItem(id))
+          .filter(item => item)
+          .map((item, i) => {
+            const isSelected = selection?.includes(item.id)
+            const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
+            return (
+              <RundownListItem
+                key={i}
+                item={item}
+                rundownId={rundownId}
+                onDrop={e => handleDrop(e, i)}
+                onFocus={() => handleFocus(item.id)}
+                selected={isSelected}
+              >
+                <ItemComponent index={i + 1} item={item} />
+              </RundownListItem>
             )
-          : (
-            <div className='RundownList-empty'>
-              <div className='RundownList-emptyContent'>
-                <Icon name='empty' />
-                <div>
-                  Drag items here or create<br />
-                  new ones by right-clicking
-                </div>
-              </div>
-            </div>
-            )
+          })
       }
     </div>
   )

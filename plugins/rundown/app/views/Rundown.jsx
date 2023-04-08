@@ -44,7 +44,7 @@ export function Rundown () {
             )
           : <></>
       }
-      <RundownList />
+      <RundownList rundownId={store?.id} />
     </div>
   )
 }
