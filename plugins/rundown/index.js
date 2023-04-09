@@ -49,7 +49,8 @@ async function initSettings () {
         settings: {
           display: {
             notes: true,
-            type: true
+            type: true,
+            id: true
           }
         }
       }
