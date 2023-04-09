@@ -143,7 +143,7 @@ exports.activate = async () => {
     async function copyItem (itemId) {
       const item = await bridge.items.getItem(itemId)
       const items = [item]
-      for (const id of (item?.data?.items || [])) {
+      for (const id of (item?.data?.items || [])) {
         items.push(...(await copyItem(id)))
       }
       return items
