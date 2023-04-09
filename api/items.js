@@ -29,7 +29,7 @@ const InvalidArgumentError = require('./error/InvalidArgumentError')
  */
 function createUniqueId () {
   let proposal
-  while (!proposal || state.getLocalState()?.items?.[proposal]) {
+  while (!proposal || state.getLocalState()?.items?.[proposal]) {
     proposal = random.string(4)
   }
   return proposal
