@@ -9,14 +9,31 @@
  * }} Item
  */
 
-const uuid = require('uuid')
-
 const state = require('./state')
 const types = require('./types')
 const events = require('./events')
+const random = require('./random')
 
 const MissingArgumentError = require('./error/MissingArgumentError')
 const InvalidArgumentError = require('./error/InvalidArgumentError')
+
+/**
+ * Create a new id for an item
+ * that is unique and doesn't
+ * already exist
+ *
+ * It's kept short to be
+ * easy to work with
+ *
+ * @returns { String }
+ */
+function createUniqueId () {
+  let proposal
+  while (!proposal || state.getLocalState()?.items?.[proposal]) {
+    proposal = random.string(4)
+  }
+  return proposal
+}
 
 /**
  * Create an item from of a specific
@@ -31,7 +48,7 @@ async function createItem (type) {
   }
 
   const item = {
-    id: uuid.v4(),
+    id: createUniqueId(),
     type: _type.id,
     data: {}
   }

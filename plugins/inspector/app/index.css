@@ -16,3 +16,7 @@
   height: 100%;
   overflow-y: scroll;
 }
+
+.u-textTransform--none {
+  text-transform: none;
+}
