@@ -138,6 +138,24 @@ exports.activate = async () => {
     })
   })
 
+  bridge.commands.registerCommand('rundown.copyItems', async itemIds => {
+    async function copyItem (itemId) {
+      const item = await bridge.items.getItem(itemId)
+      const items = [item]
+      for (const id of (item?.data?.items || [])) {
+        items.push(...(await copyItem(id)))
+      }
+      return items
+    }
+
+    const items = (await Promise.all(itemIds.map(id => copyItem(id))))
+      .reduce((prev, cur) => {
+        return [...prev, ...cur]
+      }, [])
+
+    return JSON.stringify(items)
+  })
+
   async function appendItem (rundownId, itemId) {
     const items = await getItems(rundownId)
 

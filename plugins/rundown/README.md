@@ -17,9 +17,9 @@ Move an item to a new index within a rundown
 **Example**
 ```javascript
 /*
-Move the item with id 41bc343f-3876-41a7-b142-2f31f768f68b to index 2 in rundown 1
+Move the item with id h7ft to index 2 in rundown 1
 */
-bridge.commands.executeCommand('rundown.reorderItem', 1, '41bc343f-3876-41a7-b142-2f31f768f68b', 2)
+bridge.commands.executeCommand('rundown.reorderItem', 1, 'h7ft', 2)
 ```
 
 ### `rundown.removeItem(rundownId, itemId)`
@@ -28,17 +28,29 @@ Remove an item from a rundown
 **Example**
 ```javascript
 /*
-Remove the item with id 41bc343f-3876-41a7-b142-2f31f768f68b from rundown 1
+Remove the item with id h7ft from rundown 1
 */
-bridge.commands.executeCommand('rundown.removeItem', 1, '41bc343f-3876-41a7-b142-2f31f768f68b')
+bridge.commands.executeCommand('rundown.removeItem', 1, 'h7ft')
 ```
 
 ### `rundown.appendItem(rundownId, itemId)`
 Append an item to the end of a rundown
+
 **Example**
 ```javascript
 /*
-Append the item with id 41bc343f-3876-41a7-b142-2f31f768f68b to the end of rundown 1
+Append the item with id h7ft to the end of rundown 1
 */
-bridge.commands.executeCommand('rundown.appendItem', 1, '41bc343f-3876-41a7-b142-2f31f768f68b')
+bridge.commands.executeCommand('rundown.appendItem', 1, 'h7ft')
+```
+
+### `rundown.copyItem`
+Create a copyable string an item's representation
+
+**Example**
+```javascript
+/*
+Create a string representation of the item with id h7ft
+*/
+bridge.commands.executeCommand('rundown.copyItem', 'h7ft')
 ```
