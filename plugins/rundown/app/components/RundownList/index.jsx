@@ -11,6 +11,8 @@ import { RundownGroupItem } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
 
+import * as clipboard from '../../utils/clipboard'
+
 /**
  * Type-specific components that should be
  * rendered instead of the default RundownItem
@@ -89,6 +91,15 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     items[newIndex].focus()
   }
 
+  /**
+   * Copy a string representation of the
+   * currently selected items to the clipboard
+   */
+  async function copySelection () {
+    const str = await bridge.commands.executeCommand('rundown.copyItems', selection)
+    await clipboard.copyText(str)
+  }
+
   React.useEffect(() => {
     function onShortcut (e) {
       switch (e.detail.id) {
@@ -103,6 +114,9 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
           break
         case 'bridge.rundown.stop':
           selection.forEach(itemId => bridge.items.stopItem(itemId))
+          break
+        case 'copy':
+          copySelection()
           break
       }
     }
