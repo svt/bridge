@@ -122,10 +122,8 @@ export default function App () {
         setShared({ ...state })
       })
 
-      ;(async function () {
-        const initialState = await bridge.state.get()
-        setShared(initialState)
-      })()
+      const initialState = await bridge.state.get()
+      setShared(initialState)
     }
     if (readyState !== 1) return
     setup()
