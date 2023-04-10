@@ -172,9 +172,11 @@ app.get('/workspaces/new', (req, res, next) => {
     if (Date.now() - creationTimeStamp < WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS) {
       return
     }
+
     if (workspace?.state?.data?.connections?.length > 0) {
       return
     }
+
     WorkspaceRegistry.getInstance().delete(workspace.id)
     workspace.teardown()
   }
