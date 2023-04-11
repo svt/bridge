@@ -1,0 +1,25 @@
+{
+    "ignorePatterns": [
+        "**/*.test.js",
+        "**/node_modules/**/*.js",
+        "/bin/**/*.js",
+        "/dist/**/*.js"
+    ],
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "standard"
+    ],
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+    ],
+    "rules": {
+    }
+}
