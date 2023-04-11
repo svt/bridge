@@ -10,11 +10,7 @@
           <string>bridge</string>
         </array>
         <key>CFBundleTypeIconFile</key>
-        <string>media/appicon.icns</string>
-        <key>CFBundleTypeMIMETypes</key>
-        <array>
-          <string>text/plain</string>
-        </array>
+        <string>/media/appicon.icns</string>
         <key>CFBundleTypeName</key>
         <string>Bridge workspace</string>
         <key>CFBundleTypeOSTypes</key>
