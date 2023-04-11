@@ -28,7 +28,7 @@ The shared state is synced through a websocket connection between the main proce
   The connections array is populated with
   uuids representing each connected client
   */
-  connections: [],
+  _connections: [],
 
   /*
   Each connected client has its own scope

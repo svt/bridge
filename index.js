@@ -23,6 +23,7 @@ const template = require('./app/template')
 const utils = require('./lib/utils')
 const paths = require('./lib/paths')
 const electron = require('./lib/electron')
+const platform = require('./lib/platform')
 const apiRoutes = require('./lib/routes')
 
 const pkg = require('./package.json')
@@ -33,9 +34,20 @@ const pkg = require('./package.json')
 const DEFAULT_HTTP_PORT = 5544
 const ASSETS = require('./assets.json')
 
-const NODE_ENV = electron.isCompatible()
-  ? 'electron'
-  : process.env.NODE_ENV
+/**
+* The minimum threshold after creation
+* that a workspace can be teared down,
+* assuming no connections
+* @type { Number }
+*/
+const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
+
+/**
+ * The amount of time cleanups should wait before
+ * resuming after the app has been suspended,
+ * @type { Number }
+ */
+const WORKSPACE_RESUME_CLEANUP_DELAY_MS = 20000
 
 /**
  * Verify that an assets file is
@@ -80,29 +92,66 @@ const NODE_ENV = electron.isCompatible()
  * the user defaults-state
  */
 ;(async function () {
-  Logger.debug('Restoring user deafults')
+  Logger.debug('Restoring user deafults', paths.userDefaults)
   try {
     const data = fs.readFileSync(paths.userDefaults, { encoding: 'utf8' })
-    const json = JSON.parse(data)
+    const json = JSON.parse(data || '{}')
 
     UserDefaults.apply({
       ...json,
       ...{
-        httpPort: process.env.PORT || json.httpPort || DEFAULT_HTTP_PORT
+        httpPort: process.env.PORT || json?.httpPort || DEFAULT_HTTP_PORT
       }
     })
-  } catch (_) {
-    Logger.warn('Failed to restore user defaults')
+  } catch (err) {
+    Logger.warn('Failed to restore user defaults', err)
   }
 })()
 
-/**
- * The minimum threshold after creation
- * that a workspace can be teared down,
- * assuming no connections
- * @type { Number }
- */
-const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
+/*
+Setup listeners for new workspaces
+in order to remove any dangling
+references
+*/
+;(function () {
+  WorkspaceRegistry.getInstance().on('add', workspace => {
+    const creationTimeStamp = Date.now()
+
+    function conditionalUnload () {
+      /*
+      Make sure that we've given clients
+      a timeframe to connect before
+      terminating the workspace
+      */
+      if (Date.now() - creationTimeStamp < WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS) {
+        return
+      }
+
+      if (workspace?.state?.data?._connections?.length > 0) {
+        return
+      }
+
+      WorkspaceRegistry.getInstance().delete(workspace.id)
+      workspace.teardown()
+    }
+
+    workspace.on('cleanup', () => {
+      if (platform.isElectron() && electron.isSuspended()) {
+        return
+      }
+
+      if (
+        platform.isElectron() &&
+        electron.lastResumed() > Date.now() - WORKSPACE_RESUME_CLEANUP_DELAY_MS
+      ) {
+        return
+      }
+
+      conditionalUnload()
+      workspace.cleanupSockets()
+    })
+  })
+})()
 
 app.disable('x-powered-by')
 app.use(express.static(path.join(__dirname, 'public')))
@@ -161,30 +210,6 @@ server.on('upgrade', (req, sock, head) => {
 
 app.get('/workspaces/new', (req, res, next) => {
   const workspace = new Workspace()
-  const creationTimeStamp = Date.now()
-
-  function conditionalUnload () {
-    /*
-    Make sure that we've given clients
-    a timeframe to connect before
-    terminating the workspace
-    */
-    if (Date.now() - creationTimeStamp < WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS) {
-      return
-    }
-
-    if (workspace?.state?.data?.connections?.length > 0) {
-      return
-    }
-
-    WorkspaceRegistry.getInstance().delete(workspace.id)
-    workspace.teardown()
-  }
-
-  if (NODE_ENV !== 'electron') {
-    workspace.on('cleanup', () => conditionalUnload())
-  }
-
   WorkspaceRegistry.getInstance().add(workspace)
   res.redirect(`/workspaces/${workspace.id}`)
 })
@@ -264,7 +289,9 @@ Setup a new window if running
 in an electron context
 */
 ;(async function () {
-  if (!electron.isCompatible()) return
+  if (!platform.isElectron()) {
+    return
+  }
   await electron.isReady()
   electron.initWindow(`http://localhost:${UserDefaults.data.httpPort}`)
 })()
@@ -279,7 +306,7 @@ before the process exits
     fs.writeFileSync(paths.userDefaults, JSON.stringify(UserDefaults.data))
   }
 
-  if (electron.isCompatible()) {
+  if (platform.isElectron()) {
     electron.app.once('will-quit', () => {
       writeUserDeafults()
     })

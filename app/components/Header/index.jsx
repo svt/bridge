@@ -17,7 +17,7 @@ export function Header ({ title = 'Bridge' }) {
   const [prefsOpen, setPrefsOpen] = React.useState(false)
   const [titleStr, setTitleStr] = React.useState(title)
 
-  const connections = shared?.connections?.length
+  const connections = shared?._connections?.length
 
   /**
    * Set the `isEditingLayout` toggle on
