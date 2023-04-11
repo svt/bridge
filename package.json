@@ -13,8 +13,8 @@
     "build:plugins": "node plugins/bundle.js",
     "clean": "rm -r ./dist",
     "electron": "NODE_ENV=development electron --trace-warnings index.js",
-    "electron:build:mac": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
-    "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
+    "electron:build:mac": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
+    "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --extend-info extra.plist --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
     "prepare": "husky install"
   },
   "repository": {

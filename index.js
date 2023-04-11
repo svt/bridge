@@ -293,6 +293,11 @@ in an electron context
     return
   }
   await electron.isReady()
+
+  if (electron.wasOpenedByFile()) {
+    return
+  }
+
   electron.initWindow(`http://localhost:${UserDefaults.data.httpPort}`)
 })()
 
