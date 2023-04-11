@@ -7,5 +7,5 @@ import bucket from './bucket.svg'
 
 export default {
   'arrow-down': arrowDown,
-  bucket: bucket
+  bucket
 }

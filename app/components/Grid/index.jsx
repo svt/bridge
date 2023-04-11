@@ -154,6 +154,10 @@ export function Grid ({ layout = {}, children, onChange }) {
           isResizable={!!userIsEditingLayout}
           onDragStop={handleItemChange}
           onResizeStop={handleItemChange}
+          /*
+          Disables the initial animation
+          */
+          measureBeforeMount
           useCSSTransforms
           preventCollision
         >

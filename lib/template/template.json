@@ -1,0 +1,49 @@
+{
+  "children": {
+    "root": {
+      "component": "bridge.internals.tabs",
+      "children": {
+        "1": {
+          "title": "Rundown",
+          "component": "bridge.internals.grid",
+          "layout": {
+            "getting_started": { "x": 0, "y": 0, "w": 3, "h": 3 },
+            "state": { "x": 0, "y": 3, "w": 3, "h": 3 },
+            "rundown": { "x": 3, "y": 0, "w": 6, "h": 6 },
+            "inspector": { "x": 9, "y": 0, "w": 3, "h": 6 }
+          },
+          "children": {
+            "getting_started": {
+              "component": "bridge.plugins.welcome"
+            },
+            "state": {
+              "component": "bridge.plugins.state"
+            },
+            "rundown": {
+              "component": "bridge.plugins.rundown"
+            },
+            "inspector": {
+              "component": "bridge.plugins.inspector"
+            }
+          }
+        },
+        "2": {
+          "title": "Time",
+          "component": "bridge.internals.grid",
+          "layout": {
+            "time": { "x": 0, "y": 0, "w": 4, "h": 2 },
+            "latency": { "x": 4, "y": 0, "w": 4, "h": 2 }
+          },
+          "children": {
+            "time": {
+              "component": "bridge.plugins.clock.time"
+            },
+            "latency": {
+              "component": "bridge.plugins.clock.latency"
+            }
+          }
+        }
+      }
+    }
+  }
+}
