@@ -23,3 +23,11 @@ by react-grid-layout
 .Grid .react-resizable-handle::after {
   border-color: var(--base-color);
 }
+
+/*
+Disable transitions for
+a more responsive app
+*/
+.Grid .react-grid-item {
+  transition: none;
+}
