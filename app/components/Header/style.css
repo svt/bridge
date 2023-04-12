@@ -5,7 +5,7 @@
   width: 100%;
   height: 39px;
 
-  padding: 0 15px 0 20px;
+  padding: 0 10px 0 20px;
   box-sizing: border-box;
 
   border-bottom: 1px solid var(--base-color--shade);
@@ -53,11 +53,20 @@ for the traffic light
 }
 
 .Header-button {
-  width: 25px;
-  height: 25px;
+  display: flex;
+  width: 39px;
+  height: 39px;
 
-  margin-left: 10px;
+  margin-left: 3px;
   border: none;
 
   background: none;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.Header-button:hover {
+  background: var(--base-color--shade);
+  opacity: 0.5;
 }
