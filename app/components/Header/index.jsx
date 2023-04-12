@@ -10,6 +10,14 @@ import { Icon } from '../Icon'
 
 import './style.css'
 
+function isMacOS () {
+  return window.APP.platform === 'darwin'
+}
+
+function isElectron () {
+  return window.navigator.userAgent.includes('Bridge')
+}
+
 export function Header ({ title = 'Bridge' }) {
   const [shared,, applySharedKey] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
@@ -34,11 +42,11 @@ export function Header ({ title = 'Bridge' }) {
       <Modal open={prefsOpen} onClose={() => setPrefsOpen(false)}>
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
-      <header className='Header'>
-        <div />
-        <div className='Header-center'>
-          {title}
+      <header className={`Header ${isMacOS() && isElectron() ? 'has-leftMargin' : ''}`}>
+        <div>
+          { title }
         </div>
+        <div className='Header-center'></div>
         <div className='Header-block'>
           <div className='Header-connections'>
             <div className='Header-connectionsIcon'>

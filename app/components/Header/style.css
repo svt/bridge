@@ -16,6 +16,15 @@
   -webkit-app-region: drag;
 }
 
+/*
+Add an extra margin when running
+on macOS in order to leave space
+for the traffic light
+*/
+.Header.has-leftMargin {
+  padding-left: 85px;
+}
+
 .Header-center {
   position: absolute;
   left: 50%;
