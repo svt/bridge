@@ -261,6 +261,7 @@ app.get('*', (req, res, next) => {
     env: process.env.NODE_ENV,
     port: UserDefaults.data.httpPort,
     version: pkg.version,
+    platform: process.platform,
     workspace: req.workspace?.id,
     hostProtocol: process.env.HOST_PROTOCOL
   }, ASSETS.assets))
