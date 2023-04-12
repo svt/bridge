@@ -22,6 +22,31 @@ import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
 
+/**
+ * Get the file name without extension
+ * from a file path
+ * @param { String } filePath
+ * @returns { String }
+ */
+function getFileNameFromPath (filePath) {
+  if (typeof filePath !== 'string') {
+    return undefined
+  }
+
+  return filePath
+    /*
+    Remove everything but
+    the last part of the path
+    */
+    .replace(/^.*[\\\/]/, '') // eslint-disable-line
+
+    /*
+    Remove .extension from
+    the file name
+    */
+    .replace(/(\.(.[^\.])+){1}$/, '') // eslint-disable-line
+}
+
 export const Workspace = () => {
   const [shared,, applySharedKey] = React.useContext(SharedContext)
   const sharedRef = React.useRef(shared)
@@ -105,7 +130,7 @@ export const Workspace = () => {
 
   return (
     <>
-      <Header title={shared.title} />
+      <Header title={getFileNameFromPath(shared._filePath)} />
       {
         /*
         Loop through the components from the store
