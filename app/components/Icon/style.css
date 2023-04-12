@@ -1,3 +1,9 @@
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .Icon svg [stroke]:not([stroke='none']) {
   stroke: var(--base-color);
 }
