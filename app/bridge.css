@@ -1,5 +1,3 @@
-
-
 /*
 This file is bundled with the application
 as well as separately for widgets to include
@@ -17,6 +15,22 @@ html, body, #root {
 
   font-family: var(--base-fontFamily--primary);
   color: var(--base-color);
+}
+
+* {
+  outline: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+*.u-selectable {
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
 }
 
 a, .Link {
@@ -95,4 +109,14 @@ h3, .u-heading--3 {
   margin: 0.5em 0;
   font-size: 1em;
   font-weight: 500;
+}
+
+/* Inputs */
+
+textarea,
+input {
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
 }
