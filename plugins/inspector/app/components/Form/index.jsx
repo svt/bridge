@@ -196,7 +196,7 @@ export function Form () {
         <div className='Form-row'>
           <div className='Form-input'>
             <label className='Form-inputLabel'>ID</label>
-            <label className='Form-inputLabel u-textTransform--none'>
+            <label className='Form-inputLabel u-textTransform--none u-selectable'>
               {
                 (store.items || []).length > 1
                   ? 'Multiple items selected'
