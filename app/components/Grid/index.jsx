@@ -1,11 +1,15 @@
 import React from 'react'
 import RGL, { WidthProvider } from 'react-grid-layout'
 
+import * as uuid from 'uuid'
+
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
 import { ContextMenu } from '../ContextMenu'
 import { ContextMenuItem } from '../ContextMenuItem'
+
+import { Notification } from '../Notification'
 
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
@@ -23,7 +27,7 @@ const ReactGridLayout = WidthProvider(RGL)
  */
 const GRID_COL_COUNT = 12
 const GRID_ROW_COUNT = 6
-const GRID_MARGIN_PX = 5
+const GRID_MARGIN_PX = 3
 
 export function Grid ({ layout = {}, children, onChange }) {
   const [shared] = React.useContext(SharedContext)
@@ -45,9 +49,15 @@ export function Grid ({ layout = {}, children, onChange }) {
     ? children
     : [children]
 
-  function handleContextMenu (e) {
+  function handleContextMenu (e, data) {
+    if (!userIsEditingLayout) {
+      return
+    }
+
     e.preventDefault()
-    setContextPos([e.pageX, e.pageY])
+    e.stopPropagation()
+
+    setContextPos([e.pageX, e.pageY, data])
   }
 
   /*
@@ -109,6 +119,51 @@ export function Grid ({ layout = {}, children, onChange }) {
     })
   }
 
+  /**
+   * Create a new item as close to the
+   * context position as possible
+   */
+  function handleNewItem () {
+    const bounds = elRef.current.getBoundingClientRect()
+    const colWidthPx = bounds.width / GRID_COL_COUNT
+    const rowHeightPx = bounds.height / GRID_ROW_COUNT
+
+    const col = Math.floor(contextPos[0] / colWidthPx)
+    const row = Math.floor(contextPos[1] / rowHeightPx)
+
+    const id = uuid.v4()
+
+    onChange({
+      layout: {
+        [id]: {
+          x: col,
+          y: row,
+          w: 1,
+          h: 1
+        }
+      },
+      children: {
+        [id]: {
+          component: 'bridge.plugins.welcome'
+        }
+      }
+    })
+  }
+
+  /**
+   * Remove an item by its id
+   */
+  function handleRemoveItem (id) {
+    onChange({
+      layout: {
+        [id]: { $delete: true }
+      },
+      children: {
+        [id]: { $delete: true }
+      }
+    })
+  }
+
   /*
   Convert the layout data to an
   array rather than an object in
@@ -119,18 +174,36 @@ export function Grid ({ layout = {}, children, onChange }) {
     return { i: id, ...layout }
   })
 
+  /**
+   * Render the correnct context menu
+   * based on data from the event
+   */
+  function renderContextMenu (x, y, data) {
+    switch (data?.type) {
+      case 'grid':
+        return (
+          <ContextMenu x={contextPos[0]} y={contextPos[1]}>
+            <ContextMenuItem text='New item' onClick={() => handleNewItem()} />
+          </ContextMenu>
+        )
+      default:
+        return (
+          <ContextMenu x={contextPos[0]} y={contextPos[1]}>
+            <ContextMenuItem text='Remove' onClick={() => handleRemoveItem(data.id)} />
+          </ContextMenu>
+        )
+    }
+  }
+
   return (
     <>
       {
-        contextPos
-          ? (
-            <ContextMenu x={contextPos[0]} y={contextPos[1]}>
-              <ContextMenuItem text='New block' />
-            </ContextMenu>
-            )
-          : <></>
+        contextPos && renderContextMenu(...contextPos)
       }
-      <div ref={elRef} className='Grid' onContextMenu={handleContextMenu}>
+      {
+        userIsEditingLayout && <Notification title='Editing enabled' description='Add and remove items by right clicking' />
+      }
+        <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
         <ReactGridLayout
           className='Grid-layout'
           cols={GRID_COL_COUNT}
@@ -165,7 +238,7 @@ export function Grid ({ layout = {}, children, onChange }) {
             childrenArr
               .map(child => {
                 return (
-                  <div key={child.key} className='Grid-item'>
+                  <div key={child.key} className='Grid-item' onContextMenu={e => handleContextMenu(e, { type: 'item', id: child.key })}>
                     {child}
                   </div>
                 )

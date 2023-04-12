@@ -15,7 +15,6 @@ export function Header ({ title = 'Bridge' }) {
   const [local] = React.useContext(LocalContext)
 
   const [prefsOpen, setPrefsOpen] = React.useState(false)
-  const [titleStr, setTitleStr] = React.useState(title)
 
   const connections = shared?._connections?.length
 
@@ -30,20 +29,6 @@ export function Header ({ title = 'Bridge' }) {
     })
   }
 
-  /*
-  Update the title to indicate that
-  we're currently editing the layout
-  when the toggle changes
-  */
-  React.useEffect(() => {
-    const isEditing = shared[local.id]?.isEditingLayout
-    if (isEditing) {
-      setTitleStr('Editing layout')
-      return
-    }
-    setTitleStr(title)
-  }, [title, shared[local.id]?.isEditingLayout])
-
   return (
     <>
       <Modal open={prefsOpen} onClose={() => setPrefsOpen(false)}>
@@ -52,7 +37,7 @@ export function Header ({ title = 'Bridge' }) {
       <header className='Header'>
         <div />
         <div className='Header-center'>
-          {titleStr}
+          {title}
         </div>
         <div className='Header-block'>
           <div className='Header-connections'>

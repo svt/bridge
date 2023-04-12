@@ -7,6 +7,9 @@
   box-sizing: border-box;
   justify-content: space-between;
 
+  color: var(--base-color--notificationColor);
+  background-color: var(--base-color--notificationBackground);
+
   --color-warning: #FFDC8C;
 }
 
@@ -16,6 +19,19 @@
 
 .Notification-size--small {
   padding: 0.8em 1.5em;
+}
+
+.Notification-content {
+  display: flex;
+  align-content: center;
+}
+
+.Notification-contentSection {
+  margin-right: 10px;
+}
+
+.Notification-title {
+  font-weight: 500;
 }
 
 .Notification--warning {
