@@ -26,12 +26,30 @@ const TYPE_COMPONENTS = {
   'bridge.types.group': RundownGroupItem
 }
 
+/**
+ * Scroll an element into view
+ * @param { HTMLElement } el
+ */
+function scrollIntoView (el, animate = true) {
+  if (!(el instanceof HTMLElement)) {
+    return
+  }
+  el.scrollIntoView({
+    behavior: animate ? 'smooth' : 'instant',
+    block: 'center'
+  })
+}
+
 export function RundownList ({ rundownId = '', className = '', indexPrefix = '' }) {
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
   const selection = shared?.[bridge.client.getIdentity()]?.selection || []
   const itemIds = shared?.items?.[rundownId]?.data?.items || []
+
+  function getItemElementById (id) {
+    return elRef.current.querySelector(`[data-item-id="${id}"]`)
+  }
 
   /**
    * Focus a list item based on the
@@ -44,11 +62,14 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
    *                      the item to focus
    */
   function focusItemById (id) {
-    const el = elRef.current.querySelector(`[data-item-id="${id}"]`)
+    const el = getItemElementById(id)
     if (!el) {
       return
     }
-    el.focus()
+    el.focus({
+      preventScroll: true
+    })
+    scrollIntoView(el)
   }
 
   /**
@@ -88,7 +109,10 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     const curItem = document.querySelector(`[data-item-id="${curItemId}"]`)
     const curIndex = items.indexOf(curItem)
     const newIndex = Math.max(0, Math.min(items.length - 1, curIndex + deltaIndex))
-    items[newIndex].focus()
+    items[newIndex].focus({
+      preventScroll: true
+    })
+    scrollIntoView(items[newIndex])
   }
 
   /**
@@ -125,6 +149,60 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
       window.removeEventListener('shortcut', onShortcut)
     }
   }, [itemIds, selection])
+
+  /*
+  Prevent the page to scroll
+  from using the arrow-keys
+  as it interferes with the
+  selection and makes scrolling
+  very unintuitive
+
+  Scrolling is instead implemented
+  upon selection of an item
+  */
+  React.useEffect(() => {
+    if (!elRef.current) {
+      return
+    }
+    function onKeyDown (e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault()
+      }
+    }
+
+    elRef.current.addEventListener('keydown', onKeyDown)
+    return () => {
+      elRef.current.removeEventListener('keydown', onKeyDown)
+    }
+  }, [elRef.current])
+
+  /*
+  Try to scroll to the selection
+  as soon as the list loads
+
+  However, we must wait until
+  'itemIds' is populated
+  */
+  const hasDoneInitialScrollingRef = React.useRef()
+  React.useEffect(() => {
+    if (itemIds.length === 0) {
+      return
+    }
+    if (hasDoneInitialScrollingRef.current) {
+      return
+    }
+    hasDoneInitialScrollingRef.current = true
+
+    ;(async function () {
+      const selection = await bridge.client.getSelection()
+      const lastId = selection[selection.length - 1]
+      if (!lastId) {
+        return
+      }
+      const el = getItemElementById(lastId)
+      scrollIntoView(el, false)
+    })()
+  }, [itemIds])
 
   function handleDrop (e, newIndex) {
     const itemId = e.dataTransfer.getData('itemId')
