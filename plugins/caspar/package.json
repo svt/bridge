@@ -18,6 +18,7 @@
   "contributes": {
     "settings": [{
         "title": "Server",
+        "group": "Caspar CG",
         "description": "Configure Caspar servers",
         "repeating": true,
         "bind": "shared.plugins.bridge-plugin-caspar.settings.servers",

@@ -18,6 +18,7 @@
   "contributes": {
     "settings": [
       {
+        "group": "Rundown",
         "title": "Display properties",
         "description": "Select what properties to display in the rundown",
         "bind": "shared.plugins.bridge-plugin-rundown.settings.display",
@@ -28,6 +29,7 @@
         ]
       },
       {
+        "group": "Rundown",
         "title": "Scrolling",
         "bind": "shared.plugins.bridge-plugin-rundown.settings.scrolling",
         "inputs": [

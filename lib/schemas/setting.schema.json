@@ -26,6 +26,10 @@
   "description": "The declaration of a setting",
   "type": "object",
   "properties": {
+    "group": {
+      "type": "string",
+      "description": "The group to which the setting will be assigned"
+    },
     "title": {
       "type": "string",
       "description": "A title for this setting"
@@ -41,5 +45,5 @@
       }
     }
   },
-  "required": [ "title" ]
+  "required": [ "group", "title" ]
 }
