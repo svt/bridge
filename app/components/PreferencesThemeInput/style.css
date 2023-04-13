@@ -15,7 +15,7 @@
 }
 
 .PreferencesThemeInput-item.is-active .PreferencesThemeInput-itemColor {
-  box-shadow: 0 0 0 3px var(--base-color--accent1);
+  box-shadow: 0 0 0 3px var(--base-color--shade);
 }
 
 .PreferencesThemeInput-itemLabel {

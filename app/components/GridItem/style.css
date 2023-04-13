@@ -3,7 +3,7 @@
 .GridItem {
   width: 100%;
   height: 100%;
-  background: var(--base-color--shade);
+  background: var(--base-color--background1);
 }
 
 .GridItem.is-editing {

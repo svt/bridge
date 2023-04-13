@@ -151,3 +151,49 @@ input[type="password"]:focus,
 textarea:focus {
   box-shadow: inset 0 0 0 1px var(--base-color--shade);
 }
+
+input[type="checkbox"] {
+  display: inline-block;
+  position: relative;
+  padding: 0.2em 0;
+
+  width: 40px;
+  height: 1.1em;
+
+  margin-right: 10px;
+
+  background: var(--base-color--grey1);
+  border-radius: 50px;
+
+  vertical-align: bottom;
+
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+
+  width: 1.5em;
+  height: 1.5em;
+
+  background: var(--base-color--grey3);
+
+  border-radius: 50px;
+  box-shadow: 0 0 0 2px var(--base-color--background);
+
+  transform: translate(0, -50%);
+  transition: 0.2s;
+}
+
+input[type="checkbox"]:active::before {
+  background: var(--base-color--grey3);
+}
+
+input[type="checkbox"]:checked::before {
+  background: var(--base-color--accent1);
+  transform: translate(100%, -50%);
+}

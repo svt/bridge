@@ -25,7 +25,7 @@
         "inputs": [
           { "type": "string", "bind": "label", "label": "Label" },
           { "type": "string", "bind": "host", "label": "Host" },
-          { "type": "string", "bind": "port", "label": "Port" }
+          { "type": "number", "bind": "port", "label": "Port" }
         ]
     }]
   }

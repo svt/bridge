@@ -7,8 +7,8 @@ export function PreferencesStringInput ({ label, value, onChange = () => {} }) {
   const id = `string-${random.number()}`
   return (
     <div className='PreferencesStringInput'>
-      <input id={id} type='text' value={value} onChange={e => onChange(e.target.value)} />
       <label htmlFor={id}>{label}</label>
+      <input id={id} className='PreferencesStringInput-input' type='text' value={value} placeholder={label} onChange={e => onChange(e.target.value)} />
     </div>
   )
 }
