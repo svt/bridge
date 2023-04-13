@@ -8,15 +8,6 @@
   width: 100%;
   padding: 0.5em 0.75em;
 
-  font-size: 1em;
-  font-family: var(--base-fontFamily--primary);
-
-  border: none;
-  border-radius: 8px;
-
-  color: var(--base-color);
-  background: var(--base-color--shade2);
-
   box-sizing: border-box;
   resize: vertical;
 }
