@@ -26,6 +26,17 @@ const TYPE_COMPONENTS = {
   'bridge.types.group': RundownGroupItem
 }
 
+/**
+ * Scroll an element into view
+ * @param { HTMLElement } el
+ */
+function scrollIntoView (el) {
+  el.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+  })
+}
+
 export function RundownList ({ rundownId = '', className = '', indexPrefix = '' }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -48,7 +59,10 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     if (!el) {
       return
     }
-    el.focus()
+    el.focus({
+      preventScroll: true
+    })
+    scrollIntoView(el)
   }
 
   /**
@@ -88,7 +102,10 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     const curItem = document.querySelector(`[data-item-id="${curItemId}"]`)
     const curIndex = items.indexOf(curItem)
     const newIndex = Math.max(0, Math.min(items.length - 1, curIndex + deltaIndex))
-    items[newIndex].focus()
+    items[newIndex].focus({
+      preventScroll: true
+    })
+    scrollIntoView(items[newIndex])
   }
 
   /**
@@ -125,6 +142,32 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
       window.removeEventListener('shortcut', onShortcut)
     }
   }, [itemIds, selection])
+
+  /*
+  Prevent the page to scroll
+  from using the arrow-keys
+  as it interferes with the
+  selection and makes scrolling
+  very unintuitive
+
+  Scrolling is instead implemented
+  upon selection of an item
+  */
+  React.useEffect(() => {
+    if (!elRef.current) {
+      return
+    }
+    function onKeyDown (e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault()
+      }
+    }
+
+    elRef.current.addEventListener('keydown', onKeyDown)
+    return () => {
+      elRef.current.removeEventListener('keydown', onKeyDown)
+    }
+  }, [elRef.current])
 
   function handleDrop (e, newIndex) {
     const itemId = e.dataTransfer.getData('itemId')
