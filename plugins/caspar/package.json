@@ -18,13 +18,14 @@
   "contributes": {
     "settings": [{
         "title": "Server",
+        "group": "Caspar CG",
         "description": "Configure Caspar servers",
         "repeating": true,
         "bind": "shared.plugins.bridge-plugin-caspar.settings.servers",
         "inputs": [
           { "type": "string", "bind": "label", "label": "Label" },
           { "type": "string", "bind": "host", "label": "Host" },
-          { "type": "string", "bind": "port", "label": "Port" }
+          { "type": "number", "bind": "port", "label": "Port" }
         ]
     }]
   }

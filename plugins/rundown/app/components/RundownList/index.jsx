@@ -30,13 +30,13 @@ const TYPE_COMPONENTS = {
  * Scroll an element into view
  * @param { HTMLElement } el
  */
-function scrollIntoView (el, animate = true) {
+function scrollIntoView (el, animate = true, centered = true) {
   if (!(el instanceof HTMLElement)) {
     return
   }
   el.scrollIntoView({
     behavior: animate ? 'smooth' : 'instant',
-    block: 'center'
+    block: centered ? 'center' : 'nearest'
   })
 }
 
@@ -44,8 +44,10 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
-  const selection = shared?.[bridge.client.getIdentity()]?.selection || []
   const itemIds = shared?.items?.[rundownId]?.data?.items || []
+  const selection = shared?.[bridge.client.getIdentity()]?.selection || []
+
+  const scrollSettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.scrolling
 
   function getItemElementById (id) {
     return elRef.current.querySelector(`[data-item-id="${id}"]`)
@@ -69,7 +71,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     el.focus({
       preventScroll: true
     })
-    scrollIntoView(el)
+    scrollIntoView(el, true, scrollSettings?.centered)
   }
 
   /**
@@ -112,7 +114,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     items[newIndex].focus({
       preventScroll: true
     })
-    scrollIntoView(items[newIndex])
+    scrollIntoView(items[newIndex], true, scrollSettings?.centered)
   }
 
   /**
@@ -200,7 +202,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
         return
       }
       const el = getItemElementById(lastId)
-      scrollIntoView(el, false)
+      scrollIntoView(el, false, scrollSettings?.centered)
     })()
   }, [itemIds])
 

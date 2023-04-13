@@ -2,19 +2,20 @@
 
 :root {
   --base-color: white;
-  --base-color--accent1: #b9b9b9;
+  --base-color--accent1: #641E78;
   --base-color--accent2: #465055;
   --base-color--accent3: #fafafa;
-  --base-color--accent4: #ff4b7d;
+  --base-color--accent4: #b9b9b9;
   --base-color--grey1: #101012;
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
   --base-color--shade: rgba(255, 255, 255, 0.1);
-  --base-color--shade1: rgba(255, 255, 255, 0.03);
-  --base-color--shade2: rgba(36, 37, 40, 0.5);
+  --base-color--shade1: rgba(255, 255, 255, 0.07);
+  --base-color--shade2: rgba(60, 61, 65, 0.5);
 
   --base-color--background: #232427;
+  --base-color--background1: #2e2f31;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
@@ -27,19 +28,20 @@
 .u-theme--light {
   --base-color: black;
 
-  --base-color--accent1: #b9b9b9;
+  --base-color--accent1: #641E78;
   --base-color--accent2: #7D9196;
   --base-color--accent3: #fafafa;
-  --base-color--accent4: #ff4b7d;
+  --base-color--accent4: #b9b9b9;
   --base-color--grey1: #ebebeb;
   --base-color--grey2: #dedede;
   --base-color--grey3: #cccccc;
 
-  --base-color--shade: rgba(0, 0, 0, 0.1);
-  --base-color--shade1: rgba(0, 0, 0, 0.03);
-  --base-color--shade2: rgba(255, 255, 255, 0.5);
+  --base-color--shade: rgba(0, 0, 0, 0.15);
+  --base-color--shade1: rgba(0, 0, 0, 0.07);
+  --base-color--shade2: rgba(221, 221, 221, 0.5);
 
   --base-color--background: white;
+  --base-color--background1: #f0f0f0;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
@@ -50,19 +52,20 @@
 .u-theme--purple {
   --base-color: #B48CCD;
 
-  --base-color--accent1: #87289B;
+  --base-color--accent1: #641E78;
   --base-color--accent2: #641E78;
   --base-color--accent3: #fafafa;
-  --base-color--accent4: #BE00DC;
+  --base-color--accent4: #87289B;
   --base-color--grey1: #101012;
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.1);
-  --base-color--shade1: rgba(255, 255, 255, 0.03);
+  --base-color--shade: rgba(255, 255, 255, 0.2);
+  --base-color--shade1: rgba(255, 255, 255, 0.07);
   --base-color--shade2: rgba(39, 16, 51, 0.5);
 
   --base-color--background: #271033;
+  --base-color--background1: #3c204a;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;

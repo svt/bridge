@@ -51,6 +51,9 @@ async function initSettings () {
             notes: true,
             type: true,
             id: true
+          },
+          scrolling: {
+            centered: true
           }
         }
       }

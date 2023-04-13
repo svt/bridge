@@ -183,9 +183,9 @@ Register a new widget, it will immediately be made available in the UI
 ## Settings  
 Settings are controls bound to a specific property in the shared state that appear under the plugins section in the settings menu.
 
-There are several types of inputs available for settings; `boolean` and `number`. A setting and its type is declared through the [setting definition](/lib/schemas/setting.schema.json).
+There are several types of inputs available for settings. A setting and its type is declared through the [setting definition](/lib/schemas/setting.schema.json).
 
-### `bridge.settings.registerSetting(groupName, specification): Promise<Boolean>`  
+### `bridge.settings.registerSetting(specification): Promise<Boolean>`
 Register a new setting definition to a group name, that is the name that will appear in the settings panel's navigation.
 
 ## Types  

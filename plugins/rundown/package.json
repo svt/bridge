@@ -16,7 +16,9 @@
   "author": "Axel Boberg (axel.boberg@svt.se)",
   "license": "UNLICENSED",
   "contributes": {
-    "settings": [{
+    "settings": [
+      {
+        "group": "Rundown",
         "title": "Display properties",
         "description": "Select what properties to display in the rundown",
         "bind": "shared.plugins.bridge-plugin-rundown.settings.display",
@@ -25,7 +27,16 @@
           { "type": "boolean", "bind": "type", "label": "Type" },
           { "type": "boolean", "bind": "notes", "label": "Notes" }
         ]
-    }],
+      },
+      {
+        "group": "Rundown",
+        "title": "Scrolling",
+        "bind": "shared.plugins.bridge-plugin-rundown.settings.scrolling",
+        "inputs": [
+          { "type": "boolean", "bind": "centered", "label": "Use centered scrolling" }
+        ]
+      }
+    ],
     "shortcuts": [
       {
         "id": "bridge.rundown.play",
