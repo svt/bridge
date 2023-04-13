@@ -12,19 +12,11 @@ import './style.css'
  * @param { params } param0
  * @returns { React.Component }
  */
-export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {}, onTabChange = () => {} }) {
+export function Tabs ({ data, onUpdate = () => {}, renderComponent = () => {} }) {
   const [activeTab, setActiveTab] = React.useState()
   const [tabToRemove, setTabToRemove] = React.useState()
 
   const elRef = React.useRef()
-
-  /*
-  Trigger the onTabChange callback
-  whenever the active tab changes
-  */
-  React.useEffect(() => {
-    onTabChange(activeTab)
-  }, [activeTab])
 
   /*
   Make sure that data.order is an array

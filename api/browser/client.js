@@ -87,7 +87,9 @@ function clearSelection () {
  */
 function getSelection () {
   assertIdentity()
-  return state.get(`${getIdentity()}.selection`) || []
+  return Promise.resolve(
+    state.getLocalState()?.[getIdentity()]?.selection || []
+  )
 }
 
 module.exports = {
