@@ -1,3 +1,5 @@
+<img src="media/appicon.png" alt="drawing" width="80" style="margin-left:-10px;" />
+
 # Bridge  
 ![Test](https://github.com/svt/bridge/actions/workflows/.github/workflows/test.yml/badge.svg?branch=main)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
@@ -58,5 +60,3 @@ Most of the other material as icons are relased under a Creative Commons License
 ## Primary Maintainer
 
 [Axel Boberg](https://github.com/axelboberg)
-
-<img src="media/footer.png" alt="drawing"/>
