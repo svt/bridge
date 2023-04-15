@@ -32,8 +32,19 @@ async function initWidget () {
 
   const htmlPath = await bridge.server.serveString(html)
 
-  bridge.widgets.registerWidget('bridge.plugins.clock.latency', 'Command latency', `${htmlPath}?view=latency`)
-  bridge.widgets.registerWidget('bridge.plugins.clock.time', 'Current time', `${htmlPath}?view=time`)
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.clock.latency',
+    name: 'Command latency',
+    uri: `${htmlPath}?view=latency`,
+    description: 'A widget showing the latency between commands sent to the main thread'
+  })
+
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.clock.time',
+    name: 'Current time',
+    uri: `${htmlPath}?view=time`,
+    description: 'A widget showing the current time'
+  })
 }
 
 exports.activate = async () => {

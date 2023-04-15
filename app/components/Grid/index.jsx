@@ -8,8 +8,11 @@ import { LocalContext } from '../../localContext'
 
 import { ContextMenu } from '../ContextMenu'
 import { ContextMenuItem } from '../ContextMenuItem'
+import { ContextMenuDivider } from '../ContextMenuDivider'
 
+import { Modal } from '../Modal'
 import { Notification } from '../Notification'
+import { WidgetSelector } from '../WidgetSelector'
 
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
@@ -29,12 +32,14 @@ const GRID_COL_COUNT = 12
 const GRID_ROW_COUNT = 6
 const GRID_MARGIN_PX = 3
 
-export function Grid ({ layout = {}, children, onChange }) {
+export function Grid ({ children, data = {}, onChange }) {
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
   const [contextPos, setContextPos] = React.useState()
   const [rowHeight, setRowHeight] = React.useState(0)
+
+  const [modalItemId, setModalItemId] = React.useState()
 
   const elRef = React.useRef()
 
@@ -164,15 +169,29 @@ export function Grid ({ layout = {}, children, onChange }) {
     })
   }
 
+  /**
+   * Update a single item
+   * the item must be a child
+   * element of this grid
+   */
+  function applyItem (id, set) {
+    onChange({
+      children: {
+        [id]: set
+      }
+    })
+  }
+
   /*
   Convert the layout data to an
   array rather than an object in
   order to satisfy the api for
   react-grid-layout
   */
-  const layoutArray = Object.entries(layout).map(([id, layout]) => {
-    return { i: id, ...layout }
-  })
+  const layoutArray = Object.entries(data.layout || {})
+    .map(([id, layout]) => {
+      return { i: id, ...layout }
+    })
 
   /**
    * Render the correnct context menu
@@ -189,6 +208,8 @@ export function Grid ({ layout = {}, children, onChange }) {
       default:
         return (
           <ContextMenu x={contextPos[0]} y={contextPos[1]}>
+            <ContextMenuItem text='Change' onClick={() => setModalItemId(data.id)} />
+            <ContextMenuDivider />
             <ContextMenuItem text='Remove' onClick={() => handleRemoveItem(data.id)} />
           </ContextMenu>
         )
@@ -198,12 +219,21 @@ export function Grid ({ layout = {}, children, onChange }) {
   return (
     <>
       {
-        contextPos && renderContextMenu(...contextPos)
+        contextPos &&
+        renderContextMenu(...contextPos)
       }
       {
-        userIsEditingLayout && <Notification title='Editing enabled' description='Add and remove items by right clicking' />
+        userIsEditingLayout &&
+        <Notification title='Editing enabled' description='Add and remove items by right clicking' />
       }
-        <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
+      <Modal open={modalItemId} onClose={() => setModalItemId(undefined)} size='small' shade={false} draggable>
+        <WidgetSelector
+          value={data.children?.[modalItemId]?.component}
+          onClose={() => setModalItemId(undefined)}
+          onChange={set => applyItem(modalItemId, set)}
+        />
+      </Modal>
+      <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
         <ReactGridLayout
           className='Grid-layout'
           cols={GRID_COL_COUNT}
@@ -237,8 +267,13 @@ export function Grid ({ layout = {}, children, onChange }) {
           {
             childrenArr
               .map(child => {
+                const isOpenInModal = modalItemId === child.key
                 return (
-                  <div key={child.key} className='Grid-item' onContextMenu={e => handleContextMenu(e, { type: 'item', id: child.key })}>
+                  <div
+                    key={child.key}
+                    className={`Grid-item ${isOpenInModal ? 'is-changing' : ''}`}
+                    onContextMenu={e => handleContextMenu(e, { type: 'item', id: child.key })}
+                  >
                     {child}
                   </div>
                 )

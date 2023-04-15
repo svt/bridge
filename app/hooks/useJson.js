@@ -4,7 +4,7 @@
 
 import React from 'react'
 
-export function useJson (url) {
+export const useJson = url => {
   const [data, setData] = React.useState({})
 
   React.useEffect(() => {

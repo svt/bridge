@@ -27,7 +27,11 @@ async function initWidget () {
   `
 
   const htmlPath = await bridge.server.serveString(html)
-  bridge.widgets.registerWidget('bridge.plugins.welcome', 'Getting started', htmlPath)
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.welcome',
+    name: 'Getting started',
+    uri: htmlPath
+  })
 }
 
 exports.activate = async () => {

@@ -62,7 +62,7 @@ export const Workspace = () => {
   const INTERNAL_COMPONENTS = React.useRef({
     'bridge.internals.grid': (data, onUpdate) => {
       return (
-        <Grid {...data} onChange={onUpdate}>
+        <Grid data={data} onChange={onUpdate}>
           {
             (data.children ? Object.entries(data.children) : [])
               .map(([id, component]) => (

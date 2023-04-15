@@ -7,15 +7,17 @@ const state = require('./state')
 /**
  * Make a widget available
  * to the application
- * @param { String } id A unique identifier for the widget, SHOULD follow
- *                      the format of [plugin bundle id].widget-name
- * @param { String } name A human readable name for the widget
- * @param { String } uri The widget's entrypoint uri
+ * @param {
+ *   id: String,
+ *   name: String,
+ *   uri: String,
+ *   description: String
+ * } spec
  */
-function registerWidget (id, name, uri) {
+function registerWidget (spec) {
   state.apply({
     _widgets: {
-      [id]: { name, uri }
+      [spec.id]: spec
     }
   })
 }
