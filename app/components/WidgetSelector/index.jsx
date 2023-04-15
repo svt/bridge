@@ -3,6 +3,11 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+function normalize (str) {
+  return String(str)
+    .toLowerCase()
+    .replace(/\s/g, '')
+}
 export function WidgetSelector ({ value, onClose = () => {}, onChange = () => {} }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -10,29 +15,48 @@ export function WidgetSelector ({ value, onClose = () => {}, onChange = () => {}
   const [widgets, setWidgets] = React.useState([])
 
   React.useEffect(() => {
+    const normalizedQuery = normalize(query || '')
+
+    /*
+    Filter widgets against the query
+    as a simple search function
+    */
     const widgets = Object.values(shared?._widgets || {})
-    /**
-     * @todo
-     * Only use the widgets matching
-     * the search query
-     */
+      .filter(widget => {
+        if (!query) {
+          return true
+        }
+        if (normalize(widget.id || '').includes(normalizedQuery)) {
+          return true
+        }
+        if (normalize(widget.name || '').includes(normalizedQuery)) {
+          return true
+        }
+        return false
+      })
+
     setWidgets(widgets)
   }, [query, shared?._widgets])
 
-  function handleClick (id) {
+  function handleSelect (id) {
     onChange({ component: id })
+  }
+
+  function handleClose () {
+    setQuery('')
+    onClose()
   }
 
   return (
     <div className='WidgetSelector'>
       <header className='WidgetSelector-header'>
-        <input type='search' className='WidgetSelector-search' value={query} placeholder='Search for widgets' onChange={e => setQuery(e.target.value)} />
+        <input type='search' className='WidgetSelector-search' value={query} placeholder='Search widgets' onChange={e => setQuery(e.target.value)} />
       </header>
       <div className='WidgetSelector-list'>
         {
           (widgets || []).map(widget => {
             return (
-              <div className='WidgetSelector-listItem' tabIndex={0} onClick={() => handleClick(widget.id)}>
+              <div className='WidgetSelector-listItem' tabIndex={0} onClick={() => handleSelect(widget.id)}>
                 <div className='WidgetSelector-listItemCheck'>
                   <input type='radio' checked={value === widget.id} />
                 </div>
@@ -50,7 +74,7 @@ export function WidgetSelector ({ value, onClose = () => {}, onChange = () => {}
         }
       </div>
       <footer className='WidgetSelector-footer'>
-        <button className='Button--primary' onClick={() => onClose()}>OK</button>
+        <button className='Button--primary' onClick={() => handleClose()}>OK</button>
       </footer>
     </div>
   )
