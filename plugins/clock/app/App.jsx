@@ -9,14 +9,18 @@ import { CurrentTime } from './components/CurrentTime'
  * average should be timewise
  * @type { Number }
  */
-const AVERAGE_TIME_SPAN_MS = 10000
+const AVERAGE_TIME_SPAN_MS = 20000
 
 /**
  * Declare how often we should request a
  * new timestamp from the main process
+ *
+ * Add a random part as we don't want
+ * all clocks to sync at the same time
+ *
  * @type { Number }
  */
-const CHECK_INTERVAL_MS = 1000
+const CHECK_INTERVAL_MS = 9000 + Math.random() * 1000
 
 export default function App () {
   const [latency, setLatency] = React.useState(0)
