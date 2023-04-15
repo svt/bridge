@@ -25,7 +25,7 @@ export const CurrentTime = ({ className = '', offset = 0, base = Date.now() }) =
     const start = Date.now()
     const ival = window.setInterval(() => {
       setMilliseconds(Date.now() - start)
-    }, 30)
+    }, 50)
 
     setMilliseconds(0)
     return () => {
