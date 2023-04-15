@@ -31,7 +31,12 @@ async function initWidget () {
   `
 
   const htmlPath = await bridge.server.serveString(html)
-  bridge.widgets.registerWidget('bridge.plugins.inspector', 'Inspector', `${htmlPath}`)
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.inspector',
+    name: 'Inspector',
+    uri: `${htmlPath}`,
+    description: 'The item inspector'
+  })
 }
 
 exports.activate = async () => {

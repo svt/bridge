@@ -14,14 +14,14 @@ const state = require('./state')
 const commands = require('./commands')
 
 /**
- * Make a widget available
+ * Make a shortcut available
  * to the application
  * @param { ShortcutSpec } spec
  */
 function registerShortcut (spec = {}) {
   return commands.executeCommand('shortcuts.registerShortcut', spec)
 }
-exports.registerWidget = registerShortcut
+exports.registerShortcut = registerShortcut
 
 /**
  * Get a shortcut's

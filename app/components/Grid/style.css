@@ -29,3 +29,21 @@ a more responsive app
 .Grid .react-grid-item {
   transition: none;
 }
+
+.Grid-item.is-changing {
+  animation-name: Grid-item-is-changing;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes Grid-item-is-changing {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -31,7 +31,12 @@ async function initWidget () {
   `
 
   const htmlPath = await bridge.server.serveString(html)
-  bridge.widgets.registerWidget('bridge.plugins.rundown', 'Rundown', `${htmlPath}`)
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.rundown',
+    name: 'Rundown',
+    uri: `${htmlPath}`,
+    description: 'The default rundown'
+  })
 }
 
 /**

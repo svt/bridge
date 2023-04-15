@@ -31,7 +31,12 @@ async function initWidget () {
   `
 
   const htmlPath = await bridge.server.serveString(html)
-  bridge.widgets.registerWidget('bridge.plugins.state', 'State', `${htmlPath}`)
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.state',
+    name: 'State',
+    uri: `${htmlPath}`,
+    description: 'View the internal state in real time'
+  })
 }
 
 exports.activate = async () => {

@@ -177,8 +177,17 @@ Stop serving a file by its id
 ## Widgets
 Widgets are web views controlled by plugins. They can provide additional functionality to the UI.
 
-### `bridge.widgets.registerWidget(id, name, uri)`
+### `bridge.widgets.registerWidget(spec)`
 Register a new widget, it will immediately be made available in the UI
+
+```javascript
+bridge.widgets.registerWidget({
+  id: 'myplugin.widget',
+  name: 'My widget',
+  uri: 'path-to-my-widget',
+  description: 'A widget meant for demo purposes'
+})
+```
 
 ## Settings  
 Settings are controls bound to a specific property in the shared state that appear under the plugins section in the settings menu.
