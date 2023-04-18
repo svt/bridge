@@ -10,9 +10,6 @@ html, body, #root {
   margin: 0;
   padding: 0;
 
-  height: 100%;
-  min-height: 100vh;
-
   font-family: var(--base-fontFamily--primary);
   color: var(--base-color);
 }
@@ -55,7 +52,8 @@ button {
 .Button,
 .Button--primary,
 .Button--secondary,
-.Button--tertiary {
+.Button--tertiary,
+.Button--ghost {
   padding: 0.8em 1.5em;
 
   font-size: 1em;
@@ -75,7 +73,8 @@ button {
 .Button:active,
 .Button--primary:active,
 .Button--secondary:active,
-.Button--tertiary:active {
+.Button--tertiary:active,
+.Button--ghost:active{
   box-shadow: inset 0 0 0 2px var(--base-color--shade);
 }
 
@@ -87,6 +86,12 @@ button {
 .Button--tertiary {
   color: var(--base-color);
   background: var(--base-color--grey3);
+}
+
+.Button--ghost {
+  color: var(--base-color);
+  background: none;
+  border: 1px solid var(--base-color--shade);
 }
 
 .Button--small {
@@ -202,4 +207,14 @@ input[type="checkbox"]:active::before {
 input[type="checkbox"]:checked::before {
   background: var(--base-color--accent1);
   transform: translate(100%, -50%);
+}
+
+/* Labels */
+
+.u-text--label {
+  font-size: 0.9em;
+  font-weight: 500;
+
+  opacity: 0.5;
+  text-transform: uppercase;
 }

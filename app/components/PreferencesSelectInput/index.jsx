@@ -3,7 +3,7 @@ import './style.css'
 
 import * as random from '../../utils/random'
 
-export function PreferenceSelectInput ({ label, value, options = [], onChange = () => {} }) {
+export function PreferencesSelectInput ({ label, value, options = [], onChange = () => {} }) {
   const id = `number-${random.number()}`
   return (
     <div className='PreferencesSelectInput'>

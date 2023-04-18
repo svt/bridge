@@ -2,8 +2,9 @@ import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
 import { PreferencesStringInput } from '../PreferencesStringInput'
 import { PreferencesNumberInput } from '../PreferencesNumberInput'
+import { PreferencesSelectInput } from '../PreferencesSelectInput'
 import { PreferencesThemeInput } from '../PreferencesThemeInput'
-import { PreferenceSelectInput } from '../PreferencesSelectInput'
+import { PreferencesFrameInput } from '../PreferencesFrameInput'
 
 /**
  * Map typenames to components
@@ -15,6 +16,7 @@ export const inputComponents = {
   version: PreferencesVersionInput,
   string: PreferencesStringInput,
   number: PreferencesNumberInput,
-  select: PreferenceSelectInput,
-  theme: PreferencesThemeInput
+  select: PreferencesSelectInput,
+  theme: PreferencesThemeInput,
+  frame: PreferencesFrameInput
 }
