@@ -46,19 +46,8 @@ Contributions can be added either through `package.json` or using the matching a
     ],
     "settings": [
       {
-        "title": "My repeating setting",
-        "description": "Manage multiple instances of my cool setting",
-        "repeating": true,
-        "bind": "shared.plugins.my-plugin.settings.repeating-setting",
-        "inputs": [
-          { "type": "string", "bind": "string", "label": "My setting's string" },
-          { "type": "number", "bind": "number", "label": "My setting's number" }
-        ]
-      },
-      {
         "title": "My boolean setting",
         "description": "Manage my boolean value",
-        "repeating": true,
         "bind": "shared.plugins.my-plugin.settings.boolean-setting",
         "inputs": [
           { "type": "boolean", "bind": "value", "label": "My setting's value" }
