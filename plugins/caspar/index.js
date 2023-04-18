@@ -10,8 +10,6 @@ const bridge = require('bridge')
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
-const Caspar = require('./lib/Caspar')
-
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
