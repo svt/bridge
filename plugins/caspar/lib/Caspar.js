@@ -8,7 +8,7 @@
  * }} CasparOpts
  *
  * @typedef {
- *  'ERROR' | 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED'
+ *  'ERROR' | 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED'
  * } CasparStatusEnum
  */
 

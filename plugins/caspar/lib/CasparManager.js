@@ -20,7 +20,7 @@ class CasparManager {
   remove (id) {
     this._index.delete(id)
   }
-  
+
   get (id) {
     return this._index.get(id)
   }

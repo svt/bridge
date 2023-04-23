@@ -3,9 +3,25 @@
 // SPDX-License-Identifier: MIT
 
 /**
+ * @typedef {{
+ *  host: String,
+ *  port: Number
+ * }} ConnectionDescription
+ *
+ * @typedef {{
+ *  id: String?,
+ *  name: String,
+ *  host: String,
+ *  port: Number
+ * }} ServerDescription
+ */
+
+/**
  * @type { import('../../api').Api }
  */
 const bridge = require('bridge')
+
+const uuid = require('uuid')
 
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
@@ -29,7 +45,7 @@ async function initWidget () {
     <html>
       <head>
         <title>Clock</title>
-        <base href="/"></base>
+        <base href="/" />
         <link rel="stylesheet" href="${bridge.server.uris.STYLE_RESET}" />
         <link rel="stylesheet" href="${cssPath}" />
         <script src="${jsPath}" defer></script>
@@ -69,8 +85,16 @@ async function initSettings () {
   })
 }
 
-async function setupServer (serverInit) {
-  if (!serverInit.id) {
+/**
+ * Setup a server instance
+ * from an init-object,
+ * also adding references to
+ * it in the required parts
+ * of the state
+ * @param { ServerDescription } description
+ */
+async function setupServer (description) {
+  if (!description.id) {
     return
   }
 
@@ -83,7 +107,7 @@ async function setupServer (serverInit) {
       _tmp: {
         [manifest.name]: {
           servers: {
-            [serverInit.id]: {
+            [description.id]: {
               status: newStatus
             }
           }
@@ -92,14 +116,26 @@ async function setupServer (serverInit) {
     })
   })
 
-  casparManager.add(serverInit.id, server)
+  casparManager.add(description.id, server)
 
-  if (serverInit.host && serverInit.port) {
-    server.connect(serverInit.host, serverInit.port)
+  if (description.host && description.port) {
+    server.connect(description.host, description.port)
   }
 }
 
+/**
+ * Initialize all servers that are stored
+ * in the serializable part of the state,
+ * that is server descriptions without
+ * the connection state data
+ *
+ * This must be done once
+ * on plugin activation
+ */
 async function initStoredServers () {
+  /**
+   * @type { ServerDescription[] }
+   */
   const servers = await bridge.state.get(`${STATE_SETTINGS_PATH}.servers`) || []
 
   for (const server of servers) {
@@ -132,16 +168,30 @@ exports.activate = async () => {
     console.log('Caspar playing', e)
   })
 
-  bridge.commands.registerCommand('caspar.addServer', async serverInit => {
-    logger.debug('Adding server', serverInit.id)
-    await setupServer(serverInit)
+  /**
+   * Add a new server
+   * from an init-object
+   * @param { ServerDescription } description
+   * @returns { Promise.<String> } A promise resolving
+   *                               to the server's id
+   */
+  async function addServer (description) {
+    logger.debug('Adding server')
+
+    /*
+    Generate a new id for
+    referencing the server
+    */
+    description.id = uuid.v4()
+
+    await setupServer(description)
 
     const serverArray = await bridge.state.get(`${STATE_SETTINGS_PATH}.servers`) || []
     if (serverArray.length > 0) {
       bridge.state.apply({
         plugins: {
           [manifest.name]: {
-            servers: { $push: [serverInit] }
+            servers: { $push: [description] }
           }
         }
       })
@@ -149,14 +199,24 @@ exports.activate = async () => {
       bridge.state.apply({
         plugins: {
           [manifest.name]: {
-            servers: [serverInit]
+            servers: [description]
           }
         }
       })
     }
-  })
 
-  bridge.commands.registerCommand('caspar.editServer', async (serverId, serverInit) => {
+    return description.id
+  }
+  bridge.commands.registerCommand('caspar.server.add', addServer)
+
+  /**
+   * Update the state from
+   * a new description
+   * @param { String } serverId The id of the server to edit
+   * @param { ServerDescription } description A new server init object
+   *                                  to apply to the server
+   */
+  async function editServer (serverId, description) {
     logger.debug('Editing server', serverId)
 
     const server = casparManager.get(serverId)
@@ -170,7 +230,7 @@ exports.activate = async () => {
         if (server.id !== serverId) {
           return server
         }
-        return serverInit
+        return description
       })
 
     bridge.state.apply({
@@ -180,27 +240,42 @@ exports.activate = async () => {
         }
       }
     })
-  })
+  }
+  bridge.commands.registerCommand('caspar.server.edit', editServer)
 
-  bridge.commands.registerCommand('caspar.connectServer', async (serverId, host, port) => {
+  /**
+   * Reconnect a server using
+   * a new connection init
+   * @param { String } serverId The id of the server to reconnect
+   * @param { ConnectionDescription } description An object describing the new connection
+   */
+  async function connectServer (serverId, description) {
     logger.debug('Connecting server', serverId)
 
     const server = casparManager.get(serverId)
     if (!server) {
-      throw new Error('Server not found')
+      return Promise.reject(new Error('Server not found'))
     }
 
-    if (host && port) {
-      server.connect(host, port)
+    if (description.host && description.port) {
+      server.connect(description.host, description.port)
     }
-  })
+  }
+  bridge.commands.registerCommand('caspar.server.connect', connectServer)
 
-  bridge.commands.registerCommand('caspar.removeServer', async serverId => {
+  /**
+   * Remove a server by its id,
+   * will also disconnect any
+   * current connections
+   * @param { String } serverId The id of the
+   *                            server to remove
+   */
+  async function removeServer (serverId) {
     logger.debug('Removing server', serverId)
 
     const server = casparManager.get(serverId)
     if (!server) {
-      throw new Error('Server not found')
+      return Promise.reject(new Error('Server not found'))
     }
 
     server.teardown()
@@ -228,5 +303,6 @@ exports.activate = async () => {
         }
       }
     ])
-  })
+  }
+  bridge.commands.registerCommand('caspar.server.remove', removeServer)
 }

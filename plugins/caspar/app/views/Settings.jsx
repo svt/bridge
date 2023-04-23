@@ -1,8 +1,6 @@
 import React from 'react'
 import bridge from 'bridge'
 
-import { v4 } from 'uuid'
-
 import { SharedContext } from '../sharedContext'
 import { ServerInput } from '../components/ServerInput'
 
@@ -11,17 +9,15 @@ export const Servers = () => {
   const servers = state?.plugins?.[window.PLUGIN.name]?.servers || []
 
   function handleChange (serverId, newData) {
-    bridge.commands.executeCommand('caspar.editServer', serverId, newData)
+    bridge.commands.executeCommand('caspar.server.edit', serverId, newData)
   }
 
   function handleDelete (serverId) {
-    bridge.commands.executeCommand('caspar.removeServer', serverId)
+    bridge.commands.executeCommand('caspar.server.remove', serverId)
   }
 
   function handleNew () {
-    bridge.commands.executeCommand('caspar.addServer', {
-      id: v4()
-    })
+    bridge.commands.executeCommand('caspar.server.add', {})
   }
 
   return (

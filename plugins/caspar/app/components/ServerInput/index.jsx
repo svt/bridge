@@ -18,7 +18,10 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
   }
 
   function handleConnect () {
-    bridge.commands.executeCommand('caspar.connectServer', data.id, data.host, data.port)
+    bridge.commands.executeCommand('caspar.server.connect', data.id, {
+      host: data.host,
+      port: data.port
+    })
   }
 
   return (
@@ -42,5 +45,5 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
         <button className='Button Button--ghost' onClick={() => handleConnect()}>Connect</button>
       </div>
     </div>
-    )
+  )
 }
