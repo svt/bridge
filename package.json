@@ -31,7 +31,6 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "^8.10.0",
-    "electron": "^12.2.3",
     "express": "^4.17.1",
     "jszip": "^3.10.1",
     "node-fetch": "^2.6.1",
@@ -44,12 +43,6 @@
     "uuid": "^8.3.2",
     "ws": "^8.2.3"
   },
-  "standard": {
-    "enable": true,
-    "env": [
-      "jest"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/plugin-transform-runtime": "^7.13.10",
@@ -57,7 +50,8 @@
     "@babel/preset-react": "^7.12.13",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.0",
-    "electron-packager": "^15.4.0",
+    "electron": "^22.3.6",
+    "electron-packager": "^17.1.1",
     "eslint": "^8.38.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
