@@ -3,8 +3,20 @@
 // SPDX-License-Identifier: MIT
 
 const net = require('net')
+const EventEmitter = require('events')
 
-class TcpSocket {
+const TcpSocketError = require('./error/TcpSocketError')
+
+const KEEPALIVE_DELAY_MS = 1000 * 60 * 10
+
+class TcpSocket extends EventEmitter {
+  static readyState = Object.freeze({
+    open: 'open',
+    opening: 'opening',
+    readOnly: 'readOnly',
+    writeOnly: 'writeOnly'
+  })
+
   /**
    * Get a temporary socket
    * to the specified host
@@ -19,12 +31,15 @@ class TcpSocket {
    */
   static async temp (host, port, fn) {
     const socket = new TcpSocket()
-    await socket.connect(host, port)
+    try {
+      await socket.connect(host, port)
 
-    const res = await fn(socket)
-    socket.destroy()
-
-    return res
+      const res = await fn(socket)
+      socket.teardown()
+      return res
+    } catch (e) {
+      return Promise.reject(e)
+    }
   }
 
   /**
@@ -35,6 +50,14 @@ class TcpSocket {
    */
   get socket () {
     return this._socket
+  }
+
+  /**
+   * Get the socket's current state
+   * @type { 'open' | 'opening' | 'readOnly' | 'writeOnly' }
+   */
+  get readyState () {
+    return this._socket.readyState
   }
 
   /**
@@ -52,7 +75,7 @@ class TcpSocket {
    */
   async connect (host, port) {
     if (this._socket) {
-      this.destroy()
+      this.teardown()
     }
     return new Promise((resolve, reject) => {
       this._socket = net.createConnection(port, host, err => {
@@ -60,25 +83,55 @@ class TcpSocket {
           this._socket = undefined
           return reject(err)
         }
+
         resolve(this._socket)
+      })
+
+      this._socket.setKeepAlive(true, KEEPALIVE_DELAY_MS)
+
+      this._socket.on('timeout', () => {
+        this.emit('error', new TcpSocketError('Connection timeout', 'ERR_CONNECTION_TIMEOUT'))
+        this.teardown()
+        reject(new TcpSocketError('Connection timeout'))
+      })
+
+      this._socket.on('connect', () => {
+        this.emit('connect')
+      })
+
+      this._socket.on('close', () => {
+        this.emit('close')
+        this.teardown()
+      })
+
+      this._socket.on('error', err => {
+        this.emit('error', err)
+        this.teardown()
+      })
+
+      this._socket.on('data', chunk => {
+        this.emit('data', chunk)
       })
     })
   }
 
   /**
-   * Destroy the socket,
+   * Teardown the socket,
    * will remove all listeners
    * and set the underlying socket
    * to undefined
    */
-  destroy () {
+  teardown () {
     if (!this._socket) {
       return
     }
     this._socket.removeAllListeners()
+    this._socket.end()
     this._socket.destroy()
 
     this._socket = undefined
+
+    this.removeAllListeners()
   }
 
   /**

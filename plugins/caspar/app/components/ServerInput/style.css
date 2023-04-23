@@ -8,11 +8,11 @@
   border-radius: 10px;
 }
 
-.ServerInput div {
+.ServerInput > div {
   width: 100%;
 }
 
-.ServerInput div:last-child {
+.ServerInput > div:last-child {
   text-align: right;
 }
 

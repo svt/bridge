@@ -69,8 +69,6 @@ export async function registerKeyDown (e) {
 
   keys.add(normalize(e.key))
 
-  console.log('KEYS', Array.from(keys.values()))
-
   const matchedShortcuts = shortcuts.filter(shortcut => {
     for (const trigger of shortcut.trigger) {
       if (!keys.has(trigger)) {

@@ -3,6 +3,8 @@ import React from 'react'
 import * as SharedContext from './sharedContext'
 import * as Settings from './views/Settings'
 
+import { Status } from './views/Status'
+
 export default function App () {
   const [view, setView] = React.useState()
 
@@ -18,6 +20,8 @@ export default function App () {
           switch (view) {
             case 'settings/servers':
               return <Settings.Servers />
+            case 'status':
+              return <Status />
             default:
               return <></>
           }

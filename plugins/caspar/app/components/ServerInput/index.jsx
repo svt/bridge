@@ -1,6 +1,10 @@
 import React from 'react'
 import './style.css'
 
+import bridge from 'bridge'
+
+import { ServerStatusBadge } from '../ServerStatusBadge'
+
 export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {} }) => {
   function handleInput (key, newValue) {
     onChange({
@@ -11,6 +15,10 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
 
   function handleDelete () {
     onDelete()
+  }
+
+  function handleConnect () {
+    bridge.commands.executeCommand('caspar.connectServer', data.id, data.host, data.port)
   }
 
   return (
@@ -25,10 +33,14 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
             <input type='number' className='ServerInput-input--small' value={data.port} placeholder='Port' onChange={e => handleInput('port', e.target.value)}></input>
           </div>
         </div>
+        <div className='ServerInput-input'>
+          <ServerStatusBadge serverId={data.id} />
+        </div>
       </div>
       <div>
-        <button className='Button Button--ghost' onClick={() => handleDelete()}>Delete</button>
+        <button className='Button Button--ghost' onClick={() => handleDelete()}>Delete</button><br/>
+        <button className='Button Button--ghost' onClick={() => handleConnect()}>Connect</button>
       </div>
     </div>
-  )
+    )
 }
