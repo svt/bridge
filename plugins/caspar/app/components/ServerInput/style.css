@@ -1,0 +1,37 @@
+.ServerInput {
+  display: flex;
+
+  margin-bottom: 10px;
+  padding: 10px 12px;
+
+  border: 1px solid var(--base-color--shade);
+  border-radius: 10px;
+}
+
+.ServerInput > div {
+  width: 100%;
+}
+
+.ServerInput > div:last-child {
+  text-align: right;
+}
+
+.ServerInput-input {
+  margin-bottom: 10px;
+}
+
+.ServerInput-input:last-child {
+  margin-bottom: 0;
+}
+
+.ServerInput-input--small {
+  width: 100px;
+}
+
+.ServerInput-input input {
+  margin-right: 5px;
+}
+
+.ServerInput-flexInputs {
+  display: flex;
+}

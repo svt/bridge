@@ -5,9 +5,7 @@ import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
 import { VerticalNavigation } from '../VerticalNavigation'
-
 import { Preference } from './preference'
-import { RepeatingPreference } from './repeatingPreference'
 
 import * as Layout from '../Layout'
 
@@ -120,9 +118,8 @@ export function Preferences ({ onClose = () => {} }) {
           {
             (section?.items || [])
               .map((setting, i) => {
-                const Component = setting.repeating ? RepeatingPreference : Preference
                 return (
-                  <Component
+                  <Preference
                     key={i}
                     setting={setting}
                     onChange={handleValueChange}

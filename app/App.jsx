@@ -11,6 +11,7 @@ import { useWebsocket } from './hooks/useWebsocket'
 import { deepApply } from './utils/apply'
 
 import * as shortcuts from './utils/shortcuts'
+import * as browser from './utils/browser'
 import * as api from './api'
 
 import {
@@ -74,6 +75,14 @@ and in any iframes
 ;(function () {
   window.addEventListener('keydown', e => shortcuts.registerKeyDown(e))
   window.addEventListener('keyup', e => shortcuts.registerKeyUp(e))
+})()
+
+/*
+Add a data attribute with the platform to the
+root html tag for platform-specific styling e.t.c.
+*/
+;(function () {
+  window.document.documentElement.dataset.platform = browser.platform()
 })()
 
 export default function App () {

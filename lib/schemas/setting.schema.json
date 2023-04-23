@@ -7,7 +7,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["boolean", "theme", "number", "string"]
+          "enum": ["boolean", "theme", "number", "string", "frame"]
         },
         "bind": {
           "type": "string"
@@ -17,6 +17,10 @@
         },
         "repeating": {
           "type": "boolean"
+        },
+        "uri": {
+          "type": "string",
+          "description": "A uri that should be used in a frame in place of the inputs"
         }
       },
       "required": [ "type" ]

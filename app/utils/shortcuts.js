@@ -12,6 +12,28 @@ import * as api from '../api'
 const keys = new Set()
 
 /**
+ * Call the callback after a delay
+ * from the last call to timeoutOnIdle
+ *
+ * Every direct call to timeoutOnIdle
+ * will invalidate the timeout and
+ * set a new one
+ *
+ * @type { Function.<void> }
+ * @param { Function.<void> } callback
+ * @param { Number } delay The delay in ms
+ */
+const timeoutOnIdle = (function () {
+  let timeout
+  return (callback, delay) => {
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    timeout = setTimeout(callback, delay)
+  }
+})()
+
+/**
  * Normalize a key name in order
  * to more easily target specific keys
  *
@@ -31,6 +53,16 @@ function normalize (key) {
   return key
 }
 
+/**
+ * Register a key down event,
+ * will try to find a shortcut
+ * matching the currently pressed
+ * keys. If found, the 'shortcut' event
+ * will be emitted on the target of the
+ * key event
+ *
+ * @param { KeyboardEvent } e
+ */
 export async function registerKeyDown (e) {
   const bridge = await api.load()
   const shortcuts = await bridge.shortcuts.getShortcuts()
@@ -51,10 +83,6 @@ export async function registerKeyDown (e) {
   }
 
   for (const shortcut of matchedShortcuts) {
-    /*
-    Run logic to determine of we're
-    triggering a shortcut
-    */
     const event = new window.CustomEvent('shortcut', {
       detail: {
         id: shortcut.id
@@ -63,8 +91,21 @@ export async function registerKeyDown (e) {
     })
     e.target.dispatchEvent(event)
   }
+
+  /*
+  Clear the set when input has ended as
+  we want to get rid of dangling keys
+  */
+  timeoutOnIdle(() => keys.clear(), 1000)
 }
 
+/**
+ * Register a key up event,
+ * will remove the released key
+ * from the set of pressed keys
+ *
+ * @param { KeyboardEvent } e
+ */
 export function registerKeyUp (e) {
   keys.delete(normalize(e.key))
 }

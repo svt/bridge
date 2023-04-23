@@ -16,17 +16,24 @@
   "author": "Axel Boberg (axel.boberg@svt.se)",
   "license": "UNLICENSED",
   "contributes": {
-    "settings": [{
-        "title": "Server",
-        "group": "Caspar CG",
-        "description": "Configure Caspar servers",
-        "repeating": true,
-        "bind": "shared.plugins.bridge-plugin-caspar.settings.servers",
-        "inputs": [
-          { "type": "string", "bind": "label", "label": "Label" },
-          { "type": "string", "bind": "host", "label": "Host" },
-          { "type": "number", "bind": "port", "label": "Port" }
-        ]
-    }]
+    "types": [
+      {
+        "id": "bridge.caspar.amcp",
+        "name": "AMCP",
+        "inherits": "bridge.types.root",
+        "properties": {
+          "caspar.server": {
+            "name": "Server",
+            "type": "string",
+            "group": "Caspar"
+          },
+          "caspar.amcp": {
+            "name": "AMCP",
+            "type": "string",
+            "group": "Caspar"
+          }
+        }
+      }
+    ]
   }
 }

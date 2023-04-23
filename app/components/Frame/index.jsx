@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { SharedContext } from '../../sharedContext'
-import { LocalContext } from '../../localContext'
 
 import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
@@ -56,39 +55,39 @@ const COPY_THEME_VARIABLES = [
  */
 function getFrameHtml (url) {
   if (ENABLE_WEBVIEW && browser.isElectron()) {
-    return `<webview class='FrameComponent-frame' src='${url}' />`
+    return `<webview class='Frame-frame' src='${url}' />`
   }
-  return `<iframe class='FrameComponent-frame' src='${url}' />`
+  return `<iframe class='Frame-frame' src='${url}' />`
 }
 
-/**
- * Copy theme variables from the host
- * document to an iframe's document
- * @param { HTMLIFrameElement } iframe
- */
-function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
-  const style = window.getComputedStyle(document.body)
-  for (const variable of variables) {
-    const value = style.getPropertyValue(variable)
-    iframe.contentDocument.documentElement.style.setProperty(variable, value)
-  }
-}
-
-export function FrameComponent ({ data }) {
+export function Frame ({ src, doUpdateTheme = 1 }) {
   const [shared] = React.useContext(SharedContext)
-  const [local] = React.useContext(LocalContext)
-
-  const [hasFocus, setHasFocus] = React.useState(false)
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
 
+  /**
+   * Copy theme variables from the host
+   * document to an iframe's document
+   * @param { HTMLIFrameElement } iframe
+   */
+  function copyThemeVariables (fromEl, iframe, variables = COPY_THEME_VARIABLES) {
+    const style = window.getComputedStyle(fromEl)
+    for (const variable of variables) {
+      const value = style.getPropertyValue(variable)
+      iframe.contentDocument.documentElement.style.setProperty(variable, value)
+    }
+  }
+
   React.useEffect(() => {
     async function setup () {
+      if (!wrapperRef.current) {
+        return
+      }
       const bridge = await api.load()
 
-      wrapperRef.current.innerHTML = getFrameHtml(uri)
+      wrapperRef.current.innerHTML = getFrameHtml(src)
       frameRef.current = wrapperRef.current.firstChild
 
       /*
@@ -104,7 +103,7 @@ export function FrameComponent ({ data }) {
         /*
         Setup the theme variables
         */
-        copyThemeVariables(frameRef.current)
+        copyThemeVariables(wrapperRef.current, frameRef.current)
 
         /*
         Add a data attribute with the platform
@@ -115,35 +114,12 @@ export function FrameComponent ({ data }) {
       }
     }
 
-    const uri = shared?._widgets[data.component]?.uri
-
-    const snapshot = JSON.stringify([data, uri])
+    const snapshot = JSON.stringify(src)
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
     setup()
-  }, [data, shared])
-
-  /*
-  Highligh the component
-  if it gains focus
-  */
-  React.useEffect(() => {
-    function onFocus () {
-      setHasFocus(true)
-    }
-    frameRef.current?.contentWindow.addEventListener('focus', onFocus)
-
-    function onBlur () {
-      setHasFocus(false)
-    }
-    frameRef.current?.contentWindow.addEventListener('blur', onBlur)
-
-    return () => {
-      frameRef.current?.contentWindow.removeEventListener('focus', onFocus)
-      frameRef.current?.contentWindow.removeEventListener('blur', onBlur)
-    }
-  }, [frameRef.current])
+  }, [src, shared])
 
   React.useEffect(() => {
     frameRef.current?.contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
@@ -155,21 +131,38 @@ export function FrameComponent ({ data }) {
   }, [frameRef.current])
 
   /*
+  Set the height of the frame to
+  equal the height of the frame's content
+  */
+  React.useEffect(() => {
+    let shouldResize = true
+    function resize () {
+      window.requestAnimationFrame(() => {
+        if (!shouldResize) {
+          return
+        }
+        if (frameRef.current) {
+          frameRef.current.style.height = `${frameRef.current.contentWindow?.document?.body?.scrollHeight}px`
+        }
+        return resize()
+      })
+    }
+    resize()
+    return () => {
+      shouldResize = false
+    }
+  }, [frameRef.current])
+
+  /*
   Copy the theme variables from
   the current document whenever
   its theme changes
   */
   React.useEffect(() => {
     if (!frameRef.current) return
-    copyThemeVariables(frameRef.current)
-  }, [local.appliedTheme])
+    if (!wrapperRef.current) return
+    copyThemeVariables(wrapperRef.current, frameRef.current)
+  }, [doUpdateTheme, wrapperRef.current])
 
-  return (
-    <div className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`}>
-      <header className='FrameComponent-header'>
-        {shared?._widgets[data.component]?.name}
-      </header>
-      <div ref={wrapperRef} className='FrameComponent-wrapper' />
-    </div>
-  )
+  return <div ref={wrapperRef} className='Frame' />
 }

@@ -1,0 +1,19 @@
+.ServerStatus {
+  display: flex;
+  padding: 5px 10px;
+  width: 100%;
+  
+  box-sizing: border-box;
+}
+
+.ServerStatus:nth-child(odd) {
+  background: var(--base-color--shade);
+}
+
+.ServerStatus > div {
+  width: 100%;
+}
+
+.ServerStatus > div:last-child {
+  text-align: right;
+}

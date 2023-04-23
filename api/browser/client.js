@@ -41,6 +41,22 @@ function assertIdentity () {
 }
 
 /**
+ * Ensure that a 'thing' is an array,
+ * if it's not, one will be created and
+ * the 'thing' will be inserted
+ * @param { any } thing Anything to make into an array
+ *                      if it isn't one already
+ * @returns { any[] }
+ */
+function ensureArray (thing) {
+  let arr = thing
+  if (!Array.isArray(thing)) {
+    arr = [thing]
+  }
+  return arr
+}
+
+/**
  * Select an item,
  * will replace the
  * current selection
@@ -49,21 +65,85 @@ function assertIdentity () {
  * Select multiple items,
  * will replace the
  * current selection
- * @param { String[] } items Multiple items to select
+ * @param { String[] } item Multiple items to select
  */
 function setSelection (item) {
   assertIdentity()
 
-  let items = item
-  if (!Array.isArray(item)) {
-    items = [item]
-  }
-
+  const items = ensureArray(item)
   state.apply({
     [getIdentity()]: {
       selection: { $replace: items }
     }
   })
+}
+
+/**
+ * Select an item by adding to the
+ * client's already existing selection
+ * @param { String } item The id of an item to add
+ *//**
+ * Select multiple items by adding to
+ * the client's already existing selection
+ * @param { String[] } item An array of ids for
+ *                           the items to add
+ */
+function addSelection (item) {
+  assertIdentity()
+
+  const items = ensureArray(item)
+  const currentSelectionIsArray = Array.isArray(state.getLocalState()?.[getIdentity()]?.selection)
+
+  if (!currentSelectionIsArray) {
+    state.apply({
+      [getIdentity()]: {
+        selection: { $replace: items }
+      }
+    })
+  } else {
+    state.apply({
+      [getIdentity()]: {
+        selection: { $push: items }
+      }
+    })
+  }
+}
+
+/**
+ * Subtract an item from
+ * the current selection
+ * @param { String } item The id of an item to subtract
+ *//**
+ * Subtract multiple items
+ * from the current selection
+ * @param { String[] } item An array of ids of items to subtract
+ */
+function subtractSelection (item) {
+  assertIdentity()
+  const selection = state.getLocalState()?.[getIdentity()]?.selection
+  if (!selection) {
+    return
+  }
+
+  const items = ensureArray(item)
+  const newSelection = selection.filter(id => !items.includes(id))
+
+  setSelection(newSelection)
+}
+
+/**
+ * Check whether or not an
+ * item is in the selection
+ * @param { String } item The id of an item to check
+ * @returns { Boolean }
+ */
+function isSelected (item) {
+  assertIdentity()
+  const selection = state.getLocalState()?.[getIdentity()]?.selection
+  if (!selection) {
+    return false
+  }
+  return selection.includes(item)
 }
 
 /**
@@ -97,5 +177,8 @@ module.exports = {
   getIdentity,
   setSelection,
   getSelection,
-  clearSelection
+  addSelection,
+  subtractSelection,
+  clearSelection,
+  isSelected
 }
