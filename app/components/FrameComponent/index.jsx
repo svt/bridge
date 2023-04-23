@@ -105,6 +105,13 @@ export function FrameComponent ({ data }) {
         Setup the theme variables
         */
         copyThemeVariables(frameRef.current)
+
+        /*
+        Add a data attribute with the platform
+        to the html tag for platform-specific
+        styling e.t.c.
+        */
+        frameRef.current.contentDocument.documentElement.dataset.platform = browser.platform()
       }
     }
 

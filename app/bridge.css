@@ -30,6 +30,25 @@ html, body, #root {
   user-select: all;
 }
 
+/*
+Style the scrollbars on all
+non-macOS platforms to make them
+more subtle
+*/
+html:not([data-platform="darwin"]) *::-webkit-scrollbar {
+  width: 7px;
+}
+
+html:not([data-platform="darwin"]) *::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 0 transparent;
+}
+
+html:not([data-platform="darwin"]) *::-webkit-scrollbar-thumb {
+  background-color: var(--base-color--shade1);
+  border-radius: 10px;
+  outline: none;
+}
+
 a, .Link {
   padding: 0;
 
