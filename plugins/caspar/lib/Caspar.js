@@ -119,6 +119,9 @@ class Caspar extends EventEmitter {
     this._opts = opts
   }
 
+  /**
+   * @private
+   */
   _tryReconnect () {
     if (this._opts.reconnect) {
       this._reconnectTimeout = setTimeout(() => {
@@ -127,6 +130,12 @@ class Caspar extends EventEmitter {
     }
   }
 
+  /**
+   * Connect this server to a host and port,
+   * will terminate any existing connection
+   * @param { String } host
+   * @param { Number } port
+   */
   connect (host, port) {
     if (!host || !port) {
       return
@@ -178,6 +187,10 @@ class Caspar extends EventEmitter {
     this._socket.connect(host, port)
   }
 
+  /**
+   * Tear down the server
+   * and any existing connection
+   */
   teardown () {
     this._socket?.teardown()
     this.removeAllListeners()
@@ -194,6 +207,9 @@ class Caspar extends EventEmitter {
     this.emit('status', newStatus)
   }
 
+  /**
+   * @private
+   */
   _processData (chunk) {
     const newLines = chunk.toString('utf8').split('\r\n')
     const lastLine = newLines.pop()
