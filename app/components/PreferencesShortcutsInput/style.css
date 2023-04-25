@@ -1,0 +1,29 @@
+.PreferencesShortcutsInput-list {
+  padding: 0;
+  list-style: none;
+}
+
+.PreferencesShortcutsInput-listItem {
+  display: flex;
+  padding: 0.5em;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.PreferencesShortcutsInput-listItem:nth-child(odd) {
+  background: var(--base-color--shade1);
+}
+
+.PreferencesShortcutsInput-description {
+  width: 100%;
+}
+
+.PreferencesShortcutsInput-description.is-empty {
+  opacity: 0.5;
+}
+
+.PreferencesShortcutsInput-trigger {
+  text-align: right;
+  flex-shrink: 0;
+  opacity: 0.5;
+}

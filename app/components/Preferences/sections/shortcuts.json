@@ -1,12 +1,10 @@
 [
   {
-    "title": "Layout",
+    "title": "Shortcuts",
+    "description": "Customize registered keyboard shortcuts",
     "inputs": [
       {
-        "type": "select",
-        "bind": "shared._userDefaults.shortcutLayout",
-        "options": ["Default", "CasparCG Client"],
-        "value": 0
+        "type": "shortcuts"
       }
     ]
   }
