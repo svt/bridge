@@ -1,3 +1,4 @@
+import { PreferencesShortcutsInput } from '../PreferencesShortcutsInput'
 import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
 import { PreferencesStringInput } from '../PreferencesStringInput'
@@ -12,6 +13,7 @@ import { PreferencesFrameInput } from '../PreferencesFrameInput'
  * @type { Object.<String, React.Component> }
  */
 export const inputComponents = {
+  shortcuts: PreferencesShortcutsInput,
   boolean: PreferencesBooleanInput,
   version: PreferencesVersionInput,
   string: PreferencesStringInput,

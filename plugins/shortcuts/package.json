@@ -16,10 +16,12 @@
     "shortcuts": [
       {
         "id": "copy",
+        "description": "Copy selected content into the clipboard",
         "trigger": ["Meta", "C"]
       },
       {
         "id": "paste",
+        "description": "Paste the contents of the clipboard",
         "trigger": ["Meta", "V"]
       }
     ]
