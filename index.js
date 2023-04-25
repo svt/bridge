@@ -80,7 +80,7 @@ const WORKSPACE_RESUME_CLEANUP_DELAY_MS = 20000
 ;(function () {
   Logger.debug('Recreating temporary directory')
   try {
-    fs.rmdirSync(paths.temp, { force: true, recursive: true })
+    fs.rmSync(paths.temp, { force: true, recursive: true })
   } catch (err) {
     Logger.warn('Failed to remove temporary files directory', err)
   }

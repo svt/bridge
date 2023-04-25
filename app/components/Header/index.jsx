@@ -8,6 +8,8 @@ import { Preferences } from '../Preferences'
 
 import { Icon } from '../Icon'
 
+import * as api from '../../api'
+
 import './style.css'
 
 function isMacOS () {
@@ -37,12 +39,20 @@ export function Header ({ title = 'Bridge' }) {
     })
   }
 
+  async function handleMaximize () {
+    if (!isElectron()) {
+      return
+    }
+    const bridge = await api.load()
+    bridge.commands.executeCommand('window.toggleMaximize')
+  }
+
   return (
     <>
       <Modal open={prefsOpen} onClose={() => setPrefsOpen(false)}>
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
-      <header className={`Header ${isMacOS() && isElectron() ? 'has-leftMargin' : ''}`}>
+      <header className={`Header ${isMacOS() && isElectron() ? 'has-leftMargin' : ''}`} onDoubleClick={() => handleMaximize()}>
         <div>
           { title }
         </div>
