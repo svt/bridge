@@ -13,10 +13,10 @@ import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
 
-import { Tabs } from '../components/Tabs'
 import { Grid } from '../components/Grid'
 import { GridItem } from '../components/GridItem'
 
+import { TabsComponent } from '../components/TabsComponent'
 import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
 import { SelectionComponent } from '../components/SelectionComponent'
@@ -81,7 +81,7 @@ export const Workspace = () => {
       )
     },
     'bridge.internals.tabs': (data, onUpdate) => {
-      return <Tabs data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
+      return <TabsComponent data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
     },
     'bridge.internals.selection': (_, onUpdate) => {
       return <SelectionComponent onChange={onUpdate} />
