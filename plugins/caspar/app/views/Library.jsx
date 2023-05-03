@@ -33,7 +33,7 @@ export const Library = () => {
       setItems(filtered)
     }
     exec()
-  }, [filter, activeTab])
+  }, [filter])
 
   return (
     <div className='View--flex'>
