@@ -21,7 +21,7 @@
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
 
-  --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', sans-serif;
+  --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', bridge-glyphs, sans-serif;
 
   --base-color-type--variable: #0F418C;
 }

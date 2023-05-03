@@ -27,12 +27,16 @@ const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
 const Caspar = require('./lib/Caspar')
+const AMCP = require('./lib/AMCP')
 
 const CasparManager = require('./lib/CasparManager')
 const casparManager = new CasparManager()
 
 const Logger = require('../../lib/Logger')
 const logger = new Logger({ name: 'CasparPlugin' })
+
+const Cache = require('./lib/Cache')
+const cache = new Cache()
 
 const STATE_SETTINGS_PATH = `plugins.${manifest.name}`
 
@@ -44,7 +48,7 @@ async function initWidget () {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Clock</title>
+        <title>Caspar</title>
         <base href="/" />
         <link rel="stylesheet" href="${bridge.server.uris.STYLE_RESET}" />
         <link rel="stylesheet" href="${cssPath}" />
@@ -162,6 +166,13 @@ exports.activate = async () => {
     name: 'Caspar status',
     uri: `${htmlPath}?path=status`,
     description: 'A widget displaying the servers\' statuses'
+  })
+
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.caspar.library',
+    name: 'Library',
+    uri: `${htmlPath}?path=library`,
+    description: 'The media library for Caspar CG'
   })
 
   bridge.events.on('play', e => {
@@ -305,4 +316,64 @@ exports.activate = async () => {
     ])
   }
   bridge.commands.registerCommand('caspar.server.remove', removeServer)
+
+  /**
+   * Send a command to a connected server
+   * and let the lib format the AMCP string
+   *
+   * @param { String } serverId The id of the server
+   *                            to send the command to
+   * @param { String } command The name of the command to send
+   * @param { ...any } args Any arguments required by the command
+   * @returns { CasparResponse }
+   */
+  async function sendCommand (serverId, command, ...args) {
+    const server = casparManager.get(serverId)
+    if (!server) {
+      return Promise.reject(new Error('Server not found'))
+    }
+
+    if (AMCP[command] == null) {
+      return Promise.reject(new Error('Command not found'))
+    }
+
+    return server.send(AMCP[command](...args))
+  }
+  bridge.commands.registerCommand('caspar.server.command', sendCommand)
+
+  /**
+   * Similar to 'command' although
+   * with a caching layer, if available
+   * a cached response will be returned
+   * in place of a hot response
+   *
+   * @param { String } serverId The id of the server
+   *                            to send the command to
+   * @param { String } command The name of the command to send
+   * @param { ...any } args Any arguments required by the command
+   * @returns { CasparResponse }
+   */
+  async function cachedCommand (serverId, command, ...args) {
+    return cache.cache(JSON.stringify([serverId, command, args]), () => {
+      return sendCommand(serverId, command, ...args)
+    })
+  }
+  bridge.commands.registerCommand('caspar.server.cachedCommand', cachedCommand)
+
+  /**
+   * Send an AMCP string to a connected server
+   * and receive the response asynchronously
+   * @param { String } serverId The id of the connected server
+   *                            to send the command to
+   * @param { String } string An AMCP string to send
+   * @returns { Promise.<CasparResponse> }
+   */
+  async function send (serverId, string) {
+    const server = casparManager.get(serverId)
+    if (!server) {
+      return Promise.reject(new Error('Server not found'))
+    }
+    return server.send(string)
+  }
+  bridge.commands.registerCommand('caspar.server.send', send)
 }

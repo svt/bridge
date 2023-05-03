@@ -95,12 +95,12 @@ class Caspar extends EventEmitter {
   _unprocessedLines = []
 
   /**
+   * @private
    * @typedef {{
    *  resolve: Function.<void>,
    *  reject: Function.<void>
    * }} Transaction
    *
-   * @private
    * @type { Map.<String, Transaction> }
    */
   _transactions = new Map()

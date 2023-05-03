@@ -1,0 +1,82 @@
+
+
+/* Light */
+@font-face {
+  font-family: Publik;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Light.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Light.woff") format("woff");
+}
+/* LightItalic */
+@font-face {
+  font-family: Publik;
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-LightItalic.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-LightItalic.woff") format("woff");
+}
+/* Regular */
+@font-face {
+  font-family: Publik;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Regular.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Regular.woff") format("woff");
+}
+/* Italic */
+@font-face {
+  font-family: Publik;
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Italic.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Italic.woff") format("woff");
+}
+/* SemiBold */
+@font-face {
+  font-family: Publik;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-SemiBold.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-SemiBold.woff") format("woff");
+}
+/* SemiBoldItalic */
+@font-face {
+  font-family: Publik;
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-SemiBoldItalic.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/ublikWeb-SemiBoldItalic.woff") format("woff");
+}
+/* Bold */
+@font-face {
+  font-family: Publik;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Bold.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Bold.woff") format("woff");
+}
+/* BoldItalic */
+@font-face {
+  font-family: Publik;
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-BoldItalic.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-BoldItalic.woff") format("woff");
+}
+/* DisplayItalic */
+@font-face {
+  font-family: Publik;
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-DisplayItalic.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-DisplayItalic.woff") format("woff");
+}
+/* Black */
+@font-face {
+  font-family: Publik;
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Black.woff2") format("woff2"), url("https://www.svtstatic.se/frontend-resources/svtlib-font/svtlib-font-1.2.0/fonts/PublikWeb-Black.woff") format("woff");
+}

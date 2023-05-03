@@ -1,7 +1,19 @@
-html, body, #root {
+html, body, .View--flex {
   position: relative;
   width: 100%;
+  height: 100%;
 
   padding: 0;
   margin: 0;
+
+  overflow: hidden;
+}
+
+#root {
+  display: contents;
+}
+
+.View--flex {
+  display: flex;
+  flex-direction: column;
 }
