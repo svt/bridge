@@ -41,7 +41,9 @@ const COPY_THEME_VARIABLES = [
   '--base-color--shade2',
   '--base-color--background',
   '--base-fontFamily--primary',
-  '--base-color-type--variable'
+  '--base-color-type--variable',
+  '--base-color--notificationColor',
+  '--base-color--notificationBackground'
 ]
 
 /**

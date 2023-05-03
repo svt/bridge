@@ -72,7 +72,8 @@ button {
 .Button--primary,
 .Button--secondary,
 .Button--tertiary,
-.Button--ghost {
+.Button--ghost,
+select {
   padding: 0.8em 1.5em;
 
   font-size: 1em;
@@ -121,6 +122,21 @@ button {
   background: none;
 }
 
+select {
+  color: inherit;
+  border: 1px solid var(--base-color--shade);
+  background: none;
+
+  -webkit-appearance: none;
+  appearance: none;
+
+  box-sizing: border-box;
+}
+
+.Select--small {
+  padding: 0.4em 1em;
+}
+
 /* Headings */
 
 h2, .u-heading--2 {
@@ -157,7 +173,7 @@ input[type="number"],
 input[type="search"],
 input[type="password"],
 textarea {
-  padding: 0.75em 0.5em;
+  padding: 0.75em 0.6em;
 
   font-size: 1em;
   font-family: var(--base-fontFamily--primary);
@@ -182,6 +198,10 @@ textarea:focus {
   box-shadow: inset 0 0 0 1px var(--base-color--shade);
 }
 
+input[type="search"] {
+  font-family: 'Bridge Glyphs', var(--base-fontFamily--primary);
+}
+
 input[type="checkbox"] {
   display: inline-block;
   position: relative;
@@ -202,7 +222,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 0;

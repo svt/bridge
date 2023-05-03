@@ -134,7 +134,7 @@ export function TabsComponent ({ data, onUpdate = () => {}, renderComponent = ()
       <Tabs
         tabs={tabs}
         activeTab={activeTab}
-        onActive={id => setActiveTab(id)}
+        onActivate={id => setActiveTab(id)}
         onCreate={() => createTab()}
         onReorder={(id, newIndex) => reorderTab(id, newIndex)}
         onRemove={id => setTabToRemove(id)}

@@ -18,7 +18,7 @@ const DEFAULT_CONFIG = {
         test: /\.(svg)$/,
         type: 'asset/source'
       }, {
-        test: /\.(gif|png|jp(e*)g|woff2)$/,
+        test: /\.(gif|png|jp(e*)g|woff|woff2)$/,
         type: 'asset/resource'
       }, {
         test: /\.(css)$/,
@@ -117,6 +117,10 @@ module.exports = [
             MiniCssExtractPlugin.loader,
             'css-loader'
           ]
+        },
+        {
+          test: /\.(gif|png|jp(e*)g|woff|woff2)$/,
+          type: 'asset/resource'
         }
       ]
     },

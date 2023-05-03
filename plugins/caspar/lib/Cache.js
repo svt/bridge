@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-const Logger = require('./logger')
+const Logger = require('../../../lib/Logger')
 const logger = new Logger({ name: 'Cache' })
 
 const DEFAULT_ENTRY_LIFETIME_MS = 10000
@@ -117,7 +117,7 @@ class Cache {
    * functions which should only
    * be run if the cache has expired
    * @param { String }                  key A key to identify the data
-   * @param { Function.<Promise<Any>> } fn A function returning a promise
+   * @param { Function.<Promise.<any>> } fn A function returning a promise
    *                                       resolving to some data to cache
    * @param { Number }                  lifetime The lifetime of the data in milliseconds
    * @param { Boolean }                 keep A boolean indicating whether or not
@@ -137,7 +137,10 @@ class Cache {
         this.store(key, res, lifetime, keep)
         return res
       })
-      .catch(() => this._store[key]?.data)
+      .catch(() => {
+        logger.debug('Failed to update cache with key', key)
+        return this._store[key]?.data
+      })
   }
 
   /**

@@ -3,6 +3,7 @@ import React from 'react'
 import * as SharedContext from './sharedContext'
 import * as Settings from './views/Settings'
 
+import { Library } from './views/Library'
 import { Status } from './views/Status'
 
 export default function App () {
@@ -22,6 +23,8 @@ export default function App () {
               return <Settings.Servers />
             case 'status':
               return <Status />
+            case 'library':
+              return <Library />
             default:
               return <></>
           }

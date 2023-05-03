@@ -12,7 +12,7 @@ import './style.css'
 export function Tabs ({
   tabs = [],
   activeTab,
-  onActive = () => {},
+  onActivate = () => {},
   onCreate = () => {},
   onReorder = () => {},
   onRemove = () => {},
@@ -31,7 +31,7 @@ export function Tabs ({
   }
 
   function handleTabClick (i) {
-    onActive(i)
+    onActivate(i)
   }
 
   function handleTabClose (e, id) {
@@ -49,7 +49,7 @@ export function Tabs ({
     clearDragOverClass()
     const id = e.dataTransfer.getData('id')
     onReorder(id, i)
-    onActive(id)
+    onActivate(id)
   }
 
   function handleTabDragStart (e, id) {

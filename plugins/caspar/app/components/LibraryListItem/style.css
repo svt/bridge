@@ -1,0 +1,32 @@
+.LibraryListItem {
+  display: flex;
+  padding: 0.3em;
+  font-size: 0.9em;
+
+  justify-content: space-between;
+}
+
+.LibraryListItem:nth-child(odd) {
+  background: var(--base-color--shade);
+}
+
+.LibraryListItem > div:last-child {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.LibraryListItem-col {
+  margin-right: 10px;
+  text-overflow: ellipsis;
+  
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.LibraryListItem > div:last-child > .LibraryListItem-col:last-child {
+  margin-right: 0;
+}
+
+.LibraryListItem-metadata {
+  opacity: 0.5;
+}

@@ -15,11 +15,11 @@ const NoLocalHandlerError = require('./error/NoLocalHandlerError')
  * return indicator
  *
  * @typedef {{
- *  call: (...Any) => Promise.<Any> | (...Any) => Void,
+ *  call: (...any) => Promise.<any> | void,
  *  returns: Boolean
  * }} HandlerTouple
  *
- * @param { (...Any) => Promise.<Any> | (...Any) => Void } fn
+ * @param { (...any) => Promise.<any> | void } fn
  * @param { Boolean } returns
  * @returns {{ HandlerTouple }}
  */
