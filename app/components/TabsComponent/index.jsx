@@ -16,7 +16,7 @@ import { Tabs } from '../Tabs'
  */
 export function TabsComponent ({ data, onUpdate = () => {}, renderComponent = () => {} }) {
   const [activeTab, setActiveTab] = React.useState()
-  const [tabToRename, setTabToRename] = React.useState()
+  const [tabToRemove, setTabToRemove] = React.useState()
 
   /**
    * Keep track of the name being
@@ -24,7 +24,7 @@ export function TabsComponent ({ data, onUpdate = () => {}, renderComponent = ()
    * @type {[String, Function.<void>]}
    */
   const [renamingValue, setRenamingValue] = React.useState()
-  const [tabToRemove, setTabToRemove] = React.useState()
+  const [tabToRename, setTabToRename] = React.useState()
 
   /**
    * @typedef {[
