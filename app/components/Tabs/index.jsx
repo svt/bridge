@@ -16,6 +16,7 @@ export function Tabs ({
   onCreate = () => {},
   onReorder = () => {},
   onRemove = () => {},
+  onContextMenu = () => {},
   renderTabContent = () => {},
   allowReorder = false,
   allowRemove = false,
@@ -72,6 +73,7 @@ export function Tabs ({
                   onClick={() => handleTabClick(tab.id)}
                   onDragOver={e => handleTabDragOver(e)}
                   onDragStart={e => handleTabDragStart(e, tab.id)}
+                  onContextMenu={e => onContextMenu(e, tab.id)}
                   draggable={allowReorder}
                   >
                   {
