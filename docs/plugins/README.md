@@ -84,7 +84,7 @@ The plugin's current version as a semver string.
 The name of the plugin.
 
 #### main
-**Optional**
+**Optional**  
 *See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main)*  
 The package's main file which will be run in the main process. If not specified Bridge won't run any script on plugin initialization.
 
