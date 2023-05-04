@@ -20,7 +20,7 @@ Plugins are Javascript packages located in Bridge's plugin directory.
 Bridge plugin directory
   |- my-plugin
     |- package.json   # The plugin manifest (required)
-    |- index.js       # The main entry file (optional if only contributing through package.json)
+    |- index.js       # The main entry file (optional - only required if the plugin has a script to execute)
 ```
 
 ### Plugin manifest
