@@ -34,7 +34,19 @@ function scrollIntoView (el, animate = true, centered = true) {
   if (!(el instanceof HTMLElement)) {
     return
   }
-  el.scrollIntoView({
+
+  /*
+  Find a child of the element with the is-scrollTarget class
+  in order to allow customization of the point to
+  which an element is scrolled into view
+
+  For example; a child at the top of the element can take on
+  the is-scrollTarget class to scroll the header of the
+  element into view
+  */
+  const target = el.querySelector('.is-scrollTarget') || el
+
+  target.scrollIntoView({
     behavior: animate ? 'smooth' : 'instant',
     block: centered ? 'center' : 'nearest'
   })
