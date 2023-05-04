@@ -17,9 +17,10 @@ Plugins are Javascript packages located in Bridge's plugin directory.
 
 ### Structure
 ```sh
-Plugin root
-  |- package.json   # The plugin manifest (required)
-  |- index.js       # The main entry file
+Bridge plugin directory
+  |- my-plugin
+    |- package.json   # The plugin manifest (required)
+    |- index.js       # The main entry file (optional if only contributing through package.json)
 ```
 
 ### Plugin manifest
@@ -28,6 +29,7 @@ This file is responsible for telling Bridge requirements and contributions made 
 
 Contributions can be added either through `package.json` or using the matching api method, such as `bridge.types.registerType(typeObject)`.
 
+**Example manifest**
 ```json
 {
   "version": "1.0.0",
@@ -82,9 +84,9 @@ The plugin's current version as a semver string.
 The name of the plugin.
 
 #### main
-**Required**  
+**Optional**
 *See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main)*  
-The package's main file which will be run in the main process. If not specified Bridge will default to `index.js` in the plugin root.
+The package's main file which will be run in the main process. If not specified Bridge won't run any script on plugin initialization.
 
 #### engines
 **Required**  
