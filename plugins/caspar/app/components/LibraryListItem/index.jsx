@@ -1,8 +1,6 @@
 import React from 'react'
 import './style.css'
 
-import bridge from 'bridge'
-
 export const LibraryListItem = ({ item = {} }) => {
   async function handleDragStart (e) {
     e.dataTransfer.setData('itemSpec', JSON.stringify({
