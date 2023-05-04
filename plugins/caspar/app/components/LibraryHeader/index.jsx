@@ -24,7 +24,12 @@ export const LibraryHeader = ({ onChange = () => {} }) => {
         />
       </div>
       <div className='LibraryHeader-search'>
-        <input type='search' placeholder='&#xe900; Search for media' />
+        <input
+          type='search'
+          placeholder='&#xe900; Search for media'
+          value={filter?.query}
+          onChange={e => handleFilterValue('query', e.target.value)}
+        />
       </div>
     </header>
   )
