@@ -85,13 +85,16 @@ Some special operations are available apart from adding data. Most of these can 
 
 Operation | Example | Description
 --- | --- | ---
-`-` | `{key: 'new value'}` | Set a key to a new value. If the key is an array the new value will be appended to the end of the array.
-`$delete` | `{key: {$delete: true}}` | Delete a key completely, works for both objects and arrays.
-`$replace` | `{myArr: {$replace: ['new', 'values']}}` | Replace a value without trying to merge this key any deeper, this is useful for replacing complete arrays.
-`$insert` | `{myArr: {$insert: 'my new value', $index: 2}}` | Insert a value at an index in an array - items will be pushed back and not deleted, this is using a splice operation under the hood.
+`-` | `{key: 'new value'}` | Set a key to a new value
+`$delete` | `{key: {$delete: true}}` | Delete a key completely, works for both objects and arrays
+`$replace` | `{myArr: {$replace: ['new', 'values']}}` | Replace a value without trying to merge this key any deeper, this is useful for replacing complete arrays
+`$insert` | `{myArr: {$insert: 'my new value', $index: 2}}` | Insert a value at an index in an array - items will be pushed back and not deleted, this is using a splice operation under the hood
+`$push` | `{myArr: {$push: ['foo', 'bar']}}` | Merge an array with an already existing array by pushing all new values to the current array's tail
 
 **Example usage**
 ```javascript
+import bridge from 'bridge'
+
 /*
 Apply an object { "foo": "bar" } to
 the path of my-plugin
@@ -132,6 +135,8 @@ Get the current state directly from the main process. The only argument is an op
 
 **Example usage**
 ```javascript
+import bridge from 'bridge'
+
 /*
 Getting the full state will also update the local state representation
 */
@@ -148,6 +153,8 @@ Get the full local state without going to the main process. This is useful for r
 
 **Example usage**
 ```javascript
+import bridge from 'bridge'
+
 /*
 emptyState will be undefined as the state has
 not yet been fetched from the main process
@@ -181,10 +188,12 @@ Widgets are web views controlled by plugins. They can provide additional functio
 Register a new widget, it will immediately be made available in the UI
 
 ```javascript
+import bridge from 'bridge'
+
 bridge.widgets.registerWidget({
   id: 'myplugin.widget',
   name: 'My widget',
-  uri: 'path-to-my-widget',
+  uri: '/server/id-of-widget-entry',
   description: 'A widget meant for demo purposes'
 })
 ```
@@ -244,7 +253,7 @@ Clear the current selection
 Get the current selection
 
 ## Keyboard shortcuts  
-Keyboard shortcuts SHOULD be registered within the plugin's `contributes` object to give the user an index of which commands are available.
+Keyboard shortcuts SHOULD be registered with the API to give the user an index of which commands are available.
 Shortcut triggers can be overridden by the user in the settings panel.
 
 ### Listening to keyboard shortcuts
@@ -254,6 +263,8 @@ This is because keyboard shortcuts are only an alias for keyboard events and sho
 Listen to a registered shortcut by subscribing to the `shortcut` DOM event, such as:
 
 ```javascript
+import bridge from 'bridge'
+
 const el = document.createElement('div')
 
 el.addEventListener('shortcut', e => {
@@ -296,10 +307,12 @@ The field should be set to an array of shortcut-specification objects. Such as:
 Register a new keyboard shortcut using a shortcut specification.  
 See the [shortcut schema](/lib/schemas/shortcuts.schema.json) for available keys to use as triggers.
 
-```json
-{
-  "id": "myPlugin.shortcuts.myShortcut",
-  "description": "Trigger my command",
-  "trigger": ["Shift", "Meta", "A"]
-}
+```javascript
+import bridge from 'bridge'
+
+bridge.shortcuts.registerShortcut({
+  id: 'myPlugin.shortcuts.myShortcut',
+  description: 'Trigger my command',
+  trigger: ['Shift', 'Meta', 'A']
+})
 ```

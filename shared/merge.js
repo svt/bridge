@@ -45,8 +45,7 @@ function mergeDeep (targetObj, sourceObj) {
 
     {
       $insert: value,
-      $index: 2,
-      $delete
+      $index: 2
     }
     */
     if (
