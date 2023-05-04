@@ -48,6 +48,12 @@ export function Tabs ({
 
   function handleTabDrop (e, i) {
     clearDragOverClass()
+
+    const type = e.dataTransfer.getData('__type')
+    if (type !== 'tab') {
+      return
+    }
+
     const id = e.dataTransfer.getData('id')
     onReorder(id, i)
     onActivate(id)
@@ -55,6 +61,7 @@ export function Tabs ({
 
   function handleTabDragStart (e, id) {
     e.dataTransfer.setData('id', id)
+    e.dataTransfer.setData('__type', 'tab')
   }
 
   return (
