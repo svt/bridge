@@ -206,19 +206,44 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     })()
   }, [itemIds])
 
-  function handleDrop (e, newIndex) {
+  async function handleDrop (e, newIndex) {
+    e.stopPropagation()
+
     const itemId = e.dataTransfer.getData('itemId')
+    const itemSpec = e.dataTransfer.getData('itemSpec')
     const sourceRundownId = e.dataTransfer.getData('sourceRundownId')
+
+    /*
+    Allow item specifications to be dropped as well as ids
+    in order to prevent zombie items, as they otherwise would
+    have to be created before being dragged if the operation
+    starts in another widget
+    */
+    if (itemSpec) {
+      try {
+        const spec = JSON.parse(itemSpec)
+        if (!spec.type) {
+          console.warn('Dropped spec is missing type')
+          return
+        }
+        const id = await bridge.items.createItem(spec.type)
+
+        bridge.items.applyItem(id, spec)
+        bridge.commands.executeCommand('rundown.reorderItem', rundownId, id, newIndex)
+      } catch (_) {
+        console.warn('Tried to drop an invalid spec')
+      }
+      return
+    }
 
     /*
     Remove the item from the source rundown
     if it was dragged here from another list
     */
-    if (`${sourceRundownId}` !== `${rundownId}`) {
+    if (sourceRundownId && `${sourceRundownId}` !== `${rundownId}`) {
       bridge.commands.executeCommand('rundown.removeItem', sourceRundownId, itemId)
     }
     bridge.commands.executeCommand('rundown.reorderItem', rundownId, itemId, newIndex)
-    e.stopPropagation()
   }
 
   function handleFocus (itemId) {
