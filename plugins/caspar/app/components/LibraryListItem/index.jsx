@@ -20,10 +20,6 @@ export const LibraryListItem = ({ item = {} }) => {
     e.stopPropagation()
   }
 
-  function handleDragEnd (e) {
-    console.log(e)
-  }
-
   return (
     <li className='LibraryListItem' onDragStart={e => handleDragStart(e)} onDragEnd={e => handleDragEnd(e)} draggable>
       <div className='LibraryListItem-name LibraryListItem-col'>
