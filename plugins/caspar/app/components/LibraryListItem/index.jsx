@@ -21,7 +21,7 @@ export const LibraryListItem = ({ item = {} }) => {
   }
 
   return (
-    <li className='LibraryListItem' onDragStart={e => handleDragStart(e)} onDragEnd={e => handleDragEnd(e)} draggable>
+    <li className='LibraryListItem' onDragStart={e => handleDragStart(e)} draggable>
       <div className='LibraryListItem-name LibraryListItem-col'>
         {item?.name}
       </div>
