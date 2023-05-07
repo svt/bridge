@@ -14,14 +14,31 @@
   margin: 5px 0 0;
 }
 
-.Form-inputLabel {
+.Form-inputHeader,
+.Form-inputValue {
+  display: flex;
+  margin-bottom: 3px;
+  justify-content: space-between;
+}
+
+.Form-inputValue {
+  align-items: center;
+}
+
+.Form-inputLabel,
+.Form-inputUnit {
   display: block;
-  margin: 0 0 3px 5px;
+  margin: 0 5px 3px;
 
   font-size: 0.8em;
   text-transform: uppercase;
 
   opacity: 0.7;
+}
+
+.Form-inputUnit {
+  margin: 0 5px 0 10px;
+  text-transform: none;
 }
 
 .Form-section {
@@ -44,4 +61,12 @@
 
 .Form-row > *:first-child {
   margin-left: 0;
+}
+
+.Form-accordion {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+
+  border-top: 1px solid var(--base-color--shade);
 }

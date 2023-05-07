@@ -103,7 +103,7 @@ function orderByGroups (properties) {
     const key = entry[0]
     const prop = entry[1]
 
-    const group = prop.group || '_primary'
+    const group = prop['ui.group'] || '_primary'
 
     if (!groups[group]) {
       groups[group] = {
@@ -170,12 +170,19 @@ export function Form () {
     const Component = INPUT_COMPONENTS[property.type]
     return (
       <div key={id} className='Form-input'>
-        <label id={id} className='Form-inputLabel'>{property.name}</label>
-        <Component
-          htmlFor={id}
-          value={getValue(property.key)}
-          onChange={value => handleDataChange(property.key, value)}
-        />
+        <div className='Form-inputHeader'>
+          <label id={id} className='Form-inputLabel'>{property.name}</label>
+        </div>
+        <div className='Form-inputValue'>
+          <Component
+            htmlFor={id}
+            value={getValue(property.key)}
+            onChange={value => handleDataChange(property.key, value)}
+          />
+          {
+            property['ui.unit'] && <div className='Form-inputUnit'>{property['ui.unit']}</div>
+          }
+        </div>
       </div>
     )
   }
@@ -217,16 +224,18 @@ export function Form () {
             .filter(group => group.name !== '_primary')
             .map((group, i) => {
               return (
-                <Accordion key={i} title={group.name}>
-                  {
-                    Object.values(group.properties || {})
-                      .filter(property => INPUT_COMPONENTS[property.type])
-                      .map((property, i) => {
-                        const id = `${group.name}_${i}`
-                        return renderProperty(property, id)
-                      })
-                  }
-                </Accordion>
+                <div key={i} className='Form-accordion'>
+                  <Accordion title={group.name}>
+                    {
+                      Object.values(group.properties || {})
+                        .filter(property => INPUT_COMPONENTS[property.type])
+                        .map((property, i) => {
+                          const id = `${group.name}_${i}`
+                          return renderProperty(property, id)
+                        })
+                    }
+                  </Accordion>
+                </div>
               )
             })
         }

@@ -14,10 +14,9 @@
 
 .Accordion .Accordion-icon {
   margin-right: 5px;
-  transform: translate(0, 3px) scale(0.9);
-  transition: 0.2s;
+  transform: rotate(-90deg);
 }
 
 .Accordion.is-open .Accordion-icon {
-  transform: translate(0, -1px) rotate(180deg);
+  transform: rotate(0deg);
 }

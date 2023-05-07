@@ -1,12 +1,20 @@
 import React from 'react'
 import './style.css'
 
+const DEFAULT_DURATION_S = 5
+
 export const LibraryListItem = ({ item = {} }) => {
   async function handleDragStart (e) {
     e.dataTransfer.setData('itemSpec', JSON.stringify({
-      type: 'bridge.caspar.amcp',
+      type: 'bridge.caspar.media',
       data: {
-        name: item.name
+        name: item.name,
+        caspar: {
+          target: item.name
+        },
+        timing: {
+          duration: (item?.duration ?? DEFAULT_DURATION_S) * 1000
+        }
       }
     }))
     e.stopPropagation()

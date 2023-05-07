@@ -25,12 +25,41 @@
           "caspar.server": {
             "name": "Server",
             "type": "string",
-            "group": "Caspar"
+            "ui.group": "Caspar"
           },
           "caspar.amcp": {
             "name": "AMCP",
             "type": "string",
-            "group": "Caspar"
+            "ui.group": "Caspar"
+          }
+        }
+      },
+      {
+        "id": "bridge.caspar.media",
+        "name": "Media",
+        "inherits": "bridge.types.media",
+        "properties": {
+          "caspar.server": {
+            "name": "Server",
+            "type": "string",
+            "ui.group": "Caspar"
+          },
+          "caspar.channel": {
+            "name": "Channel",
+            "type": "string",
+            "default": "1",
+            "ui.group": "Caspar"
+          },
+          "caspar.layer": {
+            "name": "Layer",
+            "type": "string",
+            "default": "1",
+            "ui.group": "Caspar"
+          },
+          "caspar.target": {
+            "name": "Target",
+            "type": "string",
+            "ui.group": "Caspar"
           }
         }
       }
