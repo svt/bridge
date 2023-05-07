@@ -30,6 +30,7 @@ import './style.css'
 import { StoreContext } from '../../storeContext'
 
 import { Accordion } from '../Accordion'
+import { Frame } from '../../../../../app/components/Frame'
 
 import { TextInput } from '../TextInput'
 import { ColorInput } from '../ColorInput'
@@ -169,20 +170,31 @@ export function Form () {
   function renderProperty (property, id) {
     const Component = INPUT_COMPONENTS[property.type]
     return (
-      <div key={id} className='Form-input'>
+      <div key={id} className='Form-input' style={{ width: property['ui.width'] || '100%' }}>
         <div className='Form-inputHeader'>
           <label id={id} className='Form-inputLabel'>{property.name}</label>
         </div>
-        <div className='Form-inputValue'>
-          <Component
-            htmlFor={id}
-            value={getValue(property.key)}
-            onChange={value => handleDataChange(property.key, value)}
-          />
-          {
-            property['ui.unit'] && <div className='Form-inputUnit'>{property['ui.unit']}</div>
-          }
-        </div>
+        {
+          property['ui.uri']
+            /**
+             * @todo
+             * Trigger doUpdateTheme every time the theme changes,
+             * access the name of the current theme to compare?
+             */
+            ? <Frame src={property['ui.uri']} api={bridge} doUpdateTheme={1} />
+            : (
+              <div className='Form-inputValue'>
+                <Component
+                  htmlFor={id}
+                  value={getValue(property.key)}
+                  onChange={value => handleDataChange(property.key, value)}
+                />
+                {
+                  property['ui.unit'] && <div className='Form-inputUnit'>{property['ui.unit']}</div>
+                }
+              </div>
+              )
+        }
       </div>
     )
   }

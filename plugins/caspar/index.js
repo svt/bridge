@@ -26,6 +26,8 @@ const uuid = require('uuid')
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
+const types = require('./lib/types')
+
 const Caspar = require('./lib/Caspar')
 const AMCP = require('./lib/AMCP')
 
@@ -151,6 +153,8 @@ exports.activate = async () => {
   const htmlPath = await initWidget()
   await initSettings()
   await initStoredServers()
+
+  types.init(htmlPath)
 
   bridge.settings.registerSetting({
     title: 'Server',
