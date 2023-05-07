@@ -1,6 +1,7 @@
 import React from 'react'
 
 import * as SharedContext from './sharedContext'
+import * as Inspector from './views/Inspector'
 import * as Settings from './views/Settings'
 
 import { Library } from './views/Library'
@@ -19,6 +20,8 @@ export default function App () {
       {
         (function () {
           switch (view) {
+            case 'inspector/server':
+              return <Inspector.Server />
             case 'settings/servers':
               return <Settings.Servers />
             case 'status':

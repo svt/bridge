@@ -42,10 +42,11 @@
         "id": "bridge.types.media",
         "inherits": "bridge.types.root",
         "properties": {
-          "time.duration": {
+          "timing.duration": {
             "name": "Duration",
             "type": "string",
-            "group": "Timing"
+            "ui.group": "Timing",
+            "ui.unit": "ms"
           }
         }
       },

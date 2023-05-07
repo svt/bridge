@@ -1,10 +1,7 @@
 import React from 'react'
 
-import { SharedContext } from '../../sharedContext'
-
 import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
-import * as api from '../../api'
 
 import './style.css'
 
@@ -59,12 +56,10 @@ function getFrameHtml (url) {
   if (ENABLE_WEBVIEW && browser.isElectron()) {
     return `<webview class='Frame-frame' src='${url}' />`
   }
-  return `<iframe class='Frame-frame' src='${url}' />`
+  return `<iframe class='Frame-frame' src='${url}' height='0' />`
 }
 
-export function Frame ({ src, doUpdateTheme = 1 }) {
-  const [shared] = React.useContext(SharedContext)
-
+export function Frame ({ src, api, doUpdateTheme = 1 }) {
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
@@ -87,7 +82,6 @@ export function Frame ({ src, doUpdateTheme = 1 }) {
       if (!wrapperRef.current) {
         return
       }
-      const bridge = await api.load()
 
       wrapperRef.current.innerHTML = getFrameHtml(src)
       frameRef.current = wrapperRef.current.firstChild
@@ -97,7 +91,7 @@ export function Frame ({ src, doUpdateTheme = 1 }) {
       iframe in order to return the api
       */
       frameRef.current.contentWindow.require = module => {
-        if (module === 'bridge') return bridge
+        if (module === 'bridge') return api
         return {}
       }
 
@@ -121,7 +115,7 @@ export function Frame ({ src, doUpdateTheme = 1 }) {
     snapshotRef.current = snapshot
 
     setup()
-  }, [src, shared])
+  }, [src, api, wrapperRef.current])
 
   React.useEffect(() => {
     frameRef.current?.contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
@@ -143,8 +137,9 @@ export function Frame ({ src, doUpdateTheme = 1 }) {
         if (!shouldResize) {
           return
         }
-        if (frameRef.current) {
-          frameRef.current.style.height = `${frameRef.current.contentWindow?.document?.body?.scrollHeight}px`
+        const newHeight = `${frameRef.current.contentWindow?.document?.body?.scrollHeight}px`
+        if (frameRef.current && frameRef.current.style.height !== newHeight) {
+          frameRef.current.style.height = newHeight
         }
         return resize()
       })

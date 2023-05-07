@@ -9,7 +9,7 @@ import './style.css'
 
 import { Icon } from '../Icon'
 
-export function Accordion ({ title, children, open: _open = false }) {
+export function Accordion ({ title, children, open: _open = true }) {
   const [open, setOpen] = React.useState(_open)
 
   function handleClick () {

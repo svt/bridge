@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 const state = require('./state')
+const commands = require('./commands')
 
 /**
  * Perform a deep clone
@@ -60,3 +61,14 @@ async function getType (id) {
   return renderType(id, types)
 }
 exports.getType = getType
+
+/**
+ * Register a type
+ * by its specification
+ * @param { TypeSpecification } specification A type specification
+ * @returns { Promise.<Boolean> }
+ */
+function registerType (specification) {
+  return commands.executeCommand('types.registerType', specification)
+}
+exports.registerType = registerType

@@ -124,9 +124,7 @@ export function ColorInput ({
         className='ColorInput-button'
         style={{ backgroundColor: value }}
         onClick={() => handleClick()}
-      >
-        <Icon name='bucket' color='white' />
-      </button>
+      />
       {
         isOpen
           ? (
