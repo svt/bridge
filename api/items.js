@@ -9,6 +9,8 @@
  * }} Item
  */
 
+const objectPath = require('object-path')
+
 const state = require('./state')
 const types = require('./types')
 const events = require('./events')
@@ -54,7 +56,7 @@ async function createItem (type) {
   }
 
   for (const [key, def] of Object.entries(_type.properties)) {
-    item.data[key] = def.default || undefined
+    objectPath.set(item.data, key, def.default || undefined)
   }
 
   applyItem(item.id, item)

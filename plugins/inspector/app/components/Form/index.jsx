@@ -35,11 +35,13 @@ import { Frame } from '../../../../../app/components/Frame'
 import { TextInput } from '../TextInput'
 import { ColorInput } from '../ColorInput'
 import { StringInput } from '../StringInput'
+import { SelectInput } from '../SelectInput'
 
 const INPUT_COMPONENTS = {
   string: StringInput,
   color: ColorInput,
-  text: TextInput
+  text: TextInput,
+  enum: SelectInput
 }
 
 /**
@@ -186,6 +188,7 @@ export function Form () {
               <div className='Form-inputValue'>
                 <Component
                   htmlFor={id}
+                  data={property}
                   value={getValue(property.key)}
                   onChange={value => handleDataChange(property.key, value)}
                 />

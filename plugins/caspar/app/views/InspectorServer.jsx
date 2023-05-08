@@ -4,7 +4,7 @@ import bridge from 'bridge'
 import { SharedContext } from '../sharedContext'
 import { ServerSelector } from '../components/ServerSelector'
 
-export const Server = () => {
+export const InspectorServer = () => {
   const [state] = React.useContext(SharedContext)
   const [selection, setSelection] = React.useState([])
 

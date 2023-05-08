@@ -37,20 +37,24 @@ function initMedia (htmlPath) {
         type: 'string',
         'ui.group': 'Caspar'
       },
-      'caspar.transition.type': {
+      'caspar.transitionName': {
         name: 'Transition',
-        type: 'string',
+        type: 'enum',
+        enum: ['Cut', 'Mix', 'Push', 'Slide', 'Wipe'],
         'ui.group': 'Transition'
       },
-      'caspar.transition.duration': {
+      'caspar.transitionDuration': {
         name: 'Duration',
         type: 'string',
-        'ui.group': 'Transition'
+        default: '0',
+        'ui.group': 'Transition',
+        'ui.unit': 'frames'
       },
-      'caspar.transition.timing': {
-        name: 'Timing function',
+      'caspar.transitionEasing': {
+        name: 'Easing',
         type: 'string',
-        'ui.group': 'Transition'
+        'ui.group': 'Transition',
+        'ui.uri': `${htmlPath}?path=inspector/transition`
       }
     }
   })

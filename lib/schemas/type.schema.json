@@ -22,6 +22,9 @@
       "type": "string",
       "description": "A human readable name of the type, if omitted, this type won't be shown in the interface"
     },
+    "default": {
+      "description": "A default value"
+    },
     "properties": {
       "type": "object",
       "patternProperties": {
@@ -30,7 +33,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": ["string", "number", "text", "color"]
+              "enum": ["string", "number", "text", "color", "enum"]
             },
             "name": {
               "type": "string"
