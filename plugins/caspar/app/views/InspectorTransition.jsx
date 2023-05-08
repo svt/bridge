@@ -27,10 +27,7 @@ export const InspectorTransition = () => {
   }
 
   const items = selection.map(id => state?.items?.[id])
-  console.log('Items', items)
-
   const transitionEasings = items.map(item => item?.data?.caspar?.transitionEasing)
-  console.log('Easings', transitionEasings)
 
   return (
     <div className='View--spread'>
