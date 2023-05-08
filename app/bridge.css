@@ -251,9 +251,10 @@ input[type="checkbox"]:checked::before {
 /* Labels */
 
 .u-text--label {
-  font-size: 0.9em;
-  font-weight: 500;
-
-  opacity: 0.5;
+  display: inline-block;
+  margin: 0.1em 0;
+  font-size: 0.8em;
   text-transform: uppercase;
+
+  opacity: 0.7;
 }

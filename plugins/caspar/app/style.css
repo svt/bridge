@@ -17,3 +17,11 @@ html, body, .View--flex {
   display: flex;
   flex-direction: column;
 }
+
+.View--spread {
+  display: flex;
+}
+
+.u-width--100pct {
+  width: 100%;
+}
