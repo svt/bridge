@@ -1,6 +1,4 @@
 .ServerInput {
-  display: flex;
-
   margin-bottom: 10px;
   padding: 10px 12px;
 
@@ -8,11 +6,16 @@
   border-radius: 10px;
 }
 
-.ServerInput > div {
+.ServerInput > div,
+.ServerInput-flexWrapper > div {
   width: 100%;
 }
 
-.ServerInput > div:last-child {
+.ServerInput-flexWrapper {
+  display: flex;
+}
+
+.ServerInput-flexWrapper > div:last-child {
   text-align: right;
 }
 
@@ -34,4 +37,10 @@
 
 .ServerInput-flexInputs {
   display: flex;
+}
+
+.ServerInput-status {
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px solid var(--base-color--shade1);
 }
