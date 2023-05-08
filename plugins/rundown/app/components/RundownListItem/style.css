@@ -24,6 +24,7 @@
   box-shadow: 0 -2px 0 0 var(--base-color);
 }
 
+.RundownListItem:hover::before,
 .RundownListItem.is-selected::before {
   content: '';
   position: absolute;
@@ -35,6 +36,12 @@
 
   box-shadow: inset 0 0 0 1px var(--base-color);
 
+  opacity: 0.1;
+
   pointer-events: none;
   z-index: 1;
+}
+
+.RundownListItem.is-selected::before {
+  opacity: 1;
 }

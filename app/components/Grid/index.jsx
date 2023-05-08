@@ -30,7 +30,7 @@ const ReactGridLayout = WidthProvider(RGL)
  */
 const GRID_COL_COUNT = 12
 const GRID_ROW_COUNT = 6
-const GRID_MARGIN_PX = 3
+const GRID_MARGIN_PX = 1
 
 export function Grid ({ children, data = {}, onChange }) {
   const [shared] = React.useContext(SharedContext)
