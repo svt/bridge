@@ -62,3 +62,20 @@ exports.version = (component = '') => `VERSION ${component}`
  * @param { AMCPOptions | undefined } opts
  */
 exports.info = opts => `INFO ${layerString(opts)}`
+
+/**
+ * Play a media item in the foreground
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
+ * @param { String } file The file to play
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file}`
+
+/**
+ * Stop an item running in the foreground
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#stop
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.stop = opts => `STOP ${layerString(opts)}`
