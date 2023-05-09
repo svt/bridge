@@ -10,13 +10,13 @@
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.1);
+  --base-color--shade: rgba(255, 255, 255, 0.15);
   --base-color--shade1: rgba(255, 255, 255, 0.07);
-  --base-color--shade2: rgba(60, 61, 65, 0.5);
+  --base-color--shade2: rgba(57, 58, 61, 0.5);
   --base-color--shade3: rgba(255, 255, 255, 0.5);
 
-  --base-color--background: #232427;
-  --base-color--background1: #2e2f31;
+  --base-color--background: #212224;
+  --base-color--background1: #292a2c;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;

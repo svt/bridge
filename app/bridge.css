@@ -183,6 +183,7 @@ textarea {
 
   color: var(--base-color);
   background: var(--base-color--shade2);
+  box-shadow: inset 0 0 0 1px var(--base-color--shade2);
 
   box-sizing: border-box;
 }
