@@ -129,6 +129,11 @@ exports.activate = async () => {
   })
 
   bridge.commands.registerCommand('rundown.removeItem', async (rundownId, itemId) => {
+    /**
+     * @todo
+     * Also remove child items if the
+     * item being removed is a group
+     */
     const items = await getItems(rundownId)
     const index = items.indexOf(itemId)
 
