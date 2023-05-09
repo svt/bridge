@@ -8,6 +8,7 @@ import close from './close.svg'
 import person from './person.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
+import arrowRight from './arrow-right.svg'
 import placeholder from './placeholder.svg'
 import preferences from './preferences.svg'
 
@@ -18,6 +19,7 @@ export default {
   person,
   warning,
   selector,
+  arrowRight,
   placeholder,
   preferences
 }

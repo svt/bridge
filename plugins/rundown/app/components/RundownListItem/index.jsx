@@ -5,6 +5,9 @@ import './style.css'
 
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
+import { ContextMenuDivider } from '../../../../../app/components/ContextMenuDivider'
+
+import * as clipboard from '../../utils/clipboard'
 
 export function RundownListItem ({
   children,
@@ -51,6 +54,16 @@ export function RundownListItem ({
     removeItemFromRundown(id)
   }
 
+  async function handleCopy () {
+    const string = await bridge.commands.executeCommand('rundown.copyItems', [item.id])
+    clipboard.copyText(string)
+  }
+
+  function handleCopyId () {
+    const string = item.id
+    clipboard.copyText(string)
+  }
+
   return (
     <div
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
@@ -73,6 +86,9 @@ export function RundownListItem ({
         contextPos
           ? (
             <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
+              <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
+              <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
+              <ContextMenuDivider />
               <ContextMenuItem text='Remove' onClick={() => handleDelete(item.id)} />
             </ContextMenu>
             )

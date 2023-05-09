@@ -2,6 +2,7 @@ import React from 'react'
 import './style.css'
 
 import { ContextMenu } from '../ContextMenu'
+import { Icon } from '../Icon'
 
 /**
  * The x-axis offset used for
@@ -57,6 +58,10 @@ export const ContextMenuItem = ({ text, children = [], onClick = () => {} }) => 
       <div className='ContextMenuItem-text'>
         {text}
       </div>
+      {
+        childArr.length > 0 &&
+        <Icon name='arrowRight' color='black' />
+      }
       {
         hover && childArr.length > 0
           ? (
