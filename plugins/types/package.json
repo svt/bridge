@@ -53,21 +53,25 @@
       {
         "id": "bridge.types.video",
         "name": "Video",
+        "category": "Standard",
         "inherits": "bridge.types.media"
       },
       {
         "id": "bridge.types.audio",
         "name": "Audio",
+        "category": "Standard",
         "inherits": "bridge.types.media"
       },
       {
         "id": "bridge.types.image",
         "name": "Image",
+        "category": "Standard",
         "inherits": "bridge.types.media"
       },
       {
         "id": "bridge.types.divider",
         "name": "Divider",
+        "category": "Standard",
         "inherits": "bridge.types.root"
       }
     ]

@@ -20,6 +20,7 @@
       {
         "id": "bridge.caspar.amcp",
         "name": "AMCP",
+        "category": "Caspar",
         "inherits": "bridge.types.root",
         "properties": {
           "caspar.server": {

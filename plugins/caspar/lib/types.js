@@ -10,6 +10,7 @@ function initMedia (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.caspar.media',
     name: 'Media',
+    category: 'Caspar',
     inherits: 'bridge.types.media',
     properties: {
       'caspar.server': {

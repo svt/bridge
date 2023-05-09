@@ -1,10 +1,21 @@
 .ContextMenuItem {
+  position: relative;
   padding: 0.2em;
 }
 
 .ContextMenuItem-text {
   padding: 0.5em;
   border-radius: 4px;
+}
+
+.ContextMenuItem .Icon {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+
+  transform: translate(0, -50%);
+
+  --base-color: black;
 }
 
 .ContextMenuItem:hover > .ContextMenuItem-text {

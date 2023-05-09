@@ -277,8 +277,9 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
             const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
             return (
               <RundownListItem
-                key={i}
+                key={item.id}
                 item={item}
+                index={i}
                 rundownId={rundownId}
                 onDrop={e => handleDrop(e, i)}
                 onFocus={() => handleFocus(item.id)}

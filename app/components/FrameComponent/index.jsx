@@ -72,7 +72,7 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
   const style = window.getComputedStyle(document.body)
   for (const variable of variables) {
     const value = style.getPropertyValue(variable)
-    iframe.contentDocument.documentElement.style.setProperty(variable, value)
+    iframe?.contentDocument?.documentElement?.style?.setProperty(variable, value)
   }
 }
 
