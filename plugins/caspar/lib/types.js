@@ -43,6 +43,13 @@ function initMedia (htmlPath) {
         enum: ['Cut', 'Mix', 'Push', 'Slide', 'Wipe'],
         'ui.group': 'Transition'
       },
+      'caspar.transitionDirection': {
+        name: 'Direction',
+        type: 'enum',
+        enum: ['Left', 'Right'],
+        default: 'Left',
+        'ui.group': 'Transition'
+      },
       'caspar.transitionDuration': {
         name: 'Duration',
         type: 'string',
