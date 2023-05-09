@@ -73,7 +73,7 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
     const style = window.getComputedStyle(fromEl)
     for (const variable of variables) {
       const value = style.getPropertyValue(variable)
-      iframe.contentDocument.documentElement.style.setProperty(variable, value)
+      iframe?.contentDocument?.documentElement?.style?.setProperty(variable, value)
     }
   }
 
