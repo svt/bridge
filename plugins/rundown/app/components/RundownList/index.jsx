@@ -279,6 +279,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
               <RundownListItem
                 key={item.id}
                 item={item}
+                index={i}
                 rundownId={rundownId}
                 onDrop={e => handleDrop(e, i)}
                 onFocus={() => handleFocus(item.id)}

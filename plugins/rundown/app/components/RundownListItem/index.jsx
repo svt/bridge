@@ -7,11 +7,14 @@ import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 import { ContextMenuDivider } from '../../../../../app/components/ContextMenuDivider'
 
+import { ContextAddMenu } from '../ContextAddMenu'
+
 import * as clipboard from '../../utils/clipboard'
 
 export function RundownListItem ({
   children,
   item,
+  index,
   rundownId,
   onDrop = () => {},
   onFocus = () => {},
@@ -64,6 +67,10 @@ export function RundownListItem ({
     clipboard.copyText(string)
   }
 
+  function handleAdd (newItemId) {
+    bridge.commands.executeCommand('rundown.reorderItem', rundownId, newItemId, index + 1)
+  }
+
   return (
     <div
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
@@ -88,6 +95,10 @@ export function RundownListItem ({
             <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
               <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
               <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
+              <ContextMenuDivider />
+              <ContextMenuItem text='Add after'>
+                <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
+              </ContextMenuItem>
               <ContextMenuDivider />
               <ContextMenuItem text='Remove' onClick={() => handleDelete(item.id)} />
             </ContextMenu>

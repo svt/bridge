@@ -4,18 +4,14 @@ import bridge from 'bridge'
 import './style.css'
 
 import { StoreContext } from '../../storeContext'
-import { SharedContext } from '../../sharedContext'
 
 import { Icon } from '../../../../../app/components/Icon'
-
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
-import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 
 import { ContextAddMenu } from '../ContextAddMenu'
 
 export function Header () {
   const [store] = React.useContext(StoreContext)
-  const [shared] = React.useContext(SharedContext)
   const [contextPos, setContextPos] = React.useState()
 
   function handleCreateOnClick (e) {
