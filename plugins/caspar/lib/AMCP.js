@@ -26,6 +26,19 @@ function layerString (opts = {}) {
 }
 
 /**
+ * Construct a transition-string
+ * for use in commands
+ * @param { AMCPOptions | undefined } opts
+ * @returns { String }
+ */
+function transitionString (opts = {}) {
+  if (opts.transitionName == null) {
+    return ''
+  }
+  return `${opts.transitionName} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(opts.transitionDirection || 'LEFT')}`.toUpperCase()
+}
+
+/**
  * List media files in the media directory
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cls
  * @param { String | undefined } dir
@@ -70,7 +83,7 @@ exports.info = opts => `INFO ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file}`
+exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file} ${transitionString(opts)}`
 
 /**
  * Stop an item running in the foreground
