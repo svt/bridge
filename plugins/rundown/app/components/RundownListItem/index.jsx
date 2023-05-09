@@ -21,10 +21,6 @@ export function RundownListItem ({
     bridge.commands.executeCommand('rundown.removeItem', rundownId, id)
   }
 
-  function resetContextMenu () {
-    setContextPos(undefined)
-  }
-
   function handleDragOver (e) {
     e.preventDefault()
     setIsDraggedOver(true)
@@ -55,17 +51,24 @@ export function RundownListItem ({
     removeItemFromRundown(id)
   }
 
-  /**
-   * Close the context menu whenever
-   * something is clicked
-   */
-  React.useEffect(() => {
-    window.addEventListener('click', resetContextMenu)
-    return () => window.removeEventListener('click', resetContextMenu)
-  }, [resetContextMenu])
-
   return (
-    <>
+    <div
+      className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
+      onFocus={e => onFocus(e)}
+      onDrop={(e, data) => handleDrop(e, data)}
+      onDragOver={e => handleDragOver(e)}
+      onDragLeave={e => handleDragLeave(e)}
+      onDragStart={e => handleDragStart(e)}
+      onContextMenu={e => handleContextMenu(e)}
+      /*
+      This data property is used within RundownList
+      to focus the correct element based on the
+      selection of items
+      */
+      data-item-id={item.id}
+      tabIndex={0}
+      draggable
+    >
       {
         contextPos
           ? (
@@ -75,25 +78,7 @@ export function RundownListItem ({
             )
           : <></>
       }
-      <div
-        className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
-        onFocus={e => onFocus(e)}
-        onDrop={(e, data) => handleDrop(e, data)}
-        onDragOver={e => handleDragOver(e)}
-        onDragLeave={e => handleDragLeave(e)}
-        onDragStart={e => handleDragStart(e)}
-        onContextMenu={e => handleContextMenu(e)}
-        /*
-        This data property is used within RundownList
-        to focus the correct element based on the
-        selection of items
-        */
-        data-item-id={item.id}
-        tabIndex={0}
-        draggable
-      >
-        {children}
-      </div>
-    </>
+      {children}
+    </div>
   )
 }
