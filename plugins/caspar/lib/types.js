@@ -1,5 +1,4 @@
 const bridge = require('bridge')
-console.log('BRIDGE', bridge)
 
 function init (htmlPath) {
   initMedia(htmlPath)
