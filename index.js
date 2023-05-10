@@ -43,6 +43,13 @@ const ASSETS = require('./assets.json')
 const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
 
 /**
+ * The amount of time cleanups should wait before
+ * resuming after the app has been suspended,
+ * @type { Number }
+ */
+const WORKSPACE_RESUME_CLEANUP_DELAY_MS = 20000
+
+/**
  * Verify that an assets file is
  * created before running the app,
  * hashes are used in order to eliminate
@@ -129,13 +136,26 @@ references
     }
 
     workspace.on('cleanup', () => {
-      workspace.cleanupSockets()
-
-      if (platform.isElectron()) {
+      /*
+      Don't do anything if we are
+      in a suspended state or just
+      returning from suspension,
+      for example sleep mode
+      */
+      if (
+        platform.isElectron() &&
+        (
+          electron.isSuspended() ||
+          electron.lastResumed() > Date.now() - WORKSPACE_RESUME_CLEANUP_DELAY_MS
+        )
+      ) {
         return
       }
+      workspace.cleanupSockets()
 
-      conditionalUnload()
+      if (!platform.isElectron()) {
+        conditionalUnload()
+      }
     })
   })
 })()
