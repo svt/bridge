@@ -133,8 +133,8 @@ export function Grid ({ children, data = {}, onChange }) {
     const colWidthPx = bounds.width / GRID_COL_COUNT
     const rowHeightPx = bounds.height / GRID_ROW_COUNT
 
-    const col = Math.floor(contextPos[0] / colWidthPx)
-    const row = Math.floor(contextPos[1] / rowHeightPx)
+    const col = Math.min(Math.floor(contextPos[0] / colWidthPx), GRID_COL_COUNT - 1)
+    const row = Math.min(Math.floor(contextPos[1] / rowHeightPx), GRID_ROW_COUNT - 1)
 
     const id = uuid.v4()
 
