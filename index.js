@@ -43,13 +43,6 @@ const ASSETS = require('./assets.json')
 const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
 
 /**
- * The amount of time cleanups should wait before
- * resuming after the app has been suspended,
- * @type { Number }
- */
-const WORKSPACE_RESUME_CLEANUP_DELAY_MS = 20000
-
-/**
  * Verify that an assets file is
  * created before running the app,
  * hashes are used in order to eliminate
@@ -114,10 +107,10 @@ in order to remove any dangling
 references
 */
 ;(function () {
-  WorkspaceRegistry.getInstance().on('add', workspace => {
+  WorkspaceRegistry.getInstance().on('add', async workspace => {
     const creationTimeStamp = Date.now()
 
-    function conditionalUnload () {
+    function conditionalTeardownWorkspaces () {
       /*
       Make sure that we've given clients
       a timeframe to connect before
@@ -135,26 +128,16 @@ references
       workspace.teardown()
     }
 
-    workspace.on('cleanup', () => {
-      /*
-      Don't do anything if we are
-      in a suspended state or just
-      returning from suspension,
-      for example sleep mode
-      */
-      if (
-        platform.isElectron() &&
-        (
-          electron.isSuspended() ||
-          electron.lastResumed() > Date.now() - WORKSPACE_RESUME_CLEANUP_DELAY_MS
-        )
-      ) {
-        return
-      }
+    workspace.on('cleanup', async () => {
       workspace.cleanupSockets()
 
+      /*
+      Skip unloading workspaces if running
+      in electron as we'd rather tear them
+      down on application close
+      */
       if (!platform.isElectron()) {
-        conditionalUnload()
+        conditionalTeardownWorkspaces()
       }
     })
   })
