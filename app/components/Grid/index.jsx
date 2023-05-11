@@ -224,7 +224,7 @@ export function Grid ({ children, data = {}, onChange }) {
       }
       {
         userIsEditingLayout &&
-        <Notification title='Editing enabled' description='Add and remove items by right clicking' />
+        <Notification title='Editing enabled' description='Right click to manage items' />
       }
       <Modal open={modalItemId} onClose={() => setModalItemId(undefined)} size='small' shade={false} draggable>
         <WidgetSelector
