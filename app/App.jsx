@@ -131,6 +131,10 @@ export default function App () {
         setShared({ ...state })
       })
 
+      window.onbeforeunload = () => {
+        send({ type: 'disconnect' })
+      }
+
       const initialState = await bridge.state.get()
       setShared(initialState)
     }
@@ -211,12 +215,15 @@ export default function App () {
       switch (json?.type) {
         /*
         Keep track of this connection's
-        unique identifier and set the
-        current path to the shared state
+        unique identifier and setup the
+        client's initial state
         */
         case 'id':
           applyLocal({ id: json?.data })
-          applySharedKey(json?.data, { path: window.location.pathname })
+          applySharedKey(json?.data, {
+            path: window.location.pathname,
+            isPersistent: browser.isElectron()
+          })
           ;(await api.load()).client.setIdentity(localRef.current.id)
           break
 
