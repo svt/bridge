@@ -65,10 +65,10 @@ exports.getType = getType
 /**
  * Register a type
  * by its specification
- * @param { TypeSpecification } specification A type specification
+ * @param { TypeSpecification } spec A type specification
  * @returns { Promise.<Boolean> }
  */
-function registerType (specification) {
-  return commands.executeCommand('types.registerType', specification)
+function registerType (spec) {
+  return commands.executeCommand('types.registerType', spec)
 }
 exports.registerType = registerType

@@ -259,3 +259,22 @@ input[type="checkbox"]:checked::before {
 
   opacity: 0.7;
 }
+
+/* Hints */
+
+[data-hint]:hover::before {
+  content: attr(data-hint);
+  position: absolute;
+  padding: 5px 9px;
+
+  color: black;
+  background: white;
+  border-radius: 6px;
+
+  transform: translate(0, 5px);
+  z-index: 10;
+}
+
+[data-hint-alignment="right"]:hover::before {
+  transform: translate(-100%, 5px);
+}

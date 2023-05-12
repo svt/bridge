@@ -7,6 +7,27 @@ exports.init = init
 
 function initMedia (htmlPath) {
   bridge.types.registerType({
+    id: 'bridge.caspar.amcp',
+    name: 'Raw AMCP',
+    category: 'Caspar',
+    inherits: 'bridge.types.root',
+    properties: {
+      'caspar.server': {
+        name: 'Server',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/server`
+      },
+      'caspar.amcp': {
+        name: 'Command',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.media',
     name: 'Media',
     category: 'Caspar',
@@ -35,6 +56,7 @@ function initMedia (htmlPath) {
       'caspar.target': {
         name: 'Target',
         type: 'string',
+        allowsVariables: true,
         'ui.group': 'Caspar'
       },
       'caspar.transitionName': {

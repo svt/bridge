@@ -14,27 +14,5 @@
     "plugin"
   ],
   "author": "Axel Boberg (axel.boberg@svt.se)",
-  "license": "UNLICENSED",
-  "contributes": {
-    "types": [
-      {
-        "id": "bridge.caspar.amcp",
-        "name": "AMCP",
-        "category": "Caspar",
-        "inherits": "bridge.types.root",
-        "properties": {
-          "caspar.server": {
-            "name": "Server",
-            "type": "string",
-            "ui.group": "Caspar"
-          },
-          "caspar.amcp": {
-            "name": "AMCP",
-            "type": "string",
-            "ui.group": "Caspar"
-          }
-        }
-      }
-    ]
-  }
+  "license": "UNLICENSED"
 }

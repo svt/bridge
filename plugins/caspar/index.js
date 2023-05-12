@@ -180,6 +180,7 @@ exports.activate = async () => {
   })
 
   bridge.events.on('play', item => {
+    console.log('Playing', item)
     if (item.type === 'bridge.caspar.media') {
       sendCommand(item?.caspar?.server, 'play', item?.data?.caspar?.target, item?.data?.caspar)
     }

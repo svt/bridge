@@ -15,6 +15,7 @@ const state = require('./state')
 const types = require('./types')
 const events = require('./events')
 const random = require('./random')
+const variables = require('./variables')
 
 const MissingArgumentError = require('./error/MissingArgumentError')
 const InvalidArgumentError = require('./error/InvalidArgumentError')
@@ -122,14 +123,58 @@ function deleteItem (id) {
 exports.deleteItem = deleteItem
 
 /**
+ * Perform a deep clone
+ * of an object
+ * @param { any } obj An object to clone
+ * @returns { any }
+ */
+function deepClone (obj) {
+  if (typeof window !== 'undefined' && window.structuredClone) {
+    return window.structuredClone(obj)
+  }
+  return JSON.parse(JSON.stringify(obj))
+}
+
+/**
+ * Populate any variable placeholders
+ * in an item's properities - in place
+ *
+ * @param { any } item
+ * @param { any } type
+ * @returns { any } The item with modified property values
+ */
+function populateVariablesMutable (item, type) {
+  if (!item.data) {
+    item.data = {}
+  }
+
+  for (const key of Object.keys(type.properties)) {
+    if (!type.properties[key].allowsVariables) {
+      continue
+    }
+    const currentValue = objectPath.get(item.data, key)
+
+    if (currentValue != null) {
+      objectPath.set(item.data, key, variables.substituteInString(currentValue))
+    }
+  }
+
+  return item
+}
+
+/**
  * Play the item and emit
  * the 'playing' event
  * @param { String } id
  */
 async function playItem (id) {
   const item = await getItem(id)
+  const type = await types.getType(item.type)
+  const clone = populateVariablesMutable(deepClone(item), type)
+
+  clone.state = 'playing'
   applyItem(id, { state: 'playing' })
-  events.emit('play', item)
+  events.emit('play', clone)
 }
 exports.playItem = playItem
 

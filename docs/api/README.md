@@ -209,8 +209,89 @@ Register a new setting definition to a group name, that is the name that will ap
 ## Types  
 Types are blueprints for items, they can be created and extended using the `contributes` property of your plugin manifest.
 
+```js
+...in package.json
+
+"contributes": {
+  "types": [
+    {
+      /*
+      The type id must be globally unique
+      */
+      "id": "my-plugin.types.my-type",
+      "name": "My type",
+      "category": "My plugin",
+
+      /*
+      Inherit properties from
+      another type
+      */
+      "inherits": "bridge.types.media",
+      "properties": {
+
+        /*
+        The property key must be globally unique and will
+        be used as the binding point for the value
+
+        It can, but is not required to be,
+        a dot-notation path
+
+        The key my-plugin.my-property will result
+        in the value being bound to item.data.my-plugin.my-property
+        */
+        "my-plugin.my-property": {
+          "name": "My property",
+          "type": "string",
+          "default": "A default value",
+
+          /*
+          Whether or not to allow variables,
+          setting this to true will replace
+          any variable string in the property's
+          value with the variable value on play
+
+          Defaults to false
+          */
+          "allowsVariables": true,
+
+          /*
+          All properties with the same group
+          will be shown together in the
+          inspector
+          */
+          "ui.group": "My plugin"
+        },
+
+        /*
+        Plugins can can provide their own
+        inputs in the form of an inspector
+        widget using 'ui.uri'.
+
+        Note that using a custom inspector widget makes you
+        responsible for rendering both the UI as well as
+        binding the input to the state.
+
+        It's most often preferred to use
+        the functional api when registering
+        a type with 'ui.uri' as you can then
+        calculate the path.
+        */
+        "my-plugin.my-second-property": {
+          "name": "My second property",
+          "type": "string",
+          "ui.uri": "/path/to/custom/input"
+        },
+      }
+    }
+  ]
+}
+``
+
 ### `bridge.types.getType(id): Promise<TypeSpec>`
 Render a full type specification from its id
+
+### `bridge.types.registerType(spec): Promise<Boolean>`
+Register a type
 
 ## Items
 Items are playable objects containing the metadata of a certain type.
