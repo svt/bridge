@@ -155,7 +155,7 @@ function populateVariablesMutable (item, type) {
     const currentValue = objectPath.get(item.data, key)
 
     if (currentValue != null) {
-      objectPath.set(item.data, key, variables.substituteInString(currentValue))
+      objectPath.set(item.data, key, variables.substituteInString(`${currentValue}`))
     }
   }
 
@@ -164,7 +164,7 @@ function populateVariablesMutable (item, type) {
 
 /**
  * Play the item and emit
- * the 'playing' event
+ * the 'playing' event`
  * @param { String } id
  */
 async function playItem (id) {
