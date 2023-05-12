@@ -8,7 +8,7 @@ exports.init = init
 function initMedia (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.caspar.amcp',
-    name: 'Raw AMCP',
+    name: 'AMCP',
     category: 'Caspar',
     inherits: 'bridge.types.root',
     properties: {
@@ -43,6 +43,7 @@ function initMedia (htmlPath) {
         name: 'Channel',
         type: 'string',
         default: '1',
+        allowsVariables: true,
         'ui.group': 'Caspar',
         'ui.width': '50%'
       },
@@ -50,6 +51,7 @@ function initMedia (htmlPath) {
         name: 'Layer',
         type: 'string',
         default: '1',
+        allowsVariables: true,
         'ui.group': 'Caspar',
         'ui.width': '50%'
       },
