@@ -175,6 +175,10 @@ export function Form () {
       <div key={id} className='Form-input' style={{ width: property['ui.width'] || '100%' }}>
         <div className='Form-inputHeader'>
           <label id={id} className='Form-inputLabel'>{property.name}</label>
+          {
+            property.allowsVariables &&
+            <div className='Form-inputVariableHint' data-hint='Supports variables' data-hint-alignment='right'>=</div>
+          }
         </div>
         {
           property['ui.uri']

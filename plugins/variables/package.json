@@ -23,12 +23,12 @@
           "variable.key": {
             "name": "Variable name",
             "type": "string",
-            "group": "Variable"
+            "ui.group": "Variable"
           },
           "variable.value": {
             "name": "Variable value",
             "type": "string",
-            "group": "Variable"
+            "ui.group": "Variable"
           }
         }
       }
