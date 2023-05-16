@@ -168,14 +168,10 @@ function clearSelection () {
 /**
  * Get the current selection
  * @returns { Promise.<String[]> }
- *
- * @todo: Rewrite to use the local state
  */
 function getSelection () {
   assertIdentity()
-  return Promise.resolve(
-    state.getLocalState()?.[getIdentity()]?.selection || []
-  )
+  return state.getLocalState()?.[getIdentity()]?.selection || []
 }
 
 module.exports = {

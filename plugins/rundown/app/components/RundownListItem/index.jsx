@@ -59,7 +59,8 @@ export function RundownListItem ({
   }
 
   async function handleCopy () {
-    const string = await bridge.commands.executeCommand('rundown.copyItems', [item.id])
+    const items = bridge.client.getSelection()
+    const string = await bridge.commands.executeCommand('rundown.copyItems', items)
     clipboard.copyText(string)
   }
 
@@ -96,13 +97,19 @@ export function RundownListItem ({
           ? (
             <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
               <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
-              <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
+              {
+                bridge.client.getSelection().length <= 1 &&
+                <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
+              }
               <ContextMenuDivider />
               <ContextMenuItem text='Add after'>
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
               </ContextMenuItem>
               <ContextMenuDivider />
-              <ContextMenuItem text='Remove' onClick={() => handleDelete(item.id)} />
+              {
+                bridge.client.getSelection().length <= 1 &&
+                <ContextMenuItem text='Remove' onClick={() => handleDelete(item.id)} />
+              }
             </ContextMenu>
             )
           : <></>

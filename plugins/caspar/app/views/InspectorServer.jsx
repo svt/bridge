@@ -9,11 +9,8 @@ export const InspectorServer = () => {
   const [selection, setSelection] = React.useState([])
 
   React.useEffect(() => {
-    async function get () {
-      const selection = await bridge.client.getSelection()
-      setSelection(selection)
-    }
-    get()
+    const selection = bridge.client.getSelection()
+    setSelection(selection)
   }, [state])
 
   function handleChange (newServer) {

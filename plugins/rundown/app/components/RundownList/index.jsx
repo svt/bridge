@@ -208,8 +208,8 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     }
     hasDoneInitialScrollingRef.current = true
 
-    ;(async function () {
-      const selection = await bridge.client.getSelection()
+    ;(function () {
+      const selection = bridge.client.getSelection()
       const lastId = selection[selection.length - 1]
       if (!lastId) {
         return
@@ -261,11 +261,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
 
   function handleFocus (itemId) {
     if (keyboard.keyIsPressed('meta')) {
-      if (selection.includes(itemId)) {
-        bridge.client.subtractSelection(itemId)
-      } else {
-        bridge.client.addSelection(itemId)
-      }
+      bridge.client.addSelection(itemId)
     } else {
       bridge.client.setSelection(itemId)
     }
