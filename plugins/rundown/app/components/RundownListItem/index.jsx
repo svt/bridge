@@ -18,6 +18,7 @@ export function RundownListItem ({
   rundownId,
   onDrop = () => {},
   onFocus = () => {},
+  onMouseDown = () => {},
   selected: isSelected
 }) {
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
@@ -79,6 +80,7 @@ export function RundownListItem ({
       onDragOver={e => handleDragOver(e)}
       onDragLeave={e => handleDragLeave(e)}
       onDragStart={e => handleDragStart(e)}
+      onMouseDown={e => onMouseDown(e)}
       onContextMenu={e => handleContextMenu(e)}
       /*
       This data property is used within RundownList

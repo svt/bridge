@@ -92,6 +92,12 @@ function addSelection (item) {
   assertIdentity()
 
   const items = ensureArray(item)
+    /*
+    Only add items that are
+    not already selected
+    */
+    .filter(item => !isSelected(item))
+
   const currentSelectionIsArray = Array.isArray(state.getLocalState()?.[getIdentity()]?.selection)
 
   if (!currentSelectionIsArray) {
