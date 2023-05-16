@@ -12,6 +12,7 @@ import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
 
 import * as clipboard from '../../utils/clipboard'
+import * as keyboard from '../../utils/keyboard'
 
 /**
  * Type-specific components that should be
@@ -207,8 +208,8 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     }
     hasDoneInitialScrollingRef.current = true
 
-    ;(async function () {
-      const selection = await bridge.client.getSelection()
+    ;(function () {
+      const selection = bridge.client.getSelection()
       const lastId = selection[selection.length - 1]
       if (!lastId) {
         return
@@ -259,7 +260,11 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
   }
 
   function handleFocus (itemId) {
-    bridge.client.setSelection(itemId)
+    if (keyboard.keyIsPressed('meta')) {
+      bridge.client.addSelection(itemId)
+    } else {
+      bridge.client.setSelection(itemId)
+    }
   }
 
   function handleFocusPropagation (e) {

@@ -92,6 +92,12 @@ function addSelection (item) {
   assertIdentity()
 
   const items = ensureArray(item)
+    /*
+    Only add items that are
+    not already selected
+    */
+    .filter(item => !isSelected(item))
+
   const currentSelectionIsArray = Array.isArray(state.getLocalState()?.[getIdentity()]?.selection)
 
   if (!currentSelectionIsArray) {
@@ -162,14 +168,10 @@ function clearSelection () {
 /**
  * Get the current selection
  * @returns { Promise.<String[]> }
- *
- * @todo: Rewrite to use the local state
  */
 function getSelection () {
   assertIdentity()
-  return Promise.resolve(
-    state.getLocalState()?.[getIdentity()]?.selection || []
-  )
+  return state.getLocalState()?.[getIdentity()]?.selection || []
 }
 
 module.exports = {

@@ -61,6 +61,10 @@
       {
         "id": "bridge.rundown.expand",
         "trigger": ["ArrowRight"]
+      },
+      {
+        "id": "bridge.rundown.select-multiple",
+        "trigger": ["Meta"]
       }
     ]
   }
