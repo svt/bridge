@@ -11,15 +11,15 @@ The plugin supports multiple rundowns per workspace and is one of the standard f
 ## API
 This plugin exposes a number of commands that can be invoked using the commands api.
 
-### `rundown.reorderItem(rundownId, itemId, newIndex)`  
+### `rundown.moveItem(newRundownId, newIndex, itemId)`
 Move an item to a new index within a rundown
 
 **Example**
 ```javascript
 /*
-Move the item with id h7ft to index 2 in rundown 1
+Move the item with id h7ft to index 2 in rundown g4sd
 */
-bridge.commands.executeCommand('rundown.reorderItem', 1, 'h7ft', 2)
+bridge.commands.executeCommand('rundown.moveItem', 'g4sd', 2, 'h7ft')
 ```
 
 ### `rundown.removeItem(rundownId, itemId)`
@@ -39,9 +39,9 @@ Append an item to the end of a rundown
 **Example**
 ```javascript
 /*
-Append the item with id h7ft to the end of rundown 1
+Append the item with id h7ft to the end of rundown fds4
 */
-bridge.commands.executeCommand('rundown.appendItem', 1, 'h7ft')
+bridge.commands.executeCommand('rundown.appendItem', 'fds4', 'h7ft')
 ```
 
 ### `rundown.copyItem`

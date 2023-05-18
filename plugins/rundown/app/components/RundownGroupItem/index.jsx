@@ -59,16 +59,6 @@ export function RundownGroupItem ({ index, item }) {
   function handleDrop (e) {
     e.stopPropagation()
     const itemId = e.dataTransfer.getData('itemId')
-    const sourceRundownId = e.dataTransfer.getData('sourceRundownId')
-
-    /*
-    Remove the item from the source rundown
-    if it is dropped here from another rundown
-    */
-    if (`${sourceRundownId}` !== item.id) {
-      bridge.commands.executeCommand('rundown.removeItem', sourceRundownId, itemId)
-    }
-
     bridge.commands.executeCommand('rundown.appendItem', item.id, itemId)
   }
 
@@ -82,7 +72,7 @@ export function RundownGroupItem ({ index, item }) {
     e.stopPropagation()
   }
 
-  const itemIds = shared?.items?.[item?.id]?.data?.items || []
+  const itemIds = shared?.items?.[item?.id]?.children || []
   const isCollapsed = item?.['rundown.ui.collapsed']
 
   return (

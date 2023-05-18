@@ -57,7 +57,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
-  const itemIds = shared?.items?.[rundownId]?.data?.items || []
+  const itemIds = shared?.items?.[rundownId]?.children || []
   const selection = shared?.[bridge.client.getIdentity()]?.selection || []
 
   const scrollSettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.scrolling
@@ -224,7 +224,6 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
 
     const itemId = e.dataTransfer.getData('itemId')
     const itemSpec = e.dataTransfer.getData('itemSpec')
-    const sourceRundownId = e.dataTransfer.getData('sourceRundownId')
 
     /*
     Allow item specifications to be dropped as well as ids
@@ -242,21 +241,14 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
         const id = await bridge.items.createItem(spec.type)
 
         bridge.items.applyItem(id, spec)
-        bridge.commands.executeCommand('rundown.reorderItem', rundownId, id, newIndex)
+        bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, id)
       } catch (_) {
         console.warn('Tried to drop an invalid spec')
       }
       return
     }
 
-    /*
-    Remove the item from the source rundown
-    if it was dragged here from another list
-    */
-    if (sourceRundownId && `${sourceRundownId}` !== `${rundownId}`) {
-      bridge.commands.executeCommand('rundown.removeItem', sourceRundownId, itemId)
-    }
-    bridge.commands.executeCommand('rundown.reorderItem', rundownId, itemId, newIndex)
+    bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
   }
 
   function handleFocus (itemId) {

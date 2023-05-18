@@ -8,10 +8,12 @@
 const bridge = require('bridge')
 
 exports.activate = async () => {
-  bridge.events.on('play', item => {
-    if (item.type !== 'bridge.variables.variable') {
-      return
+  bridge.events.on('items.play', items => {
+    for (const item of items) {
+      if (item.type !== 'bridge.variables.variable') {
+        return
+      }
+      bridge.variables.setVariable(item.data.variable.key, item.data.variable.value)
     }
-    bridge.variables.setVariable(item.data.variable.key, item.data.variable.value)
   })
 }

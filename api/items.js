@@ -15,6 +15,7 @@ const state = require('./state')
 const types = require('./types')
 const events = require('./events')
 const random = require('./random')
+const commands = require('./commands')
 const variables = require('./variables')
 
 const MissingArgumentError = require('./error/MissingArgumentError')
@@ -94,7 +95,7 @@ exports.applyItem = applyItem
  * @returns { Promise.<Item> }
  */
 function getItem (id) {
-  return state.get(`items.${id}`)
+  return commands.executeCommand('items.getItem', id)
 }
 exports.getItem = getItem
 
@@ -111,16 +112,30 @@ exports.getLocalItem = getLocalItem
 
 /**
  * Delete an item by its id
+ *
+ * Will trigger the
+ * items.delete event
+ *
  * @param { String } id
  */
 function deleteItem (id) {
-  state.apply({
-    items: {
-      [id]: { $delete: true }
-    }
-  })
+  deleteItems([id])
 }
 exports.deleteItem = deleteItem
+
+/**
+ * Delete multiple
+ * items by their ids
+ *
+ * Will trigger the
+ * items.delete event
+ *
+ * @param { String[] } ids
+ */
+async function deleteItems (ids) {
+  return commands.executeCommand('items.deleteItems', ids)
+}
+exports.deleteItems = deleteItems
 
 /**
  * Perform a deep clone
@@ -174,7 +189,7 @@ async function playItem (id) {
 
   clone.state = 'playing'
   applyItem(id, { state: 'playing' })
-  events.emit('play', clone)
+  events.emit('items.play', [clone])
 }
 exports.playItem = playItem
 
@@ -186,6 +201,6 @@ exports.playItem = playItem
 async function stopItem (id) {
   const item = await getItem(id)
   applyItem(id, { state: 'stopped' })
-  events.emit('stop', item)
+  events.emit('items.stop', [item])
 }
 exports.stopItem = stopItem

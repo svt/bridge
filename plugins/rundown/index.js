@@ -73,28 +73,91 @@ exports.activate = async () => {
   /**
    * Get the items of a rundown
    * by the rundown's id
-   * @param { String } rundownId The id of the rundown to get items for
+   * @param { String } itemId The id of the item to get child items for
    * @returns { String[] }
    */
-  async function getItems (rundownId) {
-    return (await bridge.state.get(`items.${rundownId}.data.items`)) || []
+  async function getItems (itemId) {
+    return await bridge.state.get(`items.${itemId}.children`) || []
   }
 
-  bridge.commands.registerCommand('rundown.reorderItem', async (rundownId, itemId, newIndex) => {
-    const items = await getItems(rundownId)
+  /*
+  Clean up any parent-child relations
+  when an item is deleted
+  */
+  bridge.events.on('items.delete', async items => {
+    const parents = {}
+    for (const item of items) {
+      if (item.children) {
+        bridge.items.deleteItems(item.children)
+      }
 
-    if (items.length === 0) {
-      return appendItem(rundownId, itemId)
+      const parent = item.parent
+      if (!parent) {
+        continue
+      }
+
+      if (!parents[parent]) {
+        parents[parent] = [item.id]
+      } else {
+        parents[parent].push(item.id)
+      }
     }
 
-    const oldIndex = items.indexOf(itemId)
+    for (const parent of Object.keys(parents)) {
+      await removeItemsFromParent(parent, parents[parent])
+    }
+  })
+
+  /**
+   * Move an item to a new parent and index,
+   * will clean up any current relations
+   *
+   * @param { String } newParentId The new parent to move the item to
+   * @param { Number } newIndex The new index within the new parent
+   * @param { String } itemId The item to move
+   */
+  async function moveItem (newParentId, newIndex, itemId) {
+    const siblings = await getItems(newParentId)
+    const item = await bridge.items.getItem(itemId)
+
+    /*
+    Remove the item from
+    any current parent
+    */
+    if (item.parent !== newParentId) {
+      await removeItemsFromParent(item.parent, [item.id])
+    }
+
+    /*
+    If the new parent doesn't have any items,
+    append the item to the end rather than
+    inserting it at an index
+    */
+    if (siblings.length === 0) {
+      return appendItem(newParentId, itemId)
+    }
+
+    const oldIndex = siblings.indexOf(itemId)
     const weightedNewIndex = oldIndex < newIndex && oldIndex > -1 ? newIndex - 1 : newIndex
 
     if (oldIndex === newIndex) {
       return
     }
 
-    const patches = []
+    /*
+    A list of patches to
+    apply to the state,
+
+    the first patch sets the new parent of
+    the item to be the new rundown
+    */
+    const patches = [{
+      items: {
+        [itemId]: {
+          parent: newParentId
+        }
+      }
+    }]
 
     /*
     Only remove the old index if it
@@ -103,60 +166,69 @@ exports.activate = async () => {
     if (oldIndex !== -1) {
       patches.push({
         items: {
-          [rundownId]: {
-            data: {
-              items: {
-                [oldIndex]: { $delete: true }
-              }
+          [newParentId]: {
+            children: {
+              [oldIndex]: { $delete: true }
             }
           }
         }
       })
     }
 
-    bridge.state.apply([
-      ...patches,
-      {
-        items: {
-          [rundownId]: {
-            data: {
-              items: { $insert: itemId, $index: Math.max(0, weightedNewIndex) }
-            }
-          }
-        }
-      }
-    ])
-  })
-
-  bridge.commands.registerCommand('rundown.removeItem', async (rundownId, itemId) => {
-    /**
-     * @todo
-     * Also remove child items if the
-     * item being removed is a group
-     */
-    const items = await getItems(rundownId)
-    const index = items.indexOf(itemId)
-
-    if (index === -1) return
-
-    bridge.state.apply({
+    /*
+    Insert the item at the correct
+    index in the new rundown
+    */
+    patches.push({
       items: {
-        [rundownId]: {
-          data: {
-            items: {
-              [index]: { $delete: true }
-            }
-          }
+        [newParentId]: {
+          children: { $insert: itemId, $index: Math.max(0, weightedNewIndex) }
         }
       }
     })
-  })
 
-  bridge.commands.registerCommand('rundown.copyItems', async itemIds => {
+    bridge.state.apply(patches)
+  }
+  bridge.commands.registerCommand('rundown.moveItem', moveItem)
+
+  /**
+   * Remove multiple items
+   * from a parent item
+   * @param { String } parentId
+   * @param { String[] } itemIds
+   */
+  async function removeItemsFromParent (parentId, itemIds) {
+    const items = await getItems(parentId)
+
+    if (items.length === 0) {
+      return
+    }
+
+    const set = new Set(itemIds)
+    const newItems = items.filter(itemId => !set.has(itemId))
+
+    bridge.state.apply({
+      items: {
+        [parentId]: {
+          children: { $replace: newItems }
+        }
+      }
+    })
+  }
+  bridge.commands.registerCommand('rundown.removeItem', (parentId, itemId) => removeItemsFromParent(parentId, [itemId]))
+  bridge.commands.registerCommand('rundown.removeItems', removeItemsFromParent)
+
+  /**
+   * Create a serialised representation
+   * of an array of items
+   * @param { String[] } itemIds
+   * @returns { Promise.<String> }
+   */
+  async function copyItems (itemIds) {
     async function copyItem (itemId) {
       const item = await bridge.items.getItem(itemId)
       const items = [item]
-      for (const id of (item?.data?.items || [])) {
+      for (const id of (item?.children || [])) {
         items.push(...(await copyItem(id)))
       }
       return items
@@ -168,10 +240,37 @@ exports.activate = async () => {
       }, [])
 
     return JSON.stringify(items)
-  })
+  }
+  bridge.commands.registerCommand('rundown.copyItems', copyItems)
 
-  async function appendItem (rundownId, itemId) {
-    const items = await getItems(rundownId)
+  /**
+   * Append an item to
+   * a new parent, will remove any current relations
+   * @param { String } newParentId
+   * @param { String } itemId
+   */
+  async function appendItem (newParentId, itemId) {
+    const items = await getItems(newParentId)
+    const item = await bridge.items.getItem(itemId)
+
+    if (item?.parent) {
+      removeItemsFromParent(item.parent, [item.id])
+    }
+
+    const patches = []
+
+    /*
+    Update the item's parent-field to keep track
+    of which rundown the item is added to for easier
+    removal
+    */
+    patches.push({
+      items: {
+        [itemId]: {
+          parent: newParentId
+        }
+      }
+    })
 
     /*
     If there aren't already items in an array,
@@ -179,26 +278,23 @@ exports.activate = async () => {
     an array, otherwise, append new items
     */
     if (items.length === 0) {
-      bridge.state.apply({
+      patches.push({
         items: {
-          [rundownId]: {
-            data: {
-              items: [itemId]
-            }
+          [newParentId]: {
+            children: [itemId]
           }
         }
       })
     } else {
-      bridge.state.apply({
+      patches.push({
         items: {
-          [rundownId]: {
-            data: {
-              items: { $push: [itemId] }
-            }
+          [newParentId]: {
+            children: { $push: [itemId] }
           }
         }
       })
     }
+    bridge.state.apply(patches)
   }
   bridge.commands.registerCommand('rundown.appendItem', appendItem)
 }
