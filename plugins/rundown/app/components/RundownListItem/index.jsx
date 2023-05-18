@@ -24,10 +24,6 @@ export function RundownListItem ({
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
   const [contextPos, setContextPos] = React.useState()
 
-  function removeItemFromRundown (id) {
-    bridge.commands.executeCommand('rundown.removeItem', rundownId, id)
-  }
-
   function handleDragOver (e) {
     e.preventDefault()
     setIsDraggedOver(true)
@@ -39,7 +35,6 @@ export function RundownListItem ({
 
   function handleDragStart (e) {
     e.dataTransfer.setData('itemId', item.id)
-    e.dataTransfer.setData('sourceRundownId', rundownId)
     e.stopPropagation()
   }
 
@@ -54,8 +49,8 @@ export function RundownListItem ({
     setContextPos([e.pageX, e.pageY])
   }
 
-  function handleDelete (id) {
-    removeItemFromRundown(id)
+  function handleDelete (ids) {
+    bridge.items.deleteItems(ids)
   }
 
   async function handleCopy () {
@@ -70,7 +65,7 @@ export function RundownListItem ({
   }
 
   function handleAdd (newItemId) {
-    bridge.commands.executeCommand('rundown.reorderItem', rundownId, newItemId, index + 1)
+    bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
   }
 
   return (
@@ -106,10 +101,7 @@ export function RundownListItem ({
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
               </ContextMenuItem>
               <ContextMenuDivider />
-              {
-                bridge.client.getSelection().length <= 1 &&
-                <ContextMenuItem text='Remove' onClick={() => handleDelete(item.id)} />
-              }
+              <ContextMenuItem text='Remove' onClick={() => handleDelete(bridge.client.getSelection())} />
             </ContextMenu>
             )
           : <></>
