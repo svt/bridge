@@ -46,15 +46,28 @@ export function Header () {
     async function setup () {
       const id = window.WIDGET_DATA?.['rundown.id'] || config.DEFAULT_RUNDOWN_ID
 
-      const name = await (async function () {
+      const itemData = await (async function () {
         if (id === config.DEFAULT_RUNDOWN_ID) {
-          return
+          return {}
         }
         const item = await bridge.items.getItem(id)
-        return item?.data?.name
+        return item?.data
       })()
 
-      setRundownInfo({ id, name })
+      /*
+      Load the main rundown if the
+      current rundown cannot be found,
+
+      otherwise the rundown may still
+      try to display a group that has
+      been removed
+      */
+      if (!itemData) {
+        handleLoadMainRundown()
+        return
+      }
+
+      setRundownInfo({ id, name: itemData.name })
     }
     setup()
   }, [])
