@@ -68,7 +68,7 @@ export const Workspace = () => {
               .map(([id, component]) => (
                 <GridItem key={id}>
                   {
-                    renderComponent(component, data => onUpdate({
+                    renderComponent({ id, ...component }, data => onUpdate({
                       children: {
                         [id]: data
                       }
@@ -92,7 +92,9 @@ export const Workspace = () => {
    * A helper function for rendering
    * a component from its manifest
    * data from the store
+   * @param { String } id
    * @param { ComponentData } data
+   * @param { (arg1: any) => {} } onUpdate
    * @returns { React.ReactElement }
    */
   function renderComponent (data, onUpdate) {
@@ -101,7 +103,7 @@ export const Workspace = () => {
     }
 
     if (sharedRef.current?._widgets?.[data.component]) {
-      return <FrameComponent data={data} />
+      return <FrameComponent data={data} onUpdate={onUpdate} />
     }
 
     return <MissingComponent data={data} />

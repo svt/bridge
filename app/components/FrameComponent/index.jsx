@@ -76,7 +76,7 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
-export function FrameComponent ({ data }) {
+export function FrameComponent ({ data, onUpdate }) {
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
@@ -102,6 +102,25 @@ export function FrameComponent ({ data }) {
         return {}
       }
 
+      /*
+      Allow the widget to update its own data
+      by exposing the onUpdate function,
+
+      this is better than letting the widget
+      manage its own state as this part of the state
+      is automatically garbage collected on widget
+      removal
+      */
+      frameRef.current.contentWindow.WIDGET_UPDATE = set => {
+        onUpdate(set)
+      }
+
+      /*
+      Inject the widget's data
+      into the window object
+      */
+      frameRef.current.contentWindow.WIDGET_DATA = data
+
       frameRef.current.onload = () => {
         /*
         Setup the theme variables
@@ -124,7 +143,7 @@ export function FrameComponent ({ data }) {
     snapshotRef.current = snapshot
 
     setup()
-  }, [data, shared])
+  }, [data, shared, onUpdate])
 
   /*
   Highligh the component

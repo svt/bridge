@@ -7,7 +7,7 @@ import { SharedContext } from '../../sharedContext'
 
 import { RundownVariableItem } from '../RundownVariableItem'
 import { RundownDividerItem } from '../RundownDividerItem'
-import { RundownGroupItem } from '../RundownGroupItem'
+import { RundownGroupItem, RundownGroupItemContext } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
 
@@ -22,9 +22,9 @@ import * as keyboard from '../../utils/keyboard'
  * @type { Object.<String, ReactComponent> }
  */
 const TYPE_COMPONENTS = {
-  'bridge.variables.variable': RundownVariableItem,
-  'bridge.types.divider': RundownDividerItem,
-  'bridge.types.group': RundownGroupItem
+  'bridge.variables.variable': { item: RundownVariableItem },
+  'bridge.types.divider': { item: RundownDividerItem },
+  'bridge.types.group': { item: RundownGroupItem, context: RundownGroupItemContext }
 }
 
 /**
@@ -271,7 +271,8 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
           .filter(item => item)
           .map((item, i) => {
             const isSelected = selection?.includes(item.id)
-            const ItemComponent = TYPE_COMPONENTS[item.type] || RundownItem
+            const ItemComponent = TYPE_COMPONENTS[item.type]?.item || RundownItem
+            const ExtraContextComponent = TYPE_COMPONENTS[item.type]?.context
             return (
               <RundownListItem
                 key={item.id}
@@ -280,6 +281,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
                 rundownId={rundownId}
                 onDrop={e => handleDrop(e, i)}
                 onFocus={() => handleFocus(item.id)}
+                extraContextItems={ExtraContextComponent}
                 selected={isSelected}
               >
                 <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} />

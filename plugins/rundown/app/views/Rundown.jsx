@@ -1,18 +1,18 @@
 import React from 'react'
 import bridge from 'bridge'
 
-import { StoreContext } from '../storeContext'
-
 import { RundownList } from '../components/RundownList'
 import { ContextAddMenu } from '../components/ContextAddMenu'
 
 import { ContextMenu } from '../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../app/components/ContextMenuItem'
 
-export function Rundown () {
-  const [store] = React.useContext(StoreContext)
+import * as config from '../config'
 
+export function Rundown () {
   const [contextPos, setContextPos] = React.useState()
+
+  const rundownId = window.WIDGET_DATA?.['rundown.id'] || config.DEFAULT_RUNDOWN_ID
 
   function handleContextMenu (e) {
     e.preventDefault()
@@ -20,7 +20,7 @@ export function Rundown () {
   }
 
   async function handleItemCreate (itemId) {
-    bridge.commands.executeCommand('rundown.appendItem', store?.id, itemId)
+    bridge.commands.executeCommand('rundown.appendItem', rundownId, itemId)
   }
 
   return (
@@ -36,7 +36,7 @@ export function Rundown () {
             )
           : <></>
       }
-      <RundownList rundownId={store?.id} />
+      <RundownList rundownId={rundownId} />
     </div>
   )
 }
