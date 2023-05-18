@@ -19,6 +19,7 @@ export function RundownListItem ({
   onDrop = () => {},
   onFocus = () => {},
   onMouseDown = () => {},
+  extraContextItems: ExtraContextItemsComponent,
   selected: isSelected
 }) {
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
@@ -102,6 +103,15 @@ export function RundownListItem ({
               </ContextMenuItem>
               <ContextMenuDivider />
               <ContextMenuItem text='Remove' onClick={() => handleDelete(bridge.client.getSelection())} />
+              {
+                ExtraContextItemsComponent &&
+                bridge.client.getSelection().length <= 1 && (
+                  <>
+                    <ContextMenuDivider />
+                    <ExtraContextItemsComponent item={item} />
+                  </>
+                )
+              }
             </ContextMenu>
             )
           : <></>

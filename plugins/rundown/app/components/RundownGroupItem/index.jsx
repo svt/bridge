@@ -8,6 +8,8 @@ import { SharedContext } from '../../sharedContext'
 import { RundownList } from '../RundownList'
 import { Icon } from '../Icon'
 
+import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
+
 export function RundownGroupItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -111,5 +113,19 @@ export function RundownGroupItem ({ index, item }) {
         }
       </div>
     </div>
+  )
+}
+
+export function RundownGroupItemContext ({ item }) {
+  function handleEnterGroup () {
+    window.WIDGET_UPDATE({
+      'rundown.id': item.id
+    })
+  }
+
+  return (
+    <>
+      <ContextMenuItem text='Enter' onClick={() => handleEnterGroup()} />
+    </>
   )
 }
