@@ -118,11 +118,11 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
   }, [src, api, wrapperRef.current])
 
   React.useEffect(() => {
-    frameRef.current?.contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
-    frameRef.current?.contentWindow.addEventListener('keyup', shortcuts.registerKeyUp)
+    frameRef.current?.contentWindow?.addEventListener('keydown', shortcuts.registerKeyDown)
+    frameRef.current?.contentWindow?.addEventListener('keyup', shortcuts.registerKeyUp)
     return () => {
-      frameRef.current?.contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
-      frameRef.current?.contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
+      frameRef.current?.contentWindow?.removeEventListener('keydown', shortcuts.registerKeyDown)
+      frameRef.current?.contentWindow?.removeEventListener('keyup', shortcuts.registerKeyUp)
     }
   }, [frameRef.current])
 
