@@ -94,7 +94,7 @@ export function Header () {
             <span className='Header-pathPart' onClick={() => handleLoadMainRundown()}>Main rundown</span>
             {
               rundownInfo?.name &&
-              <span className='Header-pathPart'>{rundownInfo?.name}</span>
+              <span className='Header-pathPart'> / {rundownInfo?.name}</span>
             }
           </div>
         </div>

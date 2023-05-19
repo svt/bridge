@@ -125,7 +125,7 @@ export function RundownGroupItemContext ({ item }) {
 
   return (
     <>
-      <ContextMenuItem text='Enter' onClick={() => handleEnterGroup()} />
+      <ContextMenuItem text='Step into' onClick={() => handleEnterGroup()} />
     </>
   )
 }
