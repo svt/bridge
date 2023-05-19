@@ -147,13 +147,16 @@ app.disable('x-powered-by')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'dist')))
 
+const httpPort = UserDefaults.data.httpPort
+const httpAddress = UserDefaults.data.httpBindToAll ? '0.0.0.0' : 'localhost'
+
 /**
  * A reference to
  * the main http server
  * @type { HttpError.Server }
  */
-const server = app.listen(UserDefaults.data.httpPort, '0.0.0.0', () => {
-  Logger.info('Listening on port', UserDefaults.data.httpPort)
+const server = app.listen(httpPort, httpAddress, () => {
+  Logger.info('Listening on port', httpPort)
 })
 
 ;(function () {
