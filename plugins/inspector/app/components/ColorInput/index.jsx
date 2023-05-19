@@ -104,6 +104,18 @@ export function ColorInput ({
   }, [])
 
   /*
+  Close the color picker if the
+  widget loses focus
+  */
+  React.useEffect(() => {
+    function handleClose () {
+      setIsOpen(false)
+    }
+    window.addEventListener('blur', handleClose)
+    return () => window.removeEventListener('blur', handleClose)
+  }, [])
+
+  /*
   Whenever the popover is closed,
   add its color to recents if it was
   changed from when the popover was
