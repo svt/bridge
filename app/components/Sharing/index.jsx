@@ -1,11 +1,7 @@
 import React from 'react'
-import * as api from '../../api'
-
-import { SharedContext } from '../../sharedContext'
 
 import { Notification } from '../Notification'
 import { Popover } from '../Popover'
-import { Icon } from '../Icon'
 
 import CollaborationIcon from '../../assets/icons/collaboration.svg'
 
@@ -18,7 +14,6 @@ const PORT = window.APP.port
 const WORKSPACE = window.APP.workspace
 
 export function Sharing ({ open, onClose = () => {} }) {
-  const [shared] = React.useContext(SharedContext)
   const [copied, setCopied] = React.useState(false)
 
   const url = `http://${HOST}:${PORT}/workspaces/${WORKSPACE}`
@@ -48,7 +43,7 @@ export function Sharing ({ open, onClose = () => {} }) {
     <Popover open={open} onClose={onClose}>
       <div className='Sharing u-theme--light'>
         {
-          (!shared?._userDefaults?.httpBindToAll || HOST === 'localhost') &&
+          HOST === 'localhost' &&
           <Notification size='small' description='Bridge is only accessible on localhost, change this in settings' />
         }
         <div className='Sharing-content'>
