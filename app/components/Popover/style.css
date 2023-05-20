@@ -16,7 +16,7 @@
   background: var(--base-color--background);
 
   box-sizing: border-box;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 
   transform: translate(-50%, 100%);
   
