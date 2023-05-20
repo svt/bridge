@@ -43,9 +43,6 @@ const ASSETS = require('./assets.json')
 */
 const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
 
-const HTTP_PORT = UserDefaults.data.httpPort || DEFAULT_HTTP_PORT
-const HTTP_BIND_ADDR = UserDefaults.data.httpBindToAll ? '0.0.0.0' : 'localhost'
-
 /**
  * Verify that an assets file is
  * created before running the app,
@@ -104,6 +101,13 @@ const HTTP_BIND_ADDR = UserDefaults.data.httpBindToAll ? '0.0.0.0' : 'localhost'
     Logger.warn('Failed to restore user defaults', err)
   }
 })()
+
+/*
+These constants depend on the UserDefaults-state and
+MUST be declared AFTER the state is restored
+*/
+const HTTP_PORT = UserDefaults.data.httpPort || DEFAULT_HTTP_PORT
+const HTTP_BIND_ADDR = UserDefaults.data.httpBindToAll ? '0.0.0.0' : 'localhost'
 
 /*
 Setup listeners for new workspaces
