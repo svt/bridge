@@ -4,6 +4,7 @@ import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
 import { Modal } from '../Modal'
+import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
 
 import { Icon } from '../Icon'
@@ -24,6 +25,7 @@ export function Header ({ title = 'Bridge' }) {
   const [shared,, applySharedKey] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
+  const [sharingOpen, setSharingOpen] = React.useState(false)
   const [prefsOpen, setPrefsOpen] = React.useState(false)
 
   const connections = shared?._connections?.length
@@ -58,11 +60,12 @@ export function Header ({ title = 'Bridge' }) {
         </div>
         <div className='Header-center'></div>
         <div className='Header-block'>
-          <div className='Header-connections'>
-            <div className='Header-connectionsIcon'>
+          <div className='Header-actionSection'>
+            <button className='Header-button Header-sharingBtn' onClick={() => setSharingOpen(true)}>
               <Icon name='person' />
-            </div>
-            {connections || 0}
+              {connections || 0}
+            </button>
+            <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
           </div>
           <button className='Header-button Header-editBtn' onClick={() => handleEdit(!shared[local.id]?.isEditingLayout)}>
             <Icon name='edit' />

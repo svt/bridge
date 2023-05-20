@@ -19,3 +19,9 @@ html, body, #root {
 .u-textAlign--center {
   text-align: center;
 }
+
+/* Size */
+
+.u-width--100pct {
+  width: 100%;
+}

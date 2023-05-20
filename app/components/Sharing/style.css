@@ -1,0 +1,20 @@
+.Sharing {
+  width: 300px;
+
+  text-align: left;
+  font-size: 1em;
+  color: var(--base-color);
+}
+
+.Sharing-content {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.Sharing-copyBtn {
+  margin-top: 15px;
+}
+
+.Sharing-icon {
+  margin: 5px 0 10px;
+}
