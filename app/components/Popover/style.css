@@ -1,0 +1,25 @@
+.Popover,
+.Popover-trigger {
+  position: relative;
+}
+
+.Popover-content {
+  display: block;
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  text-align: center;
+
+  border-radius: 10px;
+  background: var(--base-color--background);
+
+  box-sizing: border-box;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+
+  transform: translate(-50%, 100%);
+  
+  overflow: hidden;
+  z-index: 1;
+}

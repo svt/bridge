@@ -22,6 +22,7 @@ const template = require('./app/template')
 
 const utils = require('./lib/utils')
 const paths = require('./lib/paths')
+const network = require('./lib/network')
 const electron = require('./lib/electron')
 const platform = require('./lib/platform')
 const apiRoutes = require('./lib/routes')
@@ -41,6 +42,9 @@ const ASSETS = require('./assets.json')
 * @type { Number }
 */
 const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
+
+const HTTP_PORT = UserDefaults.data.httpPort || DEFAULT_HTTP_PORT
+const HTTP_BIND_ADDR = UserDefaults.data.httpBindToAll ? '0.0.0.0' : 'localhost'
 
 /**
  * Verify that an assets file is
@@ -147,16 +151,13 @@ app.disable('x-powered-by')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'dist')))
 
-const httpPort = UserDefaults.data.httpPort
-const httpAddress = UserDefaults.data.httpBindToAll ? '0.0.0.0' : 'localhost'
-
 /**
  * A reference to
  * the main http server
  * @type { HttpError.Server }
  */
-const server = app.listen(httpPort, httpAddress, () => {
-  Logger.info('Listening on port', httpPort)
+const server = app.listen(HTTP_PORT, HTTP_BIND_ADDR, () => {
+  Logger.info('Listening on port', HTTP_PORT)
 })
 
 ;(function () {
@@ -252,7 +253,8 @@ with the client app
 app.get('*', (req, res, next) => {
   res.send(template({
     env: process.env.NODE_ENV,
-    port: UserDefaults.data.httpPort,
+    port: HTTP_PORT,
+    address: HTTP_BIND_ADDR === '0.0.0.0' && platform.isElectron() ? network.getFirstIPv4Address() : 'localhost',
     version: pkg.version,
     platform: process.platform,
     workspace: req.workspace?.id,

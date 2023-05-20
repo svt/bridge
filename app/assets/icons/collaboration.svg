@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="79px" height="31px" viewBox="0 0 79 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/collaboration</title>
+    <g id="icons/collaboration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3">
+            <circle id="Oval" fill="#FF4B7D" cx="15.5" cy="15.5" r="15.5"></circle>
+            <g id="AB" transform="translate(7.156000, 10.900000)" fill="#FFFFFF" fill-rule="nonzero">
+                <path d="M6.76,9.1 L8.229,9.1 L5.07,0.403 C4.966,0.13 4.823,0 4.511,0 L3.705,0 C3.393,0 3.25,0.117 3.146,0.39 L0,9.1 L1.404,9.1 L2.184,6.877 L5.993,6.877 L6.76,9.1 Z M2.587,5.694 L4.082,1.417 L5.577,5.694 L2.587,5.694 Z" id="Shape"></path>
+                <path d="M14.534,4.381 C15.197,4.134 15.886,3.445 15.886,2.392 C15.886,0.845 14.755,0 12.87,0 L9.464,0 L9.464,9.1 L13.299,9.1 C15.197,9.1 16.328,8.203 16.328,6.565 C16.328,5.473 15.626,4.641 14.534,4.381 Z M10.894,1.118 L12.753,1.118 C13.858,1.118 14.456,1.612 14.456,2.509 C14.456,3.406 13.858,3.939 12.753,3.939 L10.894,3.939 L10.894,1.118 Z M13.182,7.969 L10.894,7.969 L10.894,5.031 L13.169,5.031 C14.287,5.031 14.898,5.616 14.898,6.5 C14.898,7.371 14.3,7.969 13.182,7.969 Z" id="Shape"></path>
+            </g>
+        </g>
+        <g id="Group-3-Copy" transform="translate(24.000000, 0.000000)">
+            <circle id="Oval" stroke="#FFFFFF" stroke-width="2" fill="#641E78" cx="15.5" cy="15.5" r="16.5"></circle>
+            <g id="FE" transform="translate(9.079000, 10.900000)" fill="#FFFFFF" fill-rule="nonzero">
+                <polygon id="Path" points="6.084 1.17 6.084 0 0 0 0 9.1 1.43 9.1 1.43 5.2 5.564 5.2 5.564 4.03 1.43 4.03 1.43 1.17"></polygon>
+                <polygon id="Path" points="13.793 1.17 13.793 0 7.709 0 7.709 9.1 13.793 9.1 13.793 7.93 9.139 7.93 9.139 5.005 13.13 5.005 13.13 3.835 9.139 3.835 9.139 1.17"></polygon>
+            </g>
+        </g>
+        <g id="Group-3-Copy-2" transform="translate(48.000000, 0.000000)">
+            <circle id="Oval" stroke="#FFFFFF" stroke-width="2" fill="#0F418C" cx="15.5" cy="15.5" r="16.5"></circle>
+            <g id="IG" transform="translate(10.845500, 10.770000)" fill="#FFFFFF" fill-rule="nonzero">
+                <polygon id="Path" points="0 9.23 1.43 9.23 1.43 0.13 0 0.13"></polygon>
+                <path d="M10.751,4.459 L7.15,4.459 L7.15,5.59 L9.321,5.59 L9.321,6.006 C9.321,7.007 8.775,8.125 7.085,8.125 C5.525,8.125 4.693,7.059 4.693,5.551 L4.693,3.809 C4.693,2.301 5.525,1.235 7.085,1.235 C8.385,1.235 8.983,1.989 9.477,2.717 L10.621,1.963 C9.932,0.91 8.931,0 7.098,0 C4.55,0 3.263,1.781 3.263,3.861 L3.263,5.499 C3.263,7.579 4.524,9.36 7.085,9.36 C9.659,9.36 10.751,7.618 10.751,5.798 L10.751,4.459 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>
