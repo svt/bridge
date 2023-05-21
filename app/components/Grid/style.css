@@ -30,6 +30,14 @@ a more responsive app
   transition: none;
 }
 
+/*
+Style the placeholder to be coherent
+with the rest of the app
+*/
+.Grid .react-grid-item.react-grid-placeholder {
+  background: var(--base-color--accent1);
+}
+
 .Grid-item.is-changing {
   animation-name: Grid-item-is-changing;
   animation-duration: 1.5s;
