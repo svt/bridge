@@ -17,7 +17,7 @@ export function Popover ({ children, open = false, onClose = () => {} }) {
 
   React.useEffect(() => {
     function close (e) {
-      if (e.path.includes(elRef.current)) {
+      if (e.composedPath().includes(elRef.current)) {
         return
       }
       onClose()
