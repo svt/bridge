@@ -164,7 +164,7 @@ export function FrameComponent ({ data, onUpdate }) {
       frameRef.current?.contentWindow.removeEventListener('focus', onFocus)
       frameRef.current?.contentWindow.removeEventListener('blur', onBlur)
     }
-  }, [frameRef.current])
+  }, [frameRef.current?.contentWindow])
 
   React.useEffect(() => {
     frameRef.current?.contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
@@ -173,7 +173,7 @@ export function FrameComponent ({ data, onUpdate }) {
       frameRef.current?.contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
       frameRef.current?.contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
     }
-  }, [frameRef.current])
+  }, [frameRef.current?.contentWindow])
 
   /*
   Copy the theme variables from
