@@ -30,7 +30,7 @@ export function RundownGroupItem ({ index, item }) {
       return
     }
 
-    const selection = shared?.[bridge.client.getIdentity()]?.selection || []
+    const selection = shared?._connections?.[bridge.client.getIdentity()]?.selection || []
     if (!(selection.includes(item.id))) {
       return
     }

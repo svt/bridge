@@ -45,7 +45,7 @@ export default function App () {
   the store context for simplicity
   throughout the plugin
   */
-  const selection = state?.[bridge.client.getIdentity()]?.selection
+  const selection = state?._connections?.[bridge.client.getIdentity()]?.selection
 
   React.useEffect(() => {
     const items = (selection || [])

@@ -72,8 +72,10 @@ function setSelection (item) {
 
   const items = ensureArray(item)
   state.apply({
-    [getIdentity()]: {
-      selection: { $replace: items }
+    _connections: {
+      [getIdentity()]: {
+        selection: { $replace: items }
+      }
     }
   })
 }
@@ -98,18 +100,22 @@ function addSelection (item) {
     */
     .filter(item => !isSelected(item))
 
-  const currentSelectionIsArray = Array.isArray(state.getLocalState()?.[getIdentity()]?.selection)
+  const currentSelectionIsArray = Array.isArray(state.getLocalState()?._connections?.[getIdentity()]?.selection)
 
   if (!currentSelectionIsArray) {
     state.apply({
-      [getIdentity()]: {
-        selection: { $replace: items }
+      _connections: {
+        [getIdentity()]: {
+          selection: { $replace: items }
+        }
       }
     })
   } else {
     state.apply({
-      [getIdentity()]: {
-        selection: { $push: items }
+      _connections: {
+        [getIdentity()]: {
+          selection: { $push: items }
+        }
       }
     })
   }
@@ -126,7 +132,7 @@ function addSelection (item) {
  */
 function subtractSelection (item) {
   assertIdentity()
-  const selection = state.getLocalState()?.[getIdentity()]?.selection
+  const selection = state.getLocalState()?._connections?.[getIdentity()]?.selection
   if (!selection) {
     return
   }
@@ -145,7 +151,7 @@ function subtractSelection (item) {
  */
 function isSelected (item) {
   assertIdentity()
-  const selection = state.getLocalState()?.[getIdentity()]?.selection
+  const selection = state.getLocalState()?._connections?.[getIdentity()]?.selection
   if (!selection) {
     return false
   }
@@ -159,8 +165,10 @@ function clearSelection () {
   assertIdentity()
 
   state.apply({
-    [getIdentity()]: {
-      selection: { $delete: true }
+    _connections: {
+      [getIdentity()]: {
+        selection: { $delete: true }
+      }
     }
   })
 }
@@ -171,7 +179,7 @@ function clearSelection () {
  */
 function getSelection () {
   assertIdentity()
-  return state.getLocalState()?.[getIdentity()]?.selection || []
+  return state.getLocalState()?._connections?.[getIdentity()]?.selection || []
 }
 
 module.exports = {
