@@ -1,5 +1,3 @@
-
-
 .Notification {
   display: flex;
   width: 100%;
@@ -14,16 +12,16 @@
 }
 
 .Notification-size--normal {
-  padding: 1.1em 1.5em;
+  padding: 1em 1.4em;
 }
 
 .Notification-size--small {
-  padding: 0.8em 1.5em;
+  padding: 0.8em 1.4em;
 }
 
 .Notification-content {
   display: flex;
-  align-content: center;
+  align-items: center;
 }
 
 .Notification-contentSection {
