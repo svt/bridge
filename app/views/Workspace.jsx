@@ -131,9 +131,15 @@ export const Workspace = () => {
         and render them all in the interface
         */
         (shared.children ? Object.entries(shared.children) : [])
-          .map(([id, component]) => renderComponent(
-            component,
-            data => handleComponentUpdate({ [id]: data })
+          .map(([id, component]) => (
+            <div key={id} className='View-component'>
+              {
+                renderComponent(
+                  component,
+                  data => handleComponentUpdate({ [id]: data })
+                )
+              }
+            </div>
           ))
       }
     </>
