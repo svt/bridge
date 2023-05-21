@@ -6,10 +6,10 @@
   "scripts": {
     "test": "npm run lint && jest",
     "lint": "npx eslint .",
-    "dev": "webpack serve --config webpack.dev.js",
     "start": "node index.js",
     "nodemon": "nodemon --trace-warnings --inspect=0.0.0.0 index.js",
     "build": "npm run clean | webpack --config webpack.prod.js",
+    "build:dev": "npm run clean | webpack --config webpack.dev.js",
     "build:plugins": "node plugins/bundle.js",
     "clean": "rm -r ./dist",
     "electron": "NODE_ENV=development electron --trace-warnings index.js",
