@@ -56,7 +56,7 @@ export function WidgetSelector ({ value, onClose = () => {}, onChange = () => {}
         {
           (widgets || []).map(widget => {
             return (
-              <div className='WidgetSelector-listItem' tabIndex={0} onClick={() => handleSelect(widget.id)}>
+              <div key={widget.id} className='WidgetSelector-listItem' tabIndex={0} onClick={() => handleSelect(widget.id)}>
                 <div className='WidgetSelector-listItemCheck'>
                   <input type='radio' checked={value === widget.id} />
                 </div>
