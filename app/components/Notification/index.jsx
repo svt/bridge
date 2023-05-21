@@ -1,7 +1,9 @@
 import React from 'react'
 import './style.css'
 
-export function Notification ({ type, size = 'normal', title, description, interactionEnabled }) {
+import { Icon } from '../Icon'
+
+export function Notification ({ type, size = 'normal', icon, title, description, interactionEnabled }) {
   const [isHidden, setIsHidden] = React.useState(false)
 
   function handleHideBtnClick () {
@@ -19,6 +21,9 @@ export function Notification ({ type, size = 'normal', title, description, inter
   return (
     <div className={`Notification Notification--${type} Notification-size--${size}`}>
       <div className='Notification-content'>
+        {
+          icon && <span className='Notification-contentSection'><Icon name={icon} /></span>
+        }
         {
           title && <span className='Notification-contentSection Notification-title'>{title}</span>
         }
