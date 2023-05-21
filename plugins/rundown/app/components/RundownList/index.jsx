@@ -30,9 +30,13 @@ const TYPE_COMPONENTS = {
 /**
  * Scroll an element into view
  * @param { HTMLElement } el
+ * @param { Boolean } animate Whether or not to animate the
+ *                            scroll, defaults to true
+ * @param { Boolean } centered Whether or not to use the vertical
+ *                             center as the scroll origin
  */
 function scrollIntoView (el, animate = true, centered = true) {
-  if (!(el instanceof HTMLElement)) {
+  if (!el) {
     return
   }
 
