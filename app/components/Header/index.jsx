@@ -22,13 +22,13 @@ function isElectron () {
 }
 
 export function Header ({ title = 'Bridge' }) {
-  const [shared,, applySharedKey] = React.useContext(SharedContext)
+  const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
   const [sharingOpen, setSharingOpen] = React.useState(false)
   const [prefsOpen, setPrefsOpen] = React.useState(false)
 
-  const connections = shared?._connections?.length
+  const connectionCount = Object.keys(shared?._connections || {}).length
 
   /**
    * Set the `isEditingLayout` toggle on
@@ -36,8 +36,12 @@ export function Header ({ title = 'Bridge' }) {
    * @param { Boolean } isEditing
    */
   function handleEdit (isEditing) {
-    applySharedKey(local.id, {
-      isEditingLayout: isEditing
+    applyShared({
+      _connections: {
+        [local.id]: {
+          isEditingLayout: isEditing
+        }
+      }
     })
   }
 
@@ -63,11 +67,11 @@ export function Header ({ title = 'Bridge' }) {
           <div className='Header-actionSection'>
             <button className='Header-button Header-sharingBtn' onClick={() => setSharingOpen(true)}>
               <Icon name='person' />
-              {connections || 0}
+              {connectionCount || 0}
             </button>
             <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
           </div>
-          <button className='Header-button Header-editBtn' onClick={() => handleEdit(!shared[local.id]?.isEditingLayout)}>
+          <button className='Header-button Header-editBtn' onClick={() => handleEdit(!shared?._connections[local.id]?.isEditingLayout)}>
             <Icon name='edit' />
           </button>
           <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)}>

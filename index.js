@@ -128,7 +128,7 @@ references
         return
       }
 
-      if (workspace?.state?.data?._connections?.length > 0) {
+      if (Object.keys(workspace?.state?.data?._connections || {}).length > 0) {
         return
       }
 

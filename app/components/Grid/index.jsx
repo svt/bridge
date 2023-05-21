@@ -48,7 +48,7 @@ export function Grid ({ children, data = {}, onChange }) {
    * is currently in layout edit mode
    * @type { Boolean }
    */
-  const userIsEditingLayout = shared[local.id]?.isEditingLayout
+  const userIsEditingLayout = shared?._connections[local.id]?.isEditingLayout
 
   const childrenArr = Array.isArray(children)
     ? children
