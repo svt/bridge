@@ -58,7 +58,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
 
   const elRef = React.useRef()
   const itemIds = shared?.items?.[rundownId]?.children || []
-  const selection = shared?.[bridge.client.getIdentity()]?.selection || []
+  const selection = shared?._connections?.[bridge.client.getIdentity()]?.selection || []
 
   const scrollSettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.scrolling
 
