@@ -29,6 +29,7 @@ export function Header ({ title = 'Bridge' }) {
   const [prefsOpen, setPrefsOpen] = React.useState(false)
 
   const connectionCount = Object.keys(shared?._connections || {}).length
+  const isEditingLayout = shared?._connections?.[local?.id]?.isEditingLayout
 
   /**
    * Set the `isEditingLayout` toggle on
@@ -71,8 +72,8 @@ export function Header ({ title = 'Bridge' }) {
             </button>
             <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
           </div>
-          <button className='Header-button Header-editBtn' onClick={() => handleEdit(!shared?._connections[local.id]?.isEditingLayout)}>
-            <Icon name='edit' />
+          <button className={`Header-button Header-editBtn ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)}>
+            <Icon name='edit' color={isEditingLayout ? 'var(--base-color--accent1)' : 'var(--base-color)'} />
           </button>
           <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)}>
             <Icon name='preferences' />
