@@ -242,8 +242,8 @@ export function Grid ({ children, data = {}, onChange }) {
           margin={[GRID_MARGIN_PX, GRID_MARGIN_PX]}
           layout={layoutArray}
           autoSize={false}
+          compactType={null}
           allowOverlap={false}
-          verticalCompact={false}
           containerPadding={[GRID_MARGIN_PX, GRID_MARGIN_PX]}
           /*
           Only enable resize and drag if the user
