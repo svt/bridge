@@ -47,7 +47,7 @@ function getFileNameFromPath (filePath) {
 }
 
 export const Workspace = () => {
-  const [shared,, applySharedKey] = React.useContext(SharedContext)
+  const [shared, applyShared] = React.useContext(SharedContext)
   const sharedRef = React.useRef(shared)
 
   React.useEffect(() => {
@@ -117,7 +117,9 @@ export const Workspace = () => {
    * @param { Object } data
    */
   function handleComponentUpdate (data) {
-    applySharedKey('children', data)
+    applyShared({
+      children: data
+    })
   }
 
   return (

@@ -175,18 +175,6 @@ export default function App () {
   }
 
   /**
-   * Apply data for a shallow
-   * key in the shared context
-   * @param { String } key The key to modify
-   * @param { Object.<> } data Any data to apply
-   */
-  function applySharedKey (key, data = {}) {
-    applyShared({
-      [key]: data
-    })
-  }
-
-  /**
    * A convenience function for setting
    * data to the local context without
    * replacing the whole object
@@ -220,9 +208,12 @@ export default function App () {
         */
         case 'id':
           applyLocal({ id: json?.data })
-          applySharedKey(json?.data, {
-            path: window.location.pathname,
-            isPersistent: browser.isElectron()
+          applyShared({
+            _connections: {
+              [json?.data]: {
+                isPersistent: browser.isElectron()
+              }
+            }
           })
           ;(await api.load()).client.setIdentity(localRef.current.id)
           break
@@ -240,30 +231,6 @@ export default function App () {
       }
     })()
   }, [data])
-
-  /*
-  Hijack pushState to update the shared
-  state every time the user navigates
-  to a new page if the local id is
-  defined
-  */
-  React.useEffect(() => {
-    const pushState = window.history.pushState
-    window.history.pushState = (...args) => {
-      pushState.apply(window.history, args)
-
-      if (!local.id) return
-      applySharedKey(local.id, {
-        path: args[2]
-      })
-    }
-
-    /*
-    Reset the pushState-function
-    before unloading
-    */
-    return () => { window.history.pushState = pushState }
-  }, [])
 
   /*
   Listen for changes to the theme and
@@ -288,7 +255,7 @@ export default function App () {
   return (
     <SocketContext.Provider value={[send, data]}>
       <LocalContext.Provider value={[local, applyLocal]}>
-        <SharedContext.Provider value={[shared, applyShared, applySharedKey]}>
+        <SharedContext.Provider value={[shared, applyShared]}>
           <Router>
             <Switch>
               <Route path='/workspaces/:workspace'>

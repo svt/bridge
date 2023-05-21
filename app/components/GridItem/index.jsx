@@ -13,7 +13,7 @@ export const GridItem = ({ children }) => {
    * is currently in layout edit mode
    * @type { Boolean }
    */
-  const userIsEditingLayout = shared[local.id]?.isEditingLayout
+  const userIsEditingLayout = shared?._connections[local.id]?.isEditingLayout
 
   return (
     <div className={`GridItem ${userIsEditingLayout ? 'is-editing' : ''}`}>

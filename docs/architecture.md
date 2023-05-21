@@ -25,36 +25,36 @@ The shared state is synced through a websocket connection between the main proce
 ```javascript
 {
   /*
-  The connections array is populated with
-  uuids representing each connected client
+  The connections object is populated with
+  one entity per currently connected client
   */
-  _connections: [],
-
-  /*
-  Each connected client has its own scope
-  on the state that can be populated with
-  arbitrary data, indexed by its uuid.
-  
-  However two properties exist by default.
-
-  path
-  Indicates the current path
-  the client is visiting
-
-  heartbeat
-  Holds the timestamp for the client's
-  last heartbeat to the main process,
-  in milliseconds since epoch time
-  */
-  [uuid]: {
-    path: '/',
-    heartbeat: 0,
-
+  _connections: {
     /*
-    Indicates whether or not the client
-    is currently editing the grid layout
+    Each connected client has its own scope
+    on the state that can be populated with
+    arbitrary data, indexed by its uuid.
+
+    However two properties exist by default.
+
+    path
+    Indicates the current path
+    the client is visiting
+
+    heartbeat
+    Holds the timestamp for the client's
+    last heartbeat to the main process,
+    in milliseconds since epoch time
     */
-    isEditingLayout: false
+    [uuid]: {
+      path: '/',
+      heartbeat: 0,
+
+      /*
+      Indicates whether or not the client
+      is currently editing the grid layout
+      */
+      isEditingLayout: false
+    }
   },
 
   /*
