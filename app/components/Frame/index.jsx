@@ -118,13 +118,18 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
   }, [src, api, wrapperRef.current])
 
   React.useEffect(() => {
-    frameRef.current?.contentWindow?.addEventListener('keydown', shortcuts.registerKeyDown)
-    frameRef.current?.contentWindow?.addEventListener('keyup', shortcuts.registerKeyUp)
-    return () => {
-      frameRef.current?.contentWindow?.removeEventListener('keydown', shortcuts.registerKeyDown)
-      frameRef.current?.contentWindow?.removeEventListener('keyup', shortcuts.registerKeyUp)
+    const contentWindow = frameRef.current?.contentWindow
+    if (!contentWindow) {
+      return
     }
-  }, [frameRef.current])
+
+    contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
+    contentWindow.addEventListener('keyup', shortcuts.registerKeyUp)
+    return () => {
+      contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
+      contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
+    }
+  }, [frameRef.current?.contentWindow])
 
   /*
   Set the height of the frame to
