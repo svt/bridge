@@ -150,30 +150,39 @@ export function FrameComponent ({ data, onUpdate }) {
   if it gains focus
   */
   React.useEffect(() => {
+    const contentWindow = frameRef.current?.contentWindow
+    if (!contentWindow) {
+      return
+    }
     function onFocus () {
       setHasFocus(true)
     }
-    frameRef.current?.contentWindow.addEventListener('focus', onFocus)
+    contentWindow.addEventListener('focus', onFocus)
 
     function onBlur () {
       setHasFocus(false)
     }
-    frameRef.current?.contentWindow.addEventListener('blur', onBlur)
+    contentWindow.addEventListener('blur', onBlur)
 
     return () => {
-      frameRef.current?.contentWindow.removeEventListener('focus', onFocus)
-      frameRef.current?.contentWindow.removeEventListener('blur', onBlur)
+      contentWindow.removeEventListener('focus', onFocus)
+      contentWindow.removeEventListener('blur', onBlur)
     }
-  }, [frameRef.current])
+  }, [frameRef.current?.contentWindow])
 
   React.useEffect(() => {
-    frameRef.current?.contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
-    frameRef.current?.contentWindow.addEventListener('keyup', shortcuts.registerKeyUp)
-    return () => {
-      frameRef.current?.contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
-      frameRef.current?.contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
+    const contentWindow = frameRef.current?.contentWindow
+    if (!contentWindow) {
+      return
     }
-  }, [frameRef.current])
+
+    contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
+    contentWindow.addEventListener('keyup', shortcuts.registerKeyUp)
+    return () => {
+      contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
+      contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
+    }
+  }, [frameRef.current?.contentWindow])
 
   /*
   Copy the theme variables from

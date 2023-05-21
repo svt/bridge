@@ -73,8 +73,8 @@ exports.createItem = createItem
  * @param { Item } item An item object to apply
  */
 function applyItem (id, item = {}) {
-  if (!id) {
-    throw new MissingArgumentError()
+  if (!(typeof id === 'string')) {
+    throw new MissingArgumentError('Invalid value for item id, must be a string')
   }
 
   if (typeof item !== 'object' || Array.isArray(item)) {

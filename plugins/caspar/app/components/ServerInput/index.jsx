@@ -29,12 +29,12 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
       <div className='ServerInput-flexWrapper'>
         <div>
           <div className='ServerInput-input'>
-            <input type='text' value={data.name} placeholder='Name' onChange={e => handleInput('name', e.target.value)}></input>
+            <input type='text' value={data.name || ''} placeholder='Name' onChange={e => handleInput('name', e.target.value)}></input>
           </div>
           <div className='ServerInput-input'>
             <div className='ServerInput-flexInputs'>
-              <input type='text' value={data.host} placeholder='Host' onChange={e => handleInput('host', e.target.value)}></input>
-              <input type='number' className='ServerInput-input--small' value={data.port} placeholder='Port' onChange={e => handleInput('port', e.target.value)}></input>
+              <input type='text' value={data.host || ''} placeholder='Host' onChange={e => handleInput('host', e.target.value)}></input>
+              <input type='number' className='ServerInput-input--small' value={data.port || ''} placeholder='Port' onChange={e => handleInput('port', e.target.value)}></input>
             </div>
           </div>
           <div className='ServerInput-input'>

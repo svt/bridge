@@ -4,5 +4,9 @@
 
 const ApiError = require('./ApiError')
 
-class InvalidArgumentError extends ApiError {}
+class InvalidArgumentError extends ApiError {
+  constructor (msg = 'Invalid argument') {
+    super(msg)
+  }
+}
 module.exports = InvalidArgumentError

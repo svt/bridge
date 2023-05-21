@@ -4,5 +4,9 @@
 
 const ApiError = require('./ApiError')
 
-class MissingArgumentError extends ApiError {}
+class MissingArgumentError extends ApiError {
+  constructor (msg = 'Missing argument') {
+    super(msg)
+  }
+}
 module.exports = MissingArgumentError

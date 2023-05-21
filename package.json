@@ -6,11 +6,10 @@
   "scripts": {
     "test": "npm run lint && jest",
     "lint": "npx eslint .",
-    "dev": "webpack serve --config webpack.dev.js",
     "start": "node index.js",
     "nodemon": "nodemon --trace-warnings --inspect=0.0.0.0 index.js",
     "build": "npm run clean | webpack --config webpack.prod.js",
-    "build:plugins": "node plugins/bundle.js",
+    "build:dev": "npm run clean | webpack --config webpack.dev.js",
     "clean": "rm -r ./dist",
     "electron": "NODE_ENV=development electron --trace-warnings index.js",
     "electron:build:mac": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",

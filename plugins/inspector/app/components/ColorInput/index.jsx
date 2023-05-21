@@ -93,7 +93,7 @@ export function ColorInput ({
      * @param { PointerEvent } e
      */
     function handleWindowClick (e) {
-      if (e.path.includes(elRef.current)) {
+      if (e.composedPath().includes(elRef.current)) {
         return
       }
       setIsOpen(false)
