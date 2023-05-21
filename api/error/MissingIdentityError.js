@@ -4,5 +4,9 @@
 
 const ApiError = require('./ApiError')
 
-class MissingIdentityError extends ApiError {}
+class MissingIdentityError extends ApiError {
+  constructor (msg = 'Unknown client identity') {
+    super(msg)
+  }
+}
 module.exports = MissingIdentityError
