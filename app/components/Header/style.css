@@ -5,7 +5,7 @@
   width: 100%;
   height: 39px;
 
-  padding: 0 10px 0 20px;
+  padding: 0 8px 0 20px;
   box-sizing: border-box;
 
   border-bottom: 1px solid var(--base-color--shade);
@@ -39,21 +39,23 @@ for the traffic light
 }
 
 .Header-actionSection {
-  margin-right: 50px;
+  margin-right: 55px;
 }
 
-.Header-sharingBtn {
-  padding-right: 0.25em;
+.Header-button.Header-sharingBtn {
+  width: 40px;
+  padding: 0 1.3em 0 1em;
   color: var(--base-color);
   font-family: var(--base-fontFamily--primary);
 }
 
 .Header-button {
   display: flex;
-  width: 39px;
-  height: 39px;
+  position: relative;
+  width: 32px;
+  height: 32px;
 
-  margin-left: 3px;
+  margin-left: 7px;
   border: none;
 
   font-size: 1em;
@@ -61,9 +63,28 @@ for the traffic light
 
   align-items: center;
   justify-content: center;
+
+  border-radius: 7px;
+  overflow: hidden;
 }
 
-.Header-button:hover {
+.Header-button:not(.is-active):hover {
   background: var(--base-color--shade);
-  opacity: 0.5;
+  opacity: 0.7;
+}
+
+.Header-button.is-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: var(--base-color--accent1);
+  opacity: 0.15;
+}
+
+.Header-button.is-active:hover {
+  opacity: 0.7;
 }

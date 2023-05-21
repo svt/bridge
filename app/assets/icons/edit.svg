@@ -2,8 +2,7 @@
 <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>icons/edit</title>
     <g id="icons/edit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle" stroke="#FFFFFF" stroke-width="1.2" x="2.6" y="2.6" width="19.8" height="19.8" rx="3"></rect>
-        <line x1="10" y1="3" x2="10" y2="22" id="Path-8" stroke="#FFFFFF" stroke-width="1.2"></line>
-        <line x1="3" y1="10" x2="22" y2="10" id="Path-9" stroke="#FFFFFF" stroke-width="1.2"></line>
+        <rect id="Rectangle" stroke="#FFFFFF" stroke-width="1.2" x="4.6" y="4.6" width="11.8" height="11.8" rx="2"></rect>
+        <rect id="Rectangle-Copy" fill-opacity="0.4" fill="#FFFFFF" x="8" y="8" width="13" height="13" rx="2"></rect>
     </g>
 </svg>
