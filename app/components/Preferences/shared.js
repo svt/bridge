@@ -1,3 +1,4 @@
+import { PreferencesClearStateInput } from '../PreferencesClearStateInput'
 import { PreferencesShortcutsInput } from '../PreferencesShortcutsInput'
 import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
@@ -20,5 +21,6 @@ export const inputComponents = {
   number: PreferencesNumberInput,
   select: PreferencesSelectInput,
   theme: PreferencesThemeInput,
-  frame: PreferencesFrameInput
+  frame: PreferencesFrameInput,
+  clear: PreferencesClearStateInput
 }

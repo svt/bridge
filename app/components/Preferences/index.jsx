@@ -12,6 +12,7 @@ import * as Layout from '../Layout'
 import appearance from './sections/appearance.json'
 import shortcuts from './sections/shortcuts.json'
 import general from './sections/general.json'
+import state from './sections/state.json'
 
 import './style.css'
 
@@ -23,7 +24,8 @@ const INTERNAL_SETTINGS = {
   items: [
     { title: 'General', items: general },
     { title: 'Appearance', items: appearance },
-    { title: 'Keyboard shortcuts', items: shortcuts }
+    { title: 'Keyboard shortcuts', items: shortcuts },
+    { title: 'State', items: state }
   ]
 }
 
@@ -117,10 +119,15 @@ export function Preferences ({ onClose = () => {} }) {
         <Layout.Master sidebar={sidebar}>
           {
             (section?.items || [])
-              .map((setting, i) => {
+              .map(setting => {
+                /*
+                Compose a key that's somewhat unique but still static
+                in order to prevent unnecessary re-rendering
+                */
+                const key = `${setting.title}${setting.description}${JSON.stringify(setting.inputs)}`
                 return (
                   <Preference
-                    key={i}
+                    key={key}
                     setting={setting}
                     onChange={handleValueChange}
                   />
