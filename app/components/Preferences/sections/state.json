@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Clear items",
+    "description": "Will remove all items from the current workspace without emitting the remove event",
+    "inputs": [
+      { "type": "clear", "bind": "shared.items", "label": "Clear all items" }
+    ]
+  }
+]
