@@ -4,7 +4,7 @@ import './style.css'
 import * as random from '../../utils/random'
 
 export function PreferencesSelectInput ({ label, value, options = [], onChange = () => {} }) {
-  const id = `number-${random.number()}`
+  const [id] = React.useState(`number-${random.number()}`)
   return (
     <div className='PreferencesSelectInput'>
       <label htmlFor={id}>{label}</label>
