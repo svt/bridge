@@ -54,6 +54,17 @@ export function Grid ({ children, data = {}, onChange }) {
     ? children
     : [children]
 
+  /*
+  Convert the layout data to an
+  array rather than an object in
+  order to satisfy the api for
+  react-grid-layout
+  */
+  const layoutArray = Object.entries(data.layout || {})
+    .map(([id, layout]) => {
+      return { i: id, ...layout }
+    })
+
   function handleContextMenu (e, data) {
     if (!userIsEditingLayout) {
       return
@@ -138,6 +149,13 @@ export function Grid ({ children, data = {}, onChange }) {
 
     const id = uuid.v4()
 
+    /**
+     * @todo
+     * Make sure collisions are handled here
+     * so that react-grid-layout doesn't place
+     * items outside of the view's bounds
+     */
+
     onChange({
       layout: {
         [id]: {
@@ -181,17 +199,6 @@ export function Grid ({ children, data = {}, onChange }) {
       }
     })
   }
-
-  /*
-  Convert the layout data to an
-  array rather than an object in
-  order to satisfy the api for
-  react-grid-layout
-  */
-  const layoutArray = Object.entries(data.layout || {})
-    .map(([id, layout]) => {
-      return { i: id, ...layout }
-    })
 
   /**
    * Render the correnct context menu
@@ -263,6 +270,7 @@ export function Grid ({ children, data = {}, onChange }) {
           measureBeforeMount
           useCSSTransforms
           preventCollision
+          isBounded
         >
           {
             childrenArr
