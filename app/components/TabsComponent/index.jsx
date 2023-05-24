@@ -201,7 +201,7 @@ export function TabsComponent ({ data, onUpdate = () => {}, renderComponent = ()
           </ContextMenu>
         )
       }
-      <PopupConfirm open={tabToRemove} onChange={handleRemoveConfirmChange} confirmText='Close tab' abortText='Cancel'>
+      <PopupConfirm open={tabToRemove} onChange={handleRemoveConfirmChange} confirmText='Remove tab' abortText='Cancel'>
         <div className='u-heading--2'>Do you want to<br />remove the tab?</div>
         Its content will be erased
       </PopupConfirm>
