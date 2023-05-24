@@ -34,7 +34,7 @@ const GRID_ROW_COUNT = 6
 const GRID_MARGIN_PX = 2
 
 export function Grid ({ children, data = {}, onChange }) {
-  const [shared] = React.useContext(SharedContext)
+  const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
   const [contextPos, setContextPos] = React.useState()
@@ -75,6 +75,16 @@ export function Grid ({ children, data = {}, onChange }) {
     e.stopPropagation()
 
     setContextPos([e.pageX, e.pageY, data])
+  }
+
+  function handleLeaveEditMode () {
+    applyShared({
+      _connections: {
+        [local.id]: {
+          isEditingLayout: false
+        }
+      }
+    })
   }
 
   /*
@@ -232,7 +242,12 @@ export function Grid ({ children, data = {}, onChange }) {
       }
       {
         userIsEditingLayout &&
-        <Notification icon='edit' title='Editing layout' description='Right click to manage widgets' />
+        <Notification
+          icon='edit'
+          title='Editing layout'
+          description='Right click to manage widgets'
+          controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Leave edit mode</button>}
+        />
       }
       <Modal open={modalItemId} onClose={() => setModalItemId(undefined)} size='small' shade={false} draggable>
         <WidgetSelector

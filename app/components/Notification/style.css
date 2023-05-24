@@ -12,16 +12,24 @@
 }
 
 .Notification-size--normal {
-  padding: 1em 1.4em;
+  padding: 0 0.7em 0 1.4em;
 }
 
 .Notification-size--small {
-  padding: 0.8em 1.4em;
+  padding: 0 0.4em 0 1em;
 }
 
 .Notification-content {
   display: flex;
   align-items: center;
+}
+
+.Notification-size--normal .Notification-content {
+  padding: 1.2em 0;
+}
+
+.Notification-size--small .Notification-content {
+  padding: 0.8em 0;
 }
 
 .Notification-contentSection {
@@ -30,6 +38,11 @@
 
 .Notification-title {
   font-weight: 500;
+}
+
+.Notification-controls {
+  display: flex;
+  align-items: center;
 }
 
 .Notification--warning {

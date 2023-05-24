@@ -3,7 +3,7 @@ import './style.css'
 
 import { Icon } from '../Icon'
 
-export function Notification ({ type, size = 'normal', icon, title, description, interactionEnabled }) {
+export function Notification ({ type, size = 'normal', icon, title, description, controls = <></>, closable }) {
   const [isHidden, setIsHidden] = React.useState(false)
 
   function handleHideBtnClick () {
@@ -31,15 +31,10 @@ export function Notification ({ type, size = 'normal', icon, title, description,
           description && <span className='Notification-contentSection Notification-description'>{description}</span>
         }
       </div>
-      {
-        interactionEnabled
-          ? (
-            <div className='Notification-controls'>
-              <button className='Notification-hideBtn Link' onClick={handleHideBtnClick}>Dölj</button>
-            </div>
-            )
-          : <></>
-      }
+      <div className='Notification-controls'>
+        { controls }
+        { closable && <button className='Notification-hideBtn Link' onClick={() => handleHideBtnClick()}>Dölj</button> }
+      </div>
     </div>
   )
 }
