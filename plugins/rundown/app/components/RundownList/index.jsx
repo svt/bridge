@@ -270,6 +270,10 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
   return (
     <div ref={elRef} className={`RundownList ${className}`} onFocus={e => handleFocusPropagation(e)}>
       {
+        (itemIds || []).length === 0 &&
+        <div className='RundownList-empty'>This rundown is empty,<br />get started by adding a new item</div>
+      }
+      {
         (itemIds || [])
           .map(id => bridge.items.getLocalItem(id))
           .filter(item => item)
