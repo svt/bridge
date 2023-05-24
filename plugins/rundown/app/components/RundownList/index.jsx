@@ -232,27 +232,7 @@ export function RundownList ({
     })()
   }, [itemIds])
 
-  /**
-   * A wrapper for moving or appending an item
-   * to a parent based in its new index
-   *
-   * This is used to be able to drop new items both between
-   * existing items and at the end of the rundown
-   *
-   * @param { String } newParentId
-   * @param { Number } newIndex
-   * @param { String } itemId
-   * @returns { Promise.<void> }
-   */
-  function moveItem (newParentId, newIndex, itemId) {
-    if (newIndex === -1) {
-      return bridge.commands.executeCommand('rundown.appendItem', newParentId, itemId)
-    } else {
-      return bridge.commands.executeCommand('rundown.moveItem', newParentId, newIndex, itemId)
-    }
-  }
-
-  async function handleDrop (e, newIndex = -1) {
+  async function handleDrop (e, newIndex) {
     e.stopPropagation()
 
     const itemId = e.dataTransfer.getData('itemId')
@@ -274,13 +254,13 @@ export function RundownList ({
         const itemId = await bridge.items.createItem(spec.type)
 
         bridge.items.applyItem(itemId, spec)
-        moveItem(rundownId, newIndex, itemId)
+        bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
       } catch (_) {
         console.warn('Tried to drop an invalid spec')
       }
       return
     }
-    moveItem(rundownId, newIndex, itemId)
+    bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
   }
 
   function handleFocus (itemId) {
@@ -299,7 +279,7 @@ export function RundownList ({
     <div
       ref={elRef}
       className={`RundownList ${className}`}
-      onDrop={e => handleDrop(e)}
+      onDrop={e => handleDrop(e, itemIds.length)}
       onFocus={e => handleFocusPropagation(e)}
       /*
       We need to prevent onDragOver
@@ -310,11 +290,11 @@ export function RundownList ({
       onDragOver={e => e.preventDefault()}
     >
       {
-        (itemIds || []).length === 0 &&
+        itemIds.length === 0 &&
         <div className="RundownList-empty">This rundown is empty,<br/>get started by adding a new item</div>
       }
       {
-        (itemIds || [])
+        itemIds
           .map(id => bridge.items.getLocalItem(id))
           .filter(item => item)
           .map((item, i) => {
