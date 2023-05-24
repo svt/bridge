@@ -23,7 +23,7 @@ export function GridEmptyContent () {
     <div className='GridEmptyContent'>
       <div>
         <h1>Empty tab</h1>
-        Enter the edit mode to add widgets
+        Add widgets in the edit mode
         <div className='GridEmptyContent-actions'>
           <button className='Button Button--ghost' onClick={() => handleEnterEditMode()}>Enter edit mode</button>
         </div>
