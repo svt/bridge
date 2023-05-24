@@ -132,13 +132,14 @@ function addSelection (item) {
  */
 function subtractSelection (item) {
   assertIdentity()
+
   const selection = state.getLocalState()?._connections?.[getIdentity()]?.selection
   if (!selection) {
     return
   }
 
-  const items = ensureArray(item)
-  const newSelection = selection.filter(id => !items.includes(id))
+  const items = new Set(ensureArray(item))
+  const newSelection = selection.filter(id => !items.has(id))
 
   setSelection(newSelection)
 }

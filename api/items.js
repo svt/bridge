@@ -13,6 +13,7 @@ const objectPath = require('object-path')
 
 const state = require('./state')
 const types = require('./types')
+const client = require('./client')
 const events = require('./events')
 const random = require('./random')
 const commands = require('./commands')
@@ -133,6 +134,13 @@ exports.deleteItem = deleteItem
  * @param { String[] } ids
  */
 async function deleteItems (ids) {
+  /*
+  Make sure any deleted items
+  are no longer selected
+  */
+  if (client !== undefined) {
+    client.subtractSelection(ids)
+  }
   return commands.executeCommand('items.deleteItems', ids)
 }
 exports.deleteItems = deleteItems
