@@ -167,7 +167,7 @@ export function Grid ({ children, data = {}, onChange }) {
       },
       children: {
         [id]: {
-          component: 'bridge.plugins.welcome'
+          component: 'bridge.internals.empty'
         }
       }
     })
