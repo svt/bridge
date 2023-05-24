@@ -17,9 +17,9 @@ import { Grid } from '../components/Grid'
 import { GridItem } from '../components/GridItem'
 
 import { TabsComponent } from '../components/TabsComponent'
+import { EmptyComponent } from '../components/EmptyComponent'
 import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
-import { SelectionComponent } from '../components/SelectionComponent'
 
 /**
  * Get the file name without extension
@@ -83,8 +83,8 @@ export const Workspace = () => {
     'bridge.internals.tabs': (data, onUpdate) => {
       return <TabsComponent data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
     },
-    'bridge.internals.selection': (_, onUpdate) => {
-      return <SelectionComponent onChange={onUpdate} />
+    'bridge.internals.empty': () => {
+      return <EmptyComponent />
     }
   })
 

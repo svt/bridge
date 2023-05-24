@@ -13,6 +13,7 @@ import { ContextMenuDivider } from '../ContextMenuDivider'
 import { Modal } from '../Modal'
 import { Notification } from '../Notification'
 import { WidgetSelector } from '../WidgetSelector'
+import { GridEmptyContent } from '../GridEmptyContent'
 
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
@@ -33,7 +34,7 @@ const GRID_ROW_COUNT = 6
 const GRID_MARGIN_PX = 2
 
 export function Grid ({ children, data = {}, onChange }) {
-  const [shared] = React.useContext(SharedContext)
+  const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
   const [contextPos, setContextPos] = React.useState()
@@ -74,6 +75,16 @@ export function Grid ({ children, data = {}, onChange }) {
     e.stopPropagation()
 
     setContextPos([e.pageX, e.pageY, data])
+  }
+
+  function handleLeaveEditMode () {
+    applyShared({
+      _connections: {
+        [local.id]: {
+          isEditingLayout: false
+        }
+      }
+    })
   }
 
   /*
@@ -167,7 +178,7 @@ export function Grid ({ children, data = {}, onChange }) {
       },
       children: {
         [id]: {
-          component: 'bridge.plugins.welcome'
+          component: 'bridge.internals.empty'
         }
       }
     })
@@ -209,7 +220,7 @@ export function Grid ({ children, data = {}, onChange }) {
       case 'grid':
         return (
           <ContextMenu x={contextPos[0]} y={contextPos[1]}>
-            <ContextMenuItem text='New item' onClick={() => handleNewItem()} />
+            <ContextMenuItem text='Add widget' onClick={() => handleNewItem()} />
           </ContextMenu>
         )
       default:
@@ -231,7 +242,12 @@ export function Grid ({ children, data = {}, onChange }) {
       }
       {
         userIsEditingLayout &&
-        <Notification icon='edit' title='Editing layout' description='Right click to manage widgets' />
+        <Notification
+          icon='edit'
+          title='Editing layout'
+          description='Right click to manage widgets'
+          controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Leave edit mode</button>}
+        />
       }
       <Modal open={modalItemId} onClose={() => setModalItemId(undefined)} size='small' shade={false} draggable>
         <WidgetSelector
@@ -241,6 +257,16 @@ export function Grid ({ children, data = {}, onChange }) {
         />
       </Modal>
       <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
+        {
+          /*
+          Render information and call to action
+          to the user if the grid is currently empty
+          and the user is not editing the layout
+          */
+          layoutArray.length === 0 &&
+          !userIsEditingLayout &&
+          <GridEmptyContent />
+        }
         <ReactGridLayout
           className='Grid-layout'
           cols={GRID_COL_COUNT}

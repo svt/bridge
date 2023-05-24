@@ -24,7 +24,10 @@ import * as keyboard from '../../utils/keyboard'
 const TYPE_COMPONENTS = {
   'bridge.variables.variable': { item: RundownVariableItem },
   'bridge.types.divider': { item: RundownDividerItem },
-  'bridge.types.group': { item: RundownGroupItem, context: RundownGroupItemContext }
+  'bridge.types.group': {
+    item: RundownGroupItem,
+    context: RundownGroupItemContext
+  }
 }
 
 /**
@@ -57,7 +60,11 @@ function scrollIntoView (el, animate = true, centered = true) {
   })
 }
 
-export function RundownList ({ rundownId = '', className = '', indexPrefix = '' }) {
+export function RundownList ({
+  rundownId = '',
+  className = '',
+  indexPrefix = ''
+}) {
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
@@ -163,6 +170,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
           break
       }
     }
+
     window.addEventListener('shortcut', onShortcut)
     return () => {
       window.removeEventListener('shortcut', onShortcut)
@@ -183,6 +191,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     if (!elRef.current) {
       return
     }
+
     function onKeyDown (e) {
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault()
@@ -223,7 +232,27 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
     })()
   }, [itemIds])
 
-  async function handleDrop (e, newIndex) {
+  /**
+   * A wrapper for moving or appending an item
+   * to a parent based in its new index
+   *
+   * This is used to be able to drop new items both between
+   * existing items and at the end of the rundown
+   *
+   * @param { String } newParentId
+   * @param { Number } newIndex
+   * @param { String } itemId
+   * @returns { Promise.<void> }
+   */
+  function moveItem (newParentId, newIndex, itemId) {
+    if (newIndex === -1) {
+      return bridge.commands.executeCommand('rundown.appendItem', newParentId, itemId)
+    } else {
+      return bridge.commands.executeCommand('rundown.moveItem', newParentId, newIndex, itemId)
+    }
+  }
+
+  async function handleDrop (e, newIndex = -1) {
     e.stopPropagation()
 
     const itemId = e.dataTransfer.getData('itemId')
@@ -242,17 +271,16 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
           console.warn('Dropped spec is missing type')
           return
         }
-        const id = await bridge.items.createItem(spec.type)
+        const itemId = await bridge.items.createItem(spec.type)
 
-        bridge.items.applyItem(id, spec)
-        bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, id)
+        bridge.items.applyItem(itemId, spec)
+        moveItem(rundownId, newIndex, itemId)
       } catch (_) {
         console.warn('Tried to drop an invalid spec')
       }
       return
     }
-
-    bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
+    moveItem(rundownId, newIndex, itemId)
   }
 
   function handleFocus (itemId) {
@@ -268,7 +296,23 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
   }
 
   return (
-    <div ref={elRef} className={`RundownList ${className}`} onFocus={e => handleFocusPropagation(e)}>
+    <div
+      ref={elRef}
+      className={`RundownList ${className}`}
+      onDrop={e => handleDrop(e)}
+      onFocus={e => handleFocusPropagation(e)}
+      /*
+      We need to prevent onDragOver
+      for onDrop to be fired,
+      this is standard behaviour
+      for div-elements
+      */
+      onDragOver={e => e.preventDefault()}
+    >
+      {
+        (itemIds || []).length === 0 &&
+        <div className="RundownList-empty">This rundown is empty,<br/>get started by adding a new item</div>
+      }
       {
         (itemIds || [])
           .map(id => bridge.items.getLocalItem(id))
@@ -288,7 +332,7 @@ export function RundownList ({ rundownId = '', className = '', indexPrefix = '' 
                 extraContextItems={ExtraContextComponent}
                 selected={isSelected}
               >
-                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} />
+                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item}/>
               </RundownListItem>
             )
           })

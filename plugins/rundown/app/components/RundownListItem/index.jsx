@@ -73,7 +73,7 @@ export function RundownListItem ({
     <div
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
       onFocus={e => onFocus(e)}
-      onDrop={(e, data) => handleDrop(e, data)}
+      onDrop={e => handleDrop(e)}
       onDragOver={e => handleDragOver(e)}
       onDragLeave={e => handleDragLeave(e)}
       onDragStart={e => handleDragStart(e)}

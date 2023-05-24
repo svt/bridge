@@ -139,6 +139,11 @@ select {
 
 /* Headings */
 
+h1, .u-heading--1 {
+  margin: 0.4em 0;
+  font-size: 1.6em;
+}
+
 h2, .u-heading--2 {
   margin: 0.4em 0;
   font-size: 1.2em;
