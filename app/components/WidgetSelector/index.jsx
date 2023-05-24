@@ -50,7 +50,7 @@ export function WidgetSelector ({ value, onClose = () => {}, onChange = () => {}
   return (
     <div className='WidgetSelector'>
       <header className='WidgetSelector-header'>
-        <input type='search' className='WidgetSelector-search' value={query} placeholder='&#xe900; Search widgets' onChange={e => setQuery(e.target.value)} />
+        <input type='search' className='WidgetSelector-search' value={query || ''} placeholder='&#xe900; Search widgets' onChange={e => setQuery(e.target.value)} />
       </header>
       <div className='WidgetSelector-list'>
         {
