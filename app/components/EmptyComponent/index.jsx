@@ -1,6 +1,6 @@
 import React from 'react'
 import { SharedContext } from '../../sharedContext'
-import { LocalContext } from '../../localContext'
+import { LocalContext } from '../../localContext'
 
 import './style.css'
 
