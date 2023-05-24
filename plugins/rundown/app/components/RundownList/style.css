@@ -5,7 +5,8 @@
  */
 
 .RundownList {
-  padding: 2px;
+  padding: 0 2px;
+  min-height: 100%;
   overflow-x: hidden;
 }
 
