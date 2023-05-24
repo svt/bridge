@@ -13,6 +13,7 @@ import { ContextMenuDivider } from '../ContextMenuDivider'
 import { Modal } from '../Modal'
 import { Notification } from '../Notification'
 import { WidgetSelector } from '../WidgetSelector'
+import { GridEmptyContent } from '../GridEmptyContent'
 
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
@@ -241,6 +242,16 @@ export function Grid ({ children, data = {}, onChange }) {
         />
       </Modal>
       <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
+        {
+          /*
+          Render information and call to action
+          to the user if the grid is currently empty
+          and the user is not editing the layout
+          */
+          layoutArray.length === 0 &&
+          !userIsEditingLayout &&
+          <GridEmptyContent />
+        }
         <ReactGridLayout
           className='Grid-layout'
           cols={GRID_COL_COUNT}
