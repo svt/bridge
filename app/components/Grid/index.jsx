@@ -209,7 +209,7 @@ export function Grid ({ children, data = {}, onChange }) {
       case 'grid':
         return (
           <ContextMenu x={contextPos[0]} y={contextPos[1]}>
-            <ContextMenuItem text='New widget' onClick={() => handleNewItem()} />
+            <ContextMenuItem text='Add widget' onClick={() => handleNewItem()} />
           </ContextMenu>
         )
       default:
