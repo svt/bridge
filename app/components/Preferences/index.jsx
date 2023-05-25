@@ -138,7 +138,7 @@ export function Preferences ({ onClose = () => {} }) {
       </div>
       <footer className='Preferences-footer'>
         <div>
-          Settings are saved automatically
+          Settings are applied automatically
         </div>
         <button className='Button--primary' onClick={() => handleCloseClick()}>OK</button>
       </footer>
