@@ -11,8 +11,8 @@ export function RundownItem ({ index, item }) {
   const displaySettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.display
 
   const properties = [
-    { if: displaySettings?.id, name: 'ID', value: item.id },
-    { if: displaySettings?.type, name: 'Type', value: item.type }
+    { if: displaySettings?.id, name: 'ID', value: item?.id },
+    { if: displaySettings?.type, name: 'Type', value: item?.type }
   ]
 
   return (
@@ -24,13 +24,13 @@ export function RundownItem ({ index, item }) {
             {index}
           </div>
           <div className='RundownItem-name'>
-            {item.data.name}
+            {item?.data?.name}
           </div>
           {
             displaySettings?.notes &&
             (
               <div className='RundownItem-notes'>
-                {item.data?.notes}
+                {item?.data?.notes}
               </div>
             )
           }

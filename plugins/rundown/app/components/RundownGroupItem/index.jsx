@@ -58,9 +58,32 @@ export function RundownGroupItem ({ index, item }) {
     }
   }, [elRef, item])
 
-  function handleDrop (e) {
+  async function handleDrop (e) {
     e.stopPropagation()
-    const itemId = e.dataTransfer.getData('itemId')
+    let itemId = e.dataTransfer.getData('itemId')
+    const itemSpec = e.dataTransfer.getData('itemSpec')
+
+    /*
+    Allow item specifications to be dropped as well as ids
+    in order to prevent zombie items, as they otherwise would
+    have to be created before being dragged if the operation
+    starts in another widget
+    */
+    if (itemSpec) {
+      try {
+        const spec = JSON.parse(itemSpec)
+        if (!spec.type) {
+          console.warn('Dropped spec is missing type')
+          return
+        }
+        itemId = await bridge.items.createItem(spec.type)
+        bridge.items.applyItem(itemId, spec)
+      } catch (_) {
+        console.warn('Tried to drop an invalid spec')
+        return
+      }
+    }
+
     bridge.commands.executeCommand('rundown.appendItem', item.id, itemId)
   }
 
