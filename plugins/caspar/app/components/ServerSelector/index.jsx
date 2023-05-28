@@ -3,6 +3,17 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+const STATIC_SERVERS = [
+  {
+    id: 'group:0',
+    name: 'Group: Primary'
+  },
+  {
+    id: 'group:1',
+    name: 'Group: Secondary'
+  }
+]
+
 export const ServerSelector = ({ value, multipleValuesSelected = false, onChange = () => {} }) => {
   const [state] = React.useContext(SharedContext)
   const servers = state?.plugins?.[window.PLUGIN.name]?.servers || []
@@ -16,7 +27,7 @@ export const ServerSelector = ({ value, multipleValuesSelected = false, onChange
           <option value='__multiple-values' disabled>Multiple values</option>
         }
         {
-          servers.map(server => {
+          [...STATIC_SERVERS, ...servers].map(server => {
             return <option key={server.id} value={server?.id}>{server?.name || 'Unnamed'}</option>
           })
         }
