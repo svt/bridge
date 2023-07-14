@@ -183,6 +183,7 @@ exports.activate = async () => {
     for (const item of items) {
       if (item.type === 'bridge.caspar.media') {
         sendCommand(item?.caspar?.server, 'play', item?.data?.caspar?.target, item?.data?.caspar)
+          .catch(err => logger.warn(err.message))
       }
     }
   })
@@ -191,6 +192,7 @@ exports.activate = async () => {
     for (const item of items) {
       if (item.type === 'bridge.caspar.media') {
         sendCommand(item?.caspar?.server, 'stop', item?.data?.caspar)
+          .catch(err => logger.warn(err.message))
       }
     }
   })
