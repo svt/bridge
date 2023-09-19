@@ -42,6 +42,12 @@
         "id": "bridge.types.media",
         "inherits": "bridge.types.root",
         "properties": {
+          "timing.prewait": {
+            "name": "Pre-wait",
+            "type": "string",
+            "ui.group": "Timing",
+            "ui.unit": "ms"
+          },
           "timing.duration": {
             "name": "Duration",
             "type": "string",
