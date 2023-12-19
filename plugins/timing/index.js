@@ -35,7 +35,7 @@ const TIMERS = new Map()
 
 const TYPE_ORDER = ['prewait', 'duration', 'postwait']
 
-const FRAMERATE_OPTIONS = ['15', '23.97', '24', '25', '30', '48', '50', 60]
+const FRAMERATE_OPTIONS = ['15', '23.97', '24', '25', '30', '48', '50', '60', '100', '120', '200', '240']
 const DEFAULT_FRAMERATE = '50'
 
 /*
@@ -178,7 +178,8 @@ async function tick () {
   */
   const state = localState?._tmp?.[manifest.name]?.items
   const snapshot = JSON.stringify(state || [])
-  const currentTimers = Array.from(TIMERS.entries()).map(([id, [type, timer]]) => [id, [type, ...timer.serialize()]])
+  const currentTimers = Array.from(TIMERS.entries())
+    .map(([id, [type, timer]]) => [id, [type, ...timer.serialize()]])
 
   /*
   Skip updating the state

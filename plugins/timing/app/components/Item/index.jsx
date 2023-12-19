@@ -21,7 +21,7 @@ export const Item = ({ data }) => {
     <div className='Item'>
       <header className='Item-header'>
         <div>
-          {item?.name}
+          {item?.data?.name}
         </div>
         <div>
           -{utils.msToTime(remaining + 1000)}
