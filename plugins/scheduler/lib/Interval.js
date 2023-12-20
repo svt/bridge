@@ -27,7 +27,7 @@ class Interval {
      * @type { Number }
      */
     this._delay = delay
-    
+
     /**
      * @private
      * @type { Function<void> }

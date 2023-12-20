@@ -44,7 +44,7 @@ exports.activate = async () => {
    */
   bridge.commands.registerCommand('scheduler.delay', (id, ms, command, ...args) => {
     abortEvent(id)
-    
+
     const now = Date.now()
     const event = {
       start: now,
