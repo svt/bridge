@@ -23,7 +23,7 @@ const CTX_MENU_OFFSET_Y_PX = 5
  * mouse leaves the current item
  * @type { Number }
  */
-const MOUSE_LEAVE_DELAY_MS = 100
+const MOUSE_LEAVE_DELAY_MS = 200
 
 export const ContextMenuItem = ({ text, children = [], onClick = () => {} }) => {
   const elRef = React.useRef()
