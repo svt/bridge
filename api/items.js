@@ -14,7 +14,6 @@ const objectPath = require('object-path')
 const state = require('./state')
 const types = require('./types')
 const client = require('./client')
-const events = require('./events')
 const random = require('./random')
 const commands = require('./commands')
 const variables = require('./variables')
@@ -194,10 +193,15 @@ async function playItem (id) {
   const item = await getItem(id)
   const type = await types.getType(item.type)
   const clone = populateVariablesMutable(deepClone(item), type)
+  const delay = parseInt(clone?.data?.delay)
 
-  clone.state = 'playing'
-  applyItem(id, { state: 'playing' })
-  events.emit('items.play', [clone])
+  if (delay && !Number.isNaN(delay)) {
+    console.log('SCHEDULING WITH DELAY', delay)
+    commands.executeCommand('scheduler.delay', `play:${id}`, delay, 'items.playItem', clone)
+  } else {
+    commands.executeCommand('scheduler.abort', `play:${id}`)
+    commands.executeCommand('items.playItem', clone)
+  }
 }
 exports.playItem = playItem
 
@@ -208,7 +212,8 @@ exports.playItem = playItem
  */
 async function stopItem (id) {
   const item = await getItem(id)
-  applyItem(id, { state: 'stopped' })
-  events.emit('items.stop', [item])
+
+  commands.executeCommand('scheduler.abort', `play:${id}`)
+  commands.executeCommand('items.stopItem', item)
 }
 exports.stopItem = stopItem
