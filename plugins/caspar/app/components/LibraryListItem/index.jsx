@@ -12,9 +12,7 @@ export const LibraryListItem = ({ item = {} }) => {
         caspar: {
           target: item.name
         },
-        timing: {
-          duration: (item?.duration ?? DEFAULT_DURATION_S) * 1000
-        }
+        duration: (item?.duration ?? DEFAULT_DURATION_S) * 1000
       }
     }))
     e.stopPropagation()

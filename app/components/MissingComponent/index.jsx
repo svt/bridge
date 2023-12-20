@@ -8,7 +8,7 @@ export const MissingComponent = ({ data = {} }) => {
     <div className='MissingComponent'>
       <div className='MissingComponent-container'>
         <div dangerouslySetInnerHTML={{ __html: icon }} />
-        <div className='MissingComponent-heading'>Missing widget</div>
+        <div className='MissingComponent-heading'>Missing or crashing widget</div>
         {data.component}
       </div>
     </div>

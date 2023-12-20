@@ -42,8 +42,14 @@
         "id": "bridge.types.media",
         "inherits": "bridge.types.root",
         "properties": {
-          "timing.duration": {
+          "duration": {
             "name": "Duration",
+            "type": "string",
+            "ui.group": "Timing",
+            "ui.unit": "ms"
+          },
+          "delay": {
+            "name": "Delay",
             "type": "string",
             "ui.group": "Timing",
             "ui.unit": "ms"

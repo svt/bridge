@@ -8,10 +8,23 @@
       "remoteRoot": "/app",
       "port": 9229,
       "address": "127.0.0.1",
-      "protocol": "inspector",
       "trace": true,
       "restart": true,
       "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Electron: Launch main process",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "program": "${workspaceRoot}/index.js",
+      "runtimeArgs": [
+        ".",
+        "--remote-debugging-port=9222"
+      ],
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      }
     }
   ]
 }
