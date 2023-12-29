@@ -46,18 +46,18 @@ Events are useful when listening for global operations such as state updates or 
 ```javascript
 import bridge from 'bridge'
 
-bridge.events.on('items.play', items => {
-  console.log('Items', items, 'are now playing')
+bridge.events.on('item.play', item => {
+  console.log('Item', item, 'is now playing')
   // React to the event
 })
 
-bridge.events.on('items.stop', items => {
-  console.log('Items', items, 'are now stopped')
+bridge.events.on('item.stop', item => {
+  console.log('Item', item, 'is now stopped')
   // React to the event
 })
 
-bridge.events.on('items.delete', items => {
-  console.log('Items', items, 'are now deleted')
+bridge.events.on('item.delete', item => {
+  console.log('Item', item, 'is now deleted')
   // React to the event
 })
 ```

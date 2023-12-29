@@ -20,6 +20,10 @@
   background: var(--base-color--shade2);
 }
 
+.RundownListItem.is-playing {
+  border-right: 4px solid var(--base-color--accent1);
+}
+
 .RundownListItem.is-draggedOver {
   box-shadow: 0 -2px 0 0 var(--base-color);
 }

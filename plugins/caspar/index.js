@@ -179,19 +179,17 @@ exports.activate = async () => {
     description: 'The media library for Caspar CG'
   })
 
-  bridge.events.on('items.play', items => {
-    for (const item of items) {
-      if (item.type === 'bridge.caspar.media') {
-        sendCommand(item?.caspar?.server, 'play', item?.data?.caspar?.target, item?.data?.caspar)
-      }
+  bridge.events.on('item.play', item => {
+    if (item.type === 'bridge.caspar.media') {
+      sendCommand(item?.caspar?.server, 'play', item?.data?.caspar?.target, item?.data?.caspar)
+        .catch(err => logger.warn(err.message))
     }
   })
 
-  bridge.events.on('items.stop', items => {
-    for (const item of items) {
-      if (item.type === 'bridge.caspar.media') {
-        sendCommand(item?.caspar?.server, 'stop', item?.data?.caspar)
-      }
+  bridge.events.on('item.stop', item => {
+    if (item.type === 'bridge.caspar.media') {
+      sendCommand(item?.caspar?.server, 'stop', item?.data?.caspar)
+        .catch(err => logger.warn(err.message))
     }
   })
 

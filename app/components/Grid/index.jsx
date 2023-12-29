@@ -29,8 +29,8 @@ const ReactGridLayout = WidthProvider(RGL)
  * as well as element
  * attributes
  */
-const GRID_COL_COUNT = 12
-const GRID_ROW_COUNT = 6
+const GRID_COL_COUNT = 24
+const GRID_ROW_COUNT = 12
 const GRID_MARGIN_PX = 2
 
 export function Grid ({ children, data = {}, onChange }) {

@@ -69,9 +69,11 @@ export function RundownListItem ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
   }
 
+  const isPlaying = item?.state === 'playing'
+
   return (
     <div
-      className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
+      className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''} ${isPlaying ? 'is-playing' : ''}`}
       onFocus={e => onFocus(e)}
       onDrop={e => handleDrop(e)}
       onDragOver={e => handleDragOver(e)}

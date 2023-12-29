@@ -54,7 +54,12 @@ transport.onMessage(async message => {
       const res = await handler.call(...args)
       executeRawCommand(transaction, res)
     } catch (err) {
-      executeRawCommand(transaction, undefined, err)
+      executeRawCommand(transaction, undefined, {
+        message: err.message,
+        cause: err.cause,
+        stack: err.stack,
+        name: err.name
+      })
     }
   }
 })
@@ -74,8 +79,11 @@ function executeCommand (command, ...args) {
       removeCommand(transaction)
 
       if (err) {
-        console.error(err)
-        return reject(err)
+        const error = new Error(err.message)
+        error.stack = err.stack
+        error.cause = err.cause
+        error.name = err.name
+        return reject(error)
       }
       resolve(res)
     }, false)

@@ -28,9 +28,7 @@ function initMedia (htmlPath) {
   })
 
   bridge.types.registerType({
-    id: 'bridge.caspar.media',
-    name: 'Media',
-    category: 'Caspar',
+    id: 'bridge.caspar.playable',
     inherits: 'bridge.types.media',
     properties: {
       'caspar.server': {
@@ -54,7 +52,16 @@ function initMedia (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Caspar',
         'ui.width': '50%'
-      },
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.media',
+    name: 'Media',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {
       'caspar.target': {
         name: 'Target',
         type: 'string',
@@ -86,6 +93,74 @@ function initMedia (htmlPath) {
         type: 'string',
         'ui.group': 'Transition',
         'ui.uri': `${htmlPath}?path=inspector/transition`
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.template',
+    name: 'Template',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {}
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.clear',
+    name: 'Clear',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {}
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.opacity',
+    name: 'Opacity',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {
+      'caspar.opacity': {
+        name: 'Opacity',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.transform',
+    name: 'Transform',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {
+      'caspar.x': {
+        name: 'X',
+        type: 'string',
+        allowsVariables: true,
+        'ui.unit': 'px',
+        'ui.group': 'Caspar'
+      },
+      'caspar.y': {
+        name: 'Y',
+        type: 'string',
+        allowsVariables: true,
+        'ui.unit': 'px',
+        'ui.group': 'Caspar'
+      },
+      'caspar.width': {
+        name: 'Width',
+        type: 'string',
+        allowsVariables: true,
+        'ui.unit': 'px',
+        'ui.group': 'Caspar'
+      },
+      'caspar.height': {
+        name: 'Height',
+        type: 'string',
+        allowsVariables: true,
+        'ui.unit': 'px',
+        'ui.group': 'Caspar'
       }
     }
   })
