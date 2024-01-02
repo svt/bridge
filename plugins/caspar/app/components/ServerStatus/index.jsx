@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css'
 
-import { ServerStatusBadge } from '../ServerStatusBadge'
+import { ServerStatusBadge } from '../ServerStatusBadge'
 
 export const ServerStatus = ({ server = {} }) => {
   return (
