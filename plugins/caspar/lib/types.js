@@ -102,7 +102,15 @@ function initMedia (htmlPath) {
     name: 'Template',
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
-    properties: {}
+    properties: {
+      'caspar.templateData': {
+        name: 'Data',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/template`
+      }
+    }
   })
 
   bridge.types.registerType({

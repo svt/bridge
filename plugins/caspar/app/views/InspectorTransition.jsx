@@ -6,8 +6,6 @@ import { Select } from '../components/Select'
 
 import { EasingPreview } from '../components/EasingPreview'
 
-import * as easings from '../utils/easings'
-
 export const InspectorTransition = () => {
   const [state] = React.useContext(SharedContext)
   const [selection, setSelection] = React.useState([])

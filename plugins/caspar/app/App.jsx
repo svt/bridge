@@ -4,6 +4,7 @@ import * as SharedContext from './sharedContext'
 import * as Settings from './views/Settings'
 
 import { InspectorServer } from './views/InspectorServer'
+import { InspectorTemplate } from './views/InspectorTemplate'
 import { InspectorTransition } from './views/InspectorTransition'
 
 import { Library } from './views/Library'
@@ -26,6 +27,8 @@ export default function App () {
               return <InspectorServer />
             case 'inspector/transition':
               return <InspectorTransition />
+            case 'inspector/template':
+              return <InspectorTemplate />
             case 'settings/servers':
               return <Settings.Servers />
             case 'status':

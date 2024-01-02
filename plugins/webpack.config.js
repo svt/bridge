@@ -6,6 +6,8 @@ const fs = require('fs')
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+const { merge } = require('webpack-merge')
+
 const PLUGINS_DIR = './plugins'
 
 /**
@@ -37,7 +39,13 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
      */
     const manifest = require(path.join(__dirname, plugin, '/package.json'))
 
-    return {
+    /**
+     * The path to a plugin-specific 'webpack.config.js' which, if found,
+     * will be merged with the default one
+     */
+    const configPath = path.join(__dirname, plugin, '/webpack.config.js')
+
+    const config = {
       name: manifest.name,
       entry: {
         [manifest.name]: `./plugins/${plugin}/app`
@@ -68,7 +76,7 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
             test: /\.(svg)$/,
             type: 'asset/source'
           }, {
-            test: /\.(gif|png|jp(e*)g|woff2)$/,
+            test: /\.(gif|png|jp(e*)g|woff2|ttf)$/,
             type: 'asset/resource'
           }, {
             test: /\.(css)$/,
@@ -83,6 +91,11 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
         bridge: 'commonjs bridge'
       }
     }
+
+    if (fs.existsSync(configPath)) {
+      return merge(config, require(configPath))
+    }
+    return config
   })
 
 module.exports = plugins

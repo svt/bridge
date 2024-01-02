@@ -14,5 +14,12 @@
     "plugin"
   ],
   "author": "Axel Boberg (axel.boberg@svt.se)",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "monaco-editor": "^0.45.0",
+    "tinycolor2": "^1.6.0"
+  },
+  "devDependencies": {
+    "monaco-editor-webpack-plugin": "^7.1.0"
+  }
 }
