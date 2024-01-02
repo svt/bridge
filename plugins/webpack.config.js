@@ -44,7 +44,7 @@ const plugins = fs.readdirSync(PLUGINS_DIR)
      * will be merged with the default one
      */
     const configPath = path.join(__dirname, plugin, '/webpack.config.js')
-    
+
     const config = {
       name: manifest.name,
       entry: {
