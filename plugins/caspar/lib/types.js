@@ -1,11 +1,6 @@
 const bridge = require('bridge')
 
 function init (htmlPath) {
-  initMedia(htmlPath)
-}
-exports.init = init
-
-function initMedia (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.caspar.amcp',
     name: 'AMCP',
@@ -37,6 +32,12 @@ function initMedia (htmlPath) {
         'ui.group': 'Caspar',
         'ui.uri': `${htmlPath}?path=inspector/server`
       },
+      'caspar.target': {
+        name: 'Target',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      },
       'caspar.channel': {
         name: 'Channel',
         type: 'string',
@@ -62,12 +63,6 @@ function initMedia (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
-      'caspar.target': {
-        name: 'Target',
-        type: 'string',
-        allowsVariables: true,
-        'ui.group': 'Caspar'
-      },
       'caspar.transitionName': {
         name: 'Transition',
         type: 'enum',
@@ -173,3 +168,4 @@ function initMedia (htmlPath) {
     }
   })
 }
+exports.init = init

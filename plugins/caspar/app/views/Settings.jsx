@@ -9,15 +9,15 @@ export const Servers = () => {
   const servers = state?.plugins?.[window.PLUGIN.name]?.servers || []
 
   function handleChange (serverId, newData) {
-    bridge.commands.executeCommand('caspar.server.edit', serverId, newData)
+    bridge.commands.executeCommand('caspar.editServer', serverId, newData)
   }
 
   function handleDelete (serverId) {
-    bridge.commands.executeCommand('caspar.server.remove', serverId)
+    bridge.commands.executeCommand('caspar.removeServer', serverId)
   }
 
   function handleNew () {
-    bridge.commands.executeCommand('caspar.server.add', {})
+    bridge.commands.executeCommand('caspar.addServer', {})
   }
 
   return (
