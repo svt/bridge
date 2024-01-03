@@ -47,7 +47,7 @@ export const Library = () => {
         return
       }
 
-      const res = await bridge.commands.executeCommand('caspar.server.cachedCommand', filter.serverId, 'cls')
+      const res = await bridge.commands.executeCommand('caspar.sendCachedCommand', filter.serverId, 'cls')
       const filtered = (res?.data || [])
         .map(Asset.parseAsset)
       setItems(filtered)

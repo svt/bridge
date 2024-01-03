@@ -18,7 +18,7 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
   }
 
   function handleConnect () {
-    bridge.commands.executeCommand('caspar.server.connect', data.id, {
+    bridge.commands.executeCommand('caspar.connectServer', data.id, {
       host: data.host,
       port: data.port
     })

@@ -5,7 +5,8 @@
 /**
  * @typedef {{
  *   channel: Number | undefined,
- *   layer: Number | undefined
+ *   layer: Number | undefined,
+ *   cgLayer: Number | undefined
  * }} AMCPOptions
  */
 
@@ -77,6 +78,13 @@ exports.version = (component = '') => `VERSION ${component}`
 exports.info = opts => `INFO ${layerString(opts)}`
 
 /**
+ * Clear a channel or the whole server
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#clear
+ * @param { AMCPOptions | undefined } opts
+ */
+exports.clear = opts => `CLEAR ${layerString(opts)}`
+
+/**
  * Play a media item in the foreground
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
  * @param { String } file The file to play
@@ -92,3 +100,22 @@ exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file} ${transitionSt
  * @returns { String }
  */
 exports.stop = opts => `STOP ${layerString(opts)}`
+
+/**
+ * Add a template
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-add
+ * @param { String } template
+ * @param { Any } data
+ * @param { Boolean } playOnLoad
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} ${template} ${playOnLoad ? 1 : 0} ${JSON.stringify(JSON.stringify(data))}`
+
+/**
+ * Stop a template
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-stop
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
