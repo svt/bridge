@@ -47,33 +47,33 @@ const cache = new Cache()
 * @param { ServerDescription } description
 */
 async function setupServer (description) {
- if (!description.id) {
-   return
- }
+  if (!description.id) {
+    return
+  }
 
- const server = new Caspar({
-   reconnect: true
- })
+  const server = new Caspar({
+    reconnect: true
+  })
 
- server.on('status', newStatus => {
-   bridge.state.apply({
-     _tmp: {
-       [manifest.name]: {
-         servers: {
-           [description.id]: {
-             status: newStatus
-           }
-         }
-       }
-     }
-   })
- })
+  server.on('status', newStatus => {
+    bridge.state.apply({
+      _tmp: {
+        [manifest.name]: {
+          servers: {
+            [description.id]: {
+              status: newStatus
+            }
+          }
+        }
+      }
+    })
+  })
 
- casparManager.add(description.id, server)
+  casparManager.add(description.id, server)
 
- if (description.host && description.port) {
-   server.connect(description.host, description.port)
- }
+  if (description.host && description.port) {
+    server.connect(description.host, description.port)
+  }
 }
 exports.setupServer = setupServer
 

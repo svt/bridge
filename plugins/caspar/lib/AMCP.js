@@ -104,10 +104,10 @@ exports.stop = opts => `STOP ${layerString(opts)}`
 /**
  * Add a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-add
- * @param { String } template 
- * @param { Any } data 
- * @param { Boolean } playOnLoad 
- * @param { AMCPOptions } opts 
+ * @param { String } template
+ * @param { Any } data
+ * @param { Boolean } playOnLoad
+ * @param { AMCPOptions } opts
  * @returns { String }
  */
 exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} ${template} ${playOnLoad ? 1 : 0} ${JSON.stringify(JSON.stringify(data))}`
@@ -115,7 +115,7 @@ exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(o
 /**
  * Stop a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-stop
- * @param { AMCPOptions } opts 
+ * @param { AMCPOptions } opts
  * @returns { String }
  */
 exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
