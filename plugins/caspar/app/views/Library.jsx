@@ -65,10 +65,15 @@ export const Library = () => {
    */
   const filteredItems = React.useMemo(() => {
     const query = (filter?.query || '').toLowerCase()
-    return items.filter(item => {
-      return `${item.name || ''}`.toLowerCase()
-        .indexOf(query) >= 0
-    })
+    return items
+      .filter(item => {
+        return `${item.name || ''}`.toLowerCase()
+          .indexOf(query) >= 0
+      })
+      .map(item => {
+        item._filter = filter
+        return item
+      })
   }, [items, filter])
 
   return (

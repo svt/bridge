@@ -52,3 +52,16 @@
   margin-right: 5px;
   opacity: 0.5;
 }
+
+.RundownItem-progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  transform-origin: left;
+
+  opacity: 0.3;
+}

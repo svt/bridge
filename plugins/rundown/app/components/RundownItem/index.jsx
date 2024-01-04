@@ -7,6 +7,7 @@ import * as Layout from '../Layout'
 
 export function RundownItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
+  const [progress, setProgress] = React.useState(0)
 
   const displaySettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.display
 
@@ -14,6 +15,36 @@ export function RundownItem ({ index, item }) {
     { if: displaySettings?.id, name: 'ID', value: item?.id },
     { if: displaySettings?.type, name: 'Type', value: item?.type }
   ]
+
+  React.useEffect(() => {
+    if (item?.state !== 'playing') {
+      setProgress(0)
+      return
+    }
+
+    let shouldLoop = true
+
+    function loop () {
+      if (!shouldLoop) {
+        return
+      }
+
+      const progress = (Date.now() - item?.didStartPlayingAt) / item?.data?.duration
+      if (Number.isNaN(progress)) {
+        return
+      }
+
+      setProgress(progress)
+
+      if (progress >= 1) {
+        return
+      }
+      window.requestAnimationFrame(loop)
+    }
+    loop()
+
+    return () => { shouldLoop = false }
+  }, [item?.state, item?.didStartPlayingAt])
 
   return (
     <div className='RundownItem'>
@@ -51,6 +82,10 @@ export function RundownItem ({ index, item }) {
           }
         </div>
       </Layout.Spread>
+      {
+        item?.state === 'playing' &&
+        <div className='RundownItem-progress' style={{ transform: `scale(${progress}, 1)`, backgroundColor: item?.data?.color }} />
+      }
     </div>
   )
 }
