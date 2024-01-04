@@ -11,6 +11,8 @@ import { ContextAddMenu } from '../ContextAddMenu'
 
 import * as clipboard from '../../utils/clipboard'
 
+const INDICATE_PLAYING_TIMEOUT_MS = 500
+
 export function RundownListItem ({
   children,
   item,
@@ -24,6 +26,8 @@ export function RundownListItem ({
 }) {
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
   const [contextPos, setContextPos] = React.useState()
+
+  const [indicateIsPlaying, setIndicateIsPlaying] = React.useState(false)
 
   function handleDragOver (e) {
     e.preventDefault()
@@ -69,16 +73,26 @@ export function RundownListItem ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
   }
 
-  const isPlaying = item?.state === 'playing'
+  React.useEffect(() => {
+    if (item?.state == null) {
+      return
+    }
+
+    setTimeout(() => {
+      setIndicateIsPlaying(false)
+    }, INDICATE_PLAYING_TIMEOUT_MS)
+
+    setIndicateIsPlaying(true)
+  }, [item?.state, item?.didStartPlayingAt])
 
   return (
     <div
-      className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''} ${isPlaying ? 'is-playing' : ''}`}
+      className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
       onFocus={e => onFocus(e)}
       onDrop={e => handleDrop(e)}
       onDragOver={e => handleDragOver(e)}
       onDragLeave={e => handleDragLeave(e)}
-      onDragStart={e => handleDragStart(e)}
+      onDragStart={e => handleDragStart(e)} 
       onMouseDown={e => onMouseDown(e)}
       onContextMenu={e => handleContextMenu(e)}
       /*
@@ -90,6 +104,10 @@ export function RundownListItem ({
       tabIndex={0}
       draggable
     >
+      {
+        indicateIsPlaying &&
+          <div className='RundownListItem-playIndicator' />
+      }
       {
         contextPos
           ? (
