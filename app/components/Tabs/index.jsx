@@ -49,19 +49,17 @@ export function Tabs ({
   function handleTabDrop (e, i) {
     clearDragOverClass()
 
-    const type = e.dataTransfer.getData('__type')
-    if (type !== 'tab') {
+    const id = e.dataTransfer.getData('bridge/tab')
+    if (!id) {
       return
     }
 
-    const id = e.dataTransfer.getData('id')
     onReorder(id, i)
     onActivate(id)
   }
 
   function handleTabDragStart (e, id) {
-    e.dataTransfer.setData('id', id)
-    e.dataTransfer.setData('__type', 'tab')
+    e.dataTransfer.setData('bridge/tab', id)
   }
 
   return (
