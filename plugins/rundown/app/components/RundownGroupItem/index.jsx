@@ -60,8 +60,8 @@ export function RundownGroupItem ({ index, item }) {
 
   async function handleDrop (e) {
     e.stopPropagation()
-    let itemId = e.dataTransfer.getData('itemId')
-    const itemSpec = e.dataTransfer.getData('itemSpec')
+    let itemId = e.dataTransfer.getData('text/plain')
+    const itemSpec = e.dataTransfer.getData('bridge/item')
 
     /*
     Allow item specifications to be dropped as well as ids

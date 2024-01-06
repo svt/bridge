@@ -235,8 +235,8 @@ export function RundownList ({
   async function handleDrop (e, newIndex) {
     e.stopPropagation()
 
-    const itemId = e.dataTransfer.getData('itemId')
-    const itemSpec = e.dataTransfer.getData('itemSpec')
+    const itemId = e.dataTransfer.getData('text/plain')
+    const itemSpec = e.dataTransfer.getData('bridge/item')
 
     /*
     Allow item specifications to be dropped as well as ids

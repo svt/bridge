@@ -39,7 +39,7 @@ export function RundownListItem ({
   }
 
   function handleDragStart (e) {
-    e.dataTransfer.setData('itemId', item.id)
+    e.dataTransfer.setData('text/plain', item.id)
     e.stopPropagation()
   }
 
