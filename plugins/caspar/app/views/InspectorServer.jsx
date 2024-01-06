@@ -16,8 +16,10 @@ export const InspectorServer = () => {
   function handleChange (newServer) {
     for (const id of selection) {
       bridge.items.applyItem(id, {
-        caspar: {
-          server: newServer
+        data: {
+          caspar: {
+            server: newServer
+          }
         }
       })
     }

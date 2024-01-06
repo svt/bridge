@@ -109,6 +109,13 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.template.update',
+    name: 'Template update',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.template'
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.clear',
     name: 'Clear',
     category: 'Caspar',

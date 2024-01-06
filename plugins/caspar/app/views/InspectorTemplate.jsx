@@ -39,7 +39,7 @@ export const InspectorTemplate = () => {
     handleNewValue({
       data: {
         caspar: {
-          templateData: newValue
+          templateData: JSON.parse(newValue)
         }
       }
     })
@@ -48,7 +48,7 @@ export const InspectorTemplate = () => {
   return (
     <div className='View--spread'>
       <Monaco
-        value={value || ['{', '\t"f0": "my value"', '}'].join('\n')}
+        value={value ? JSON.stringify(value, null, 2) : ['{', '\t"f0": "my value"', '}'].join('\n')}
         onChange={newValue => handleChange(newValue)}
       />
     </div>

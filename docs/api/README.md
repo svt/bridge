@@ -290,7 +290,7 @@ Types are blueprints for items, they can be created and extended using the `cont
     }
   ]
 }
-``
+```
 
 ### `bridge.types.getType(id): Promise<TypeSpec>`
 Render a full type specification from its id

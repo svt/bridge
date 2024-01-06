@@ -119,3 +119,14 @@ exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(o
  * @returns { String }
  */
 exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
+
+/**
+ * Update a template
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-update
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.cgUpdate = (data, opts) => {
+  console.log('Sending data', data)
+  return `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(JSON.stringify(data))}`
+}
