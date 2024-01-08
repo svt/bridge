@@ -63,6 +63,11 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      'caspar.loop': {
+        name: 'Loop',
+        type: 'boolean',
+        'ui.group': 'Timing'
+      },
       'caspar.transitionName': {
         name: 'Transition',
         type: 'enum',

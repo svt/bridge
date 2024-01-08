@@ -30,7 +30,6 @@ function calculateDurationMs (item) {
 
 export const LibraryListItem = ({ item = {} }) => {
   async function handleDragStart (e) {
-    console.log('Item', item)
     e.dataTransfer.setData('bridge/item', JSON.stringify({
       type: 'bridge.caspar.media',
       data: {

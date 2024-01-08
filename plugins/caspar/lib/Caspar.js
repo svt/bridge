@@ -209,6 +209,23 @@ class Caspar extends EventEmitter {
 
   /**
    * @private
+   * Resolve a response
+   * object from Caspar
+   * @param {{
+   *  status: String | Number,
+   *  action: String
+   * }} responseObject 
+   */
+  _resolveResponseObject (responseObject) {
+    if (responseObject.code >= 200 && responseObject.code <= 299) {
+      this._resolveTransaction(responseObject.transaction, responseObject)
+    } else {
+      this._rejectTransaction(responseObject.transaction, responseObject)
+    }
+  }
+
+  /**
+   * @private
    */
   _processData (chunk) {
     const newLines = chunk.toString('utf8').split('\r\n')
@@ -236,11 +253,7 @@ class Caspar extends EventEmitter {
       waiting for more lines
       */
       if (line === '' && this._currentResponseObject) {
-        if (this._currentResponseObject.code >= 200 && this._currentResponseObject.code <= 299) {
-          this._resolveTransaction(this._currentResponseObject.transaction, this._currentResponseObject)
-        } else {
-          this._rejectTransaction(this._currentResponseObject.transaction, this._currentResponseObject)
-        }
+        this._resolveResponseObject(this._currentResponseObject)
         this._currentResponseObject = undefined
         continue
       }
@@ -254,6 +267,11 @@ class Caspar extends EventEmitter {
         this._currentResponseObject = {
           ...header,
           data: []
+        }
+
+        if (this._unfinishedLine === '') {
+          this._resolveResponseObject(this._currentResponseObject)
+          this._currentResponseObject = undefined
         }
       } else {
         this._currentResponseObject.data.push(line)

@@ -37,7 +37,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": ["string", "number", "text", "color", "enum"]
+              "enum": ["string", "number", "text", "color", "enum", "boolean"]
             },
             "name": {
               "type": "string"
