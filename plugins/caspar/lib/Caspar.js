@@ -214,7 +214,7 @@ class Caspar extends EventEmitter {
    * @param {{
    *  status: String | Number,
    *  action: String
-   * }} responseObject 
+   * }} responseObject
    */
   _resolveResponseObject (responseObject) {
     if (responseObject.code >= 200 && responseObject.code <= 299) {
