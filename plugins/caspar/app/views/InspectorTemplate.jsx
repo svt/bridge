@@ -25,7 +25,7 @@ export const InspectorTemplate = () => {
   */
   React.useEffect(() => {
     const items = selection.map(id => state?.items?.[id])
-    const value = items?.[0]?.data?.caspar?.templateData
+    const value = items?.[0]?.data?.caspar?.templateDataString
     setValue(value)
   }, [selection])
 
@@ -39,7 +39,8 @@ export const InspectorTemplate = () => {
     handleNewValue({
       data: {
         caspar: {
-          templateData: JSON.parse(newValue)
+          templateData: JSON.parse(newValue),
+          templateDataString: newValue
         }
       }
     })
@@ -48,7 +49,7 @@ export const InspectorTemplate = () => {
   return (
     <div className='View--spread'>
       <Monaco
-        value={value ? JSON.stringify(value, null, 2) : ['{', '\t"f0": "my value"', '}'].join('\n')}
+        value={value ?? ['{', '', '}'].join('\n')}
         onChange={newValue => handleChange(newValue)}
       />
     </div>
