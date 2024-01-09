@@ -25,8 +25,24 @@ const PLAY_HANDLERS = {
   }
 }
 
+const STOP_HANDLERS = {
+  /*
+  Trigger group children based
+  on the group's play mode
+  */
+  'bridge.types.group': item => {
+    for (const child of item.children) {
+      bridge.items.stopItem(child)
+    }
+  }
+}
+
 exports.activate = async () => {
   bridge.events.on('item.play', item => {
     PLAY_HANDLERS[item.type]?.(item)
+  })
+
+  bridge.events.on('item.stop', item => {
+    STOP_HANDLERS[item.type]?.(item)
   })
 }
