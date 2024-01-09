@@ -1,6 +1,7 @@
 {
   "name": "bridge-plugin-types",
   "version": "1.0.0",
+  "main": "index.js",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -36,7 +37,16 @@
       {
         "id": "bridge.types.group",
         "name": "Group",
-        "inherits": "bridge.types.root"
+        "inherits": "bridge.types.root",
+        "properties": {
+          "playMode": {
+            "name": "Play mode",
+            "type": "enum",
+            "default": "Trigger all children at once",
+            "enum": ["Trigger all children at once"],
+            "ui.group": "Timing"
+          }
+        }
       },
       {
         "id": "bridge.types.media",
