@@ -3,6 +3,8 @@ import bridge from 'bridge'
 
 import './style.css'
 
+import { SharedContext } from '../../sharedContext'
+
 import { ContextMenu } from '../../../../../app/components/ContextMenu'
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 import { ContextMenuDivider } from '../../../../../app/components/ContextMenuDivider'
@@ -24,10 +26,21 @@ export function RundownListItem ({
   extraContextItems: ExtraContextItemsComponent,
   selected: isSelected
 }) {
+  const [state] = React.useContext(SharedContext)
+
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
   const [contextPos, setContextPos] = React.useState()
+  const [selection, setSelection] = React.useState([])
 
   const [indicateIsPlaying, setIndicateIsPlaying] = React.useState(false)
+
+  React.useEffect(() => {
+    async function updateSelection () {
+      const selection = await bridge.client.getSelection()
+      setSelection(selection)
+    }
+    updateSelection()
+  }, [state])
 
   function handleDragOver (e) {
     e.preventDefault()
@@ -58,9 +71,8 @@ export function RundownListItem ({
     bridge.items.deleteItems(ids)
   }
 
-  async function handleCopy () {
-    const items = bridge.client.getSelection()
-    const string = await bridge.commands.executeCommand('rundown.copyItems', items)
+  async function handleCopy (ids) {
+    const string = await bridge.commands.executeCommand('rundown.copyItems', ids)
     clipboard.copyText(string)
   }
 
@@ -112,9 +124,9 @@ export function RundownListItem ({
         contextPos
           ? (
             <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
-              <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
+              <ContextMenuItem text='Copy' onClick={() => handleCopy(selection)} />
               {
-                bridge.client.getSelection().length <= 1 &&
+                selection.length <= 1 &&
                 <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
               }
               <ContextMenuDivider />
@@ -122,10 +134,10 @@ export function RundownListItem ({
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
               </ContextMenuItem>
               <ContextMenuDivider />
-              <ContextMenuItem text='Remove' onClick={() => handleDelete(bridge.client.getSelection())} />
+              <ContextMenuItem text='Remove' onClick={() => handleDelete(selection)} />
               {
                 ExtraContextItemsComponent &&
-                bridge.client.getSelection().length <= 1 && (
+                selection.length <= 1 && (
                   <>
                     <ContextMenuDivider />
                     <ExtraContextItemsComponent item={item} />

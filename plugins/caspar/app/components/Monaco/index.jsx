@@ -140,7 +140,6 @@ export const Monaco = ({ defaultValue = '', value = '', onChange = () => {} }) =
     modelRef.current = model
 
     model.onDidChangeContent(() => {
-      console.log('Content did change', model.getValue())
       onChange(model.getValue())
     })
 
