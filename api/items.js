@@ -177,7 +177,7 @@ function populateVariablesMutable (item, type) {
     const currentValue = objectPath.get(item.data, key)
 
     if (currentValue != null) {
-      objectPath.set(item.data, key, variables.substituteInString(`${currentValue}`))
+      objectPath.set(item.data, key, JSON.parse(variables.substituteInString(JSON.stringify(currentValue))))
     }
   }
 

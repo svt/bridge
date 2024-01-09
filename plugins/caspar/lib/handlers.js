@@ -14,25 +14,32 @@ const logger = new Logger({ name: 'CasparPlugin' })
 
 const PLAY_HANDLERS = {
   'bridge.caspar.clear': item => {
-    return commands.sendCommand(item?.caspar?.server, 'clear', item?.data?.caspar)
+    return commands.sendCommand(item?.data?.caspar?.server, 'clear', item?.data?.caspar)
   },
   'bridge.caspar.amcp': item => {
-    return commands.sendString(item?.caspar?.server, item?.data?.caspar?.amcp)
+    return commands.sendString(item?.data?.caspar?.server, item?.data?.caspar?.amcp)
   },
-  'bridge.caspar.media': item => {
-    return commands.sendCommand(item?.caspar?.server, 'play', item?.data?.caspar?.target, item?.data?.caspar)
+  'bridge.caspar.media': async item => {
+    await commands.sendCommand(item?.data?.caspar?.server, 'loadbg', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, undefined, item?.data?.caspar)
+    return commands.sendCommand(item?.data?.caspar?.server, 'playLoaded', '', item?.data?.caspar)
   },
   'bridge.caspar.template': item => {
-    return commands.sendCommand(item?.caspar?.server, 'cgAdd', item?.data?.caspar?.target, item?.data?.caspar?.templateData, true, item?.data?.caspar)
+    return commands.sendCommand(item?.data?.caspar?.server, 'cgAdd', item?.data?.caspar?.target, item?.data?.caspar?.templateData, true, item?.data?.caspar)
+  },
+  'bridge.caspar.template.update': item => {
+    return commands.sendCommand(item?.data?.caspar?.server, 'cgUpdate', item?.data?.caspar?.templateData, item?.data?.caspar)
   }
 }
 
 const STOP_HANDLERS = {
   'bridge.caspar.media': item => {
-    return commands.sendCommand(item?.caspar?.server, 'stop', item?.data?.caspar)
+    return commands.sendCommand(item?.data?.caspar?.server, 'stop', item?.data?.caspar)
   },
   'bridge.caspar.template': item => {
-    return commands.sendCommand(item?.caspar?.server, 'cgStop', item?.data?.caspar)
+    return commands.sendCommand(item?.data?.caspar?.server, 'cgStop', item?.data?.caspar)
+  },
+  'bridge.caspar.template.update': item => {
+    return commands.sendCommand(item?.data?.caspar?.server, 'cgStop', item?.data?.caspar)
   }
 }
 

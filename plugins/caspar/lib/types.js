@@ -63,6 +63,11 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      'caspar.loop': {
+        name: 'Loop',
+        type: 'boolean',
+        'ui.group': 'Timing'
+      },
       'caspar.transitionName': {
         name: 'Transition',
         type: 'enum',
@@ -106,6 +111,13 @@ function init (htmlPath) {
         'ui.uri': `${htmlPath}?path=inspector/template`
       }
     }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.template.update',
+    name: 'Template update',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.template'
   })
 
   bridge.types.registerType({

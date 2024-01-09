@@ -221,8 +221,8 @@ export function RundownList ({
     }
     hasDoneInitialScrollingRef.current = true
 
-    ;(function () {
-      const selection = bridge.client.getSelection()
+    ;(async function () {
+      const selection = await bridge.client.getSelection()
       const lastId = selection[selection.length - 1]
       if (!lastId) {
         return

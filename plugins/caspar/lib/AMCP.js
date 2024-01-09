@@ -85,6 +85,20 @@ exports.info = opts => `INFO ${layerString(opts)}`
 exports.clear = opts => `CLEAR ${layerString(opts)}`
 
 /**
+ * Load a media item in the background
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#loadbg
+ * @param { String } file The file to play
+ * @param { Boolean } loop
+ * @param { Number } seek
+ * @param { Number } length
+ * @param { String } filter
+ * @param { Boolean } auto
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)} ${file} ${loop && 'LOOP'} ${seek ? `SEEK ${seek}` : ''} ${length ? `LENGTH ${length}` : ''} ${filter ? `FILTER ${filter}` : ''} ${transitionString(opts)} ${auto && 'AUTO'}`
+
+/**
  * Play a media item in the foreground
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
  * @param { String } file The file to play
@@ -92,6 +106,15 @@ exports.clear = opts => `CLEAR ${layerString(opts)}`
  * @returns { String }
  */
 exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file} ${transitionString(opts)}`
+
+/**
+ * Play a media item in the foreground that
+ * has already been loaded in the background
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.playLoaded = (file, opts) => `PLAY ${layerString(opts)}`
 
 /**
  * Stop an item running in the foreground
@@ -119,3 +142,13 @@ exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(o
  * @returns { String }
  */
 exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
+
+/**
+ * Update a template
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-update
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.cgUpdate = (data, opts) => {
+  return `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(JSON.stringify(data))}`
+}

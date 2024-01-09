@@ -9,15 +9,20 @@ export const InspectorServer = () => {
   const [selection, setSelection] = React.useState([])
 
   React.useEffect(() => {
-    const selection = bridge.client.getSelection()
-    setSelection(selection)
+    async function updateSelection () {
+      const selection = await bridge.client.getSelection()
+      setSelection(selection)
+    }
+    updateSelection()
   }, [state])
 
   function handleChange (newServer) {
     for (const id of selection) {
       bridge.items.applyItem(id, {
-        caspar: {
-          server: newServer
+        data: {
+          caspar: {
+            server: newServer
+          }
         }
       })
     }

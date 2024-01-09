@@ -36,12 +36,14 @@ import { TextInput } from '../TextInput'
 import { ColorInput } from '../ColorInput'
 import { StringInput } from '../StringInput'
 import { SelectInput } from '../SelectInput'
+import { BooleanInput } from '../BooleanInput'
 
 const INPUT_COMPONENTS = {
+  boolean: BooleanInput,
   string: StringInput,
   color: ColorInput,
+  enum: SelectInput,
   text: TextInput,
-  enum: SelectInput
 }
 
 /**

@@ -178,9 +178,9 @@ function clearSelection () {
  * Get the current selection
  * @returns { Promise.<String[]> }
  */
-function getSelection () {
+async function getSelection () {
   assertIdentity()
-  return state.getLocalState()?._connections?.[getIdentity()]?.selection || []
+  return (await state.get(`_connections.${getIdentity()}.selection`)) || []
 }
 
 module.exports = {

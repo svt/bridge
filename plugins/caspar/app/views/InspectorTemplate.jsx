@@ -14,9 +14,12 @@ export const InspectorTemplate = () => {
   const selectionRef = React.useRef([])
 
   React.useEffect(() => {
-    const selection = bridge.client.getSelection()
-    selectionRef.current = selection
-    setSelection(selection)
+    async function updateSelection () {
+      const selection = await bridge.client.getSelection()
+      selectionRef.current = selection
+      setSelection(selection)
+    }
+    updateSelection()
   }, [state])
 
   /*
@@ -25,7 +28,7 @@ export const InspectorTemplate = () => {
   */
   React.useEffect(() => {
     const items = selection.map(id => state?.items?.[id])
-    const value = items?.[0]?.data?.caspar?.templateData
+    const value = items?.[0]?.data?.caspar?.templateDataString
     setValue(value)
   }, [selection])
 
@@ -39,7 +42,8 @@ export const InspectorTemplate = () => {
     handleNewValue({
       data: {
         caspar: {
-          templateData: newValue
+          templateData: JSON.parse(newValue),
+          templateDataString: newValue
         }
       }
     })
@@ -48,7 +52,7 @@ export const InspectorTemplate = () => {
   return (
     <div className='View--spread'>
       <Monaco
-        value={value || ['{', '\t"f0": "my value"', '}'].join('\n')}
+        value={value ?? ['{', '', '}'].join('\n')}
         onChange={newValue => handleChange(newValue)}
       />
     </div>
