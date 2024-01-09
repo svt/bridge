@@ -3,6 +3,8 @@ import React from 'react'
 import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
 
+import { v4 as uuidv4 } from 'uuid'
+
 import './style.css'
 
 /**
@@ -59,23 +61,25 @@ function getFrameHtml (url) {
   return `<iframe class='Frame-frame' src='${url}' height='0' />`
 }
 
+/**
+ * Copy theme variables from the host
+ * document to an iframe's document
+ * @param { HTMLIFrameElement } iframe
+ */
+function copyThemeVariables (fromEl, iframe, variables = COPY_THEME_VARIABLES) {
+  const style = window.getComputedStyle(fromEl)
+  for (const variable of variables) {
+    const value = style.getPropertyValue(variable)
+    iframe?.contentDocument?.documentElement?.style?.setProperty(variable, value)
+  }
+}
+
 export function Frame ({ src, api, doUpdateTheme = 1 }) {
+  const [callee] = React.useState(uuidv4())
+
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
-
-  /**
-   * Copy theme variables from the host
-   * document to an iframe's document
-   * @param { HTMLIFrameElement } iframe
-   */
-  function copyThemeVariables (fromEl, iframe, variables = COPY_THEME_VARIABLES) {
-    const style = window.getComputedStyle(fromEl)
-    for (const variable of variables) {
-      const value = style.getPropertyValue(variable)
-      iframe?.contentDocument?.documentElement?.style?.setProperty(variable, value)
-    }
-  }
 
   React.useEffect(() => {
     async function setup () {
@@ -91,7 +95,28 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
       iframe in order to return the api
       */
       frameRef.current.contentWindow.require = module => {
-        if (module === 'bridge') return api
+        if (module === 'bridge') {
+          /*
+          Shim certain api functions to add callee
+          information for cleanup when the frame is 
+          removed
+          */
+          return {
+            ...api,
+            events: {
+              ...api.events,
+              on: (arg0, arg1, opts = {}) => {
+                return api.events.on(arg0, arg1, { ...opts, callee: opts.callee || callee })
+              },
+              once: (arg0, arg1, opts = {}) => {
+                return api.events.once(arg0, arg1, { ...opts, callee: opts.callee || callee })
+              },
+              intercept: (arg0, arg1, opts = {}) => {
+                return api.events.intercept(arg0, arg1, { ...opts, callee: opts.callee || callee })
+              }
+            }
+          }
+        }
         return {}
       }
 
@@ -116,6 +141,17 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
 
     setup()
   }, [src, api, wrapperRef.current])
+
+  /*
+  Clean up all event listeners 
+  added by this frame
+  */
+  React.useEffect(() => {
+    return () => {
+      api.events.removeAllListeners(callee)
+      api.events.removeAllIntercepts(callee)
+    }
+  }, [callee])
 
   React.useEffect(() => {
     const contentWindow = frameRef.current?.contentWindow
