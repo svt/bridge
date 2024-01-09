@@ -31,7 +31,7 @@ export const InspectorServer = () => {
   const values = React.useMemo(() => {
     const values = new Set()
     for (const id of selection) {
-      values.add(state?.items?.[id]?.caspar?.server)
+      values.add(state?.items?.[id]?.data?.caspar?.server)
     }
     return Array.from(values)
   }, [state, selection])
