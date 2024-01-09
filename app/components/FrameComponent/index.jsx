@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { v4 as uuidv4 } from 'uuid'
+
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
@@ -77,6 +79,8 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
 }
 
 export function FrameComponent ({ data, onUpdate }) {
+  const [callee] = React.useState(uuidv4())
+
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
@@ -98,7 +102,28 @@ export function FrameComponent ({ data, onUpdate }) {
       iframe in order to return the api
       */
       frameRef.current.contentWindow.require = module => {
-        if (module === 'bridge') return bridge
+        if (module === 'bridge') {
+          /*
+          Shim certain api functions to add callee
+          information for cleanup when the frame is 
+          removed
+          */
+          return {
+            ...bridge,
+            events: {
+              ...bridge.events,
+              on: (arg0, arg1, opts = {}) => {
+                return bridge.events.on(arg0, arg1, { ...opts, callee: opts.callee || callee })
+              },
+              once: (arg0, arg1, opts = {}) => {
+                return bridge.events.once(arg0, arg1, { ...opts, callee: opts.callee || callee })
+              },
+              intercept: (arg0, arg1, opts = {}) => {
+                return bridge.events.intercept(arg0, arg1, { ...opts, callee: opts.callee || callee })
+              }
+            }
+          }
+        }
         return {}
       }
 
@@ -144,6 +169,19 @@ export function FrameComponent ({ data, onUpdate }) {
 
     setup()
   }, [data, shared, onUpdate])
+
+  /*
+  Clean up all event listeners 
+  added by this frame whenever
+  the URI or callee changes
+  */
+  React.useEffect(() => {
+    return async () => {
+      const bridge = await api.load()
+      bridge.events.removeAllListeners(callee)
+      bridge.events.removeAllIntercepts(callee)
+    }
+  }, [callee, shared?._widgets[data.component]?.uri])
 
   /*
   Highligh the component

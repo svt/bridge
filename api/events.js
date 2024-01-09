@@ -10,6 +10,16 @@ const localHandlers = new Map()
 const intercepts = new Map()
 
 /**
+ * @typedef {{
+ *  callee: String
+ * }} EventHandlerOpts
+ * @property { String } callee An optional identifier for the
+ *                             callee of the function,
+ *                             this is used to clean up handlers
+ *                             when a frame is no longer being used
+ */
+
+/**
  * A helper function for appending an
  * item to an array stored in a map
  *
@@ -42,26 +52,51 @@ exports.emit = emit
  * @param { String } event The name of the event to intercept
  * @param { (any[]) => any[] } handler A function intercepting the event,
  *                                     it must resolve to an array of values
+ * @param { EventHandlerOpts } opts
  */
-function intercept (event, handler) {
+function intercept (event, handler, opts) {
   const fn = async function (...args) {
     const res = await handler(...args)
     if (Array.isArray(res)) return res
     return [res]
   }
-  appendToMapArray(intercepts, event, fn)
+  appendToMapArray(intercepts, event, { fn, callee: opts?.callee })
 }
 exports.intercept = intercept
+
+/**
+ * Remove an intercepting function
+ * from an event
+ * @param { String } event
+ * @param { (any[]) => any[] } handler
+ */
+function removeIntercept (event, handler) {
+  const handlers = intercepts.get(event)
+  if (!handlers) {
+    return
+  }
+
+  const index = handlers.findIndex(({ fn }) => fn === handler)
+  handlers.splice(index, 1)
+
+  if (handlers.length === 0) {
+    intercepts.delete(event)
+  } else {
+    intercepts.set(event, handlers)
+  }
+}
+exports.removeIntercept = removeIntercept
 
 /**
  * Add a handler for an event
  * @param { String } event An event to listen to
  * @param { EventHandler } handler A handler to be called
  *                                 when the event is received
+ * @param { EventHandlerOpts } opts
  * @returns { Promise.<void> }
  */
-async function on (event, handler) {
-  appendToMapArray(localHandlers, event, handler)
+async function on (event, handler, opts) {
+  appendToMapArray(localHandlers, event, { handler, callee: opts?.callee })
 
   /*
   Only setup the command if
@@ -82,12 +117,12 @@ async function on (event, handler) {
       before calling the event handlers
       */
       const interceptFns = intercepts.get(event) || []
-      for (const fn of interceptFns) {
+      for (const { fn } of interceptFns) {
         _args = await fn(..._args)
       }
 
       const handlers = localHandlers.get(event)
-      for (const handler of handlers) {
+      for (const { handler } of handlers) {
         handler(..._args)
       }
     }, false)
@@ -104,13 +139,14 @@ exports.on = on
  * received
  * @param { String } event An event to listen to
  * @param { EventHandler } handler A handler to call
+ * @param { EventHandlerOpts } opts
  */
-function once (event, handler) {
+function once (event, handler, opts) {
   function handle (...args) {
     off(event, handle)
     handler(...args)
   }
-  on(event, handle)
+  on(event, handle, opts)
 }
 exports.once = once
 
@@ -123,7 +159,7 @@ function off (event, handler) {
   if (!localHandlers.has(event)) return
 
   const handlers = localHandlers.get(event)
-  const index = handlers.indexOf(handler)
+  const index = handlers.findIndex(({ handler: _handler }) => _handler === handler)
   handlers.splice(index, 1)
 
   if (handlers.length === 0) {
@@ -143,3 +179,41 @@ function off (event, handler) {
   }
 }
 exports.off = off
+
+/**
+ * Remove all listeners
+ *//**
+ * Remove all listeners associated
+ * with the specified callee
+ * @param { String } callee
+ */
+function removeAllListeners (callee) {
+  for (const event of localHandlers.keys()) {
+    for (const { handler, callee: _callee } of localHandlers.get(event)) {
+      if (callee && _callee !== callee) {
+        continue
+      }
+      off(event, handler)
+    }
+  }
+}
+exports.removeAllListeners = removeAllListeners
+
+/**
+ * Remove all intercepts
+ *//**
+ * Remove all intercepts associated
+ * with the specified callee
+ * @param { String } callee
+ */
+function removeAllIntercepts (callee) {
+  for (const event of intercepts.keys()) {
+    for (const { fn, callee: _callee } of intercepts.get(event)) {
+      if (callee && _callee !== callee) {
+        continue
+      }
+      removeIntercept(event, fn)
+    }
+  }
+}
+exports.removeAllIntercepts = removeAllIntercepts

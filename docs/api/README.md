@@ -5,6 +5,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Getting started](#getting-started)
 - [Commands](#commands)
 - [Events](#events)
+  - [Available events](#available-events)
 - [State](#state)
 - [Server](#server)
 - [Widgets](#widgets)
@@ -55,12 +56,15 @@ bridge.events.on('item.stop', item => {
   console.log('Item', item, 'is now stopped')
   // React to the event
 })
-
-bridge.events.on('item.delete', item => {
-  console.log('Item', item, 'is now deleted')
-  // React to the event
-})
 ```
+
+### Available events
+| Event | Description |
+| ----- | ----------- |
+| `state.change` | Emitted every time the remote state changes |
+| `client.select` | Emitted locally, i.e. only within the one client when a selection is made |
+| `item.play` | Emitted when an item is played, after an optional delay |
+| `item.stop` | Emitted when an item is stopped |
 
 ### `bridge.events.emit(event, ...parameters)`
 Emit an event with or without any data
