@@ -17,7 +17,8 @@
   align-items: center;
 }
 
-.RundownItem-color {
+.RundownItem-color,
+.RundownItem-background {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -27,6 +28,11 @@
 
   z-index: 0;
   pointer-events: none;
+}
+
+.RundownItem-background {
+  width: 100%;
+  opacity: 0.1;
 }
 
 .RundownItem-index {
@@ -64,4 +70,5 @@
   transform-origin: left;
 
   opacity: 0.3;
+  z-index: -1;
 }
