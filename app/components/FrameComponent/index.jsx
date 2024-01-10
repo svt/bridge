@@ -42,6 +42,7 @@ const COPY_THEME_VARIABLES = [
   '--base-color--shade',
   '--base-color--shade1',
   '--base-color--shade2',
+  '--base-color--alert',
   '--base-color--background',
   '--base-fontFamily--primary',
   '--base-color-type--variable',

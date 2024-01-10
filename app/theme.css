@@ -21,6 +21,8 @@
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
 
+  --base-color--alert: #E13241;
+
   --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', bridge-glyphs, sans-serif;
 
   --base-color-type--variable: #0F418C;
@@ -44,6 +46,8 @@
 
   --base-color--background: white;
   --base-color--background1: #f0f0f0;
+
+  --base-color--alert: #FF5E6C;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
@@ -69,6 +73,8 @@
 
   --base-color--background: #271033;
   --base-color--background1: #3c204a;
+
+  --base-color--alert: #87289B;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
