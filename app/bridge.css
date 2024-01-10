@@ -44,7 +44,7 @@ html:not([data-platform="darwin"]) *::-webkit-scrollbar-track {
 }
 
 html:not([data-platform="darwin"]) *::-webkit-scrollbar-thumb {
-  background-color: var(--base-color--shade1);
+  background-color: var(--base-color--shade);
   border-radius: 10px;
   outline: none;
 }
@@ -135,6 +135,10 @@ select {
 
 .Select--small {
   padding: 0.4em 1em;
+}
+
+select:focus {
+  background: var(--base-color--background);
 }
 
 /* Headings */
