@@ -33,10 +33,7 @@ function layerString (opts = {}) {
  * @returns { String }
  */
 function transitionString (opts = {}) {
-  if (opts.transitionName == null) {
-    return ''
-  }
-  return `${opts.transitionName} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(opts.transitionDirection || 'LEFT')}`.toUpperCase()
+  return `${opts.transitionName || ''} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(opts.transitionDirection || 'LEFT')}`.toUpperCase()
 }
 
 /**
@@ -146,9 +143,17 @@ exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
 /**
  * Update a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-update
+ * @param { Object } data
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.cgUpdate = (data, opts) => {
-  return `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(JSON.stringify(data))}`
-}
+exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(JSON.stringify(data))}`
+
+/**
+ * Change the opacity of a layer
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#mixer-opacity
+ * @param { String } opacity
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity} ${transitionString(opts)}`

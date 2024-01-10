@@ -32,12 +32,6 @@ function init (htmlPath) {
         'ui.group': 'Caspar',
         'ui.uri': `${htmlPath}?path=inspector/server`
       },
-      'caspar.target': {
-        name: 'Target',
-        type: 'string',
-        allowsVariables: true,
-        'ui.group': 'Caspar'
-      },
       'caspar.channel': {
         name: 'Channel',
         type: 'string',
@@ -58,11 +52,44 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
-    id: 'bridge.caspar.media',
+    id: 'bridge.caspar.mixable',
     name: 'Media',
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      'caspar.transitionDuration': {
+        name: 'Duration',
+        type: 'string',
+        default: '0',
+        'ui.group': 'Transition',
+        'ui.unit': 'frames'
+      },
+      'caspar.transitionEasing': {
+        name: 'Easing',
+        type: 'string',
+        'ui.group': 'Transition',
+        'ui.uri': `${htmlPath}?path=inspector/transition`
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.media',
+    name: 'Media',
+    category: 'Caspar',
+    /*
+    Inherit from playable rather than mixable and
+    redefine the transition params to get them in
+    the correct order
+    */
+    inherits: 'bridge.caspar.playable',
+    properties: {
+      'caspar.target': {
+        name: 'Target',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      },
       'caspar.loop': {
         name: 'Loop',
         type: 'boolean',
@@ -103,6 +130,12 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      'caspar.target': {
+        name: 'Target',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      },
       'caspar.templateData': {
         name: 'Data',
         type: 'string',
@@ -132,7 +165,7 @@ function init (htmlPath) {
     id: 'bridge.caspar.opacity',
     name: 'Opacity',
     category: 'Caspar',
-    inherits: 'bridge.caspar.playable',
+    inherits: 'bridge.caspar.mixable',
     properties: {
       'caspar.opacity': {
         name: 'Opacity',
@@ -147,7 +180,7 @@ function init (htmlPath) {
     id: 'bridge.caspar.transform',
     name: 'Transform',
     category: 'Caspar',
-    inherits: 'bridge.caspar.playable',
+    inherits: 'bridge.caspar.mixable',
     properties: {
       'caspar.x': {
         name: 'X',
