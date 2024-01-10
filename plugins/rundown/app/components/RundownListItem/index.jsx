@@ -85,6 +85,19 @@ export function RundownListItem ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
   }
 
+  async function handleCreateGhost () {
+    const newItemId = await bridge.items.createItem('bridge.types.ghost')
+
+    await bridge.items.applyItem(newItemId, {
+      data: {
+        name: `Ghost for ${item?.data?.name}`,
+        targetId: item.id
+      }
+    })
+
+    bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
+  }
+
   React.useEffect(() => {
     if (item?.state == null) {
       return
@@ -133,6 +146,7 @@ export function RundownListItem ({
               <ContextMenuItem text='Add after'>
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
               </ContextMenuItem>
+              <ContextMenuItem text='Create ghost' onClick={() => handleCreateGhost()} />
               <ContextMenuDivider />
               <ContextMenuItem text='Remove' onClick={() => handleDelete(selection)} />
               {
