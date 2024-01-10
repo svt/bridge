@@ -19,6 +19,7 @@
 
 .RundownDividerItem-property {
   margin-right: 10px;
+  z-index: 1;
 }
 
 .RundownDividerItem-notes {
