@@ -11,11 +11,11 @@
     "nodemon": "nodemon --trace-warnings --inspect=0.0.0.0 index.js",
     "build": "npm run clean | webpack --config webpack.prod.js",
     "build:dev": "npm run clean | webpack --config webpack.dev.js",
-    "clean": "rm -r ./dist",
+    "clean": "node ./scripts/clean-build-folder.js",
     "electron": "NODE_ENV=development electron --trace-warnings index.js",
-    "electron:build:mac:arm": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=arm64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
-    "electron:build:mac:intel": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
-    "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --extend-info extra.plist --overwrite --ignore=\"webpack.*\\.js\" --out ./bin",
+    "electron:build:mac:arm": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=arm64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --asar --ignore=\"webpack.*\\.js\" --out ./bin",
+    "electron:build:mac:intel": "npm run build && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --asar --ignore=\"webpack.*\\.js\" --out ./bin",
+    "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --extend-info extra.plist --icon=media/appicon.ico --overwrite --asar --ignore=\"webpack.*\\.js\" --out ./bin",
     "prepare": "husky install"
   },
   "repository": {
