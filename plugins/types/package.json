@@ -67,6 +67,18 @@
         }
       },
       {
+        "id": "bridge.types.ghost",
+        "name": "Ghost",
+        "inherits": "bridge.types.media",
+        "properties": {
+          "targetId": {
+            "name": "Target id",
+            "type": "string",
+            "ui.group": "Ghost"
+          }
+        }
+      },
+      {
         "id": "bridge.types.divider",
         "name": "Divider",
         "inherits": "bridge.types.root"

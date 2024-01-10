@@ -7,6 +7,7 @@ import { InspectorServer } from './views/InspectorServer'
 import { InspectorTemplate } from './views/InspectorTemplate'
 import { InspectorTransition } from './views/InspectorTransition'
 
+import { LiveSwitch } from './views/LiveSwitch'
 import { Library } from './views/Library'
 import { Status } from './views/Status'
 
@@ -31,6 +32,8 @@ export default function App () {
               return <InspectorTemplate />
             case 'settings/servers':
               return <Settings.Servers />
+            case 'liveSwitch':
+              return <LiveSwitch />
             case 'status':
               return <Status />
             case 'library':

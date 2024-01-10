@@ -7,14 +7,14 @@
           "title": "Rundown",
           "component": "bridge.internals.grid",
           "layout": {
-            "timing": { "x": 0, "y": 0, "w": 6, "h": 6 },
-            "library": { "x": 0, "y": 6, "w": 6, "h": 6 },
+            "timing": { "x": 0, "y": 0, "w": 6, "h": 2 },
+            "library": { "x": 0, "y": 2, "w": 6, "h": 10 },
             "rundown": { "x": 6, "y": 0, "w": 12, "h": 12 },
             "inspector": { "x": 18, "y": 0, "w": 6, "h": 12 }
           },
           "children": {
             "timing": {
-              "component": "bridge.plugins.timing"
+              "component": "bridge.plugins.caspar.liveSwitch"
             },
             "library": {
               "component": "bridge.plugins.caspar.library"

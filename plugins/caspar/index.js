@@ -141,4 +141,11 @@ exports.activate = async () => {
     uri: `${htmlPath}?path=library`,
     description: 'The media library for Caspar CG'
   })
+
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.caspar.liveSwitch',
+    name: 'Live switch',
+    uri: `${htmlPath}?path=liveSwitch`,
+    description: 'Control the live status of Caspar CG'
+  })
 }

@@ -22,6 +22,17 @@ const PLAY_HANDLERS = {
         bridge.items.playItem(child)
       }
     }
+  },
+
+  /*
+  Trigger a ghost
+  item's target
+  */
+  'bridge.types.ghost': item => {
+    if (!item?.data?.targetId) {
+      return
+    }
+    bridge.items.playItem(item?.data?.targetId)
   }
 }
 
@@ -34,6 +45,17 @@ const STOP_HANDLERS = {
     for (const child of item.children) {
       bridge.items.stopItem(child)
     }
+  },
+
+  /*
+  Trigger a ghost
+  item's target
+  */
+  'bridge.types.ghost': item => {
+    if (!item?.data?.targetId) {
+      return
+    }
+    bridge.items.stopItem(item?.data?.targetId)
   }
 }
 
