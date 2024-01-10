@@ -30,6 +30,9 @@ const PLAY_HANDLERS = {
   },
   'bridge.caspar.template.update': item => {
     return commands.sendCommand(item?.data?.caspar?.server, 'cgUpdate', item?.data?.caspar?.templateData, item?.data?.caspar)
+  },
+  'bridge.caspar.opacity': item => {
+    return commands.sendCommand(item?.data?.caspar?.server, 'mixerOpacity', item?.data?.caspar?.opacity, item?.data?.caspar)
   }
 }
 
@@ -42,6 +45,9 @@ const STOP_HANDLERS = {
   },
   'bridge.caspar.template.update': item => {
     return commands.sendCommand(item?.data?.caspar?.server, 'cgStop', item?.data?.caspar)
+  },
+  'bridge.caspar.opacity': item => {
+    return commands.sendCommand(item?.data?.caspar?.server, 'mixerOpacity', '1.0', { ...(item?.data?.caspar || {}), transitionDuration: 0 })
   }
 }
 
