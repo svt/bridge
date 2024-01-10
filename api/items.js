@@ -191,6 +191,11 @@ function populateVariablesMutable (item, type) {
  */
 async function playItem (id) {
   const item = await getItem(id)
+
+  if (!item) {
+    return
+  }
+
   const type = await types.getType(item.type)
   const clone = populateVariablesMutable(deepClone(item), type)
   const delay = parseInt(clone?.data?.delay)
