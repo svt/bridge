@@ -3,6 +3,21 @@ import './style.css'
 
 const DEFAULT_DURATION_MS = 5000
 
+const DEFAULT_VALUES = {
+  STILL: {
+    channel: 1,
+    layer: 10
+  },
+  MOVIE: {
+    channel: 1,
+    layer: 10
+  },
+  AUDIO: {
+    channel: 1,
+    layer: 30
+  }
+}
+
 /**
  * Calculate the duration in milliseconds from an item
  * based on its framerate and duration in frames
@@ -36,7 +51,8 @@ export const LibraryListItem = ({ item = {} }) => {
         name: item.name,
         caspar: {
           server: item?._filter?.serverId,
-          target: item.name
+          target: item.name,
+          ...(DEFAULT_VALUES[item.type] || {})
         },
         duration: calculateDurationMs(item)
       }
