@@ -14,14 +14,14 @@ const STATIC_SERVERS = [
   }
 ]
 
-export const ServerSelector = ({ value, multipleValuesSelected = false, onChange = () => {} }) => {
+export const ServerSelector = ({ value = '__none', multipleValuesSelected = false, onChange = () => {} }) => {
   const [state] = React.useContext(SharedContext)
   const servers = state?.plugins?.[window.PLUGIN.name]?.servers || []
 
   return (
     <div className='ServerSelector'>
-      <select className='Select--small' value={multipleValuesSelected ? '__multiple-values' : value} onChange={e => onChange(e.target.value)}>
-        <option value={undefined}>No server</option>
+      <select className='Select--small' value={multipleValuesSelected ? '__multiple-values' : (value || '__none')} onChange={e => onChange(e.target.value)}>
+        <option value='__none'>No server</option>
         {
           multipleValuesSelected &&
           <option value='__multiple-values' disabled>Multiple values</option>

@@ -30,7 +30,7 @@ export const InspectorTemplate = () => {
     const items = selection.map(id => state?.items?.[id])
     const value = items?.[0]?.data?.caspar?.templateDataString
     setValue(value)
-  }, [selection])
+  }, [JSON.stringify(selection)])
 
   function handleNewValue (set) {
     for (const id of selectionRef.current) {
