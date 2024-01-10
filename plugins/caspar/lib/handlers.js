@@ -7,6 +7,8 @@
  */
 const bridge = require('bridge')
 
+const manifest = require('../package.json')
+
 const commands = require('./commands')
 
 const Logger = require('../../../lib/Logger')
@@ -43,11 +45,28 @@ const STOP_HANDLERS = {
   }
 }
 
+/**
+ * Check whether Caspar is set
+ * to be live or not
+ * @returns { Promise.<Boolean> }
+ */
+async function checkIsLive () {
+  const isLive = await bridge.state.get(`plugins.${manifest.name}.isLive`)
+  if (isLive === false) {
+    return false
+  }
+  return true
+}
+
 /*
 Register a listener for the item.play event and
 call the matching handler for the item type
 */
-bridge.events.on('item.play', item => {
+bridge.events.on('item.play', async item => {
+  if (!(await checkIsLive())) {
+    return
+  }
+
   PLAY_HANDLERS[item.type]?.(item)
     .catch(err => logger.warn(err.message))
 })
@@ -56,7 +75,11 @@ bridge.events.on('item.play', item => {
 Register a listener for the item.stop event and
 call the matching handler for the item type
 */
-bridge.events.on('item.stop', item => {
+bridge.events.on('item.stop', async item => {
+  if (!(await checkIsLive())) {
+    return
+  }
+
   STOP_HANDLERS[item.type]?.(item)
     .catch(err => logger.warn(err.message))
 })
