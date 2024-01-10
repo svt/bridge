@@ -103,6 +103,7 @@ export function RundownGroupItem ({ index, item }) {
   return (
     <div ref={elRef} className={`RundownGroupItem ${isCollapsed ? 'is-collapsed' : ''}`} data-item-type={item.type}>
       <div className='RundownGroupItem-color' style={{ backgroundColor: item?.data?.color }} />
+      <div className='RundownGroupItem-background' style={{ backgroundColor: item?.data?.color }} />
       <div className='RundownGroupItem-header is-scrollTarget' onDoubleClick={() => setCollapsed(!isCollapsed)}>
         <div className='RundownGroupItem-index'>
           {index}

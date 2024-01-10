@@ -34,7 +34,7 @@ export function RundownItem ({ index, item }) {
         return
       }
 
-      setProgress(progress)
+      setProgress(Math.min(progress, 1))
 
       if (progress >= 1) {
         return
@@ -51,6 +51,7 @@ export function RundownItem ({ index, item }) {
       <Layout.Spread>
         <div className='RundownItem-section'>
           <div className='RundownItem-color' style={{ backgroundColor: item?.data?.color }} />
+          <div className='RundownItem-background' style={{ backgroundColor: item?.data?.color }} />
           <div className='RundownItem-index'>
             {index}
           </div>
