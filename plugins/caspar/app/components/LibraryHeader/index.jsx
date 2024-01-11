@@ -31,6 +31,9 @@ export const LibraryHeader = ({ onChange = () => {} }) => {
           onChange={e => handleFilterValue('query', e.target.value)}
         />
       </div>
+      <div className='LibraryHeader-refresh'>
+        <button className='Button Button--small' onClick={() => handleFilterValue('refresh', Math.floor(Math.random() * 100))}>Refresh</button>
+      </div>
     </header>
   )
 }

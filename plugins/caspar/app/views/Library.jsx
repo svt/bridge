@@ -34,8 +34,9 @@ export const Library = () => {
 
   React.useEffect(() => {
     async function exec () {
+      setItems([])
+
       if (!filter.serverId) {
-        setItems([])
         return
       }
 
@@ -47,13 +48,13 @@ export const Library = () => {
         return
       }
 
-      const res = await bridge.commands.executeCommand('caspar.sendCachedCommand', filter.serverId, 'cls')
+      const res = await bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'cls')
       const filtered = (res?.data || [])
         .map(Asset.parseAsset)
       setItems(filtered)
     }
     exec()
-  }, [filter])
+  }, [filter?.serverId, filter?.refresh])
 
   /**
    * An array of all items that matches

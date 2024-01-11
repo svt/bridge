@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.LibraryHeader-refresh {
+  margin: 0 5px 5px;
+}
+
 @media screen and (min-width: 350px) {
   .LibraryHeader {
     display: flex;
@@ -14,6 +18,10 @@
 
   .LibraryHeader-serverSelector {
     width: 45%;
+  }
+
+  .LibraryHeader-refresh {
+    margin: 0 5px 5px 0;
   }
 }
 
