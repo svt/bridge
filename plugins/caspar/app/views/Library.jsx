@@ -34,8 +34,9 @@ export const Library = () => {
 
   React.useEffect(() => {
     async function exec () {
+      setItems([])
+
       if (!filter.serverId) {
-        setItems([])
         return
       }
 
@@ -53,7 +54,7 @@ export const Library = () => {
       setItems(filtered)
     }
     exec()
-  }, [filter?.serverId])
+  }, [filter?.serverId, filter?.refresh])
 
   /**
    * An array of all items that matches
