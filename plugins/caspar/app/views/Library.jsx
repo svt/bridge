@@ -53,7 +53,7 @@ export const Library = () => {
       setItems(filtered)
     }
     exec()
-  }, [filter])
+  }, [filter?.serverId])
 
   /**
    * An array of all items that matches
