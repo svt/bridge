@@ -53,7 +53,6 @@ function init (htmlPath) {
 
   bridge.types.registerType({
     id: 'bridge.caspar.mixable',
-    category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
       'caspar.transitionDuration': {
