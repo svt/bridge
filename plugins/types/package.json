@@ -67,14 +67,14 @@
         }
       },
       {
-        "id": "bridge.types.ghost",
-        "name": "Ghost",
+        "id": "bridge.types.reference",
+        "name": "Reference",
         "inherits": "bridge.types.media",
         "properties": {
           "targetId": {
             "name": "Target id",
             "type": "string",
-            "ui.group": "Ghost"
+            "ui.group": "Reference"
           }
         }
       },
