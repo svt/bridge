@@ -25,10 +25,10 @@ const PLAY_HANDLERS = {
   },
 
   /*
-  Trigger a ghost
+  Trigger a reference
   item's target
   */
-  'bridge.types.ghost': item => {
+  'bridge.types.reference': item => {
     if (!item?.data?.targetId) {
       return
     }
@@ -48,10 +48,10 @@ const STOP_HANDLERS = {
   },
 
   /*
-  Trigger a ghost
+  Trigger a reference
   item's target
   */
-  'bridge.types.ghost': item => {
+  'bridge.types.reference': item => {
     if (!item?.data?.targetId) {
       return
     }

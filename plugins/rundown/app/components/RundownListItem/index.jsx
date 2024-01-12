@@ -85,12 +85,12 @@ export function RundownListItem ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
   }
 
-  async function handleCreateGhost () {
-    const newItemId = await bridge.items.createItem('bridge.types.ghost')
+  async function handleCreateReference () {
+    const newItemId = await bridge.items.createItem('bridge.types.reference')
 
     await bridge.items.applyItem(newItemId, {
       data: {
-        name: `Ghost for ${item?.data?.name}`,
+        name: `Reference to ${item?.data?.name}`,
         targetId: item.id
       }
     })
@@ -146,7 +146,7 @@ export function RundownListItem ({
               <ContextMenuItem text='Add after'>
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
               </ContextMenuItem>
-              <ContextMenuItem text='Create ghost' onClick={() => handleCreateGhost()} />
+              <ContextMenuItem text='Create reference' onClick={() => handleCreateReference()} />
               <ContextMenuDivider />
               <ContextMenuItem text='Remove' onClick={() => handleDelete(selection)} />
               {
