@@ -153,6 +153,16 @@ exports.editServer = editServer
 bridge.commands.registerCommand('caspar.editServer', editServer)
 
 /**
+ * Get a list of all configured servers
+ * @returns { Promise.<ServerDescription[]> }
+ */
+async function listServers () {
+  return (await bridge.state.get(`${paths.STATE_SETTINGS_PATH}.servers`)) || []
+}
+exports.listServers = listServers
+bridge.commands.registerCommand('caspar.listServers', listServers)
+
+/**
  * Reconnect a server using
  * a new connection init
  * @param { String } serverId The id of the server to reconnect
