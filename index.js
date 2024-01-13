@@ -87,18 +87,20 @@ const WORKSPACE_TEARDOWN_MIN_THRESHOLD_MS = 20000
  */
 ;(async function () {
   Logger.debug('Restoring user deafults', paths.userDefaults)
+  let json
   try {
     const data = fs.readFileSync(paths.userDefaults, { encoding: 'utf8' })
-    const json = JSON.parse(data || '{}')
+    json = JSON.parse(data || '{}')
 
     UserDefaults.apply({
-      ...json,
-      ...{
-        httpPort: process.env.PORT || json?.httpPort || DEFAULT_HTTP_PORT
-      }
+      ...json
     })
   } catch (err) {
-    Logger.warn('Failed to restore user defaults', err)
+    Logger.warn('Failed to restore user defaults, maybe it\'s the first time the application is running', err)
+  } finally {
+    UserDefaults.apply({
+      httpPort: process.env.PORT || json?.httpPort || DEFAULT_HTTP_PORT
+    })
   }
 })()
 
