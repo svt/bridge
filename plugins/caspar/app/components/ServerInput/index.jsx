@@ -45,8 +45,8 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
             </select>
           </div>
         </div>
-        <div>
-          <button className='Button Button--ghost' onClick={() => handleDelete()}>Delete</button><br/>
+        <div className='ServerInput-actions'>
+          <button className='Button Button--ghost' onClick={() => handleDelete()}>Delete</button><br />
           <button className='Button Button--ghost' onClick={() => handleConnect()}>Connect</button>
         </div>
       </div>
