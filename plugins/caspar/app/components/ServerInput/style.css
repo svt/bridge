@@ -44,3 +44,7 @@
   margin-top: 10px;
   border-top: 1px solid var(--base-color--shade1);
 }
+
+.ServerInput-actions .Button {
+  margin-bottom: 7px;
+}
