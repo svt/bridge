@@ -226,59 +226,66 @@ class Caspar extends EventEmitter {
 
   /**
    * @private
+   * This function processes data received
+   * as a response from Caspar by bundling chunks
+   * together and producing a response object,
+   * which is the resolved through the
+   * matching transaction
+   *
+   * The parsing step is inspired by
+   * the caspar connector written by
+   * SuperflyTV
+   *
+   * @see https://github.com/SuperFlyTV/casparcg-connection/blob/master/src/connection.ts
    */
   _processData (chunk) {
-    const newLines = chunk.toString('utf8').split('\r\n')
-    const lastLine = newLines.pop()
-
-    if (lastLine !== '') {
-      this._unfinishedLine = lastLine
-    } else {
-      this._unfinishedLine = ''
+    if (!this._unprocessedData) {
+      this._unprocessedData = ''
     }
 
-    this._unprocessedLines.push(this._unfinishedLine + newLines.shift(), ...newLines)
+    this._unprocessedData += chunk.toString('utf8')
+    const newLines = this._unprocessedData.split('\r\n')
 
-    if (this._isProcessingData) {
-      return
-    }
-    this._isProcessingData = true
+    this._unprocessedData = newLines.pop() ?? ''
+    this._unprocessedLines.push(...newLines)
 
     while (this._unprocessedLines.length > 0) {
-      const line = this._unprocessedLines.shift()
+      const line = this._unprocessedLines[0]
+      const res = RES_HEADER_REX.exec(line)
 
-      /*
-      Finish the response object
-      if the line is empty and we're
-      waiting for more lines
-      */
-      if (line === '' && this._currentResponseObject) {
-        this._resolveResponseObject(this._currentResponseObject)
-        this._currentResponseObject = undefined
-        continue
-      }
+      if (res?.groups?.code) {
+        let processedLines = 1
 
-      /*
-      Initialize a new response object
-      if there isn't one already
-      */
-      if (!this._currentResponseObject) {
-        const header = RES_HEADER_REX.exec(line)?.groups || {}
-        this._currentResponseObject = {
-          ...header,
+        const resObject = {
+          ...(res?.groups || {}),
           data: []
         }
 
-        if (this._unfinishedLine === '') {
-          this._resolveResponseObject(this._currentResponseObject)
-          this._currentResponseObject = undefined
+        if (resObject.code === '200') {
+          const indexOfTermination = this._unprocessedLines.indexOf('')
+
+          resObject.data = this._unprocessedLines.slice(1, indexOfTermination)
+          processedLines += resObject.data.length + 1
+        } else if (resObject.code === '201' || resObject.code === '400') {
+          if (this._unprocessedLines.length < 2) {
+            break
+          }
+          resObject.data = [this._unprocessedLines[1]]
+          processedLines++
         }
+
+        this._unprocessedLines.splice(0, processedLines)
+
+        this._resolveResponseObject(resObject)
       } else {
-        this._currentResponseObject.data.push(line)
+        /*
+        Unknown error,
+        skip this line
+        and move on
+        */
+        this._unprocessedLines.splice(0, 1)
       }
     }
-
-    this._isProcessingData = false
   }
 
   /**
