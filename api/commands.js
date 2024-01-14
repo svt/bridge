@@ -8,6 +8,7 @@ const random = require('./random')
 const handlers = new Map()
 
 const NoLocalHandlerError = require('./error/NoLocalHandlerError')
+const InvalidArgumentError = require('./error/InvalidArgumentError')
 
 /**
  * Create a handler touple
@@ -122,6 +123,10 @@ exports.executeRawCommand = executeRawCommand
  *                            defaults to true
  */
 function registerCommand (command, handler, returns = true) {
+  if (typeof handler !== 'function') {
+    throw new InvalidArgumentError('Parameter \'handler\' must be a function')
+  }
+
   handlers.set(command, handlerFactory(handler, returns))
   transport.send({
     command: 'commands.registerCommand',
