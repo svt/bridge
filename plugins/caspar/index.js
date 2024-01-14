@@ -148,4 +148,11 @@ exports.activate = async () => {
     uri: `${htmlPath}?path=liveSwitch`,
     description: 'Control the live status of Caspar CG'
   })
+
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.caspar.thumbnail',
+    name: 'Thumbnail',
+    uri: `${htmlPath}?path=thumbnail`,
+    description: 'Display a thumbnail of the selected media item'
+  })
 }

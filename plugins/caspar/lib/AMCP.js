@@ -111,7 +111,7 @@ exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file} ${transitionSt
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.playLoaded = (file, opts) => `PLAY ${layerString(opts)}`
+exports.playLoaded = opts => `PLAY ${layerString(opts)}`
 
 /**
  * Stop an item running in the foreground
@@ -157,3 +157,12 @@ exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLaye
  * @returns { String }
  */
 exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity} ${transitionString(opts)}`
+
+/**
+ * Get the thumbnail for a file
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#thumbnail-retrieve
+ * @param { String } fileName
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.thumbnailRetrieve = fileName => `THUMBNAIL RETRIEVE ${fileName}`
