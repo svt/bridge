@@ -7,7 +7,7 @@ export const ThumbnailImage = ({ src, alt = 'Thumbnail image' }) => {
       {
         src
           ? <img className='ThumbnailImage-img' alt={alt} src={src} />
-          : <div className='Thumbnail-text'>Thumbnail not available</div>
+          : <div className='ThumbnailImage-text'>Thumbnail is not available</div>
       }
     </div>
   )

@@ -38,6 +38,8 @@ const logger = new Logger({ name: 'CasparPlugin' })
 const Cache = require('./Cache')
 const cache = new Cache()
 
+const CommandError = require('./error/CommandError')
+
 /**
 * Setup a server instance
 * from an init-object,
@@ -275,3 +277,27 @@ async function sendString (serverId, string) {
 }
 exports.sendString = sendString
 bridge.commands.registerCommand('caspar.sendString', sendString)
+
+/**
+ * Get an array of the server descriptors a group
+ * @param { String } groupId
+ * @returns { Promise.<ServerDescription[]> }
+ *
+ * @example
+ * const servers = await listServersInGroup('group:0')
+ */
+async function listServersInGroup (groupId = '') {
+  if (typeof groupId !== 'string') {
+    throw new CommandError('Parameter groupId must be a string', 'ERR_BAD_PARAMETER')
+  }
+
+  const index = groupId.split(':')[1]
+  if (index === undefined) {
+    return []
+  }
+
+  const servers = await listServers()
+  return servers.filter(server => server?.group === index)
+}
+exports.listServersInGroup = listServersInGroup
+bridge.commands.registerCommand('caspar.listServersInGroup', listServersInGroup)

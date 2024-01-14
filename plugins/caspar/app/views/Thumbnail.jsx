@@ -37,11 +37,19 @@ export const Thumbnail = () => {
       }
 
       try {
-        const res = await bridge.commands.executeCommand('caspar.sendCommand', item?.data?.caspar?.server, 'thumbnailRetrieve', item?.data?.caspar?.target)
+        /*
+        Find a server to query by first checking if the provided server is a group
+        and assume that the first server in that group has the asset,
+        otherwise fall back to using the id directly from the item
+        */
+        const servers = await bridge.commands.executeCommand('caspar.listServersInGroup', item?.data?.caspar?.server || '')
+        const serverId = servers[0]?.id || item?.data?.caspar?.server
+
+        const res = await bridge.commands.executeCommand('caspar.sendCommand', serverId, 'thumbnailRetrieve', item?.data?.caspar?.target)
         const src = (res?.data || []).join('')
         setImage(`data:image/png;base64,${src}`)
         setItem(item)
-      } catch (_) {
+      } catch (e) {
         setImage(undefined)
         setItem(undefined)
       }

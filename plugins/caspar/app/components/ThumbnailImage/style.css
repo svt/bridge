@@ -15,3 +15,7 @@
 
   object-fit: contain;
 }
+
+.ThumbnailImage-text {
+  text-align: center;
+}

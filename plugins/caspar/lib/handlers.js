@@ -64,17 +64,6 @@ async function checkIsLive () {
   return true
 }
 
-/**
- * Get an array of server descriptors for a group
- * @param { String } groupId
- * @returns { Promise.<import('./commands').ServerDescription[]> }
- */
-async function getServersByGroup (groupId = '') {
-  const index = groupId.split(':')[1]
-  const servers = await commands.listServers()
-  return servers.filter(server => server?.group === index)
-}
-
 /*
 Register a listener for the item.play event and
 call the matching handler for the item type
@@ -89,7 +78,7 @@ bridge.events.on('item.play', async item => {
   in that case play the item for all servers
   in that group
   */
-  const servers = await getServersByGroup(item?.data?.caspar?.server)
+  const servers = await commands.listServersInGroup(item?.data?.caspar?.server)
 
   if (servers.length > 0) {
     for (const server of servers) {
@@ -116,7 +105,7 @@ bridge.events.on('item.stop', async item => {
   in that case stop the item for all servers
   in that group
   */
-  const servers = await getServersByGroup(item?.data?.caspar?.server)
+  const servers = await commands.listServersInGroup(item?.data?.caspar?.server)
 
   if (servers.length > 0) {
     for (const server of servers) {
