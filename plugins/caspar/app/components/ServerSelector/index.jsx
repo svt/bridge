@@ -3,7 +3,7 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
-const STATIC_SERVERS = [
+const SERVER_GROUPS = [
   {
     id: 'group:0',
     name: 'Group: Primary'
@@ -27,7 +27,7 @@ export const ServerSelector = ({ value = '__none', multipleValuesSelected = fals
           <option value='__multiple-values' disabled>Multiple values</option>
         }
         {
-          [...STATIC_SERVERS, ...servers].map(server => {
+          [...SERVER_GROUPS, ...servers].map(server => {
             return <option key={server.id} value={server?.id}>{server?.name || 'Unnamed'}</option>
           })
         }

@@ -40,6 +40,17 @@ const cache = new Cache()
 
 const CommandError = require('./error/CommandError')
 
+const SERVER_GROUPS = [
+  {
+    id: 'group:0',
+    name: 'Group: Primary'
+  },
+  {
+    id: 'group:1',
+    name: 'Group: Secondary'
+  }
+]
+
 /**
 * Setup a server instance
 * from an init-object,
@@ -156,10 +167,15 @@ bridge.commands.registerCommand('caspar.editServer', editServer)
 
 /**
  * Get a list of all configured servers
+ * @param { Boolean } groups Whether or not to include groups
  * @returns { Promise.<ServerDescription[]> }
  */
-async function listServers () {
-  return (await bridge.state.get(`${paths.STATE_SETTINGS_PATH}.servers`)) || []
+async function listServers (groups = false) {
+  const servers = (await bridge.state.get(`${paths.STATE_SETTINGS_PATH}.servers`)) || []
+  return [
+    ...(groups ? SERVER_GROUPS : []),
+    ...servers
+  ]
 }
 exports.listServers = listServers
 bridge.commands.registerCommand('caspar.listServers', listServers)
