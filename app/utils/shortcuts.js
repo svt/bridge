@@ -39,6 +39,10 @@ const timeoutOnIdle = (function () {
  *
  * - Lower case keys are all transformed to upper case
  *
+ * @example
+ * 'a' -> 'A'
+ * 'Meta' -> 'Meta'
+ *
  * @param { String } key The key to normalize
  * @returns { String }
  */
@@ -107,5 +111,5 @@ export async function registerKeyDown (e) {
  * @param { KeyboardEvent } e
  */
 export function registerKeyUp (e) {
-  keys.delete(normalize(e.key))
+  keys.clear()
 }

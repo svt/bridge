@@ -110,6 +110,11 @@ export function RundownListItem ({
     setIndicateIsPlaying(true)
   }, [item?.state, item?.didStartPlayingAt])
 
+  async function handlePaste () {
+    const items = await clipboard.readJson()
+    bridge.commands.executeCommand('rundown.pasteItems', items, rundownId, index + 1)
+  }
+
   return (
     <div
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
@@ -142,6 +147,7 @@ export function RundownListItem ({
                 selection.length <= 1 &&
                 <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
               }
+              <ContextMenuItem text='Paste' onClick={() => handlePaste()} />
               <ContextMenuDivider />
               <ContextMenuItem text='Add after'>
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />

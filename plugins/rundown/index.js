@@ -244,6 +244,70 @@ exports.activate = async () => {
   bridge.commands.registerCommand('rundown.copyItems', copyItems)
 
   /**
+   * Paste items into the
+   * specified parent at index
+   *
+   * Will create new item id's to avoid collisions with
+   * already existing items but keep the item structure
+   *
+   * @param { Any[] } items An array of item objects from the clipboard
+   * @param { String } parentId The id of the parent to paste into
+   * @param { Number | undefined } index The index at which to paste the first item
+   * @returns { Promise.<void> }
+   */
+  async function pasteItems (items, parentId, index) {
+    if (!items || !Array.isArray(items)) {
+      return
+    }
+
+    const idMappings = {}
+
+    const promises = items.map(async item => {
+      const newId = await bridge.items.createItem(item.type)
+      idMappings[item.id] = newId
+    })
+
+    await Promise.all(promises)
+
+    let i = -1
+    for (const item of items) {
+      i++
+      if (item.children && Array.isArray(item.children)) {
+        item.children = item.children.map(child => idMappings[child])
+      }
+
+      item.id = idMappings[item.id]
+      await bridge.items.applyItem(item.id, {
+        ...item,
+        parent: undefined
+      })
+
+      /*
+      If this is a nested item, append it into its
+      new parent that was just created
+      */
+      if (item.parent && idMappings[item.parent]) {
+        await appendItem(idMappings[item.parent], item.id)
+        return
+      }
+
+      /*
+      If this is a top level item,
+      paste it into the specified parent and
+      if specified move it to the correct index
+      */
+      if (item.parent && !idMappings[item.parent]) {
+        await appendItem(parentId, item.id)
+
+        if (index != null) {
+          moveItem(parentId, index + i, item.id)
+        }
+      }
+    }
+  }
+  bridge.commands.registerCommand('rundown.pasteItems', pasteItems)
+
+  /**
    * Append an item to
    * a new parent, will remove any current relations
    * @param { String } newParentId
