@@ -260,8 +260,11 @@ exports.activate = async () => {
       return
     }
 
+    /*
+    Create new items to be populated
+    with the pasted data
+    */
     const idMappings = {}
-
     const promises = items.map(async item => {
       const newId = await bridge.items.createItem(item.type)
       idMappings[item.id] = newId
@@ -269,6 +272,10 @@ exports.activate = async () => {
 
     await Promise.all(promises)
 
+    /*
+    Update the newly created items with the pasted data but replace properties
+    such as id, parent and children to map to the newly created items
+    */
     let i = -1
     for (const item of items) {
       i++
@@ -277,26 +284,21 @@ exports.activate = async () => {
       }
 
       item.id = idMappings[item.id]
-      await bridge.items.applyItem(item.id, {
-        ...item,
-        parent: undefined
-      })
 
-      /*
-      If this is a nested item, append it into its
-      new parent that was just created
-      */
       if (item.parent && idMappings[item.parent]) {
-        await appendItem(idMappings[item.parent], item.id)
-        return
+        item.parent = idMappings[item.parent]
+      } else {
+        item.parent = undefined
       }
+
+      await bridge.items.applyItem(item.id, item)
 
       /*
       If this is a top level item,
       paste it into the specified parent and
       if specified move it to the correct index
       */
-      if (item.parent && !idMappings[item.parent]) {
+      if (!item.parent) {
         await appendItem(parentId, item.id)
 
         if (index != null) {
