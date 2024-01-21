@@ -2,7 +2,21 @@
 
 Welcome to the full documentation for Bridge. Whether you're want to build your own extension or are looking for more information about the internals, this is the place to find it.
 
-**This project is still in early development and more content will be added periodically**
+## Bundled plugins
+- [Inspector](/plugins/inspector/README.md)
+- [Rundown](/plugins/rundown/README.md)
+- [State](/plugins/state/README.md)
+- Clock
+- [Caspar](/plugins/caspar/README.md)
+- [OSC](/plugins/osc/README.md)
+
+## Developing plugins
+- [Guide](/docs/plugins/README.md)
+- [API reference](/docs/api/README.md)
+
+## Internals
+- [Architecture](/docs/architecture.md)
+- [Project structure](/docs/structure.md)
 
 ## Terminology
 ![Methodology](/media/docs/architecture/methodology.png)
@@ -18,11 +32,3 @@ Widgets are web views hosted by plugins. They provide a user interface that can 
 
 ### Plugin
 Plugins are extensions to Bridge that add specific functionality. They are primarily run in the main process and have access to the full Bridge and Nodejs apis. A plugin can register none, one or multiple widgets that are available in the workspace. They can also react to events and provide their own functionality through commands.
-
-## Plugins
-- [Guide](/docs/plugins/README.md)
-- [API reference](/docs/api/README.md)
-
-## Internals
-- [Architecture](/docs/architecture.md)
-- [Project structure](/docs/structure.md)
