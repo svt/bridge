@@ -40,10 +40,12 @@
     "shortcuts": [
       {
         "id": "bridge.rundown.play",
+        "description": "Play the selected item",
         "trigger": ["F2"]
       },
       {
         "id": "bridge.rundown.stop",
+        "description": "Stop the selected item",
         "trigger": ["F1"]
       },
       {
