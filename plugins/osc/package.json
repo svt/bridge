@@ -1,0 +1,63 @@
+{
+  "name": "bridge-plugin-osc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "author": "Axel Boberg (git@axelboberg.se)",
+  "license": "UNLICENSED",
+  "contributes": {
+    "settings": [
+      {
+        "group": "OSC",
+        "title": "OSC server (UDP)",
+        "description": "Activate the OSC server",
+        "inputs": [
+          {
+            "type": "boolean",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.server.active",
+            "label": "Active"
+          }
+        ]
+      },
+      {
+        "group": "OSC",
+        "title": "OSC server port (UDP)",
+        "inputs": [
+          {
+            "type": "number",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.server.port",
+            "label": "Port",
+            "default": 8080,
+            "min": 3000,
+            "max": 65535
+          }
+        ]
+      },
+      {
+        "group": "OSC",
+        "title": "OSC server listen on all interfaces",
+        "inputs": [
+          {
+            "type": "boolean",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.server.bindToAll",
+            "label": "Bind to 0.0.0.0"
+          }
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "obj-router": "^3.0.2",
+    "osc-min": "^1.1.2"
+  }
+}
