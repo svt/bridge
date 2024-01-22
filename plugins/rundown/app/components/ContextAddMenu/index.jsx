@@ -5,6 +5,8 @@ import { SharedContext } from '../../sharedContext'
 
 import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
 
+const NO_CATEGORY_ID = '__none__'
+
 export function ContextAddMenu ({ onAdd = () => {} }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -28,7 +30,7 @@ export function ContextAddMenu ({ onAdd = () => {} }) {
       if (!type.name) {
         continue
       }
-      const categoryName = type.category || type.id
+      const categoryName = type.category || NO_CATEGORY_ID
       if (!out[categoryName]) {
         out[categoryName] = []
       }
@@ -41,10 +43,26 @@ export function ContextAddMenu ({ onAdd = () => {} }) {
     <>
       {
         Object.entries(categories || {})
+          /*
+          Make sure items that don't belong to
+          a category are rendered first
+          */
+          .sort((a) => a[0] === NO_CATEGORY_ID ? -1 : 1)
           .map(([id, category]) => {
-            if (category.length === 1) {
-              return <ContextMenuItem key={category[0].id} text={category[0].name} onClick={() => handleClick(category[0].id)} />
+            /*
+            Render single items that don't
+            belong to any specific category
+            */
+            if (id === NO_CATEGORY_ID) {
+              return category.map(type => 
+                <ContextMenuItem key={type.id} text={type.name} onClick={() => handleClick(type.id)} />
+              )
             }
+
+            /*
+            Render categories
+            as nested menus
+            */
             return (
               <ContextMenuItem key={id} text={id}>
                 {
