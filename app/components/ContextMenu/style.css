@@ -8,10 +8,25 @@
   color: black;
 
   border-radius: 5px;
-  overflow: hidden;
-
+  
   box-sizing: border-box;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-
+  
+  margin-top: -3px;
+  
+  animation-name: context-menu-in;
+  animation-duration: 200ms;
+  animation-fill-mode: forwards;
+  
+  overflow: hidden;
   z-index: 100;
+}
+
+@keyframes context-menu-in {
+  0% {
+    margin-top: -3px;
+  }
+  100% {
+    margin-top: 0;
+  }
 }
