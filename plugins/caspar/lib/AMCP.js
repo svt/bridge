@@ -93,7 +93,7 @@ exports.clear = opts => `CLEAR ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)} ${file} ${loop && 'LOOP'} ${seek ? `SEEK ${seek}` : ''} ${length ? `LENGTH ${length}` : ''} ${filter ? `FILTER ${filter}` : ''} ${transitionString(opts)} ${auto && 'AUTO'}`
+exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)} ${file} ${loop ? 'LOOP' : ''} ${seek ? `SEEK ${seek}` : ''} ${length ? `LENGTH ${length}` : ''} ${filter ? `FILTER ${filter}` : ''} ${transitionString(opts)} ${auto ? 'AUTO' : ''}`
 
 /**
  * Play a media item in the foreground
