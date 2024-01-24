@@ -12,13 +12,6 @@ import { Icon } from '../Icon'
 const CTX_MENU_OFFSET_X_PX = 150
 
 /**
- * The y-axis offset used for
- * nested context menus
- * @type { Number }
- */
-const CTX_MENU_OFFSET_Y_PX = 5
-
-/**
  * A delay applied to when the
  * mouse leaves the current item
  * @type { Number }
@@ -65,7 +58,7 @@ export const ContextMenuItem = ({ text, children = [], onClick = () => {} }) => 
       {
         hover && childArr.length > 0
           ? (
-            <ContextMenu x={bounds?.x + CTX_MENU_OFFSET_X_PX} y={bounds?.y + CTX_MENU_OFFSET_Y_PX}>
+            <ContextMenu x={bounds?.x + CTX_MENU_OFFSET_X_PX} y={bounds?.y + bounds?.height / 2}>
               {children}
             </ContextMenu>
             )
