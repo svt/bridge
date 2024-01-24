@@ -56,7 +56,7 @@ const DEFAULT_SERVER_PORT = 8080
  * Declare the valid types
  * that an OSC argument can adopt
  *
- * @type { String }
+ * @type { String[] }
  */
 const VALID_OSC_ARG_TYPES = ['string', 'integer', 'float', 'boolean']
 
