@@ -79,18 +79,6 @@
         }
       },
       {
-        "id": "bridge.types.reference",
-        "name": "Reference",
-        "inherits": "bridge.types.media",
-        "properties": {
-          "targetId": {
-            "name": "Target id",
-            "type": "string",
-            "ui.group": "Reference"
-          }
-        }
-      },
-      {
         "id": "bridge.types.divider",
         "name": "Divider",
         "inherits": "bridge.types.root"

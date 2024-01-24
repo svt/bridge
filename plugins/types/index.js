@@ -7,6 +7,11 @@
  */
 const bridge = require('bridge')
 
+const assets = require('../../assets.json')
+const manifest = require('./package.json')
+
+const types = require('./lib/types')
+
 const GROUP_PLAY_MODES = {
   all: 'Trigger all children at once'
 }
@@ -59,7 +64,40 @@ const STOP_HANDLERS = {
   }
 }
 
+async function initWidget () {
+  const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
+  const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Types</title>
+        <base href="/" />
+        <link rel="stylesheet" href="${bridge.server.uris.STYLE_RESET}" />
+        <link rel="stylesheet" href="${cssPath}" />
+        <script src="${jsPath}" defer></script>
+        <script>
+          window.PLUGIN = ${JSON.stringify(
+            {
+              name: manifest.name
+            }
+          )}
+        </script>
+      </head>
+      <body>
+        <div id="root"></div>
+      </body>
+    </html>
+  `
+  return await bridge.server.serveString(html)
+}
+
 exports.activate = async () => {
+  const htmlPath = await initWidget()
+
+  types.init(htmlPath)
+
   bridge.events.on('item.play', item => {
     PLAY_HANDLERS[item.type]?.(item)
   })
