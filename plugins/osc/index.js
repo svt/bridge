@@ -7,6 +7,7 @@
  */
 const bridge = require('bridge')
 
+const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
 const Server = require('./lib/Server')
@@ -16,6 +17,11 @@ const handlers = require('./lib/handlers')
 
 const Router = require('obj-router')
 const router = new Router(handlers)
+
+const Logger = require('../../lib/Logger')
+const logger = new Logger({ name: 'OSCPlugin' })
+
+require('./lib/commands')
 
 /**
  * The default server port,
@@ -27,7 +33,90 @@ const router = new Router(handlers)
  */
 const DEFAULT_SERVER_PORT = 8080
 
+async function initWidget () {
+  const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
+  const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>OSC</title>
+        <base href="/" />
+        <link rel="stylesheet" href="${bridge.server.uris.STYLE_RESET}" />
+        <link rel="stylesheet" href="${cssPath}" />
+        <script src="${jsPath}" defer></script>
+        <script>
+          window.PLUGIN = ${JSON.stringify(
+            {
+              name: manifest.name
+            }
+          )}
+        </script>
+      </head>
+      <body>
+        <div id="root"></div>
+      </body>
+    </html>
+  `
+  return await bridge.server.serveString(html)
+}
+
 exports.activate = async () => {
+  logger.debug('Activating OSC plugin')
+
+  const htmlPath = await initWidget()
+
+  /*
+  Register the targets setting as
+  soon as the widget is setup
+  */
+  bridge.settings.registerSetting({
+    title: 'Targets',
+    group: 'OSC',
+    description: 'Configure OSC targets',
+    inputs: [
+      { type: 'frame', uri: `${htmlPath}?path=settings/targets` }
+    ]
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.osc.trigger',
+    name: 'Trigger',
+    category: 'OSC',
+    inherits: 'bridge.types.delayable',
+    properties: {
+      target: {
+        name: 'Target',
+        type: 'string',
+        'ui.group': 'OSC',
+        'ui.uri': `${htmlPath}?path=inspector/target`
+      },
+      path: {
+        name: 'Path',
+        type: 'string',
+        'ui.group': 'OSC'
+      },
+      type: {
+        name: 'Type',
+        type: 'enum',
+        enum: [
+          'String',
+          'Integer',
+          'Float',
+          'Boolean'
+        ],
+        default: 'String',
+        'ui.group': 'OSC'
+      },
+      value: {
+        name: 'Value',
+        type: 'string',
+        'ui.group': 'OSC'
+      }
+    }
+  })
+
   /**
    * A reference to the current server
    * @type { Server | undefined }
