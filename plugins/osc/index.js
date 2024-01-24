@@ -7,13 +7,18 @@
  */
 const bridge = require('bridge')
 
+const osc = require('osc-min')
+
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
 const Server = require('./lib/Server')
+const UDPClient = require('./lib/UDPClient')
 const UDPTransport = require('./lib/UDPTransport')
 
 const handlers = require('./lib/handlers')
+const commands = require('./lib/commands')
+const types = require('./lib/types')
 
 const Router = require('obj-router')
 const router = new Router(handlers)
@@ -24,6 +29,20 @@ const logger = new Logger({ name: 'OSCPlugin' })
 require('./lib/commands')
 
 /**
+ * @typedef {{
+ *  id: String,
+ *  data: {
+ *    osc: {
+ *      target: String,
+ *      address: String,
+ *      value: String,
+ *      type: String
+ *    }
+ *  }
+ * }} OSCTriggerItem
+ */
+
+/**
  * The default server port,
  *
  * this will be used as the default
@@ -32,6 +51,14 @@ require('./lib/commands')
  * @type { Number }
  */
 const DEFAULT_SERVER_PORT = 8080
+
+/**
+ * Declare the valid types
+ * that an OSC argument can adopt
+ *
+ * @type { String }
+ */
+const VALID_OSC_ARG_TYPES = ['string', 'integer', 'float', 'boolean']
 
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
@@ -62,10 +89,141 @@ async function initWidget () {
   return await bridge.server.serveString(html)
 }
 
+/**
+ * Check if a value is
+ * considered 'truthy'
+ * @param { String | Number | Boolean | Object } value
+ * @returns
+ */
+function isTruthy (value) {
+  const normalised = String(value).toLowerCase()
+  if (normalised === 'false' || normalised === 'f') {
+    return false
+  }
+  return !!value
+}
+
+/**
+ * Parse a value according
+ * to an argument type
+ * @param { String } type
+ * @param { any } value
+ * @returns { Boolean }
+ */
+function parseAsArgumentType (type, value) {
+  if (!(VALID_OSC_ARG_TYPES.includes(type))) {
+    return undefined
+  }
+
+  switch (type) {
+    case 'string':
+      return String(value)
+    case 'integer':
+      return parseInt(value)
+    case 'float':
+      return parseFloat(value)
+    case 'boolean':
+      return isTruthy(value)
+  }
+}
+
+/**
+ * A reference to the current server
+ * @type { Server | undefined }
+ */
+let server
+
+/**
+ * Set up the server and start listen
+ * on a specific port
+ * @param { Number } port
+ */
+function setupServer (port = DEFAULT_SERVER_PORT, address) {
+  teardownServer()
+
+  const transport = new UDPTransport()
+  transport.listen(port, address)
+
+  server = new Server(transport)
+  server.on('message', async osc => {
+    try {
+      await router.execute(osc.address, osc)
+    } catch (e) {
+      logger.warn('Failed to execute command', osc.address)
+    }
+  })
+}
+
+/**
+ * Tear down the
+ * current server
+ */
+function teardownServer () {
+  if (!server) {
+    return
+  }
+  server.teardown()
+  server = undefined
+}
+
+/**
+ * Play an item that's an OSC trigger by
+ * extracting its data and send it as an
+ * OSC message over a socket
+ * @param { OSCTriggerItem } item
+ * @returns { Promise.<void> }
+ */
+async function playTrigger (item) {
+  const targetId = item?.data?.osc?.target
+  if (!targetId) {
+    return
+  }
+
+  /*
+  Find the target and make
+  sure that it exists
+  */
+  const target = await commands.getTarget(targetId)
+  if (!target) {
+    logger.error('OSC target was not found')
+    return
+  }
+
+  /*
+  Construct a message object
+  and create a buffer from it
+  that can be sent directly
+  over the socket
+  */
+  const data = item?.data?.osc
+  const type = String(data?.type).toLowerCase()
+
+  if (!type || !(VALID_OSC_ARG_TYPES.includes(type))) {
+    logger.error('Invalid OSC argument type')
+    return
+  }
+
+  const message = osc.toBuffer({
+    address: data?.address,
+    args: [{
+      type,
+      value: parseAsArgumentType(type, data?.value)
+    }]
+  })
+
+  UDPClient.send(target?.host, target?.port, message)
+}
+
 exports.activate = async () => {
   logger.debug('Activating OSC plugin')
 
   const htmlPath = await initWidget()
+
+  /*
+  Register the
+  plugin's types
+  */
+  types.init(htmlPath)
 
   /*
   Register the targets setting as
@@ -80,81 +238,15 @@ exports.activate = async () => {
     ]
   })
 
-  bridge.types.registerType({
-    id: 'bridge.osc.trigger',
-    name: 'Trigger',
-    category: 'OSC',
-    inherits: 'bridge.types.delayable',
-    properties: {
-      target: {
-        name: 'Target',
-        type: 'string',
-        'ui.group': 'OSC',
-        'ui.uri': `${htmlPath}?path=inspector/target`
-      },
-      path: {
-        name: 'Path',
-        type: 'string',
-        'ui.group': 'OSC'
-      },
-      type: {
-        name: 'Type',
-        type: 'enum',
-        enum: [
-          'String',
-          'Integer',
-          'Float',
-          'Boolean'
-        ],
-        default: 'String',
-        'ui.group': 'OSC'
-      },
-      value: {
-        name: 'Value',
-        type: 'string',
-        'ui.group': 'OSC'
-      }
+  /*
+  Listen for playing items
+  and handle OSC triggers
+  */
+  bridge.events.on('item.play', async item => {
+    if (item?.type === 'bridge.osc.trigger') {
+      playTrigger(item)
     }
   })
-
-  /**
-   * A reference to the current server
-   * @type { Server | undefined }
-   */
-  let server
-
-  /**
-   * Set up the server and start listen
-   * on a specific port
-   * @param { Number } port
-   */
-  function setupServer (port = DEFAULT_SERVER_PORT, address) {
-    teardownServer()
-
-    const transport = new UDPTransport()
-    transport.listen(port, address)
-
-    server = new Server(transport)
-    server.on('message', async osc => {
-      try {
-        await router.execute(osc.address, osc)
-      } catch (e) {
-        console.log(e)
-      }
-    })
-  }
-
-  /**
-   * Tear down the
-   * current server
-   */
-  function teardownServer () {
-    if (!server) {
-      return
-    }
-    server.teardown()
-    server = undefined
-  }
 
   /**
    * A snapshot of the current

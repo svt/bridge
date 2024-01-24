@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 Sveriges Television AB
+//
+// SPDX-License-Identifier: MIT
+
 const bridge = require('bridge')
 
 function init (htmlPath) {
