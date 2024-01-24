@@ -93,12 +93,32 @@ exports.editTarget = editTarget
 bridge.commands.registerCommand('osc.editTarget', editTarget)
 
 /**
+ * Get a single target by its id
+ * @param { String } targetId
+ * @returns { TargetDescription | undefined }
+ */
+async function getTarget (targetId) {
+  const targets = (await bridge.state.get(`plugins.${manifest.name}.targets`)) || []
+  if (!Array.isArray(targets)) {
+    return
+  }
+
+  return targets.find(target => target.id === targetId)
+}
+exports.getTarget = getTarget
+bridge.commands.registerCommand('osc.getTarget', getTarget)
+
+/**
  * Remove a target by its id
  * @param { String } targetId The id of the
  *                            target to remove
  */
 async function removeTarget (targetId) {
   const targetArray = await bridge.state.get(`${paths.STATE_SETTINGS_PATH}.targets`) || []
+  if (!Array.isArray(targetArray)) {
+    return
+  }
+
   const newTargetArray = [...targetArray]
     .filter(target => target.id !== targetId)
 
