@@ -49,6 +49,18 @@
         }
       },
       {
+        "id": "bridge.types.delayable",
+        "inherits": "bridge.types.root",
+        "properties": {
+          "delay": {
+            "name": "Delay",
+            "type": "string",
+            "ui.group": "Timing",
+            "ui.unit": "ms"
+          }
+        }
+      },
+      {
         "id": "bridge.types.media",
         "inherits": "bridge.types.root",
         "properties": {

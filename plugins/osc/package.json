@@ -19,7 +19,7 @@
     "settings": [
       {
         "group": "OSC",
-        "title": "OSC server (UDP)",
+        "title": "Server (UDP)",
         "description": "Activate the OSC server",
         "inputs": [
           {
@@ -31,7 +31,7 @@
       },
       {
         "group": "OSC",
-        "title": "OSC server port (UDP)",
+        "title": "Server port (UDP)",
         "inputs": [
           {
             "type": "number",
@@ -45,7 +45,7 @@
       },
       {
         "group": "OSC",
-        "title": "OSC server listen on all interfaces",
+        "title": "Server listen on all interfaces",
         "inputs": [
           {
             "type": "boolean",

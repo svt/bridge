@@ -4,21 +4,21 @@
 
 /**
  * @typedef {{
-*  host: String,
-*  port: Number
-* }} ConnectionDescription
-*
-* @typedef {{
-*  id: String?,
-*  name: String,
-*  host: String,
-*  port: Number
-* }} ServerDescription
-*/
+ *  host: String,
+ *  port: Number
+ * }} ConnectionDescription
+ *
+ * @typedef {{
+ *  id: String?,
+ *  name: String,
+ *  host: String,
+ *  port: Number
+ * }} ServerDescription
+ */
 
 /**
-* @type { import('../../api').Api }
-*/
+ * @type { import('../../api').Api }
+ */
 const bridge = require('bridge')
 
 const uuid = require('uuid')
