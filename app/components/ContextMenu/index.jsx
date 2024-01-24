@@ -18,6 +18,8 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
   const elRef = React.useRef()
   const openTimestampRef = React.useRef()
 
+  const [direction, setDirection] = React.useState('down')
+
   React.useEffect(() => {
     openTimestampRef.current = Date.now()
   }, [])
@@ -45,11 +47,24 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
     }
   }, [onClose])
 
+  /*
+  Make sure that the menu open in the direction
+  where it's got the most free space
+  */
+  React.useEffect(() => {
+    const viewportHeight = window.innerHeight
+    if (y > viewportHeight / 2) {
+      setDirection('up')
+    } else {
+      setDirection('down')
+    }
+  }, [y])
+
   return (
     <>
       {
         createPortal(
-          <div ref={elRef} className='ContextMenu u-theme--light' style={{ top: y, left: x }}>
+          <div ref={elRef} className={`ContextMenu u-theme--light ContextMenu--${direction}`} style={{ top: y, left: x }}>
             {children}
           </div>,
           document.body

@@ -30,3 +30,7 @@
     margin-top: 0;
   }
 }
+
+.ContextMenu--up {
+  transform: translate(0, -100%);
+}
