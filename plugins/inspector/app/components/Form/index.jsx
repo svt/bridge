@@ -127,6 +127,14 @@ export function Form () {
   const [groups, setGroups] = React.useState({})
 
   /*
+  Store the value that's currently being edited
+  for controlled inputs to read from in order to
+  avoid the delay caused by using the shared state
+  directly
+  */
+  const [localData, setLocalData] = React.useState({})
+
+  /*
   Find out what the common properties
   are to sort them into groups and
   render the inputs
@@ -141,6 +149,11 @@ export function Form () {
       const properties = getCommonProperties(typeObjects)
       const groups = orderByGroups(properties)
 
+      /*
+      Reset the local data as
+      the selection changes
+      */
+      setLocalData({})
       setGroups(groups)
     }
     getTypes()
@@ -155,13 +168,32 @@ export function Form () {
   function handleDataChange (path, value) {
     const data = {}
     objectPath.set(data, path, value)
+
+    setLocalData(data)
+
     for (const id of store.selection) {
       bridge.items.applyItem(id, { data })
     }
   }
 
-  function getValue (key) {
-    return objectPath.get(store?.items?.[0]?.data || {}, key)
+  /**
+   * Get the current value
+   * for an object path
+   * 
+   * This function will prefer using the locally
+   * stored value from within this component but
+   * fall back to the shared state
+   * 
+   * @param { String } path 
+   * @returns { any | undefined }
+   */
+  function getValue (path) {
+    const localValue = objectPath.get(localData, path)
+
+    if (localValue == null) {
+      return objectPath.get(store?.items?.[0]?.data || {}, path)
+    }
+    return localValue
   }
 
   /**
