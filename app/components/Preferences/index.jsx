@@ -56,6 +56,11 @@ export function Preferences ({ onClose = () => {} }) {
   */
   React.useEffect(() => {
     Object.entries(shared?._settings || {})
+      /*
+      Sort the groups alphabetically to
+      always keep the same order
+      */
+      .sort((a, b) => a[0].localeCompare(b[0]))
       .forEach(([groupName, settings]) => {
         pluginSettings.current.items.push({
           title: groupName,
