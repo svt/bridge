@@ -30,7 +30,7 @@ function render (state, assets) {
 
   return `
     <!DOCTYPE html>
-    <html lang="sv-SE">
+    <html lang="en-US">
       <head>
         <base href="/" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=0">
