@@ -119,7 +119,7 @@ module.exports = [
           ]
         },
         {
-          test: /\.(gif|png|jp(e*)g|woff|woff2)$/,
+          test: /\.(svg|gif|png|jp(e*)g|woff|woff2)$/,
           type: 'asset/resource'
         }
       ]

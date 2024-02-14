@@ -125,7 +125,7 @@ select {
 select {
   color: inherit;
   border: 1px solid var(--base-color--shade);
-  background: none;
+  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center transparent;
 
   -webkit-appearance: none;
   appearance: none;
@@ -138,7 +138,7 @@ select {
 }
 
 select:focus {
-  background: var(--base-color--background);
+  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--background);
 }
 
 /* Headings */
