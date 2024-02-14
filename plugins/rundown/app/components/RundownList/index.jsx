@@ -178,33 +178,6 @@ export function RundownList ({
   }, [itemIds, selection])
 
   /*
-  Prevent the page to scroll
-  from using the arrow-keys
-  as it interferes with the
-  selection and makes scrolling
-  very unintuitive
-
-  Scrolling is instead implemented
-  upon selection of an item
-  */
-  React.useEffect(() => {
-    if (!elRef.current) {
-      return
-    }
-
-    function onKeyDown (e) {
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        e.preventDefault()
-      }
-    }
-
-    elRef.current.addEventListener('keydown', onKeyDown)
-    return () => {
-      elRef.current.removeEventListener('keydown', onKeyDown)
-    }
-  }, [elRef.current])
-
-  /*
   Try to scroll to the selection
   as soon as the list loads
 
@@ -275,6 +248,22 @@ export function RundownList ({
     e.stopPropagation()
   }
 
+  /*
+  Prevent the page to scroll
+  from using the arrow-keys
+  as it interferes with the
+  selection and makes scrolling
+  very unintuitive
+
+  Scrolling is instead implemented
+  upon selection of an item
+  */
+  function handleKeyDown (e) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault()
+    }
+  }
+
   return (
     <div
       ref={elRef}
@@ -288,6 +277,7 @@ export function RundownList ({
       for div-elements
       */
       onDragOver={e => e.preventDefault()}
+      onKeyDown={e => handleKeyDown(e)}
     >
       {
         itemIds.length === 0 &&

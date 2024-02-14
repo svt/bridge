@@ -34,14 +34,6 @@ export function RundownListItem ({
 
   const [indicateIsPlaying, setIndicateIsPlaying] = React.useState(false)
 
-  React.useEffect(() => {
-    async function updateSelection () {
-      const selection = await bridge.client.getSelection()
-      setSelection(selection)
-    }
-    updateSelection()
-  }, [state])
-
   function handleDragOver (e) {
     e.preventDefault()
     setIsDraggedOver(true)
@@ -67,12 +59,14 @@ export function RundownListItem ({
     setContextPos([e.pageX, e.pageY])
   }
 
-  function handleDelete (ids) {
-    bridge.items.deleteItems(ids)
+  async function handleDelete () {
+    const selection = await bridge.client.getSelection()
+    bridge.items.deleteItems(selection)
   }
 
-  async function handleCopy (ids) {
-    const string = await bridge.commands.executeCommand('rundown.copyItems', ids)
+  async function handleCopy () {
+    const selection = await bridge.client.getSelection()
+    const string = await bridge.commands.executeCommand('rundown.copyItems', selection)
     clipboard.copyText(string)
   }
 
@@ -103,17 +97,25 @@ export function RundownListItem ({
       return
     }
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setIndicateIsPlaying(false)
     }, INDICATE_PLAYING_TIMEOUT_MS)
 
     setIndicateIsPlaying(true)
+
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [item?.state, item?.didStartPlayingAt])
 
   async function handlePaste () {
     const items = await clipboard.readJson()
     bridge.commands.executeCommand('rundown.pasteItems', items, rundownId, index + 1)
   }
+
+  const multipleItemsSelected = React.useMemo(() => {
+    return (state?._connections?.[bridge.client.getIdentity()]?.selection || []).length > 1
+  }, [state])
 
   return (
     <div
@@ -142,9 +144,9 @@ export function RundownListItem ({
         contextPos
           ? (
             <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
-              <ContextMenuItem text='Copy' onClick={() => handleCopy(selection)} />
+              <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
               {
-                selection.length <= 1 &&
+                !multipleItemsSelected &&
                 <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
               }
               <ContextMenuItem text='Paste' onClick={() => handlePaste()} />
@@ -154,10 +156,10 @@ export function RundownListItem ({
               </ContextMenuItem>
               <ContextMenuItem text='Create reference' onClick={() => handleCreateReference()} />
               <ContextMenuDivider />
-              <ContextMenuItem text='Remove' onClick={() => handleDelete(selection)} />
+              <ContextMenuItem text='Remove' onClick={() => handleDelete()} />
               {
                 ExtraContextItemsComponent &&
-                selection.length <= 1 && (
+                !multipleItemsSelected && (
                   <>
                     <ContextMenuDivider />
                     <ExtraContextItemsComponent item={item} />
