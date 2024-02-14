@@ -212,6 +212,7 @@ async function removeServer (serverId) {
   }
   server.teardown()
   casparManager.remove(serverId)
+
   const serverArray = await bridge.state.get(`${paths.STATE_SETTINGS_PATH}.servers`) || []
   const newServerArray = [...serverArray]
     .filter(server => server.id !== serverId)
