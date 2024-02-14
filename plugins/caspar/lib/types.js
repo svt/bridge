@@ -114,6 +114,7 @@ function init (htmlPath) {
         name: 'Duration',
         type: 'string',
         default: '0',
+        allowsVariables: true,
         'ui.group': 'Transition',
         'ui.unit': 'frames'
       },

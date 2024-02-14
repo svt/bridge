@@ -271,14 +271,23 @@ input[type="checkbox"]:checked::before {
 
 /* Hints */
 
+[data-hint] {
+  position: relative;
+}
+
 [data-hint]:hover::before {
   content: attr(data-hint);
   position: absolute;
+  top: 0;
+  left: 0;
+
   padding: 5px 9px;
 
   color: black;
   background: white;
   border-radius: 6px;
+
+  white-space: nowrap;
 
   transform: translate(0, 5px);
   z-index: 10;

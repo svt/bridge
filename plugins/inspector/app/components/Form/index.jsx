@@ -211,7 +211,7 @@ export function Form () {
           <label id={id} className='Form-inputLabel'>{property.name}</label>
           {
             property.allowsVariables &&
-            <div className='Form-inputVariableHint' data-hint='Supports variables' data-hint-alignment='right'>=</div>
+            <div className='Form-inputVariableHint' data-hint='Supports variables as $(name)' data-hint-alignment='right'>=</div>
           }
         </div>
         {

@@ -55,6 +55,7 @@
           "delay": {
             "name": "Delay",
             "type": "string",
+            "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms"
           }
@@ -73,6 +74,7 @@
           "delay": {
             "name": "Delay",
             "type": "string",
+            "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms"
           }
