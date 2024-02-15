@@ -13,7 +13,7 @@ import { ContextAddMenu } from '../ContextAddMenu'
 
 import * as clipboard from '../../utils/clipboard'
 
-const INDICATE_PLAYING_TIMEOUT_MS = 500
+const INDICATE_PLAYING_TIMEOUT_MS = 100
 
 export function RundownListItem ({
   children,
@@ -30,7 +30,6 @@ export function RundownListItem ({
 
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
   const [contextPos, setContextPos] = React.useState()
-  const [selection, setSelection] = React.useState([])
 
   const [indicateIsPlaying, setIndicateIsPlaying] = React.useState(false)
 
@@ -117,6 +116,10 @@ export function RundownListItem ({
     return (state?._connections?.[bridge.client.getIdentity()]?.selection || []).length > 1
   }, [state])
 
+  const isLastPlayed = React.useMemo(() => {
+    return (state?.plugins?.['bridge-plugin-rundown']?.lastPlayedItems || {})[item.id]
+  }, [state, item])
+
   return (
     <div
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''}`}
@@ -171,6 +174,10 @@ export function RundownListItem ({
           : <></>
       }
       {children}
+      {
+        isLastPlayed &&
+          <div className='RundownListItem-lastPlayed' />
+      }
     </div>
   )
 }

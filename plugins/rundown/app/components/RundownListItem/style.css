@@ -73,3 +73,8 @@
 .RundownListItem.is-selected::before {
   opacity: 1;
 }
+
+.RundownListItem-lastPlayed {
+  width: 4px;
+  background: var(--base-color--accent1);
+}

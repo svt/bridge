@@ -10,6 +10,8 @@ const bridge = require('bridge')
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
+const Accumulator = require('./lib/Accumulator')
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -59,7 +61,8 @@ async function initSettings () {
           },
           scrolling: {
             centered: true
-          }
+          },
+          lastPlayedItems: {}
         }
       }
     }
@@ -79,6 +82,31 @@ exports.activate = async () => {
   async function getItems (itemId) {
     return await bridge.state.get(`items.${itemId}.children`) || []
   }
+
+  const lastPlayedItemsAccumulator = new Accumulator(100, items => {
+    const obj = {}
+    for (const item of items) {
+      obj[item] = true
+    }
+
+    bridge.state.apply({
+      plugins: {
+        [manifest.name]: {
+          lastPlayedItems: {
+            $replace: obj
+          }
+        }
+      }
+    })
+  })
+
+  /*
+  Update the 'lastPlayedItems' property whenever
+  an item is played to be able to show an indicator
+  */
+  bridge.events.on('item.play', async item => {
+    lastPlayedItemsAccumulator.add(item.id)
+  })
 
   /*
   Clean up any parent-child relations
