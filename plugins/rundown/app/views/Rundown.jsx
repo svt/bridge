@@ -97,16 +97,17 @@ export function Rundown () {
   }
 
   React.useEffect(() => {
-    function onShortcut (e) {
-      switch (e.detail.id) {
+    function onShortcut (shortcut) {
+      switch (shortcut) {
         case 'paste':
           handlePaste()
           break
       }
     }
-    window.addEventListener('shortcut', onShortcut)
+
+    bridge.events.on('shortcut', onShortcut)
     return () => {
-      window.removeEventListener('shortcut', onShortcut)
+      bridge.events.off('shortcut', onShortcut)
     }
   }, [rundownId, shared])
 

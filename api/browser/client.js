@@ -5,12 +5,14 @@
 const MissingIdentityError = require('../error/MissingIdentityError')
 const state = require('../state')
 
+const LazyValue = require('../classes/LazyValue')
+
 /**
  * The client's
  * current identity
- * @type { String? }
+ * @type { LazyValue }
  */
-let _identity
+const _identity = new LazyValue()
 
 /**
  * @private
@@ -18,7 +20,7 @@ let _identity
  * @param { String } identity
  */
 function setIdentity (identity) {
-  _identity = identity
+  _identity.set(identity)
 }
 
 /**
@@ -26,7 +28,19 @@ function setIdentity (identity) {
  * @returns { String? }
  */
 function getIdentity () {
-  return _identity
+  return _identity.get()
+}
+
+/**
+ * Await the identity to be set,
+ * will return immediately if an
+ * identity is already set
+ * or otherwise return a
+ * Promise
+ * @returns { String | Promise.<String> }
+ */
+function awaitIdentity () {
+  return _identity.getLazy()
 }
 
 /**
@@ -186,6 +200,7 @@ async function getSelection () {
 module.exports = {
   setIdentity,
   getIdentity,
+  awaitIdentity,
   setSelection,
   getSelection,
   addSelection,

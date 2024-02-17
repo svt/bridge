@@ -13,9 +13,9 @@ export function Inspector () {
   within the inspector
   */
   React.useEffect(() => {
-    async function onShortcut (e) {
+    async function onShortcut (shortcut) {
       const selection = await bridge.client.getSelection()
-      switch (e.detail.id) {
+      switch (shortcut) {
         case 'bridge.rundown.play':
           selection.forEach(itemId => bridge.items.playItem(itemId))
           break
@@ -25,9 +25,9 @@ export function Inspector () {
       }
     }
 
-    window.addEventListener('shortcut', onShortcut)
+    bridge.events.on('shortcut', onShortcut)
     return () => {
-      window.removeEventListener('shortcut', onShortcut)
+      bridge.events.off('shortcut', onShortcut)
     }
   }, [store?.selection])
 

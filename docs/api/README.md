@@ -357,9 +357,8 @@ import bridge from 'bridge'
 
 const el = document.createElement('div')
 
-el.addEventListener('shortcut', e => {
-  console.log('Shortcut was triggered with id:', e.detail.id)
-
+bridge.events.on('shortcut', id => {
+  console.log('Shortcut was triggered with id:', id)
   // React to action
 })
 ```

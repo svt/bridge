@@ -41,8 +41,8 @@ export function RundownGroupItem ({ index, item }) {
   }
 
   React.useEffect(() => {
-    function onShortcut (e) {
-      switch (e.detail.id) {
+    function onShortcut (shortcut) {
+      switch (shortcut) {
         case 'bridge.rundown.collapse':
           setCollapsed(true)
           break
@@ -52,9 +52,9 @@ export function RundownGroupItem ({ index, item }) {
       }
     }
 
-    window.addEventListener('shortcut', onShortcut)
+    bridge.events.on('shortcut', onShortcut)
     return () => {
-      window.removeEventListener('shortcut', onShortcut)
+      bridge.events.off('shortcut', onShortcut)
     }
   }, [elRef, item])
 

@@ -57,6 +57,19 @@ function normalize (key) {
   return key
 }
 
+async function dispatchShortcutEvent (target, id) {
+/*   const event = new window.CustomEvent('shortcut', {
+    detail: {
+      id: id
+    },
+    bubbles: true
+  })
+  target.dispatchEvent(event) */
+
+  const bridge = await api.load()
+  bridge.events.emitLocally('shortcut', id)
+}
+
 /**
  * Register a key down event,
  * will try to find a shortcut
@@ -87,13 +100,7 @@ export async function registerKeyDown (e) {
   }
 
   for (const shortcut of matchedShortcuts) {
-    const event = new window.CustomEvent('shortcut', {
-      detail: {
-        id: shortcut.id
-      },
-      bubbles: true
-    })
-    e.target.dispatchEvent(event)
+    dispatchShortcutEvent(e.target, shortcut.id)
   }
 
   /*
@@ -113,3 +120,12 @@ export async function registerKeyDown (e) {
 export function registerKeyUp (e) {
   keys.clear()
 }
+
+;(async function () {
+  const bridge = await api.load()
+  const identity = await bridge.client.awaitIdentity()
+
+  bridge.events.on(`local.${identity}.shortcut`, shortcut => {
+    dispatchShortcutEvent(document.activeElement, shortcut)
+  })
+})()
