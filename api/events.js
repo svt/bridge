@@ -195,6 +195,10 @@ function off (event, handler) {
   if (handlers.length === 0) {
     localHandlers.delete(event)
 
+    if (!remoteHandlers.has(event)) {
+      return
+    }
+
     /*
     Remove the command completely as we don't
     have any handlers for this event anymore

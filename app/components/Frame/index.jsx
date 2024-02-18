@@ -144,6 +144,32 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
   }, [src, api, wrapperRef.current])
 
   /*
+  Update the bridgeFrameHasFocus property
+  on the frame's window object whenever
+  the frame changes focus
+  */
+  React.useEffect(() => {
+    const contentWindow = frameRef.current?.contentWindow
+    if (!contentWindow) {
+      return
+    }
+    function onFocus () {
+      contentWindow.bridgeFrameHasFocus = true
+    }
+    contentWindow.addEventListener('focus', onFocus)
+
+    function onBlur () {
+      contentWindow.bridgeFrameHasFocus = false
+    }
+    contentWindow.addEventListener('blur', onBlur)
+
+    return () => {
+      contentWindow.removeEventListener('focus', onFocus)
+      contentWindow.removeEventListener('blur', onBlur)
+    }
+  }, [frameRef.current?.contentWindow])
+
+  /*
   Clean up all event listeners 
   added by this frame
   */

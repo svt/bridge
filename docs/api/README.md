@@ -347,15 +347,10 @@ Keyboard shortcuts SHOULD be registered with the API to give the user an index o
 Shortcut triggers can be overridden by the user in the settings panel.
 
 ### Listening to keyboard shortcuts
-Keyboard shortcuts are emitted using **DOM events** and **not `bridge.events`**.
-This is because keyboard shortcuts are only an alias for keyboard events and should be handled locally.
-
-Listen to a registered shortcut by subscribing to the `shortcut` DOM event, such as:
+Listen to a registered shortcut by subscribing to the `shortcut` event, as such:
 
 ```javascript
 import bridge from 'bridge'
-
-const el = document.createElement('div')
 
 bridge.events.on('shortcut', id => {
   console.log('Shortcut was triggered with id:', id)
@@ -402,6 +397,6 @@ import bridge from 'bridge'
 bridge.shortcuts.registerShortcut({
   id: 'myPlugin.shortcuts.myShortcut',
   description: 'Trigger my command',
-  trigger: ['Shift', 'Meta', 'A']
+  trigger: ['Shift', 'CommandOrControl', 'A']
 })
 ```
