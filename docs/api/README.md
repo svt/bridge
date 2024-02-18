@@ -62,12 +62,16 @@ bridge.events.on('item.stop', item => {
 | Event | Description |
 | ----- | ----------- |
 | `state.change` | Emitted every time the remote state changes |
-| `client.select` | Emitted locally, i.e. only within the one client when a selection is made |
 | `item.play` | Emitted when an item is played, after an optional delay |
 | `item.stop` | Emitted when an item is stopped |
+| `shortcut` | Emitted when a shortcut is triggered |
 
 ### `bridge.events.emit(event, ...parameters)`
 Emit an event with or without any data
+
+### `bridge.events.emitLocally(event, ...parameters)`
+Emit an event with or without any data but only to handlers registered in the local context  
+Events emitted this way will not reach other processes
 
 ### `bridge.events.on(event, handler)`
 Listen for an event
