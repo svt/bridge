@@ -23,6 +23,11 @@
         "id": "paste",
         "description": "Paste the contents of the clipboard",
         "trigger": ["CommandOrControl", "V"]
+      },
+      {
+        "id": "selectAll",
+        "description": "Select all",
+        "trigger": ["CommandOrControl", "A"]
       }
     ]
   },
