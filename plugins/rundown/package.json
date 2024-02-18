@@ -40,32 +40,39 @@
     "shortcuts": [
       {
         "id": "bridge.rundown.play",
+        "action": "play",
         "description": "Play the selected item",
         "trigger": ["F2"]
       },
       {
         "id": "bridge.rundown.stop",
+        "action": "stop",
         "description": "Stop the selected item",
         "trigger": ["F1"]
       },
       {
         "id": "bridge.rundown.next",
+        "action": "bridge.rundown.next",
         "trigger": ["ArrowDown"]
       },
       {
         "id": "bridge.rundown.previous",
+        "action": "bridge.rundown.previous",
         "trigger": ["ArrowUp"]
       },
       {
         "id": "bridge.rundown.collapse",
+        "action": "bridge.rundown.collapse",
         "trigger": ["ArrowLeft"]
       },
       {
         "id": "bridge.rundown.expand",
+        "action": "bridge.rundown.expand",
         "trigger": ["ArrowRight"]
       },
       {
         "id": "bridge.rundown.select-multiple",
+        "action": "bridge.rundown.select-multiple",
         "trigger": ["CommandOrControl"]
       }
     ]

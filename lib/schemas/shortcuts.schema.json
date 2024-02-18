@@ -9,6 +9,10 @@
       "type": "string",
       "description": "A globally unique identifier for the shortcut"
     },
+    "action": {
+      "type": "string",
+      "description": "The identifier of the action to perform"
+    },
     "description": {
       "type": "string",
       "description": "A human readable description of the shortcut, this will be shown in the settings panel"
@@ -75,7 +79,9 @@
           "ArrowDown",
           "ArrowLeft",
           "ArrowRight",
-          "CommandOrControl"
+          "CommandOrControl",
+          "Backspace",
+          "Delete"
         ]
       }
     }

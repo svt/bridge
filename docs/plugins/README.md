@@ -42,6 +42,7 @@ Contributions can be added either through `package.json` or using the matching a
     "shortcuts": [
       {
         "id": "my-plugin.shortcuts.my-shortcut",
+        "action": "my-plugin.my-action",
         "description": "Executes my cool action",
         "trigger": ["Shift", "A"]
       }

@@ -62,9 +62,9 @@ function normalize (key) {
   return key
 }
 
-async function dispatchShortcutEvent (id) {
+async function dispatchShortcutEvent (action) {
   const bridge = await api.load()
-  bridge.events.emitLocally('shortcut', id)
+  bridge.events.emitLocally('shortcut', action)
 }
 
 /**
@@ -102,7 +102,7 @@ export async function registerKeyDown (e) {
   }
 
   for (const shortcut of matchedShortcuts) {
-    dispatchShortcutEvent(shortcut.id)
+    dispatchShortcutEvent(shortcut.action)
   }
 
   /*
@@ -122,12 +122,3 @@ export async function registerKeyDown (e) {
 export function registerKeyUp (e) {
   keys.clear()
 }
-
-;(async function () {
-  const bridge = await api.load()
-  const identity = await bridge.client.awaitIdentity()
-
-  bridge.events.on(`local.${identity}.shortcut`, shortcut => {
-    dispatchShortcutEvent(shortcut)
-  })
-})()
