@@ -60,6 +60,31 @@ function scrollIntoView (el, animate = true, centered = true) {
   })
 }
 
+/**
+ * Delete the current selection
+ * 
+ * Fetch the selection from the main thread before doing the deletion as
+ * we want to make sure we don't delete the wrong items from an unsynced state
+ * 
+ * @returns { Promise.<void> }
+ */
+async function deleteSelection () {
+  const selection = await bridge.client.getSelection()
+  bridge.items.deleteItems(selection)
+}
+
+/**
+ * Copy a string representation of the
+ * currently selected items to the clipboard
+ * 
+ * @returns { Promise.<void> }
+ */
+async function copySelection () {
+  const selection = await bridge.client.getSelection()
+  const str = await bridge.commands.executeCommand('rundown.copyItems', selection)
+  await clipboard.copyText(str)
+}
+
 export function RundownList ({
   rundownId = '',
   className = '',
@@ -141,15 +166,6 @@ export function RundownList ({
     scrollIntoView(items[newIndex], true, scrollSettings?.centered)
   }
 
-  /**
-   * Copy a string representation of the
-   * currently selected items to the clipboard
-   */
-  async function copySelection () {
-    const str = await bridge.commands.executeCommand('rundown.copyItems', selection)
-    await clipboard.copyText(str)
-  }
-
   React.useEffect(() => {
     function onShortcut (shortcut) {
       /*
@@ -168,7 +184,7 @@ export function RundownList ({
           select(-1)
           break
         case 'delete':
-          bridge.items.deleteItems(selection)
+          deleteSelection()
           break
         case 'play':
           selection.forEach(itemId => bridge.items.playItem(itemId))
