@@ -152,6 +152,14 @@ export function RundownList ({
 
   React.useEffect(() => {
     function onShortcut (shortcut) {
+      /*
+      Don't execute any shortcuts
+      if the frame isn't focused
+      */
+      if (!window.bridgeFrameHasFocus) {
+        return
+      }
+
       switch (shortcut) {
         case 'bridge.rundown.next':
           select(1)

@@ -350,10 +350,23 @@ Shortcut triggers can be overridden by the user in the settings panel.
 Listen to a registered shortcut by subscribing to the `shortcut` event.  
 When triggered the action will be provided as the listeners first argument as such:
 
+**Note: The shortcut event will ONLY be fired inside widgets, not in the plugin's main script.**
+
 ```javascript
 import bridge from 'bridge'
 
 bridge.events.on('shortcut', action => {
+  /*
+  It's your responibility to abort actions if they're not
+  expected to be triggered if the widget isn't in focus
+
+  Check the `bridgeFrameHasFocus` property on the window
+  object before reacting to the action
+  */
+  if (!window.bridgeFrameHasFocus) {
+    return
+  }
+
   console.log('Shortcut was triggered for action:', action)
   // React to action
 })
