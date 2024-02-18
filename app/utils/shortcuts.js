@@ -4,6 +4,11 @@
 
 import * as api from '../api'
 
+const TRANSLATIONS = {
+  Meta: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
+  Control: () => 'CommandOrControl'
+}
+
 /**
  * A set for keeping track of the
  * currently pressed keys
@@ -57,6 +62,11 @@ function normalize (key) {
   return key
 }
 
+async function dispatchShortcutEvent (id) {
+  const bridge = await api.load()
+  bridge.events.emitLocally('shortcut', id)
+}
+
 /**
  * Register a key down event,
  * will try to find a shortcut
@@ -71,7 +81,12 @@ export async function registerKeyDown (e) {
   const bridge = await api.load()
   const shortcuts = await bridge.shortcuts.getShortcuts()
 
-  keys.add(normalize(e.key))
+  const normalized = normalize(e.key)
+  const translated = TRANSLATIONS[normalized]
+    ? TRANSLATIONS[normalized]()
+    : normalized
+
+  keys.add(translated)
 
   const matchedShortcuts = shortcuts.filter(shortcut => {
     for (const trigger of shortcut.trigger) {
@@ -87,13 +102,7 @@ export async function registerKeyDown (e) {
   }
 
   for (const shortcut of matchedShortcuts) {
-    const event = new window.CustomEvent('shortcut', {
-      detail: {
-        id: shortcut.id
-      },
-      bubbles: true
-    })
-    e.target.dispatchEvent(event)
+    dispatchShortcutEvent(shortcut.id)
   }
 
   /*
@@ -113,3 +122,12 @@ export async function registerKeyDown (e) {
 export function registerKeyUp (e) {
   keys.clear()
 }
+
+;(async function () {
+  const bridge = await api.load()
+  const identity = await bridge.client.awaitIdentity()
+
+  bridge.events.on(`local.${identity}.shortcut`, shortcut => {
+    dispatchShortcutEvent(shortcut)
+  })
+})()

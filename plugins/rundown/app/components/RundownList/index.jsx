@@ -151,8 +151,8 @@ export function RundownList ({
   }
 
   React.useEffect(() => {
-    function onShortcut (e) {
-      switch (e.detail.id) {
+    function onShortcut (shortcut) {
+      switch (shortcut) {
         case 'bridge.rundown.next':
           select(1)
           break
@@ -171,9 +171,9 @@ export function RundownList ({
       }
     }
 
-    window.addEventListener('shortcut', onShortcut)
+    bridge.events.on('shortcut', onShortcut)
     return () => {
-      window.removeEventListener('shortcut', onShortcut)
+      bridge.events.off('shortcut', onShortcut)
     }
   }, [itemIds, selection])
 

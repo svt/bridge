@@ -195,11 +195,13 @@ export function FrameComponent ({ data, onUpdate }) {
     }
     function onFocus () {
       setHasFocus(true)
+      contentWindow.bridgeFrameHasFocus = true
     }
     contentWindow.addEventListener('focus', onFocus)
 
     function onBlur () {
       setHasFocus(false)
+      contentWindow.bridgeFrameHasFocus = false
     }
     contentWindow.addEventListener('blur', onBlur)
 

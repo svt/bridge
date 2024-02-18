@@ -96,17 +96,36 @@ export function Rundown () {
     }
   }
 
+  function handleSelectAll () {
+    const elements = elRef.current.querySelectorAll('[data-item-id]')
+    const ids = []
+
+    for (const element of elements) {
+      ids.push(element.dataset.itemId)
+    }
+
+    bridge.client.setSelection(ids)
+  }
+
   React.useEffect(() => {
-    function onShortcut (e) {
-      switch (e.detail.id) {
+    function onShortcut (shortcut) {
+      if (!window.bridgeFrameHasFocus) {
+        return
+      }
+
+      switch (shortcut) {
         case 'paste':
           handlePaste()
           break
+        case 'selectAll':
+          handleSelectAll()
+          break
       }
     }
-    window.addEventListener('shortcut', onShortcut)
+
+    bridge.events.on('shortcut', onShortcut)
     return () => {
-      window.removeEventListener('shortcut', onShortcut)
+      bridge.events.off('shortcut', onShortcut)
     }
   }, [rundownId, shared])
 

@@ -37,6 +37,35 @@ function appendToMapArray (map, key, item) {
 }
 
 /**
+ * @private
+ *
+ * Call all local handlers for an event,
+ * this should be called whenever an event
+ * is emitted so that all listeners
+ * are executed
+ *
+ * @param { String } event The name of the event to emit
+ * @param  { ...any } args Any data to pass along with the event
+ */
+async function callLocalHandlers (event, ...args) {
+  let _args = args
+
+  /*
+  Let any intercepts do their thing
+  before calling the event handlers
+  */
+  const interceptFns = intercepts.get(event) || []
+  for (const { fn } of interceptFns) {
+    _args = await fn(..._args)
+  }
+
+  const handlers = localHandlers.get(event)
+  for (const { handler } of handlers) {
+    handler(..._args)
+  }
+}
+
+/**
  * Emit an event
  * @param { String } event The name of the event to emit
  * @param  { ...any } args Any data to pass along with the event
@@ -45,6 +74,21 @@ function emit (event, ...args) {
   commands.executeRawCommand('events.emit', event, ...args)
 }
 exports.emit = emit
+
+/**
+ * Emit an event but only call local handlers
+ *
+ * This will NOT trigger any listeners outside
+ * this client. If that is what you want,
+ * use the standard 'emit' function instead.
+ *
+ * @param { String } event The name of the event to emit
+ * @param  { ...any } args Any data to pass along with the event
+ */
+function emitLocally (event, ...args) {
+  callLocalHandlers(event, ...args)
+}
+exports.emitLocally = emitLocally
 
 /**
  * Register a function that intercepts a certain event
@@ -110,21 +154,7 @@ async function on (event, handler, opts) {
     all local handlers of the event
     */
     commands.registerCommand(command, async (...args) => {
-      let _args = args
-
-      /*
-      Let any intercepts do their thing
-      before calling the event handlers
-      */
-      const interceptFns = intercepts.get(event) || []
-      for (const { fn } of interceptFns) {
-        _args = await fn(..._args)
-      }
-
-      const handlers = localHandlers.get(event)
-      for (const { handler } of handlers) {
-        handler(..._args)
-      }
+      callLocalHandlers(event, ...args)
     }, false)
 
     const handlerId = await commands.executeCommand('events.triggerCommand', event, command)
@@ -164,6 +194,10 @@ function off (event, handler) {
 
   if (handlers.length === 0) {
     localHandlers.delete(event)
+
+    if (!remoteHandlers.has(event)) {
+      return
+    }
 
     /*
     Remove the command completely as we don't
