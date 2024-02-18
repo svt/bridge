@@ -159,10 +159,13 @@ export function RundownList ({
         case 'bridge.rundown.previous':
           select(-1)
           break
-        case 'bridge.rundown.play':
+        case 'delete':
+          bridge.items.deleteItems(selection)
+          break
+        case 'play':
           selection.forEach(itemId => bridge.items.playItem(itemId))
           break
-        case 'bridge.rundown.stop':
+        case 'stop':
           selection.forEach(itemId => bridge.items.stopItem(itemId))
           break
         case 'copy':

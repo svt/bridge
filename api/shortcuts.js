@@ -5,6 +5,7 @@
 /**
  * @typedef {{
  *   id: String,
+ *   action: String,
  *   description: String,
  *   trigger: String[]
  * }} ShortcutSpec

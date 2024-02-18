@@ -16,18 +16,33 @@
     "shortcuts": [
       {
         "id": "copy",
+        "action": "copy",
         "description": "Copy selected content into the clipboard",
         "trigger": ["CommandOrControl", "C"]
       },
       {
         "id": "paste",
+        "action": "paste",
         "description": "Paste the contents of the clipboard",
         "trigger": ["CommandOrControl", "V"]
       },
       {
         "id": "selectAll",
+        "action": "selectAll",
         "description": "Select all",
         "trigger": ["CommandOrControl", "A"]
+      },
+      {
+        "id": "delete",
+        "action": "delete",
+        "description": "Delete",
+        "trigger": ["Delete"]
+      },
+      {
+        "id": "deleteWithBackspace",
+        "action": "delete",
+        "description": "Delete",
+        "trigger": ["CommandOrControl", "Backspace"]
       }
     ]
   },
