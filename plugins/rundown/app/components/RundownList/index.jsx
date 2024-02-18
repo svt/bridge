@@ -85,6 +85,24 @@ async function copySelection () {
   await clipboard.copyText(str)
 }
 
+/**
+ * Play the currently selected items
+ * @returns { Promise.<void> }
+ */
+async function playSelection () {
+  const selection = await bridge.client.getSelection()
+  selection.forEach(itemId => bridge.items.playItem(itemId))
+}
+
+/**
+ * Stop the currently selected items
+ * @returns { Promise.<void> }
+ */
+async function stopSelection () {
+  const selection = await bridge.client.getSelection()
+  selection.forEach(itemId => bridge.items.stopItem(itemId))
+}
+
 export function RundownList ({
   rundownId = '',
   className = '',
@@ -187,10 +205,10 @@ export function RundownList ({
           deleteSelection()
           break
         case 'play':
-          selection.forEach(itemId => bridge.items.playItem(itemId))
+          playSelection()
           break
         case 'stop':
-          selection.forEach(itemId => bridge.items.stopItem(itemId))
+          stopSelection()
           break
         case 'copy':
           copySelection()
