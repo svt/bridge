@@ -1,4 +1,5 @@
 import { PreferencesClearStateInput } from '../PreferencesClearStateInput'
+import { PreferencesSegmentedInput } from '../PreferencesSegmentedInput'
 import { PreferencesShortcutsInput } from '../PreferencesShortcutsInput'
 import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
@@ -15,6 +16,7 @@ import { PreferencesFrameInput } from '../PreferencesFrameInput'
  */
 export const inputComponents = {
   shortcuts: PreferencesShortcutsInput,
+  segmented: PreferencesSegmentedInput,
   boolean: PreferencesBooleanInput,
   version: PreferencesVersionInput,
   string: PreferencesStringInput,
