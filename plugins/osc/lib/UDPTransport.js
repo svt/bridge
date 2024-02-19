@@ -6,46 +6,30 @@ const Transport = require('./Transport')
 
 const dgram = require('node:dgram')
 
-/**
- * @typedef {{
- *  ipAddress: String,
- *  port: String
- * }} UDPTransportOptions
- */
 class UDPTransport extends Transport {
-  /**
-   * @private
-   * @type { UDPTransportOptions }
-   */
-  _opts
-
   /**
    * @private
    * @type { dgram.Socket }
    */
-  _socket
+  #socket
 
-  /**
-   * @param { UDPTransportOptions } opts
-   */
-  constructor (opts = {}) {
+  constructor () {
     super()
-    this._opts = opts
-    this._socket = dgram.createSocket('udp4')
+    this.#socket = dgram.createSocket('udp4')
 
-    this._socket.on('message', (msg, rinfo) => {
+    this.#socket.on('message', msg => {
       this.emit('message', msg)
     })
   }
 
   teardown () {
     super.teardown()
-    this._socket.close()
-    this._socket.removeAllListeners()
+    this.#socket.close()
+    this.#socket.removeAllListeners()
   }
 
   listen (port, address) {
-    this._socket.bind(port, address)
+    this.#socket.bind(port, address)
   }
 }
 

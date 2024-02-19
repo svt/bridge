@@ -15,6 +15,7 @@ const manifest = require('./package.json')
 const Server = require('./lib/Server')
 const UDPClient = require('./lib/UDPClient')
 const UDPTransport = require('./lib/UDPTransport')
+const TCPTransport = require('./lib/TCPTransport')
 
 const handlers = require('./lib/handlers')
 const commands = require('./lib/commands')
@@ -59,6 +60,11 @@ const DEFAULT_SERVER_PORT = 8080
  * @type { String[] }
  */
 const VALID_OSC_ARG_TYPES = ['string', 'integer', 'float', 'boolean']
+
+const SERVER_MODES = {
+  1: 'udp',
+  2: 'tcp'
+}
 
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
@@ -138,10 +144,16 @@ let server
  * on a specific port
  * @param { Number } port
  */
-function setupServer (port = DEFAULT_SERVER_PORT, address) {
+function setupServer (port = DEFAULT_SERVER_PORT, address, mode) {
   teardownServer()
 
-  const transport = new UDPTransport()
+  let transport
+  if (mode === 'udp') {
+    transport = new UDPTransport()
+  } else if (mode === 'tcp') {
+    transport = new TCPTransport()
+  }
+
   transport.listen(port, address)
 
   server = new Server(transport)
@@ -269,10 +281,10 @@ exports.activate = async () => {
     if (serverConfigSnapshot !== JSON.stringify(serverConfig)) {
       serverConfigSnapshot = JSON.stringify(serverConfig)
 
-      if (!serverConfig?.active) {
+      if (!serverConfig?.mode) {
         teardownServer()
       } else {
-        setupServer(serverConfig?.port, serverConfig?.bindToAll ? '0.0.0.0' : '127.0.0.1')
+        setupServer(serverConfig?.port, serverConfig?.bindToAll ? '0.0.0.0' : '127.0.0.1', SERVER_MODES[serverConfig?.mode])
       }
     }
   })
@@ -283,8 +295,8 @@ exports.activate = async () => {
   */
   const serverConfig = await bridge.state.get(`plugins.${manifest.name}.settings.server`)
   serverConfigSnapshot = JSON.stringify(serverConfig)
-  if (serverConfig?.active) {
-    setupServer(serverConfig?.port, serverConfig?.bindToAll ? '0.0.0.0' : '127.0.0.1')
+  if (serverConfig?.mode) {
+    setupServer(serverConfig?.port, serverConfig?.bindToAll ? '0.0.0.0' : '127.0.0.1', SERVER_MODES[serverConfig?.mode])
   }
 
   /*

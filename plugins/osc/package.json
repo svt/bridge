@@ -19,19 +19,19 @@
     "settings": [
       {
         "group": "OSC",
-        "title": "Server (UDP)",
-        "description": "Activate the OSC server",
+        "title": "Server mode",
         "inputs": [
           {
-            "type": "boolean",
-            "bind": "shared.plugins.bridge-plugin-osc.settings.server.active",
-            "label": "Active"
+            "type": "segmented",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.server.mode",
+            "default": 0,
+            "segments": [ "Off", "UDP", "TCP" ]
           }
         ]
       },
       {
         "group": "OSC",
-        "title": "Server port (UDP)",
+        "title": "Server port",
         "inputs": [
           {
             "type": "number",

@@ -7,16 +7,13 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["boolean", "theme", "number", "string", "frame", "select"]
+          "enum": ["boolean", "theme", "number", "string", "frame", "select", "segmented"]
         },
         "bind": {
           "type": "string"
         },
         "label": {
           "type": "string"
-        },
-        "repeating": {
-          "type": "boolean"
         },
         "uri": {
           "type": "string",
