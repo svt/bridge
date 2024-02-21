@@ -12,3 +12,9 @@ html, body {
 #root {
   display: contents;
 }
+
+.LogList {
+  height: calc(100% - 30px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

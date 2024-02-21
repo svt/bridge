@@ -1,0 +1,22 @@
+.LogItem {
+  display: flex;
+  width: 100%;
+
+  white-space: nowrap;
+}
+
+.LogItem > div {
+  margin-left: 10px;
+}
+
+.LogItem[data-direction='in']{
+  color: var(--base-color--accent1);
+}
+
+.LogItem-timestamp {
+  width: 100px;
+}
+
+.LogItem:nth-child(odd) {
+  background: var(--base-color--shade1);
+}
