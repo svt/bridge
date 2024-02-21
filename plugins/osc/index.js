@@ -20,6 +20,7 @@ const TCPTransport = require('./lib/TCPTransport')
 const handlers = require('./lib/handlers')
 const commands = require('./lib/commands')
 const types = require('./lib/types')
+const log = require('./lib/log')
 
 const Router = require('obj-router')
 const router = new Router(handlers)
@@ -159,6 +160,11 @@ function setupServer (port = DEFAULT_SERVER_PORT, address, mode) {
   server = new Server(transport)
   server.on('message', async osc => {
     try {
+      log.addLog({
+        timestamp: Date.now(),
+        direction: 'in',
+        address: osc.address
+      })
       await router.execute(osc.address, osc)
     } catch (e) {
       logger.warn('Failed to execute command', osc.address)
@@ -224,6 +230,11 @@ async function playTrigger (item) {
   })
 
   UDPClient.send(target?.host, target?.port, message)
+  log.addLog({
+    timestamp: Date.now(),
+    direction: 'out',
+    address: data?.address
+  })
 }
 
 exports.activate = async () => {
@@ -236,6 +247,17 @@ exports.activate = async () => {
   plugin's types
   */
   types.init(htmlPath)
+
+  /*
+  Register the
+  log widget
+  */
+  bridge.widgets.registerWidget({
+    id: 'bridge.plugins.osc.log',
+    name: 'OSC log',
+    uri: `${htmlPath}?path=widget/log`,
+    description: 'Log the most recent incoming OSC traffic'
+  })
 
   /*
   Register the targets setting as

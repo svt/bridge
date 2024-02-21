@@ -4,6 +4,7 @@ import * as SharedContext from './sharedContext'
 import * as Settings from './views/Settings'
 
 import { InspectorTarget } from './views/InspectorTarget'
+import { WidgetLog } from './views/WidgetLog'
 
 export default function App () {
   const [view, setView] = React.useState()
@@ -18,6 +19,8 @@ export default function App () {
       {
         (function () {
           switch (view) {
+            case 'widget/log':
+              return <WidgetLog />
             case 'inspector/target':
               return <InspectorTarget />
             case 'settings/targets':
