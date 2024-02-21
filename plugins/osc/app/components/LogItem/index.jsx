@@ -1,8 +1,8 @@
 import React from 'react'
 import './style.css'
 
-function zeroPad (n) {
-  if (n < 10) {
+function zeroPad (n, magnitude = 10) {
+  if (n < magnitude) {
     return `0${n}`
   }
   return `${n}`
@@ -10,7 +10,7 @@ function zeroPad (n) {
 
 function formatTime (ms) {
   const d = new Date(ms)
-  return `${zeroPad(d.getHours())}:${zeroPad(d.getMinutes())}:${zeroPad(d.getSeconds())}.${d.getMilliseconds()}`
+  return `${zeroPad(d.getHours())}:${zeroPad(d.getMinutes())}:${zeroPad(d.getSeconds())}.${zeroPad(zeroPad(d.getMilliseconds()), 100)}`
 }
 
 export const LogItem = ({ item = {} }) => {
