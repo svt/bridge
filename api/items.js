@@ -196,6 +196,10 @@ async function playItem (id) {
     return
   }
 
+  if (item?.data?.disabled) {
+    return
+  }
+
   const type = await types.getType(item.type)
   const clone = populateVariablesMutable(deepClone(item), type)
   const delay = parseInt(clone?.data?.delay)
