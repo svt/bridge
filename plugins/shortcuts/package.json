@@ -43,6 +43,12 @@
         "action": "delete",
         "description": "Delete",
         "trigger": ["CommandOrControl", "Backspace"]
+      },
+      {
+        "id": "toggleDisable",
+        "action": "toggleDisable",
+        "description": "Toggle disabled / enabled",
+        "trigger": ["CommandOrControl", "V"]
       }
     ]
   },

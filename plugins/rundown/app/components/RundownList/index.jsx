@@ -103,6 +103,24 @@ async function stopSelection () {
   selection.forEach(itemId => bridge.items.stopItem(itemId))
 }
 
+/**
+ * Toggle the disabled property
+ * of the currently selected items
+ * @returns { Promise.<void> }
+ */
+async function toggleDisableSelection () {
+  const selection = await bridge.client.getSelection()
+
+  for (const itemId of selection) {
+    const isDisabled = (await bridge.items.getItem(itemId))?.data?.disabled
+    bridge.items.applyItem(itemId, {
+      data: {
+        disabled: !isDisabled
+      }
+    })
+  }
+}
+
 export function RundownList ({
   rundownId = '',
   className = '',
@@ -200,6 +218,12 @@ export function RundownList ({
           break
         case 'bridge.rundown.previous':
           select(-1)
+          break
+        case 'bridge.rundown.previous':
+          select(-1)
+          break
+        case 'toggleDisable':
+          toggleDisableSelection()
           break
         case 'delete':
           deleteSelection()
