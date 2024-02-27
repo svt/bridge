@@ -21,7 +21,7 @@ export function SelectInput ({
       {
         (data?.enum || [])
           .map((value, i) => {
-            return <option key={i} value={value}>{value}</option>
+            return <option key={i} value={i}>{value}</option>
           })
       }
     </select>

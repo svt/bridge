@@ -13,7 +13,7 @@ const manifest = require('./package.json')
 const types = require('./lib/types')
 
 const GROUP_PLAY_MODES = {
-  all: 'Trigger all children at once'
+  all: 0
 }
 
 const PLAY_HANDLERS = {
