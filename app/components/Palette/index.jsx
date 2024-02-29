@@ -69,7 +69,7 @@ export const Palette = ({ open, onClose = () => {} }) => {
 
   return (
     <div className='Palette'>
-      <div className='Palette-backdrop' onClick={() => onClose()} />
+      <div className='Palette-backdrop' onClick={() => onClose()} onContextMenu={() => onClose()} />
       <div className='Palette-input'>
         <input ref={inputRef} type='text' onChange={e => handleInput(e.target.value)} placeholder='Press ESC to close the palette' />
         {
