@@ -94,16 +94,11 @@ export default function App () {
   /**
     * Setup a reference to hold
     * the current value of the
-    * states in order to access it from
+    * state in order to access it from
     * within the apply functions
     * @type { React.Ref }
     */
-  const sharedRef = React.useRef({})
   const localRef = React.useRef({})
-
-  React.useEffect(() => {
-    sharedRef.current = shared
-  }, [shared])
 
   React.useEffect(() => {
     localRef.current = local

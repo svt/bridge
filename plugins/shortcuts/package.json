@@ -49,6 +49,12 @@
         "action": "toggleDisable",
         "description": "Toggle disabled / enabled",
         "trigger": ["CommandOrControl", "B"]
+      },
+      {
+        "id": "openPalette",
+        "action": "openPalette",
+        "description": "Open the palette",
+        "trigger": ["CommandOrControl", "P"]
       }
     ]
   },
