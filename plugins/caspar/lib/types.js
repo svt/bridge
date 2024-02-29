@@ -4,6 +4,12 @@
 
 const bridge = require('bridge')
 
+const TRANSITION_NAME_ENUM = ['Cut', 'Mix', 'Push', 'Slide', 'Wipe']
+exports.TRANSITION_NAME_ENUM = TRANSITION_NAME_ENUM
+
+const TRANSITION_DIRECTION_ENUM = ['Left', 'Right']
+exports.TRANSITION_DIRECTION_ENUM = TRANSITION_DIRECTION_ENUM
+
 function init (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.caspar.amcp',
@@ -100,14 +106,15 @@ function init (htmlPath) {
       'caspar.transitionName': {
         name: 'Transition',
         type: 'enum',
-        enum: ['Cut', 'Mix', 'Push', 'Slide', 'Wipe'],
+        enum: TRANSITION_NAME_ENUM,
+        default: '0',
         'ui.group': 'Transition'
       },
       'caspar.transitionDirection': {
         name: 'Direction',
         type: 'enum',
-        enum: ['Left', 'Right'],
-        default: 'Left',
+        enum: TRANSITION_DIRECTION_ENUM,
+        default: '0',
         'ui.group': 'Transition'
       },
       'caspar.transitionDuration': {
