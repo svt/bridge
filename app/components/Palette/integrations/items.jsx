@@ -27,12 +27,16 @@ function ItemRow ({ item }) {
  * @returns 
  */
 async function getItems (query) {
+  const normalizedQuery = query.toLowerCase()
+
   const bridge = await api.load()
   const items = Object.values(bridge.state.getLocalState()?.items || {})
-    .filter(item => item?.id?.includes(query) || (item?.data?.name || '').includes(query))
+    .filter(item =>
+      (item?.id || '').toLowerCase().includes(normalizedQuery) ||
+      (item?.data?.name || '').toLowerCase().includes(normalizedQuery)
+    )
 
   return items.map(item => {
-    console.log('Rendering', item)
     return <ItemRow key={item?.id} item={item} />
   })
 }
