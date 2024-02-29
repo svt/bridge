@@ -214,9 +214,9 @@ async function playTrigger (item) {
   over the socket
   */
   const data = item?.data?.osc
-  const type = String(data?.type).toLowerCase()
+  const type = VALID_OSC_ARG_TYPES[parseInt(data?.type)]
 
-  if (!type || !(VALID_OSC_ARG_TYPES.includes(type))) {
+  if (!type) {
     logger.error('Invalid OSC argument type')
     return
   }
