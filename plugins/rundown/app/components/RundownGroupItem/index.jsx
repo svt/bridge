@@ -133,7 +133,7 @@ export function RundownGroupItem ({ index, item }) {
                  onDrop={e => handleDrop(e)}
                />
                )
-             : <RundownList className='RundownGroupItem-children' rundownId={item.id} indexPrefix={`${index}.`} />
+             : <RundownList className='RundownGroupItem-children' rundownId={item.id} indexPrefix={`${index}.`} disableShortcuts />
         }
       </div>
     </div>

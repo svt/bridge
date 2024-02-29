@@ -129,7 +129,8 @@ async function toggleDisableSelection () {
 export function RundownList ({
   rundownId = '',
   className = '',
-  indexPrefix = ''
+  indexPrefix = '',
+  disableShortcuts = false
 }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -169,10 +170,12 @@ export function RundownList ({
    * from the current selection
    * @param { Number } deltaIndex
    */
-  function select (deltaIndex = 0) {
+  async function select (deltaIndex = 0) {
     if (itemIds.length === 0) {
       return
     }
+
+    const selection = await bridge.client.getSelection()
 
     /*
     Find the currently selected item id,
@@ -245,11 +248,15 @@ export function RundownList ({
       }
     }
 
+    if (disableShortcuts) {
+      return
+    }
+
     bridge.events.on('shortcut', onShortcut)
     return () => {
       bridge.events.off('shortcut', onShortcut)
     }
-  }, [itemIds, selection])
+  }, [itemIds, rundownId, disableShortcuts])
 
   /*
   Try to scroll to the selection
