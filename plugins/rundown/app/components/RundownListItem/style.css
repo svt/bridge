@@ -78,3 +78,7 @@
   width: 4px;
   background: var(--base-color--accent1);
 }
+
+.RundownListItem.is-disabled {
+  opacity: 0.5;
+}

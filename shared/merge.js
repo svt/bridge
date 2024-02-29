@@ -25,6 +25,20 @@ function mergeDeep (targetObj, sourceObj) {
     }
 
     /*
+    If the $invert keyword is used,
+    invert the current value using the
+    not (!) operator,
+
+    This is useful for toggling booleans
+
+    { $invert: any }
+    */
+    if (sourceObj[key]?.$invert) {
+      targetObj[key] = !targetObj[key]
+      continue
+    }
+
+    /*
     Delete the key if the
     $delete keyword is present
 

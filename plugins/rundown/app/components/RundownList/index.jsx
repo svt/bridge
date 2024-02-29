@@ -111,14 +111,19 @@ async function stopSelection () {
 async function toggleDisableSelection () {
   const selection = await bridge.client.getSelection()
 
-  for (const itemId of selection) {
-    const isDisabled = (await bridge.items.getItem(itemId))?.data?.disabled
-    bridge.items.applyItem(itemId, {
-      data: {
-        disabled: !isDisabled
-      }
-    })
+  const set = {
+    items: {}
   }
+
+  for (const itemId of selection) {
+    set.items[itemId] = {
+      data: {
+        disabled: { $invert: true }
+      }
+    }
+  }
+
+  bridge.state.apply(set)
 }
 
 export function RundownList ({

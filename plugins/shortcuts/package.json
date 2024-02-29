@@ -48,7 +48,7 @@
         "id": "toggleDisable",
         "action": "toggleDisable",
         "description": "Toggle disabled / enabled",
-        "trigger": ["CommandOrControl", "V"]
+        "trigger": ["CommandOrControl", "B"]
       }
     ]
   },
