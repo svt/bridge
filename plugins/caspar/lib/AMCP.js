@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+const types = require('./types')
+
 /**
  * @typedef {{
  *   channel: Number | undefined,
@@ -33,7 +35,7 @@ function layerString (opts = {}) {
  * @returns { String }
  */
 function transitionString (opts = {}) {
-  return `${opts.transitionName || ''} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(opts.transitionDirection || 'LEFT')}`.toUpperCase()
+  return `${types.TRANSITION_NAME_ENUM[opts.transitionName] || ''} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(types.TRANSITION_DIRECTION_ENUM[opts.transitionDirection] || 'LEFT')}`.toUpperCase()
 }
 
 /**

@@ -31,7 +31,7 @@ function init (htmlPath) {
           'Float',
           'Boolean'
         ],
-        default: 'String',
+        default: '0',
         'ui.group': 'OSC'
       },
       'osc.value': {
