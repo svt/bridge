@@ -10,12 +10,6 @@ export default function App () {
   const [store, setStore] = React.useState()
   const [state, setState] = React.useState()
 
-  const storeRef = React.useRef()
-
-  React.useEffect(() => {
-    storeRef.current = store
-  }, [store])
-
   /*
   Fetch the state directly
   on context load
@@ -52,11 +46,11 @@ export default function App () {
       .map(id => bridge.items.getLocalItem(id))
       .filter(item => item)
 
-    setStore({
-      ...storeRef.current,
+    setStore(current => ({
+      ...current,
       selection,
       items
-    })
+    }))
   }, [selection, state])
 
   return (
