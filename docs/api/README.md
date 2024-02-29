@@ -103,6 +103,7 @@ Operation | Example | Description
 `$replace` | `{myArr: {$replace: ['new', 'values']}}` | Replace a value without trying to merge this key any deeper, this is useful for replacing complete arrays
 `$insert` | `{myArr: {$insert: 'my new value', $index: 2}}` | Insert a value at an index in an array - items will be pushed back and not deleted, this is using a splice operation under the hood
 `$push` | `{myArr: {$push: ['foo', 'bar']}}` | Merge an array with an already existing array by pushing all new values to the current array's tail
+`$invert` | `{myBoolean: {$invert: true}}` | Inverts the current value at the key as if it was a boolean such that the new value is `!oldValue`
 
 **Example usage**
 ```javascript

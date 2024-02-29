@@ -47,7 +47,7 @@ export function RundownItem ({ index, item }) {
   }, [item?.state, item?.didStartPlayingAt])
 
   return (
-    <div className={`RundownItem ${item?.data?.disabled ? 'is-disabled' : ''}`}>
+    <div className='RundownItem'>
       <Layout.Spread>
         <div className='RundownItem-section'>
           <div className='RundownItem-color' style={{ backgroundColor: item?.data?.color }} />
