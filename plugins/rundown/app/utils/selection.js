@@ -50,10 +50,10 @@ export async function disableSelection (disabled) {
 
 /**
  * Delete the current selection
- * 
+ *
  * Fetch the selection from the main thread before doing the deletion as
  * we want to make sure we don't delete the wrong items from an unsynced state
- * 
+ *
  * @returns { Promise.<void> }
  */
 export async function deleteSelection () {
@@ -64,7 +64,7 @@ export async function deleteSelection () {
 /**
  * Copy a string representation of the
  * currently selected items to the clipboard
- * 
+ *
  * @returns { Promise.<void> }
  */
 export async function copySelection () {
