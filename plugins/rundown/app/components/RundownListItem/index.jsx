@@ -12,6 +12,7 @@ import { ContextMenuDivider } from '../../../../../app/components/ContextMenuDiv
 import { ContextAddMenu } from '../ContextAddMenu'
 
 import * as clipboard from '../../utils/clipboard'
+import * as selection from '../../utils/selection'
 
 const INDICATE_PLAYING_TIMEOUT_MS = 100
 
@@ -158,6 +159,7 @@ export function RundownListItem ({
                 <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
               </ContextMenuItem>
               <ContextMenuItem text='Create reference' onClick={() => handleCreateReference()} />
+              <ContextMenuItem text={item?.data?.disabled ? 'Enable' : 'Disable'} onClick={() => selection.disableSelection(!item?.data?.disabled)} />
               <ContextMenuDivider />
               <ContextMenuItem text='Remove' onClick={() => handleDelete()} />
               {

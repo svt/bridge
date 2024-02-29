@@ -36,3 +36,25 @@ test('replace array values', () => {
 
   expect(merge.deep(source, apply)[1]).toEqual(apply[1])
 })
+
+test('invert boolean value', () => {
+  const source = {
+    myBoolean: false
+  }
+
+  const apply = {
+    myBoolean: { $invert: true }
+  }
+  expect(merge.deep(source, apply).myBoolean).toEqual(true)
+})
+
+test('invert string value', () => {
+  const source = {
+    myBoolean: 'false'
+  }
+
+  const apply = {
+    myBoolean: { $invert: true }
+  }
+  expect(merge.deep(source, apply).myBoolean).toEqual(false)
+})

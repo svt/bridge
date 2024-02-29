@@ -11,7 +11,7 @@ import { RundownGroupItem, RundownGroupItemContext } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
 
-import * as clipboard from '../../utils/clipboard'
+import * as selectionUtils from '../../utils/selection'
 import * as keyboard from '../../utils/keyboard'
 
 /**
@@ -58,72 +58,6 @@ function scrollIntoView (el, animate = true, centered = true) {
     behavior: animate ? 'smooth' : 'instant',
     block: centered ? 'center' : 'nearest'
   })
-}
-
-/**
- * Delete the current selection
- * 
- * Fetch the selection from the main thread before doing the deletion as
- * we want to make sure we don't delete the wrong items from an unsynced state
- * 
- * @returns { Promise.<void> }
- */
-async function deleteSelection () {
-  const selection = await bridge.client.getSelection()
-  bridge.items.deleteItems(selection)
-}
-
-/**
- * Copy a string representation of the
- * currently selected items to the clipboard
- * 
- * @returns { Promise.<void> }
- */
-async function copySelection () {
-  const selection = await bridge.client.getSelection()
-  const str = await bridge.commands.executeCommand('rundown.copyItems', selection)
-  await clipboard.copyText(str)
-}
-
-/**
- * Play the currently selected items
- * @returns { Promise.<void> }
- */
-async function playSelection () {
-  const selection = await bridge.client.getSelection()
-  selection.forEach(itemId => bridge.items.playItem(itemId))
-}
-
-/**
- * Stop the currently selected items
- * @returns { Promise.<void> }
- */
-async function stopSelection () {
-  const selection = await bridge.client.getSelection()
-  selection.forEach(itemId => bridge.items.stopItem(itemId))
-}
-
-/**
- * Toggle the disabled property
- * of the currently selected items
- * @returns { Promise.<void> }
- */
-async function toggleDisableSelection () {
-  const selection = await bridge.client.getSelection()
-
-  const set = {
-    items: {}
-  }
-
-  for (const itemId of selection) {
-    set.items[itemId] = {
-      data: {
-        disabled: { $invert: true }
-      }
-    }
-  }
-
-  bridge.state.apply(set)
 }
 
 export function RundownList ({
@@ -231,19 +165,19 @@ export function RundownList ({
           select(-1)
           break
         case 'toggleDisable':
-          toggleDisableSelection()
+          selectionUtils.toggleDisableSelection()
           break
         case 'delete':
-          deleteSelection()
+          selectionUtils.deleteSelection()
           break
         case 'play':
-          playSelection()
+          selectionUtils.playSelection()
           break
         case 'stop':
-          stopSelection()
+          selectionUtils.stopSelection()
           break
         case 'copy':
-          copySelection()
+          selectionUtils.copySelection()
           break
       }
     }
