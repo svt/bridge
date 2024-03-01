@@ -25,12 +25,12 @@ export function RundownGroupItem ({ index, item }) {
    * @param { Boolean } newState Whether or not the
    *                             group is collapsed
    */
-  function setCollapsed (newState) {
+  async function setCollapsed (newState) {
     if (!item?.id) {
       return
     }
 
-    const selection = shared?._connections?.[bridge.client.getIdentity()]?.selection || []
+    const selection = await bridge.client.getSelection()
     if (!(selection.includes(item.id))) {
       return
     }
