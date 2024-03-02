@@ -109,6 +109,10 @@ export function Rundown () {
 
   React.useEffect(() => {
     function onShortcut (shortcut) {
+      /*
+      Don't execute any shortcuts
+      if the frame isn't focused
+      */
       if (!window.bridgeFrameHasFocus) {
         return
       }
