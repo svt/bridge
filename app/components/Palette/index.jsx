@@ -4,7 +4,9 @@ import './style.css'
 import integrations from './integrations'
 
 export const Palette = ({ open, onClose = () => {} }) => {
+  const elRef = React.useRef()
   const inputRef = React.useRef()
+
   const [result, setResult] = React.useState([])
 
   /**
@@ -67,6 +69,56 @@ export const Palette = ({ open, onClose = () => {} }) => {
     return <></>
   }
 
+  function select (currentEl, direction) {
+    let nextTarget
+    const items = Array.from(elRef.current.querySelectorAll('.is-selectable'))
+
+    /*
+    Select the first row if the
+    current element is not in the set
+    */
+    if (currentEl.className.indexOf('is-selectable') === -1) {
+      items[0].focus()
+      return
+    }
+
+    const index = items.findIndex(el => el === currentEl)
+
+    if (direction < 0) {
+      const nextIndex = index - 1
+
+      /*
+      Select the last item if we're
+      at the top of the list
+      */
+      if (nextIndex < 0) {
+        nextTarget = items[items.length - 1]
+      } else {
+        nextTarget = items[nextIndex]
+      }
+    }
+
+    if (direction > 0) {
+      const nextIndex = index + 1
+
+      /*
+      Select the first item if we're
+      at the end of the list
+      */
+      if (nextIndex > items.length - 1) {
+        nextTarget = items[0]
+      } else {
+        nextTarget = items[nextIndex]
+      }
+    }
+
+    if (!nextTarget) {
+      return
+    }
+
+    nextTarget.focus()
+  }
+
   function handleRowKeyDown (e) {
     switch (e.key) {
       /*
@@ -78,14 +130,46 @@ export const Palette = ({ open, onClose = () => {} }) => {
           child.click()
         }
         break
+      case 'ArrowDown':
+        select(e.target, 1)
+        break
+      case 'ArrowUp':
+        select(e.target, -1)
+        break
+    }
+  }
+
+  function handleInputKeyDown (e) {
+    switch (e.key) {
+      /*
+      Override arrow up and arrow down
+      for the input element to
+      select rows rather than
+      its text content
+      */
+      case 'ArrowDown':
+        e.preventDefault()
+        select(e.target, 1)
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        select(e.target, -1)
+        break
     }
   }
 
   return (
-    <div className='Palette'>
+    <div ref={elRef} className='Palette'>
       <div className='Palette-backdrop' onClick={() => onClose()} onContextMenu={() => onClose()} />
       <div className='Palette-input'>
-        <input ref={inputRef} type='text' onChange={e => handleInput(e.target.value)} placeholder='Press ESC to close the palette' />
+        <input
+          ref={inputRef}
+          type='text'
+          className='is-selectable'
+          onKeyDown={e => handleInputKeyDown(e)}
+          onChange={e => handleInput(e.target.value)}
+          placeholder='Press ESC to close the palette'
+        />
         {
           /*
           Render all integrations one by one
@@ -110,7 +194,7 @@ export const Palette = ({ open, onClose = () => {} }) => {
                               return (
                                 <div
                                   key={`${label}:${i}`}
-                                  className='Palette-row'
+                                  className='Palette-row is-selectable'
                                   onClick={() => onClose()}
                                   onKeyDown={e => handleRowKeyDown(e)}
                                   tabIndex={0}
