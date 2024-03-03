@@ -50,6 +50,7 @@
 
 .Palette-row:last-child {
   margin-bottom: 0;
+  border-radius: 0 0 8px 8px;
 }
 
 .Palette-row:active {
