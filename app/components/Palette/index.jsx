@@ -67,6 +67,20 @@ export const Palette = ({ open, onClose = () => {} }) => {
     return <></>
   }
 
+  function handleRowKeyDown (e) {
+    switch (e.key) {
+      /*
+      Click all children
+      when enter is pressed
+      */
+      case 'Enter':
+        for (const child of e.target.children) {
+          child.click()
+        }
+        break
+    }
+  }
+
   return (
     <div className='Palette'>
       <div className='Palette-backdrop' onClick={() => onClose()} onContextMenu={() => onClose()} />
@@ -89,12 +103,24 @@ export const Palette = ({ open, onClose = () => {} }) => {
                     .filter(({ rows }) => rows.length)
                     .map(({ label, rows }) => {
                       return (
-                        <div key={label} className='Palette-resultSection'>
+                        <>
                           <label className='Palette-resultLabel u-text--label'>{label}</label>
                           {
-                            rows.map((row, i) => <div key={`${label}:${i}`} className='Palette-row' onClick={() => onClose()}>{row}</div>)
+                            rows.map((row, i) => {
+                              return (
+                                <div
+                                  key={`${label}:${i}`}
+                                  className='Palette-row'
+                                  onClick={() => onClose()}
+                                  onKeyDown={e => handleRowKeyDown(e)}
+                                  tabIndex={0}
+                                >
+                                  {row}
+                                </div>
+                              )
+                            })
                           }
-                        </div>
+                        </>
                       )
                     })
                 }

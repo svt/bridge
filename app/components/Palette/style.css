@@ -56,6 +56,10 @@
   opacity: 0.8;
 }
 
+.Palette-row:focus {
+  box-shadow: inset 0 0 0 1px var(--base-color);
+}
+
 /* Integrations */
 
 .Palette-row--itemRow {
