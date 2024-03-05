@@ -35,7 +35,7 @@ function layerString (opts = {}) {
  * @returns { String }
  */
 function transitionString (opts = {}) {
-  return `${types.TRANSITION_NAME_ENUM[opts.transitionName] || ''} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(types.TRANSITION_DIRECTION_ENUM[opts.transitionDirection] || 'LEFT')}`.toUpperCase()
+  return ` ${types.TRANSITION_NAME_ENUM[opts.transitionName] || ''} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(types.TRANSITION_DIRECTION_ENUM[opts.transitionDirection] || 'LEFT')}`.toUpperCase()
 }
 
 /**
@@ -95,16 +95,21 @@ exports.clear = opts => `CLEAR ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)} ${file} ${loop ? 'LOOP' : ''} ${seek ? `SEEK ${seek}` : ''} ${length ? `LENGTH ${length}` : ''} ${filter ? `FILTER ${filter}` : ''} ${transitionString(opts)} ${auto ? 'AUTO' : ''}`
+exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)} ${file}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? 'AUTO' : ''}`
 
 /**
  * Play a media item in the foreground
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
  * @param { String } file The file to play
+ * @param { Boolean } loop
+ * @param { Number } seek
+ * @param { Number } length
+ * @param { String } filter
+ * @param { Boolean } auto
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.play = (file, opts) => `PLAY ${layerString(opts)} ${file} ${transitionString(opts)}`
+exports.play = (file, loop, seek, length, filter, auto, opts) => `PLAY ${layerString(opts)} "${file}"${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? ' AUTO' : ''}`
 
 /**
  * Play a media item in the foreground that
@@ -132,7 +137,7 @@ exports.stop = opts => `STOP ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} ${template} ${playOnLoad ? 1 : 0} ${JSON.stringify(JSON.stringify(data))}`
+exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} "${template}" ${playOnLoad ? 1 : 0} ${JSON.stringify(JSON.stringify(data))}`
 
 /**
  * Stop a template
@@ -158,7 +163,7 @@ exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLaye
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity} ${transitionString(opts)}`
+exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity}${transitionString(opts)}`
 
 /**
  * Get the thumbnail for a file
@@ -167,4 +172,4 @@ exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.thumbnailRetrieve = fileName => `THUMBNAIL RETRIEVE ${fileName}`
+exports.thumbnailRetrieve = fileName => `THUMBNAIL RETRIEVE "${fileName}"`

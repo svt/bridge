@@ -22,7 +22,7 @@ const PLAY_HANDLERS = {
   on the group's play mode
   */
   'bridge.types.group': item => {
-    if (item?.data?.playMode === GROUP_PLAY_MODES.all) {
+    if (!item?.data?.playMode || item?.data?.playMode === GROUP_PLAY_MODES.all) {
       for (const child of item.children) {
         bridge.items.playItem(child)
       }
