@@ -22,8 +22,7 @@ const PLAY_HANDLERS = {
     return commands.sendString(serverId, item?.data?.caspar?.amcp)
   },
   'bridge.caspar.media': async (serverId, item) => {
-    await commands.sendCommand(serverId, 'loadbg', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, undefined, item?.data?.caspar)
-    return commands.sendCommand(serverId, 'playLoaded', item?.data?.caspar)
+    return commands.sendCommand(serverId, 'play', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, undefined, item?.data?.caspar)
   },
   'bridge.caspar.template': (serverId, item) => {
     return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, item?.data?.caspar?.templateData, true, item?.data?.caspar)
