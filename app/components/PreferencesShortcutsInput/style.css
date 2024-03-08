@@ -23,7 +23,19 @@
 }
 
 .PreferencesShortcutsInput-trigger {
+  display: flex;
+
   text-align: right;
+
   flex-shrink: 0;
   opacity: 0.5;
+}
+
+.PreferencesShortcutsInput-listItem.has-changed .PreferencesShortcutsInput-trigger {
+  font-weight: 500;
+  opacity: 1;
+}
+
+.PreferencesShortcutsInput-icon {
+  margin-left: 5px;
 }

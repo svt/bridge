@@ -9,6 +9,7 @@ import person from './person.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
 import arrowRight from './arrow-right.svg'
+import editDetail from './edit-detail.svg'
 import placeholder from './placeholder.svg'
 import preferences from './preferences.svg'
 
@@ -20,6 +21,7 @@ export default {
   warning,
   selector,
   arrowRight,
+  editDetail,
   placeholder,
   preferences
 }

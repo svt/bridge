@@ -1,0 +1,46 @@
+.PopupShortcut-actions {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-around;
+}
+
+.PopupShortcut-confirmAction {
+  font-weight: 500;
+}
+
+.PopupShortcut-preview {
+  display: flex;
+  height: 2em;
+
+  padding: 0 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  animation-name: PopupShortcut-preview-fade;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes PopupShortcut-preview-fade {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.PopupShortcut-description {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  text-align: center;
+  opacity: 0.5;
+}
