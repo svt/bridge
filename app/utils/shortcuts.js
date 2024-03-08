@@ -122,3 +122,12 @@ export async function registerKeyDown (e) {
 export function registerKeyUp (e) {
   keys.clear()
 }
+
+/**
+ * Get the currently pressed
+ * keys as an array
+ * @returns { String[] }
+ */
+export function getPressed () {
+  return Array.from(keys.values())
+}
