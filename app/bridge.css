@@ -72,8 +72,7 @@ button {
 .Button--primary,
 .Button--secondary,
 .Button--tertiary,
-.Button--ghost,
-select {
+.Button--ghost {
   padding: 0.8em 1.5em;
 
   font-size: 1em;
@@ -120,25 +119,6 @@ select {
 
   align-items: center;
   justify-content: center;
-}
-
-select {
-  color: inherit;
-  border: 1px solid var(--base-color--shade);
-  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center transparent;
-
-  -webkit-appearance: none;
-  appearance: none;
-
-  box-sizing: border-box;
-}
-
-.Select--small {
-  padding: 0.4em 1em;
-}
-
-select:focus {
-  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--background);
 }
 
 /* Headings */
@@ -256,6 +236,32 @@ input[type="checkbox"]:active::before {
 input[type="checkbox"]:checked::before {
   background: var(--base-color--accent1);
   transform: translate(100%, -50%);
+}
+
+select {
+  padding: 0.8em 1.3em 0.8em 1em;
+
+  color: inherit;
+  font-size: 1em;
+  font-family: var(--base-fontFamily--primary);
+
+  border: 1px solid var(--base-color--shade);
+  border-radius: 8px;
+  
+  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--shade2);
+
+  -webkit-appearance: none;
+  appearance: none;
+
+  box-sizing: border-box;
+}
+
+.Select--small {
+  padding: 0.4em 0.75em;
+}
+
+select:focus {
+  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--background);
 }
 
 /* Labels */
