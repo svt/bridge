@@ -28,10 +28,10 @@ export function Role ({ currentRole = 0, open, onClose = () => {} }) {
       <Popover open={open} onClose={onClose}>
         <div className='Role u-theme--light'>
           <div className='Role-content'>
-            Only the main client's selections can be triggered by the api. 
+            Only the main client's selections can be triggered by the api
             {
               currentRole === 1
-                ? <div className='Role-status'>This is the main client.</div>
+                ? <div className='Role-status'>This is the main client</div>
                 : (
                   <button className='Button Button--secondary u-width--100pct Sharing-copyBtn' onClick={() => setPopupIsOpen(true)}>
                     Become main
