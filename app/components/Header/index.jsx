@@ -3,6 +3,7 @@ import React from 'react'
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
+import { Role } from '../Role'
 import { Modal } from '../Modal'
 import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
@@ -27,9 +28,11 @@ export function Header ({ title = 'Bridge' }) {
 
   const [sharingOpen, setSharingOpen] = React.useState(false)
   const [prefsOpen, setPrefsOpen] = React.useState(false)
+  const [roleOpen, setRoleOpen] = React.useState(false)
 
   const connectionCount = Object.keys(shared?._connections || {}).length
   const isEditingLayout = shared?._connections?.[local?.id]?.isEditingLayout
+  const role = shared?._connections?.[local.id]?.role
 
   /**
    * Set the `isEditingLayout` toggle on
@@ -65,6 +68,12 @@ export function Header ({ title = 'Bridge' }) {
         </div>
         <div className='Header-center'></div>
         <div className='Header-block'>
+          <div className='Header-actionSection'>
+            <button className={`Header-button Header-roleBtn ${role === 1 ? 'is-main' : ''}`} onClick={() => setRoleOpen(true)}>
+              {role === 1 ? 'Main' : 'Satellite'}
+            </button>
+            <Role currentRole={role} open={roleOpen} onClose={() => setRoleOpen(false)} />
+          </div>
           <div className='Header-actionSection'>
             <button className='Header-button Header-sharingBtn' onClick={() => setSharingOpen(true)}>
               <Icon name='person' />

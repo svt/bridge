@@ -49,6 +49,30 @@ for the traffic light
   font-family: var(--base-fontFamily--primary);
 }
 
+.Header-button.Header-roleBtn {
+  width: auto;
+  padding: 0 7px 0 0;
+
+  border: 1px solid var(--base-color--shade);
+
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.Header-button.Header-roleBtn::before {
+  content: '';
+  height: 100%;
+  width: 6px;
+
+  margin-right: 7px;
+
+  background: var(--base-color--shade);
+}
+
+.Header-button.Header-roleBtn.is-main::before {
+  background: var(--base-color--accent1);
+}
+
 .Header-button {
   display: flex;
   position: relative;
@@ -58,7 +82,10 @@ for the traffic light
   margin-left: 7px;
   border: none;
 
+  color: inherit;
   font-size: 1em;
+  font-family: var(--base-fontFamily--primary);
+
   background: none;
 
   align-items: center;

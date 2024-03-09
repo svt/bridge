@@ -1,0 +1,21 @@
+.Role {
+  width: 300px;
+
+  text-align: left;
+  font-size: 1em;
+  color: var(--base-color);
+}
+
+.Role-content {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.Role-info {
+  margin: 5px;
+}
+
+.Role-status {
+  margin-top: 10px;
+  opacity: 0.7;
+}
