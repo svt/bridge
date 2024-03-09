@@ -48,7 +48,7 @@ exports.getShortcut = getShortcut
  */
 async function getShortcuts () {
   const index = state.getLocalState()?._shortcuts
-  const overrides = state.getLocalState()?._userDefaults?.shortcuts
+  const overrides = state.getLocalState()?._userDefaults?.shortcuts || {}
 
   return Object.values(index || {})
     .map(shortcut => {
