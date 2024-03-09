@@ -13,11 +13,11 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
   }, [shortcut?.trigger])
 
   React.useEffect(() => {
-    if (!open || !onChange) {
+    if (!open) {
       return
     }
 
-    function onKeyDown (e) {
+    function onKeyDown () {
       setTrigger(shortcuts.getPressed())
     }
 
