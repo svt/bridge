@@ -20,7 +20,7 @@ const CUSTOM_LANGUAGE_NAME = 'bridgeLang'
  * 
  * @see https://microsoft.github.io/monaco-editor/typedoc/index.html
  */
-export const Monaco = ({ defaultValue = '', value = '', onChange = () => {} }) => {
+export const Monaco = ({ defaultValue = '', value = '', reset, onChange = () => {} }) => {
   const elRef = React.useRef()
   const modelRef = React.useRef()
 
@@ -115,7 +115,7 @@ export const Monaco = ({ defaultValue = '', value = '', onChange = () => {} }) =
 
     const editor = monaco.editor.create(elRef.current, {
       value: defaultValue,
-      language: 'bridgeLang',
+      language: 'json',
       scrollbar: {
         verticalScrollbarSize: 5,
         horizontalScrollbarSize: 5
@@ -158,10 +158,11 @@ export const Monaco = ({ defaultValue = '', value = '', onChange = () => {} }) =
       return
     }
     if (value == null) {
+      modelRef.current.setValue(defaultValue)
       return
     }
     modelRef.current.setValue(value)
-  }, [value])
+  }, [value, defaultValue, reset])
 
   return (
     <div ref={elRef} className='Monaco' />
