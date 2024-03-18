@@ -39,14 +39,21 @@ export const InspectorTemplate = () => {
   }
 
   function handleChange(newValue) {
-    handleNewValue({
-      data: {
-        caspar: {
-          templateData: JSON.parse(newValue),
-          templateDataString: newValue
+    try {
+      const parsed = JSON.parse(newValue)
+      handleNewValue({
+        data: {
+          caspar: {
+            templateData: { $replace: parsed },
+            templateDataString: newValue
+          }
         }
-      }
-    })
+      })
+    } catch (_) {
+      /*
+      Invalid JSON data was passed from Monaco
+      */
+    }
   }
 
   return (

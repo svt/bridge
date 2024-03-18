@@ -115,7 +115,7 @@ export const Monaco = ({ defaultValue = '', value = '', onChange = () => {} }) =
 
     const editor = monaco.editor.create(elRef.current, {
       value: defaultValue,
-      language: 'bridgeLang',
+      language: 'json',
       scrollbar: {
         verticalScrollbarSize: 5,
         horizontalScrollbarSize: 5
