@@ -9,6 +9,7 @@ export const InspectorTemplate = () => {
   const [state] = React.useContext(SharedContext)
   const [selection, setSelection] = React.useState([])
 
+  const [id, setId] = React.useState()
   const [value, setValue] = React.useState()
 
   const selectionRef = React.useRef([])
@@ -29,6 +30,7 @@ export const InspectorTemplate = () => {
   React.useEffect(() => {
     const items = selection.map(id => state?.items?.[id])
     const value = items?.[0]?.data?.caspar?.templateDataString
+    setId(items?.[0]?.id)
     setValue(value)
   }, [JSON.stringify(selection)])
 
@@ -59,7 +61,9 @@ export const InspectorTemplate = () => {
   return (
     <div className='View--spread'>
       <Monaco
+        reset={id}
         value={value ?? ['{', '', '}'].join('\n')}
+        defaultValue={['{', '', '}'].join('\n')}
         onChange={newValue => handleChange(newValue)}
       />
     </div>
