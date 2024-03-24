@@ -7,11 +7,6 @@ const merge = require('../shared/merge')
 const commands = require('./commands')
 const events = require('./events')
 
-const Cache = require('./classes/Cache')
-
-const STATE_CACHE_MAX_ENTRIES = 10
-const stateCache = new Cache(STATE_CACHE_MAX_ENTRIES)
-
 /**
  * Keep a local
  * copy of the state
@@ -25,16 +20,16 @@ let state
  * this is used to ensure
  * that the state is kept
  * up-to-date
+ *
+ * Please note that this
+ * value only will be updated
+ * if there are listeners for
+ * state changes attached by
+ * the current process
+ *
  * @type { Number }
  */
 let revision = 0
-
-/**
- * Get the current local
- * revision of the state
- * @returns { Number }
- */
-exports.getCurrentRevision = () => revision
 
 /**
  * Get the full remote state
@@ -122,13 +117,13 @@ exports.apply = apply
  * @returns { Promise.<State> }
  */
 async function get (path) {
+  const newState = await getRemoteState(path)
   if (!path) {
-    const newState = await getRemoteState()
     revision = newState._revision
     state = newState
     return state
   } else {
-    return stateCache.cache(`${path}::${revision}`, () => getRemoteState(path))
+    return newState
   }
 }
 exports.get = get

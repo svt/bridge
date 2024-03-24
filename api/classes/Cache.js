@@ -67,6 +67,7 @@ class Cache {
       return that rather than starting a new request
       */
       if (
+        value &&
         typeof value === 'object' &&
         value.__status === 'pending' &&
         value.__promise
