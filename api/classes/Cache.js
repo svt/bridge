@@ -12,6 +12,7 @@ const InvalidArgumentError = require('../error/InvalidArgumentError')
  */
 class Cache {
   /**
+   * @private
    * A map containing the cache's index,
    * mapping keys to cache entries
    *
@@ -24,6 +25,11 @@ class Cache {
    * @type { Map.<String, Entry> }
    */
   #index = new Map()
+
+  /**
+   * @private
+   * @type { Number }
+   */
   #maxEntries
 
   constructor (maxEntries = 10) {
@@ -31,6 +37,7 @@ class Cache {
   }
 
   /**
+   * @private
    * Prepare the cache index for insertion,
    * this will make sure that the index
    * stays within the set max size
@@ -41,6 +48,29 @@ class Cache {
     }
     const firstKey = this.#index.keys().next().value
     this.#index.delete(firstKey)
+  }
+
+  /**
+   * Get a cached value
+   * by its key
+   * @param { String } key
+   * @returns { Promise.<any> }
+   */
+  get (key) {
+    const entry = this.#index.get(key)
+
+    /*
+    If there is a pending promise for the value,
+    return that rather than starting a new request
+    */
+    if (
+      entry &&
+      entry.status === 'pending' &&
+      entry.promise
+    ) {
+      return entry.promise
+    }
+    return Promise.resolve(this.#index.get(key)?.value)
   }
 
   /**
@@ -72,20 +102,7 @@ class Cache {
     }
 
     if (this.#index.has(key)) {
-      const entry = this.#index.get(key)
-
-      /*
-      If there is a pending promise for the value,
-      return that rather than starting a new request
-      */
-      if (
-        entry &&
-        entry.status === 'pending' &&
-        entry.promise
-      ) {
-        return entry.promise
-      }
-      return this.#index.get(key)?.value
+      return this.get(key)
     }
 
     /*
