@@ -251,3 +251,14 @@ function removeAllIntercepts (callee) {
   }
 }
 exports.removeAllIntercepts = removeAllIntercepts
+
+/**
+ * Check if there is a registered
+ * remote handler for an event
+ * @param { String } event
+ * @returns { Boolean }
+ */
+function hasRemoteHandler (event) {
+  return remoteHandlers.has(event)
+}
+exports.hasRemoteHandler = hasRemoteHandler

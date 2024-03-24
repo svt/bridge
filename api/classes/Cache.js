@@ -11,6 +11,18 @@ const InvalidArgumentError = require('../error/InvalidArgumentError')
  *              of data
  */
 class Cache {
+  /**
+   * A map containing the cache's index,
+   * mapping keys to cache entries
+   *
+   * @typedef {{
+   *  status: 'pending' | undefined,
+   *  promise: Promise | undefined,
+   *  value: any
+   * }} Entry
+   *
+   * @type { Map.<String, Entry> }
+   */
   #index = new Map()
   #maxEntries
 
@@ -60,21 +72,20 @@ class Cache {
     }
 
     if (this.#index.has(key)) {
-      const value = this.#index.get(key)
+      const entry = this.#index.get(key)
 
       /*
       If there is a pending promise for the value,
       return that rather than starting a new request
       */
       if (
-        value &&
-        typeof value === 'object' &&
-        value.__status === 'pending' &&
-        value.__promise
+        entry &&
+        entry.status === 'pending' &&
+        entry.promise
       ) {
-        return value.__promise
+        return entry.promise
       }
-      return this.#index.get(key)
+      return this.#index.get(key)?.value
     }
 
     /*
@@ -90,11 +101,11 @@ class Cache {
     })
 
     this.#prepareIndexForInsertion()
-    this.#index.set(key, { __status: 'pending', __promise: promise })
+    this.#index.set(key, { status: 'pending', promise })
 
     try {
       const value = await provider()
-      this.#index.set(key, value)
+      this.#index.set(key, { value })
       resolve(value)
     } catch (e) {
       reject(e)
