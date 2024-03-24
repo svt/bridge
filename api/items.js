@@ -21,6 +21,11 @@ const variables = require('./variables')
 const MissingArgumentError = require('./error/MissingArgumentError')
 const InvalidArgumentError = require('./error/InvalidArgumentError')
 
+const Cache = require('./classes/Cache')
+
+const ITEM_CACHE_MAX_ENTRIES = 10
+const itemCache = new Cache(ITEM_CACHE_MAX_ENTRIES)
+
 /**
  * Create a new id for an item
  * that is unique and doesn't
@@ -95,7 +100,9 @@ exports.applyItem = applyItem
  * @returns { Promise.<Item> }
  */
 function getItem (id) {
-  return commands.executeCommand('items.getItem', id)
+  return itemCache.cache(`${id}::${state.getCurrentRevision()}`, () => {
+    return commands.executeCommand('items.getItem', id)
+  })
 }
 exports.getItem = getItem
 
