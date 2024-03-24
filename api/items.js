@@ -14,12 +14,18 @@ const objectPath = require('object-path')
 const state = require('./state')
 const types = require('./types')
 const client = require('./client')
+const events = require('./events')
 const random = require('./random')
 const commands = require('./commands')
 const variables = require('./variables')
 
 const MissingArgumentError = require('./error/MissingArgumentError')
 const InvalidArgumentError = require('./error/InvalidArgumentError')
+
+const Cache = require('./classes/Cache')
+
+const CACHE_MAX_ENTRIES = 10
+const cache = new Cache(CACHE_MAX_ENTRIES)
 
 /**
  * Create a new id for an item
@@ -95,6 +101,20 @@ exports.applyItem = applyItem
  * @returns { Promise.<Item> }
  */
 function getItem (id) {
+  /*
+  Use caching if it's safe to do so
+
+  The cache key must depend on the local state revision
+  in order to not get out of date, and that will only
+  get updated if the client is listening for the
+  'state.change' event
+  */
+  if (
+    events.hasRemoteHandler('state.change') &&
+    state.getLocalRevision() !== 0
+  ) {
+    return cache.cache(`${id}::${state.getLocalRevision()}`, () => commands.executeCommand('items.getItem', id))
+  }
   return commands.executeCommand('items.getItem', id)
 }
 exports.getItem = getItem

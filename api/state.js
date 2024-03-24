@@ -7,6 +7,11 @@ const merge = require('../shared/merge')
 const commands = require('./commands')
 const events = require('./events')
 
+const Cache = require('./classes/Cache')
+
+const CACHE_MAX_ENTRIES = 10
+const cache = new Cache(CACHE_MAX_ENTRIES)
+
 /**
  * Keep a local
  * copy of the state
@@ -30,6 +35,15 @@ let state
  * @type { Number }
  */
 let revision = 0
+
+/**
+ * Get the local revision
+ * @returns { Number }
+ */
+function getLocalRevision () {
+  return revision
+}
+exports.getLocalRevision = getLocalRevision
 
 /**
  * Get the full remote state
@@ -117,13 +131,20 @@ exports.apply = apply
  * @returns { Promise.<State> }
  */
 async function get (path) {
-  const newState = await getRemoteState(path)
   if (!path) {
+    const newState = await getRemoteState()
     revision = newState._revision
     state = newState
     return state
   } else {
-    return newState
+    /*
+    If we can expect the revision to be updated,
+    use the caching layer to bundle calls together
+    */
+    if (events.hasRemoteHandler('state.change') && revision !== 0) {
+      return cache.cache(`${path}::${revision}`, () => getRemoteState(path))
+    }
+    return getRemoteState(path)
   }
 }
 exports.get = get
