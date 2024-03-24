@@ -12,6 +12,7 @@ const InvalidArgumentError = require('../error/InvalidArgumentError')
  */
 class Cache {
   /**
+   * @private
    * A map containing the cache's index,
    * mapping keys to cache entries
    *
@@ -24,6 +25,11 @@ class Cache {
    * @type { Map.<String, Entry> }
    */
   #index = new Map()
+
+  /**
+   * @private
+   * @type { Number }
+   */
   #maxEntries
 
   constructor (maxEntries = 10) {
@@ -31,6 +37,7 @@ class Cache {
   }
 
   /**
+   * @private
    * Prepare the cache index for insertion,
    * this will make sure that the index
    * stays within the set max size
