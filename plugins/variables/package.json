@@ -18,7 +18,7 @@
       {
         "id": "bridge.variables.variable",
         "name": "Variable",
-        "inherits": "bridge.types.root",
+        "inherits": "bridge.types.playable",
         "properties": {
           "variable.key": {
             "name": "Variable name",

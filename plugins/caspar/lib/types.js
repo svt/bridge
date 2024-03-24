@@ -15,7 +15,7 @@ function init (htmlPath) {
     id: 'bridge.caspar.amcp',
     name: 'AMCP',
     category: 'Caspar',
-    inherits: 'bridge.types.root',
+    inherits: 'bridge.types.playable',
     properties: {
       'caspar.server': {
         name: 'Server',
