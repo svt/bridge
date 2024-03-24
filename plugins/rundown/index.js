@@ -12,6 +12,11 @@ const manifest = require('./package.json')
 
 const Accumulator = require('./lib/Accumulator')
 
+/*
+Bootstrap play handlers
+*/
+require('./lib/handlers')
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`

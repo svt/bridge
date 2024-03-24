@@ -35,9 +35,22 @@
         }
       },
       {
+        "id": "bridge.types.playable",
+        "inherits": "bridge.types.root",
+        "properties": {
+          "onPlay": {
+            "name": "On play",
+            "type": "enum",
+            "default": 0,
+            "enum": ["Do nothing", "Play next sibling", "Select next sibling (main client)"],
+            "ui.group": "Timing"
+          }
+        }
+      },
+      {
         "id": "bridge.types.group",
         "name": "Group",
-        "inherits": "bridge.types.root",
+        "inherits": "bridge.types.playable",
         "properties": {
           "playMode": {
             "name": "Play mode",
@@ -50,7 +63,7 @@
       },
       {
         "id": "bridge.types.delayable",
-        "inherits": "bridge.types.root",
+        "inherits": "bridge.types.playable",
         "properties": {
           "delay": {
             "name": "Delay",
@@ -63,7 +76,7 @@
       },
       {
         "id": "bridge.types.media",
-        "inherits": "bridge.types.root",
+        "inherits": "bridge.types.playable",
         "properties": {
           "duration": {
             "name": "Duration",

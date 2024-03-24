@@ -6,6 +6,8 @@ const Transport = require('./Transport')
 
 const net = require('node:net')
 
+const DEFAULT_SOCKET_TIMEOUT_MS = 10000
+
 class TCPTransport extends Transport {
   /**
    * @private
@@ -22,6 +24,10 @@ class TCPTransport extends Transport {
       socket.on('close', () => {
         socket.removeAllListeners()
       })
+      socket.on('timeout', () => {
+        socket.end()
+      })
+      socket.setTimeout(DEFAULT_SOCKET_TIMEOUT_MS)
     })
   }
 
