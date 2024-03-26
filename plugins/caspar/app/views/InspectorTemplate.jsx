@@ -28,10 +28,13 @@ export const InspectorTemplate = () => {
   changes to not interfere with writing in the editor
   */
   React.useEffect(() => {
-    const items = selection.map(id => state?.items?.[id])
-    const value = items?.[0]?.data?.caspar?.templateDataString
-    setId(items?.[0]?.id)
-    setValue(value)
+    async function loadSelection () {
+      const item = await bridge.items.getItem(selection[0])
+      setId(item?.id)
+      setValue(item?.data?.caspar?.templateDataString)
+    }
+
+    loadSelection()
   }, [JSON.stringify(selection)])
 
   function handleNewValue (set) {
