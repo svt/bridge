@@ -4,7 +4,7 @@
 
 const client = (function () {
   if (module.parent) {
-    return undefined
+    return require('./node/client')
   }
   if (typeof window !== 'undefined') {
     return require('./browser/client')
