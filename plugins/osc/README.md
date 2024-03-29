@@ -35,3 +35,9 @@ Stop an item
 | Index | Type | Description |
 | --- | --- | --- |
 | 0 | String | The id of the item to stop |
+
+### `/api/client/selection/play`  
+Play the main client's current selection
+
+### `/api/client/selection/stop`  
+Stop the main client's current selection

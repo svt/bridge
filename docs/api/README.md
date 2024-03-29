@@ -332,20 +332,53 @@ Play an item and set its state to 'playing'.
 Stop an item and set its state to 'stopped'.
 
 ## Client  
-**The client api is only available within renderer processes**  
-Control aspects of the current client
+**The client api between the renerer and main processes**  
+Control aspects of clients
+
+### `bridge.client.awaitIdentity(): Promise<String>`  
+**Only available within the render process**  
+Await the current identity to be set, will return as soon as the identity is set or immediately if it's already set
 
 ### `bridge.client.getIdentity(): String?`  
+**Only available within the render process**  
 Get the client's identity as set by the host app. This may be undefined if it has not yet been set. It's useful for manually getting client parameters if optimizing queries to the state.
 
-### `bridge.client.setSelection(items)`
-Select one or multiple items, will clear the current selection
+### `bridge.client.setSelection(itemIds)`  
+**Only available within the render process**  
+Select one or multiple items, will clear the current selection.
+
+### `bridge.client.addSelection(itemId|itemIds)`  
+**Only available within the render process**  
+Add one or more items to the selecton by their ids.
+
+### `bridge.client.subtractSelection(itemId|itemIds)`  
+**Only available within the render process**  
+Subtract one or more items to the selecton by their ids.
+
+### `bridge.client.isSelected(itemId): Boolean`  
+**Only available within the render process**  
+Check whether or not an item is selected by the current client.  
 
 ### `bridge.client.clearSelection()`  
+**Only available within the render process**  
 Clear the current selection
 
 ### `bridge.client.getSelection(): Promise<String[]>`  
-Get the current selection
+**Only available within the render process**  
+Get the current selection  
+
+### `bridge.client.getSelection(connectionId): Promise<String[]>`  
+**Only available within main processes**  
+Get the current selection of a connection by its id  
+
+### `bridge.client.setRole(id, role)`   
+Set the role of a specified connection, if assigning the main role to a connection, any other main connection will be denoted to a satellite 
+
+### `bridge.client.getAllConnections(): Promise<Connection[]>`  
+Get an array of all current connections  
+
+### `bridge.client.getAllConnectionsByRole(role): Promise<Connection[]>`  
+Get an array of all current connections with a specific role
 
 ## Keyboard shortcuts  
 Keyboard shortcuts SHOULD be registered with the API to give the user an index of which commands are available.
