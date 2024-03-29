@@ -4,7 +4,9 @@
 
 const MissingIdentityError = require('../error/MissingIdentityError')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
+
 const state = require('../state')
+const events = require('../events')
 
 const LazyValue = require('../classes/LazyValue')
 
@@ -102,17 +104,19 @@ function ensureArray (thing) {
  * current selection
  * @param { String[] } item Multiple items to select
  */
-function setSelection (item) {
+async function setSelection (item) {
   assertIdentity()
 
   const items = ensureArray(item)
-  state.apply({
+  await state.apply({
     _connections: {
       [getIdentity()]: {
         selection: { $replace: items }
       }
     }
   })
+
+  events.emitLocally('selection', items)
 }
 
 /**
@@ -125,35 +129,27 @@ function setSelection (item) {
  * @param { String[] } item An array of ids for
  *                           the items to add
  */
-function addSelection (item) {
+async function addSelection (item) {
   assertIdentity()
 
-  const items = ensureArray(item)
-    /*
-    Only add items that are
-    not already selected
-    */
-    .filter(item => !isSelected(item))
+  const currentSelection = await getSelection()
+  const newSelectionSet = new Set(Array.isArray(currentSelection) ? currentSelection : [])
+  const newItems = ensureArray(item)
 
-  const currentSelectionIsArray = Array.isArray(state.getLocalState()?._connections?.[getIdentity()]?.selection)
-
-  if (!currentSelectionIsArray) {
-    state.apply({
-      _connections: {
-        [getIdentity()]: {
-          selection: { $replace: items }
-        }
-      }
-    })
-  } else {
-    state.apply({
-      _connections: {
-        [getIdentity()]: {
-          selection: { $push: items }
-        }
-      }
-    })
+  for (const item of newItems) {
+    newSelectionSet.add(item)
   }
+
+  const newSelection = Array.from(newSelectionSet.values())
+
+  await state.apply({
+    _connections: {
+      [getIdentity()]: {
+        selection: { $replace: newSelection }
+      }
+    }
+  })
+  events.emitLocally('selection', newSelection)
 }
 
 /**
@@ -176,7 +172,7 @@ function subtractSelection (item) {
   const items = new Set(ensureArray(item))
   const newSelection = selection.filter(id => !items.has(id))
 
-  setSelection(newSelection)
+  setSelection(newSelection, newSelection)
 }
 
 /**
@@ -197,16 +193,18 @@ function isSelected (item) {
 /**
  * Clear the current selection
  */
-function clearSelection () {
+async function clearSelection () {
   assertIdentity()
 
-  state.apply({
+  await state.apply({
     _connections: {
       [getIdentity()]: {
         selection: { $delete: true }
       }
     }
   })
+
+  events.emitLocally('selection', [])
 }
 
 /**
