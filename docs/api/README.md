@@ -65,6 +65,7 @@ bridge.events.on('item.stop', item => {
 | `item.play` | Emitted when an item is played, after an optional delay |
 | `item.stop` | Emitted when an item is stopped |
 | `shortcut` | Emitted when a shortcut is triggered |
+| `selection` | Emitted when the selection of the current client changes |
 
 ### `bridge.events.emit(event, ...parameters)`
 Emit an event with or without any data

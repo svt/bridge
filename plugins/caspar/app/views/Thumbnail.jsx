@@ -1,19 +1,21 @@
 import React from 'react'
 import bridge from 'bridge'
 
-import { SharedContext } from '../sharedContext'
 import { ThumbnailImage } from '../components/ThumbnailImage'
 
 export const Thumbnail = () => {
-  const [state] = React.useContext(SharedContext)
   const [item, setItem] = React.useState({})
   const [image, setImage] = React.useState()
   const [selection, setSelection] = React.useState([])
 
   React.useEffect(() => {
-    const selection = state?._connections?.[bridge.client.getIdentity()]?.selection
-    setSelection(selection)
-  }, [state])
+    async function onSelectionChange (selection) {
+      setSelection(selection)
+    }
+    
+    bridge.events.on('selection', onSelectionChange)
+    return () => bridge.events.off('selection', onSelectionChange)
+  }, [])
 
   React.useEffect(() => {
     async function getItem () {

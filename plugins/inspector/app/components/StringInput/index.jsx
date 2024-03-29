@@ -18,7 +18,7 @@ export function StringInput ({
       type='text'
       htmlFor={htmlFor}
       className={`StringInput ${large ? 'StringInput--large' : ''}`}
-      value={value}
+      value={value || ''}
       onChange={e => onChange(e.target.value)}
     />
   )

@@ -60,6 +60,10 @@ async function callLocalHandlers (event, ...args) {
   }
 
   const handlers = localHandlers.get(event)
+  if (!handlers) {
+    return
+  }
+
   for (const { handler } of handlers) {
     handler(..._args)
   }
