@@ -3,7 +3,13 @@
 // SPDX-License-Identifier: MIT
 
 const state = require('./state')
+const events = require('./events')
 const commands = require('./commands')
+
+const Cache = require('./classes/Cache')
+
+const CACHE_MAX_ENTRIES = 100
+const cache = new Cache(CACHE_MAX_ENTRIES)
 
 /**
  * Perform a deep clone
@@ -51,14 +57,49 @@ function renderType (id, typesDict = {}) {
 }
 
 /**
+ * @private
+ *
+ * Get the full specification
+ * for a type by its id without
+ * going through the cache
+ *
+ * This is only to
+ * be used internally,
+ * always prefer the
+ * cached version
+ *
+ * @param { String } id The id of a type
+ */
+async function getTypeUncached (id) {
+  const types = state.getLocalState()?._types ||
+                await state.get('_types')
+
+  return renderType(id, types)
+}
+
+/**
  * Get the full specification
  * for a type by its id
+ *
  * @param { String } id The id of a type
  */
 async function getType (id) {
-  const types = state.getLocalState()?._types ||
-                await state.get('_types')
-  return renderType(id, types)
+  /*
+  Use caching if it's safe to do so
+
+  The cache key must depend on the local state revision
+  in order to not get out of date, and that will only
+  get updated if the client is listening for the
+  'state.change' event
+  */
+  if (
+    events.hasRemoteHandler('state.change') &&
+    state.getLocalRevision() !== 0
+  ) {
+    return cache.cache(`${id}::${state.getLocalRevision()}`, async () => getTypeUncached(id))
+  }
+
+  return getTypeUncached(id)
 }
 exports.getType = getType
 

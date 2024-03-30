@@ -48,7 +48,8 @@ function init (htmlPath) {
         default: '1',
         allowsVariables: true,
         'ui.group': 'Caspar',
-        'ui.width': '50%'
+        'ui.width': '50%',
+        'ui.readable': true
       },
       'caspar.layer': {
         name: 'Layer',
@@ -56,7 +57,8 @@ function init (htmlPath) {
         default: '1',
         allowsVariables: true,
         'ui.group': 'Caspar',
-        'ui.width': '50%'
+        'ui.width': '50%',
+        'ui.readable': true
       }
     }
   })

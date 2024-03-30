@@ -274,7 +274,15 @@ Types are blueprints for items, they can be created and extended using the `cont
           will be shown together in the
           inspector
           */
-          "ui.group": "My plugin"
+          "ui.group": "My plugin",
+
+          /*
+          Set to true to signal that widgets should show this
+          information when presenting the item, such as the rundown
+
+          Defaults to false
+          */
+          "ui.readable": true
         },
 
         /*
@@ -295,7 +303,7 @@ Types are blueprints for items, they can be created and extended using the `cont
           "name": "My second property",
           "type": "string",
           "ui.uri": "/path/to/custom/input"
-        },
+        }
       }
     }
   ]
