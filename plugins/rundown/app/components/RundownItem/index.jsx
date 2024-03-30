@@ -40,15 +40,13 @@ export function RundownItem ({ index, item }) {
           break
       }
 
-      if (Number.isNaN(progress)) {
+      if (Number.isNaN(progress) || (progress >= 1 && item?.state === 'playing')) {
+        setProgress(0)
         return
       }
 
       setProgress(Math.max(Math.min(progress, 1), 0))
 
-      if (progress >= 1 && item?.state === 'playing') {
-        return
-      }
       window.requestAnimationFrame(loop)
     }
     loop()
