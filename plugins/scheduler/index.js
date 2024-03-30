@@ -54,6 +54,7 @@ exports.activate = async () => {
         bridge.commands.executeCommand(command, ...args)
       }
     }
+
     events.set(id, event)
   })
 

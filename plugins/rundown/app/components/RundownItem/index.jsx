@@ -17,7 +17,7 @@ export function RundownItem ({ index, item }) {
   ]
 
   React.useEffect(() => {
-    if (item?.state !== 'playing') {
+    if (item?.state !== 'playing' && item?.state !== 'scheduled') {
       setProgress(0)
       return
     }
@@ -29,22 +29,30 @@ export function RundownItem ({ index, item }) {
         return
       }
 
-      const progress = (Date.now() - item?.didStartPlayingAt) / item?.data?.duration
-      if (Number.isNaN(progress)) {
+      let progress = 0
+
+      switch (item?.state) {
+        case 'playing':
+          progress = (Date.now() - item?.didStartPlayingAt) / item?.data?.duration
+          break
+        case 'scheduled':
+          progress = (item?.willStartPlayingAt - Date.now()) / (item?.willStartPlayingAt - item?.wasScheduledAt)
+          break
+      }
+
+      if (Number.isNaN(progress) || (progress >= 1 && item?.state === 'playing')) {
+        setProgress(0)
         return
       }
 
-      setProgress(Math.min(progress, 1))
+      setProgress(Math.max(Math.min(progress, 1), 0))
 
-      if (progress >= 1) {
-        return
-      }
       window.requestAnimationFrame(loop)
     }
     loop()
 
     return () => { shouldLoop = false }
-  }, [item?.state, item?.didStartPlayingAt])
+  }, [item?.state, item?.didStartPlayingAt, item?.willStartPlayingAt])
 
   return (
     <div className='RundownItem'>
@@ -84,7 +92,7 @@ export function RundownItem ({ index, item }) {
         </div>
       </Layout.Spread>
       {
-        item?.state === 'playing' &&
+        ['playing', 'scheduled'].includes(item?.state) &&
         <div className='RundownItem-progress' style={{ transform: `scale(${progress}, 1)`, backgroundColor: item?.data?.color }} />
       }
     </div>
