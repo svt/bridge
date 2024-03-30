@@ -225,9 +225,8 @@ async function playItem (id) {
   const delay = parseInt(clone?.data?.delay)
 
   if (delay && !Number.isNaN(delay)) {
-    commands.executeCommand('scheduler.delay', `play:${id}`, delay, 'items.playItem', clone)
+    commands.executeCommand('items.scheduleItem', clone, delay)
   } else {
-    commands.executeCommand('scheduler.abort', `play:${id}`)
     commands.executeCommand('items.playItem', clone)
   }
 }
@@ -239,7 +238,6 @@ exports.playItem = playItem
  * @param { String } id
  */
 async function stopItem (id) {
-  commands.executeCommand('scheduler.abort', `play:${id}`)
   commands.executeCommand('items.stopItem', id)
 }
 exports.stopItem = stopItem
