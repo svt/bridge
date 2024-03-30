@@ -1,13 +1,82 @@
+/**
+ * @typedef {{
+ *  if: Boolean,
+ *  name: String,
+ *  bind: String
+ * }} TypeProperty
+ */
+
 import React from 'react'
+import bridge from 'bridge'
+
+import objectPath from 'object-path'
+
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
 import * as Layout from '../Layout'
 
+/**
+ * An index of type properties
+ * used for quick returns when
+ * calling getReadablePropertiesForType
+ * 
+ * @type {{ String: TypeProperty }}
+ */
+const propertyIndex = {}
+
+/**
+ * Get the readable properties
+ * for a certain type
+ * 
+ * This function stores keeps
+ * an index of the calculated properties
+ * as a cache as it may be called
+ * very frequently when loading
+ * a rundown
+ * 
+ * @param { String } typeName The name of the type to calculate properties for
+ * @returns { TypeProperty[] }
+ */
+async function getReadablePropertiesForType (typeName) {
+  if (propertyIndex[typeName]) {
+    return propertyIndex[typeName]
+  }
+
+  let resolve
+  let reject
+  const promise = new Promise((_resolve, _reject) => {
+    resolve = _resolve
+    reject = _reject
+  })
+  propertyIndex[typeName] = promise
+
+  try {
+    const type = await bridge.types.getType(typeName)
+    const properties = Object.entries(type?.properties || {})
+      .filter(([, spec]) => spec?.['ui.readable'])
+      .map(([key, spec]) => {
+        return {
+          if: true,
+          name: spec.name,
+          bind: `data.${key}`
+        }
+      })
+
+    resolve(properties)
+    return properties
+  } catch (err) {
+    reject(err)
+    throw err
+  }
+}
+
 export function RundownItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
   const [progress, setProgress] = React.useState(0)
+
+  const [typeProperties, setTypeProperties] = React.useState([])
 
   const displaySettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.display
 
@@ -15,6 +84,22 @@ export function RundownItem ({ index, item }) {
     { if: displaySettings?.id, name: 'ID', value: item?.id },
     { if: displaySettings?.type, name: 'Type', value: item?.type }
   ]
+
+  /*
+  Load specific properties
+  for this type
+  */
+  React.useEffect(() => {
+    if (!item?.type) {
+      setTypeProperties([])
+      return
+    }
+    async function loadProperties () {
+      const properties = await getReadablePropertiesForType(item.type)
+      setTypeProperties(properties)
+    }
+    loadProperties()
+  }, [item?.type])
 
   React.useEffect(() => {
     if (item?.state !== 'playing' && item?.state !== 'scheduled') {
@@ -77,17 +162,29 @@ export function RundownItem ({ index, item }) {
         </div>
         <div className='RundownItem-section'>
           {
-            properties
+            ([...properties, ...typeProperties])
               .filter(property => property.if)
-              .map((property, i) => (
-                <div className='RundownItem-property' key={i}>
-                  {
-                    !property.hiddenName &&
-                      <div className='RundownItem-propertyName'>{property.name}:</div>
-                  }
-                  <div>{property.value}</div>
-                </div>
-              ))
+              .map((property, i) => {
+                /*
+                Either read the value directly from
+                the property or use its bind path
+                to get it from the item object
+                */
+                let value = property?.value
+                if (property?.bind) {
+                  value = objectPath.get(item, property?.bind)
+                }
+
+                return (
+                  <div className='RundownItem-property' key={i}>
+                    {
+                      !property.hiddenName &&
+                        <div className='RundownItem-propertyName'>{property.name}:</div>
+                    }
+                    <div>{value}</div>
+                  </div>
+                )
+              })
           }
         </div>
       </Layout.Spread>

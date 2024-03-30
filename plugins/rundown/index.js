@@ -41,7 +41,7 @@ async function initWidget () {
   bridge.widgets.registerWidget({
     id: 'bridge.plugins.rundown',
     name: 'Rundown',
-    uri: `${htmlPath}`,
+    uri: `${htmlPath}?path=rundown`,
     description: 'The default rundown'
   })
 }
@@ -61,7 +61,7 @@ async function initSettings () {
         settings: {
           display: {
             notes: true,
-            type: true,
+            type: false,
             id: true
           },
           scrolling: {
