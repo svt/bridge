@@ -248,12 +248,24 @@ export function RundownList ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
   }
 
-  function handleFocus (itemId) {
+  async function handleFocus (itemId) {
     if (keyboard.keyIsPressed('meta')) {
-      bridge.client.addSelection(itemId)
-    } else {
-      bridge.client.setSelection(itemId)
+      const isSelected = await bridge.client.isSelected(itemId)
+      if (isSelected) {
+        bridge.client.subtractSelection(itemId)
+      } else {
+        bridge.client.addSelection(itemId)
+      }
+      return
     }
+
+    if (keyboard.keyIsPressed('shift')) {
+      // Select all items between the last selection and the new item
+      // Check data-item-id
+      return
+    }
+
+    bridge.client.setSelection(itemId)
   }
 
   function handleFocusPropagation (e) {
