@@ -161,9 +161,6 @@ export function RundownList ({
         case 'bridge.rundown.previous':
           select(-1)
           break
-        case 'bridge.rundown.previous':
-          select(-1)
-          break
         case 'toggleDisable':
           selectionUtils.toggleDisableSelection()
           break
