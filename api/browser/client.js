@@ -181,9 +181,9 @@ function subtractSelection (item) {
  * @param { String } item The id of an item to check
  * @returns { Boolean }
  */
-function isSelected (item) {
+async function isSelected (item) {
   assertIdentity()
-  const selection = state.getLocalState()?._connections?.[getIdentity()]?.selection
+  const selection = await state.get(`_connections.${getIdentity()}.selection`)
   if (!selection) {
     return false
   }

@@ -364,7 +364,7 @@ Add one or more items to the selecton by their ids.
 **Only available within the render process**  
 Subtract one or more items to the selecton by their ids.
 
-### `bridge.client.isSelected(itemId): Boolean`  
+### `bridge.client.isSelected(itemId): Promise<Boolean>`  
 **Only available within the render process**  
 Check whether or not an item is selected by the current client.  
 
