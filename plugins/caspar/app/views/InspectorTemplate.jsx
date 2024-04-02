@@ -4,6 +4,9 @@ import bridge from 'bridge'
 import { SharedContext } from '../sharedContext'
 
 import { Monaco } from '../components/Monaco'
+import { TemplateDataHeader } from '../components/TemplateDataHeader'
+
+const DEFAULT_VALUE = ['{', '', '}'].join('\n')
 
 export const InspectorTemplate = () => {
   const [state] = React.useContext(SharedContext)
@@ -11,6 +14,8 @@ export const InspectorTemplate = () => {
 
   const [id, setId] = React.useState()
   const [value, setValue] = React.useState()
+
+  const [unsavedValue, setUnsavedValue] = React.useState()
 
   const selectionRef = React.useRef([])
 
@@ -32,6 +37,7 @@ export const InspectorTemplate = () => {
       const item = await bridge.items.getItem(selection[0])
       setId(item?.id)
       setValue(item?.data?.caspar?.templateDataString)
+      setUnsavedValue(undefined)
     }
 
     loadSelection()
@@ -43,7 +49,7 @@ export const InspectorTemplate = () => {
     }
   }
 
-  function handleChange(newValue) {
+  function handleSave (newValue) {
     try {
       const parsed = JSON.parse(newValue)
       handleNewValue({
@@ -54,6 +60,9 @@ export const InspectorTemplate = () => {
           }
         }
       })
+
+      setValue(newValue)
+      setUnsavedValue(undefined)
     } catch (_) {
       /*
       Invalid JSON data was passed from Monaco
@@ -61,14 +70,23 @@ export const InspectorTemplate = () => {
     }
   }
 
+  function handleChange (newValue) {
+    setUnsavedValue(newValue)
+  }
+
   return (
-    <div className='View--spread'>
-      <Monaco
-        reset={id}
-        value={value ?? ['{', '', '}'].join('\n')}
-        defaultValue={['{', '', '}'].join('\n')}
-        onChange={newValue => handleChange(newValue)}
-      />
-    </div>
+    <>
+      <div className='View--spread u-marginBottom--5px'>
+        <TemplateDataHeader hasUnsavedChanges={unsavedValue && unsavedValue !== value} onSave={() => handleSave(unsavedValue)} />
+      </div>
+      <div className='View--spread'>
+        <Monaco
+          reset={id}
+          value={value ?? DEFAULT_VALUE}
+          defaultValue={DEFAULT_VALUE}
+          onChange={newValue => handleChange(newValue)}
+        />
+      </div>
+    </>
   )
 }

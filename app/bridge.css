@@ -121,6 +121,10 @@ button {
   justify-content: center;
 }
 
+.Button:disabled {
+  opacity: 0.6;
+}
+
 /* Headings */
 
 h1, .u-heading--1 {
