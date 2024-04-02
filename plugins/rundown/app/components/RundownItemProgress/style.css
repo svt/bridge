@@ -1,0 +1,29 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Sveriges Television AB
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.RundownItemProgress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  left: 0;
+  top: 0;
+}
+
+.RundownItemProgress-progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  transform-origin: left;
+
+  opacity: 0.3;
+  z-index: -1;
+}

@@ -25,3 +25,7 @@ html, body, .View--flex {
 .u-width--100pct {
   width: 100%;
 }
+
+.u-marginBottom--5px {
+  margin-bottom: 5px;
+}

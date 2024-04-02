@@ -36,6 +36,7 @@ const COPY_THEME_VARIABLES = [
   '--base-color--accent2',
   '--base-color--accent3',
   '--base-color--accent4',
+  '--base-color--accent5',
   '--base-color--grey1',
   '--base-color--grey2',
   '--base-color--grey3',

@@ -48,20 +48,6 @@
         }
       },
       {
-        "id": "bridge.types.group",
-        "name": "Group",
-        "inherits": "bridge.types.playable",
-        "properties": {
-          "playMode": {
-            "name": "Play mode",
-            "type": "enum",
-            "default": 0,
-            "enum": ["Trigger all children at once"],
-            "ui.group": "Timing"
-          }
-        }
-      },
-      {
         "id": "bridge.types.delayable",
         "inherits": "bridge.types.playable",
         "properties": {
@@ -90,6 +76,20 @@
             "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms"
+          }
+        }
+      },
+      {
+        "id": "bridge.types.group",
+        "name": "Group",
+        "inherits": "bridge.types.media",
+        "properties": {
+          "playMode": {
+            "name": "Play mode",
+            "type": "enum",
+            "default": 0,
+            "enum": ["Trigger all children at once"],
+            "ui.group": "Timing"
           }
         }
       },
