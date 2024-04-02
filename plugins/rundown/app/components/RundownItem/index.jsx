@@ -15,6 +15,8 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+import { RundownItemProgress } from '../RundownItemProgress'
+
 import * as Layout from '../Layout'
 
 /**
@@ -74,7 +76,6 @@ async function getReadablePropertiesForType (typeName) {
 
 export function RundownItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
-  const [progress, setProgress] = React.useState(0)
 
   const [typeProperties, setTypeProperties] = React.useState([])
 
@@ -100,44 +101,6 @@ export function RundownItem ({ index, item }) {
     }
     loadProperties()
   }, [item?.type])
-
-  React.useEffect(() => {
-    if (item?.state !== 'playing' && item?.state !== 'scheduled') {
-      setProgress(0)
-      return
-    }
-
-    let shouldLoop = true
-
-    function loop () {
-      if (!shouldLoop) {
-        return
-      }
-
-      let progress = 0
-
-      switch (item?.state) {
-        case 'playing':
-          progress = (Date.now() - item?.didStartPlayingAt) / item?.data?.duration
-          break
-        case 'scheduled':
-          progress = (item?.willStartPlayingAt - Date.now()) / (item?.willStartPlayingAt - item?.wasScheduledAt)
-          break
-      }
-
-      if (Number.isNaN(progress) || (progress >= 1 && item?.state === 'playing')) {
-        setProgress(0)
-        return
-      }
-
-      setProgress(Math.max(Math.min(progress, 1), 0))
-
-      window.requestAnimationFrame(loop)
-    }
-    loop()
-
-    return () => { shouldLoop = false }
-  }, [item?.state, item?.didStartPlayingAt, item?.willStartPlayingAt])
 
   return (
     <div className='RundownItem'>
@@ -188,10 +151,7 @@ export function RundownItem ({ index, item }) {
           }
         </div>
       </Layout.Spread>
-      {
-        ['playing', 'scheduled'].includes(item?.state) &&
-        <div className='RundownItem-progress' style={{ transform: `scale(${progress}, 1)`, backgroundColor: item?.data?.color }} />
-      }
+      <RundownItemProgress item={item} />
     </div>
   )
 }
