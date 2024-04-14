@@ -7,26 +7,23 @@ export function PreferencesNumberInput ({ label, value = '', min = 0, max = 10, 
   const [id] = React.useState(`number-${random.number()}`)
   const [error, setError] = React.useState()
 
-  function handleChange (newValue) {
-    if (newValue < min) {
+  React.useEffect(() => {
+    if (value < min) {
       setError(`Cannot be less than ${min}`)
-      onChange(newValue)
       return
     }
 
-    if (newValue > max) {
+    if (value > max) {
       setError(`Cannot be more than ${max}`)
-      onChange(newValue)
       return
     }
 
     setError(undefined)
-    onChange(newValue)
-  }
+  }, [value])
 
   return (
     <div className='PreferencesNumberInput'>
-      <input id={id} className='PreferencesNumberInput-input' type='number' min={min} max={max} value={value} onChange={e => handleChange(e.target.value)} />
+      <input id={id} className='PreferencesNumberInput-input' type='number' min={min} max={max} value={value} onChange={e => onChange(e.target.value)} />
       <label htmlFor={id}>{label}</label>
       {
         error &&
