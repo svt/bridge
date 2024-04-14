@@ -1,7 +1,35 @@
 .PreferencesNumberInput {
+  display: flex;
   margin-top: 10px;
+
+  align-items: center;
 }
 
 .PreferencesNumberInput-input {
   margin-right: 10px;
+}
+
+.PreferencesNumberInput-error {
+  display: inline-block;
+  position: relative;
+  margin-left: 10px;
+  padding: 5px 10px;
+
+  color: var(--base-color--alert);
+  border-radius: 6px;
+
+  overflow: hidden;
+}
+
+.PreferencesNumberInput-error::after {
+  content: '';
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: var(--base-color--alert);
+  opacity: 0.2;
 }

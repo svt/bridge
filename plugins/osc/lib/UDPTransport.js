@@ -20,6 +20,10 @@ class UDPTransport extends Transport {
     this.#socket.on('message', msg => {
       this.emit('message', msg)
     })
+
+    this.#socket.on('error', err => {
+      this.emit('error', err)
+    })
   }
 
   teardown () {
