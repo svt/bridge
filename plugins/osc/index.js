@@ -45,14 +45,24 @@ require('./lib/commands')
  */
 
 /**
- * The default server port,
+ * The default server port for the UDP transport
  *
  * this will be used as the default
  * settings value if no other is provided
  *
  * @type { Number }
  */
-const DEFAULT_SERVER_PORT = 8080
+const DEFAULT_UDP_SERVER_PORT = 8080
+
+/**
+ * The default server port for the TCP transport
+ *
+ * this will be used as the default
+ * settings value if no other is provided
+ *
+ * @type { Number }
+ */
+const DEFAULT_TCP_SERVER_PORT = 8081
 
 /**
  * Declare the valid types
@@ -62,7 +72,7 @@ const DEFAULT_SERVER_PORT = 8080
  */
 const VALID_OSC_ARG_TYPES = ['string', 'integer', 'float', 'boolean']
 
-const SERVER_MODES = {
+const SERVER_TYPES = {
   1: 'udp',
   2: 'tcp'
 }
@@ -135,30 +145,38 @@ function parseAsArgumentType (type, value) {
 }
 
 /**
- * A reference to the current server
+ * A reference to the current servers
+ * indexed by their type
  * @type { Server | undefined }
  */
-let server
+const servers = {}
 
 /**
  * Set up the server and start listen
  * on a specific port
  * @param { Number } port
  */
-function setupServer (port = DEFAULT_SERVER_PORT, address, mode) {
-  teardownServer()
+function setupServer (type, port, address) {
+  teardownServer(type)
 
   let transport
-  if (mode === 'udp') {
+  let defaultPort
+
+  if (type === 'udp') {
     transport = new UDPTransport()
-  } else if (mode === 'tcp') {
+    defaultPort = DEFAULT_UDP_SERVER_PORT
+  } else if (type === 'tcp') {
     transport = new TCPTransport()
+    defaultPort = DEFAULT_TCP_SERVER_PORT
   }
 
-  transport.listen(port, address)
+  transport.on('error', err => {
+    logger.warn(err)
+  })
+  transport.listen(port || defaultPort, address)
 
-  server = new Server(transport)
-  server.on('message', async osc => {
+  servers[type] = new Server(transport)
+  servers[type].on('message', async osc => {
     try {
       log.addLog({
         timestamp: Date.now(),
@@ -175,13 +193,14 @@ function setupServer (port = DEFAULT_SERVER_PORT, address, mode) {
 /**
  * Tear down the
  * current server
+ * by its type
  */
-function teardownServer () {
-  if (!server) {
+function teardownServer (type) {
+  if (!servers[type]) {
     return
   }
-  server.teardown()
-  server = undefined
+  servers[type].teardown()
+  servers[type] = undefined
 }
 
 /**
@@ -284,12 +303,12 @@ exports.activate = async () => {
 
   /**
    * A snapshot of the current
-   * server configuration used
+   * server configurations used
    * for diffing against state
    * updates
    * @type { String }
    */
-  let serverConfigSnapshot
+  const serverConfigSnapshots = {}
 
   /*
   Listen to state changes and compare
@@ -299,43 +318,54 @@ exports.activate = async () => {
   configuration has changed
   */
   bridge.events.on('state.change', newState => {
-    const serverConfig = newState?.plugins?.[manifest.name]?.settings.server
-    if (serverConfigSnapshot !== JSON.stringify(serverConfig)) {
-      serverConfigSnapshot = JSON.stringify(serverConfig)
+    const settings = newState?.plugins?.[manifest.name]?.settings
 
-      if (!serverConfig?.mode) {
-        teardownServer()
-      } else {
-        setupServer(serverConfig?.port, serverConfig?.bindToAll ? '0.0.0.0' : '127.0.0.1', SERVER_MODES[serverConfig?.mode])
+    for (const type of Object.values(SERVER_TYPES)) {
+      const config = settings?.[type]
+
+      if (serverConfigSnapshots[type] !== JSON.stringify(config)) {
+        serverConfigSnapshots[type] = JSON.stringify(config)
+
+        if (!config?.active) {
+          teardownServer(type)
+        } else {
+          setupServer(type, config?.port, config?.bindToAll ? '0.0.0.0' : '127.0.0.1')
+        }
       }
     }
   })
 
+  const settings = await bridge.state.get(`plugins.${manifest.name}.settings`)
+
   /*
-  Set up the server on
+  Set up servers on
   startup if active
   */
-  const serverConfig = await bridge.state.get(`plugins.${manifest.name}.settings.server`)
-  serverConfigSnapshot = JSON.stringify(serverConfig)
-  if (serverConfig?.mode) {
-    setupServer(serverConfig?.port, serverConfig?.bindToAll ? '0.0.0.0' : '127.0.0.1', SERVER_MODES[serverConfig?.mode])
+  for (const type of Object.values(SERVER_TYPES)) {
+    const config = settings?.[type]
+    if (!config?.active) {
+      teardownServer(type)
+    } else {
+      setupServer(type, config?.port, config?.bindToAll ? '0.0.0.0' : '127.0.0.1')
+    }
   }
 
   /*
   Set defaults
   if missing
   */
-  if (!serverConfig?.port) {
-    bridge.state.apply({
-      plugins: {
-        [manifest.name]: {
-          settings: {
-            server: {
-              port: DEFAULT_SERVER_PORT
-            }
+  bridge.state.apply({
+    plugins: {
+      [manifest.name]: {
+        settings: {
+          udp: {
+            port: settings?.udp?.port || DEFAULT_UDP_SERVER_PORT
+          },
+          tcp: {
+            port: settings?.tcp?.port || DEFAULT_TCP_SERVER_PORT
           }
         }
       }
-    })
-  }
+    }
+  })
 }

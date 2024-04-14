@@ -19,24 +19,30 @@
     "settings": [
       {
         "group": "OSC",
-        "title": "Server mode",
+        "title": "UDP Server",
         "inputs": [
           {
-            "type": "segmented",
-            "bind": "shared.plugins.bridge-plugin-osc.settings.server.mode",
-            "default": 0,
-            "segments": [ "Off", "UDP", "TCP" ]
+            "type": "boolean",
+            "label": "Activate",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.udp.active",
+            "default": false
+          },
+          {
+            "type": "boolean",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.udp.bindToAll",
+            "label": "Bind to 0.0.0.0",
+            "default": false
           }
         ]
       },
       {
         "group": "OSC",
-        "title": "Server port",
+        "title": "UDP Server port",
         "inputs": [
           {
             "type": "number",
-            "bind": "shared.plugins.bridge-plugin-osc.settings.server.port",
             "label": "Port",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.udp.port",
             "default": 8080,
             "min": 3000,
             "max": 65535
@@ -45,12 +51,33 @@
       },
       {
         "group": "OSC",
-        "title": "Server listen on all interfaces",
+        "title": "TCP Server",
         "inputs": [
           {
             "type": "boolean",
-            "bind": "shared.plugins.bridge-plugin-osc.settings.server.bindToAll",
-            "label": "Bind to 0.0.0.0"
+            "label": "Activate",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.tcp.active",
+            "default": false
+          },
+          {
+            "type": "boolean",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.tcp.bindToAll",
+            "label": "Bind to 0.0.0.0",
+            "default": false
+          }
+        ]
+      },
+      {
+        "group": "OSC",
+        "title": "TCP Server port",
+        "inputs": [
+          {
+            "type": "number",
+            "label": "Port",
+            "bind": "shared.plugins.bridge-plugin-osc.settings.tcp.port",
+            "default": 8081,
+            "min": 3000,
+            "max": 65535
           }
         ]
       }

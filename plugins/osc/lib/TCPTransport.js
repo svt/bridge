@@ -29,11 +29,16 @@ class TCPTransport extends Transport {
       })
       socket.setTimeout(DEFAULT_SOCKET_TIMEOUT_MS)
     })
+
+    this.#server.on('error', err => {
+      this.emit('error', err)
+    })
   }
 
   teardown () {
     super.teardown()
     this.#server.close()
+    this.#server.removeAllListeners()
   }
 
   listen (port, address) {
