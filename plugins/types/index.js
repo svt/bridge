@@ -37,7 +37,16 @@ const PLAY_HANDLERS = {
     if (!item?.data?.targetId) {
       return
     }
-    bridge.items.playItem(item?.data?.targetId)
+
+    switch (parseInt(item?.data?.playAction)) {
+      case types.REFERENCE_ACTION.stop:
+        bridge.items.stopItem(item?.data?.targetId)
+        break
+      case types.REFERENCE_ACTION.play:
+      default:
+        bridge.items.playItem(item?.data?.targetId)
+        break
+    }
   }
 }
 
@@ -60,7 +69,16 @@ const STOP_HANDLERS = {
     if (!item?.data?.targetId) {
       return
     }
-    bridge.items.stopItem(item?.data?.targetId)
+
+    switch (parseInt(item?.data?.stopAction)) {
+      case types.REFERENCE_ACTION.play:
+        bridge.items.playItem(item?.data?.targetId)
+        break
+      case types.REFERENCE_ACTION.stop:
+      default:
+        bridge.items.stopItem(item?.data?.targetId)
+        break
+    }
   }
 }
 
