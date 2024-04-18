@@ -155,9 +155,10 @@ exports.deleteItem = deleteItem
 async function deleteItems (ids) {
   /*
   Make sure any deleted items
-  are no longer selected
+  are no longer selected if available
+  in the current context
   */
-  if (client !== undefined) {
+  if (typeof client?.subtractSelection === 'function') {
     client.subtractSelection(ids)
   }
   return commands.executeCommand('items.deleteItems', ids)
