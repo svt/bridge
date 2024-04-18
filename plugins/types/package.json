@@ -38,6 +38,11 @@
         "id": "bridge.types.playable",
         "inherits": "bridge.types.root",
         "properties": {
+          "tag": {
+            "name": "Tag",
+            "type": "string",
+            "ui.group": "Timing"
+          },
           "onPlay": {
             "name": "On play",
             "type": "enum",

@@ -23,6 +23,26 @@ async function stopSelection () {
   }
 }
 
+async function playItemsWithTag (tag) {
+  const items = await bridge.state.get('items')
+  for (const [id, item] of Object.entries(items)) {
+    if (item.data?.tag !== tag) {
+      continue
+    }
+    bridge.items.playItem(id)
+  }
+}
+
+async function stopItemsWithTag (tag) {
+  const items = await bridge.state.get('items')
+  for (const [id, item] of Object.entries(items)) {
+    if (item.data?.tag !== tag) {
+      continue
+    }
+    bridge.items.stopItem(id)
+  }
+}
+
 /*
 Define any available osc paths
 */
@@ -33,7 +53,13 @@ module.exports = {
     },
     '/items': {
       '/playItem': message => bridge.items.playItem(message?.args?.[0].value),
-      '/stopItem': message => bridge.items.stopItem(message?.args?.[0].value)
+      '/stopItem': message => bridge.items.stopItem(message?.args?.[0].value),
+      '/tags': {
+        ':tag': {
+          '/play': message => playItemsWithTag(message.params.tag),
+          '/stop': message => stopItemsWithTag(message.params.tag)
+        }
+      }
     },
     '/client': {
       '/selection': {
