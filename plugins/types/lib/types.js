@@ -6,7 +6,8 @@ const bridge = require('bridge')
 
 const REFERENCE_ACTION = {
   play: 0,
-  stop: 1
+  stop: 1,
+  none: 2
 }
 exports.REFERENCE_ACTION = REFERENCE_ACTION
 
@@ -19,14 +20,14 @@ function init (htmlPath) {
       playAction: {
         name: 'Play action',
         type: 'enum',
-        enum: ['Play', 'Stop'],
+        enum: ['Play', 'Stop', 'None'],
         default: REFERENCE_ACTION.play,
         'ui.group': 'Reference'
       },
       stopAction: {
         name: 'Stop action',
         type: 'enum',
-        enum: ['Play', 'Stop'],
+        enum: ['Play', 'Stop', 'None'],
         default: REFERENCE_ACTION.stop,
         'ui.group': 'Reference'
       },

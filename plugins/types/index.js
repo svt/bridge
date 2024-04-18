@@ -39,6 +39,8 @@ const PLAY_HANDLERS = {
     }
 
     switch (parseInt(item?.data?.playAction)) {
+      case types.REFERENCE_ACTION.none:
+        break
       case types.REFERENCE_ACTION.stop:
         bridge.items.stopItem(item?.data?.targetId)
         break
@@ -71,6 +73,8 @@ const STOP_HANDLERS = {
     }
 
     switch (parseInt(item?.data?.stopAction)) {
+      case types.REFERENCE_ACTION.none:
+        break
       case types.REFERENCE_ACTION.play:
         bridge.items.playItem(item?.data?.targetId)
         break
