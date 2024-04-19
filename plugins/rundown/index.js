@@ -220,7 +220,8 @@ exports.activate = async () => {
       }
     })
 
-    bridge.state.apply(patches)
+    await bridge.state.apply(patches)
+    bridge.events.emit('item.change', itemId)
   }
   bridge.commands.registerCommand('rundown.moveItem', moveItem)
 
@@ -393,7 +394,9 @@ exports.activate = async () => {
         }
       })
     }
-    bridge.state.apply(patches)
+
+    await bridge.state.apply(patches)
+    bridge.events.emit('item.change', itemId)
   }
   bridge.commands.registerCommand('rundown.appendItem', appendItem)
 }

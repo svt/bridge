@@ -11,6 +11,7 @@ const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
 const types = require('./lib/types')
+const utils = require('./lib/utils')
 
 const GROUP_PLAY_MODES = {
   all: 0
@@ -86,6 +87,25 @@ const STOP_HANDLERS = {
   }
 }
 
+const ITEM_CHANGE_HANDLERS = {
+  /*
+  Warn the user if a reference is
+  targeting one of its own ancestors
+  */
+  'bridge.types.reference': async item => {
+    const isAncestor = await utils.isAncestor(item?.data?.targetId, item?.id)
+
+    if (!isAncestor) {
+      bridge.items.removeIssue(item?.id, 'types.rta')
+      return
+    }
+
+    bridge.items.applyIssue(item?.id, 'types.rta', {
+      description: 'Be careful referencing ancestor as loops may occur'
+    })
+  }
+}
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -126,5 +146,9 @@ exports.activate = async () => {
 
   bridge.events.on('item.stop', item => {
     STOP_HANDLERS[item.type]?.(item)
+  })
+
+  bridge.events.on('item.change', item => {
+    ITEM_CHANGE_HANDLERS[item?.type]?.(item)
   })
 }
