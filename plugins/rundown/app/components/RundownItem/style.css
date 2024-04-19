@@ -20,7 +20,10 @@
 .RundownItem-section--icons {
   height: 1em;
   width: 100px;
+
   justify-content: flex-end;
+
+  overflow: hidden;
 }
 
 .RundownItem-section--right {
