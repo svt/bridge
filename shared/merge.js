@@ -44,7 +44,7 @@ function mergeDeep (targetObj, sourceObj) {
 
     { $delete: true }
     */
-    if (sourceObj[key]?.$delete) {
+    if (key === '$delete' || sourceObj[key]?.$delete) {
       if (Array.isArray(targetObj)) {
         targetObj.splice(key, 1)
       } else if (Object.prototype.hasOwnProperty.call(targetObj, key)) {
