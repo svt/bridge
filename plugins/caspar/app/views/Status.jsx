@@ -8,7 +8,7 @@ export const Status = () => {
   const servers = state?.plugins?.[window.PLUGIN.name]?.servers || []
 
   return (
-    <div>
+    <div className='u-scroll--y'>
       {
         (servers || []).map((server, i) => {
           return <ServerStatus key={i} server={server} />
