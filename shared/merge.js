@@ -71,20 +71,32 @@ function mergeDeep (targetObj, sourceObj) {
     }
 
     /*
-    If the target object doesn't have
-    the property, assign it directly
+    If the current value is primitive,
+    replace it
     */
-    if (!Object.prototype.hasOwnProperty.call(targetObj, key)) {
+    if (typeof targetObj[key] !== 'object' && typeof sourceObj[key] !== 'object') {
       targetObj[key] = sourceObj[key]
       continue
     }
 
     /*
-    If the current value is primitive,
-    replace it
+    If the target object doesn't have
+    the property, assign it directly
     */
-    if (typeof targetObj[key] !== 'object' && !Array.isArray(targetObj[key])) {
-      targetObj[key] = sourceObj[key]
+    if (!Object.prototype.hasOwnProperty.call(targetObj, key)) {
+      if (typeof sourceObj[key] === 'object' && !Array.isArray(sourceObj[key])) {
+        /*
+        If we're applying a plain object to a primitive value,
+        keep expanding the source object to avoid adding
+        objects with keywords to the target object
+        */
+        targetObj[key] = mergeDeep({}, sourceObj[key])
+      } else {
+        /*
+        Otherwise apply the target directly
+        */
+        targetObj[key] = sourceObj[key]
+      }
       continue
     }
 
