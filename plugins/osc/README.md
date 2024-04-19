@@ -41,3 +41,9 @@ Play the main client's current selection
 
 ### `/api/client/selection/stop`  
 Stop the main client's current selection
+
+### `/api/items/tags/:tag/play`  
+Play all items with the specified tag
+
+### `/api/items/tags/:tag/stop` 
+Stop all items with the specified tag

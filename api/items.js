@@ -155,9 +155,10 @@ exports.deleteItem = deleteItem
 async function deleteItems (ids) {
   /*
   Make sure any deleted items
-  are no longer selected
+  are no longer selected if available
+  in the current context
   */
-  if (client !== undefined) {
+  if (typeof client?.subtractSelection === 'function') {
     client.subtractSelection(ids)
   }
   return commands.executeCommand('items.deleteItems', ids)
@@ -238,6 +239,19 @@ exports.playItem = playItem
  * @param { String } id
  */
 async function stopItem (id) {
-  commands.executeCommand('items.stopItem', id)
+  const item = await getItem(id)
+
+  if (!item) {
+    return
+  }
+
+  if (item?.data?.disabled) {
+    return
+  }
+
+  const type = await types.getType(item.type)
+  const clone = populateVariablesMutable(deepClone(item), type)
+
+  commands.executeCommand('items.stopItem', clone)
 }
 exports.stopItem = stopItem

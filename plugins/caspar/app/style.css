@@ -29,3 +29,11 @@ html, body, .View--flex {
 .u-marginBottom--5px {
   margin-bottom: 5px;
 }
+
+.u-scroll--y {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
