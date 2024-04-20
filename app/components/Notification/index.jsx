@@ -22,7 +22,7 @@ export function Notification ({ type, size = 'normal', icon, title, description,
     <div className={`Notification Notification--${type} Notification-size--${size}`}>
       <div className='Notification-content'>
         {
-          icon && <span className='Notification-contentSection'><Icon name={icon} /></span>
+          icon && <span className='Notification-contentSection Notification-icon'><Icon name={icon} color='var(--color-text)' /></span>
         }
         {
           title && <span className='Notification-contentSection Notification-title'>{title}</span>

@@ -30,13 +30,16 @@ import './style.css'
 import { StoreContext } from '../../storeContext'
 
 import { Accordion } from '../Accordion'
+
 import { Frame } from '../../../../../app/components/Frame'
+import { Notification } from '../../../../../app/components/Notification'
 
 import { TextInput } from '../TextInput'
 import { ColorInput } from '../ColorInput'
 import { StringInput } from '../StringInput'
 import { SelectInput } from '../SelectInput'
 import { BooleanInput } from '../BooleanInput'
+
 
 const INPUT_COMPONENTS = {
   boolean: BooleanInput,
@@ -244,6 +247,14 @@ export function Form () {
   return (
     <div className='Form'>
       <div className='Form-section'>
+        <div className='Form-notifications'>
+          {
+            Object.values(store.items?.[0]?.issues ?? {})
+              .map((issue, i) => {
+                return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' />
+              })
+          }
+        </div>
         <div className='Form-row'>
           <ColorInput value={getValue('color')} onChange={value => handleDataChange('color', value)} />
           <StringInput value={getValue('name')} onChange={value => handleDataChange('name', value)} large />

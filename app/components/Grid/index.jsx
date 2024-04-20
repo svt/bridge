@@ -244,6 +244,7 @@ export function Grid ({ children, data = {}, onChange }) {
         userIsEditingLayout &&
         <Notification
           icon='edit'
+          type='inline'
           title='Editing layout'
           description='Right click to manage widgets'
           controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Leave edit mode</button>}

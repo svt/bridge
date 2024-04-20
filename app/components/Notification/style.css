@@ -1,14 +1,23 @@
 .Notification {
   display: flex;
+
   width: 100%;
 
   box-sizing: border-box;
   justify-content: space-between;
 
-  color: var(--base-color--notificationColor);
   background-color: var(--base-color--notificationBackground);
 
+  border-radius: 6px;
+  
   --color-warning: #FFDC8C;
+  --color-text: var(--base-color--notificationColor);
+  
+  color: var(--color-text);
+}
+
+.Notification--inline {
+  border-radius: 0;
 }
 
 .Notification-size--normal {
@@ -22,6 +31,8 @@
 .Notification-content {
   display: flex;
   align-items: center;
+
+  color: var(--color-text);
 }
 
 .Notification-size--normal .Notification-content {
@@ -51,5 +62,15 @@
 
 .Notification--warning *,
 .Notification--warning .Notification-hideBtn {
-  color: black;
+  --color-text: black;
+}
+
+.Notification-hideBtn {
+  color: var(--color-text);
+}
+
+.Notification-icon,
+.Notification-icon .Icon {
+  width: 1.5em;
+  height: 1.5em;
 }
