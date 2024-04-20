@@ -44,7 +44,11 @@ export function Sharing ({ open, onClose = () => {} }) {
       <div className='Sharing u-theme--light'>
         {
           HOST === 'localhost' &&
-          <Notification size='small' description='Bridge is only accessible on localhost, change this in settings' />
+          (
+            <div className='Sharing-notification'>
+              <Notification size='small' description='Bridge is only accessible on localhost, change this in settings' />
+            </div>
+          )
         }
         <div className='Sharing-content'>
           <div className='Sharing-icon' dangerouslySetInnerHTML={{ __html: CollaborationIcon }} />

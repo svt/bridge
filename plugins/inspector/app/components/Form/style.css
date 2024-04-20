@@ -85,3 +85,8 @@
 
   box-sizing: border-box;
 }
+
+.Form-notifications .Notification {
+  margin-top: -10px;
+  margin-bottom: 15px;
+}

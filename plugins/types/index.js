@@ -101,7 +101,7 @@ const ITEM_CHANGE_HANDLERS = {
     }
 
     bridge.items.applyIssue(item?.id, 'types.rta', {
-      description: 'Be careful referencing ancestor as loops may occur'
+      description: 'Reference is targeting an ancestor, loops may occur'
     })
   }
 }
