@@ -7,6 +7,10 @@
  *  id: String,
  *  data: any
  * }} Item
+ *
+ * @typedef {{
+ *  description: String
+ * }} ItemIssue
  */
 
 const objectPath = require('object-path')
@@ -26,6 +30,16 @@ const Cache = require('./classes/Cache')
 
 const CACHE_MAX_ENTRIES = 10
 const cache = new Cache(CACHE_MAX_ENTRIES)
+
+/*
+Intercept the item.change event
+to always include the full item
+*/
+;(function () {
+  events.intercept('item.change', async itemId => {
+    return await getItem(itemId)
+  })
+})()
 
 /**
  * Create a new id for an item
@@ -75,25 +89,52 @@ exports.createItem = createItem
 /**
  * Apply changes to an
  * item in the state
+ *
  * @param { String } id The id of an item to update
- * @param { Item } item An item object to apply
+ * @param { Item } set An item object to apply
  */
-function applyItem (id, item = {}) {
+async function applyItem (id, set = {}) {
   if (typeof id !== 'string') {
     throw new MissingArgumentError('Invalid value for item id, must be a string')
   }
 
-  if (typeof item !== 'object' || Array.isArray(item)) {
+  if (typeof set !== 'object' || Array.isArray(set)) {
     throw new InvalidArgumentError('Argument \'item\' must be a valid object that\'s not an array')
   }
 
-  state.apply({
+  await state.apply({
     items: {
-      [id]: item
+      [id]: set
     }
   })
 }
 exports.applyItem = applyItem
+
+/**
+ * Apply changes to an
+ * already existing item
+ * in the state
+ *
+ * This function checks if the
+ * item exists before applying
+ * the data
+ *
+ * @param { String } id The id of an item to update
+ * @param { Item } set An item object to apply
+ */
+async function applyExistingItem (id, set = {}) {
+  if (typeof id !== 'string') {
+    throw new MissingArgumentError('Invalid value for item id, must be a string')
+  }
+
+  const item = await getItem(id)
+  if (!item) {
+    throw new InvalidArgumentError('Invalid item id, item does not exist')
+  }
+
+  await applyItem(id, set)
+}
+exports.applyExistingItem = applyExistingItem
 
 /**
  * Get an item object by its id
@@ -255,3 +296,62 @@ async function stopItem (id) {
   commands.executeCommand('items.stopItem', clone)
 }
 exports.stopItem = stopItem
+
+/**
+ * Add or update an
+ * issue by its id
+ *
+ * An issue indicates a problem with an item
+ * and may be reflected in the interface
+ *
+ * @param { String } itemId
+ * @param { String } issueId
+ * @param { ItemIssue } issueSpec
+ */
+async function applyIssue (itemId, issueId, issueSpec) {
+  if (typeof itemId !== 'string') {
+    throw new MissingArgumentError('Invalid value for item id, must be a string')
+  }
+
+  if (typeof issueId !== 'string') {
+    throw new MissingArgumentError('Invalid value for issue id, must be a string')
+  }
+
+  if (typeof issueSpec !== 'object' || Array.isArray(issueSpec)) {
+    throw new InvalidArgumentError('Argument \'issueSpec\' must be a valid object that\'s not an array')
+  }
+
+  await applyExistingItem(itemId, {
+    issues: {
+      [issueId]: {
+        ts: Date.now(),
+        ...issueSpec
+      }
+    }
+  })
+}
+exports.applyIssue = applyIssue
+
+/**
+ * Remove an issue by its
+ * id from an item
+ *
+ * @param { String } itemId
+ * @param { String } issueId
+ */
+async function removeIssue (itemId, issueId) {
+  if (typeof itemId !== 'string') {
+    throw new MissingArgumentError('Invalid value for item id, must be a string')
+  }
+
+  if (typeof issueId !== 'string') {
+    throw new MissingArgumentError('Invalid value for issue id, must be a string')
+  }
+
+  applyExistingItem(itemId, {
+    issues: {
+      [issueId]: { $delete: true }
+    }
+  })
+}
+exports.removeIssue = removeIssue

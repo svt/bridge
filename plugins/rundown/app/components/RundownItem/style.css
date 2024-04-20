@@ -17,6 +17,16 @@
   align-items: center;
 }
 
+.RundownItem-section--icons {
+  height: 1em;
+  width: 100px;
+  justify-content: flex-end;
+}
+
+.RundownItem-section--right {
+  justify-content: flex-end;
+}
+
 .RundownItem-color,
 .RundownItem-background {
   position: absolute;
@@ -71,4 +81,8 @@
 
   opacity: 0.3;
   z-index: -1;
+}
+
+.RundownItem-icon {
+  width: 1em;
 }

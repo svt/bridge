@@ -340,6 +340,24 @@ Play an item and set its state to 'playing'.
 ### `bridge.items.stopItem(id): Promise<Void>`
 Stop an item and set its state to 'stopped'.
 
+### `bridge.items.applyIssue(itemId, issueId, issueSpec): Promise<Void>`  
+Add an issue to an item
+
+**Example**
+```javascript
+bridge.items.applyIssue('6jI2', 'myIssue', {
+  description: 'Item is incorrectly configured'
+})
+```
+
+### `bridge.items.removeIssue(itemId, issueId): Promise<Void>`  
+Remove an issue from an item
+
+**Example**
+```javascript
+bridge.items.removeIssue('6jI2', 'myIssue')
+```
+
 ## Client  
 **The client api between the renerer and main processes**  
 Control aspects of clients

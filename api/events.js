@@ -50,6 +50,11 @@ function appendToMapArray (map, key, item) {
 async function callLocalHandlers (event, ...args) {
   let _args = args
 
+  const handlers = localHandlers.get(event)
+  if (!handlers) {
+    return
+  }
+
   /*
   Let any intercepts do their thing
   before calling the event handlers
@@ -57,11 +62,6 @@ async function callLocalHandlers (event, ...args) {
   const interceptFns = intercepts.get(event) || []
   for (const { fn } of interceptFns) {
     _args = await fn(..._args)
-  }
-
-  const handlers = localHandlers.get(event)
-  if (!handlers) {
-    return
   }
 
   for (const { handler } of handlers) {

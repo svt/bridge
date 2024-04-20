@@ -18,6 +18,7 @@ import { SharedContext } from '../../sharedContext'
 import { RundownItemProgress } from '../RundownItemProgress'
 
 import * as Layout from '../Layout'
+import { Icon } from '../Icon'
 
 /**
  * An index of type properties
@@ -123,7 +124,7 @@ export function RundownItem ({ index, item }) {
             )
           }
         </div>
-        <div className='RundownItem-section'>
+        <div className='RundownItem-section RundownItem-section--right'>
           {
             ([...properties, ...typeProperties])
               .filter(property => property.if)
@@ -148,6 +149,12 @@ export function RundownItem ({ index, item }) {
                   </div>
                 )
               })
+          }
+        </div>
+        <div className='RundownItem-section RundownItem-section--icons'>
+          {
+            Object.keys(item?.issues ?? {}).length > 0 &&
+              <span className='RundownItem-icon'><Icon name='warning' /></span>
           }
         </div>
       </Layout.Spread>

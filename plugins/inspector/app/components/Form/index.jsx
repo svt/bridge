@@ -165,14 +165,15 @@ export function Form () {
    * @param { String } path The data path to set
    * @param { Any } value The value to set
    */
-  function handleDataChange (path, value) {
+  async function handleDataChange (path, value) {
     const data = {}
     objectPath.set(data, path, value)
 
     setLocalData(data)
 
     for (const id of store.selection) {
-      bridge.items.applyItem(id, { data })
+      await bridge.items.applyItem(id, { data })
+      bridge.events.emit('item.change', id)
     }
   }
 
