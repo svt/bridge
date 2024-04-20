@@ -8,8 +8,6 @@ import { SocketContext } from './socketContext'
 
 import { useWebsocket } from './hooks/useWebsocket'
 
-import { deepApply } from './utils/apply'
-
 import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
 import * as api from './api'
@@ -181,7 +179,7 @@ export default function App () {
     be sure to copy the current state
     or React won't treat it as an update
     */
-    const newLocal = deepApply({ ...localRef.current }, data)
+    const newLocal = window?.shared?.merge?.deep({ ...localRef.current }, data)
     setLocal(newLocal)
   }
 

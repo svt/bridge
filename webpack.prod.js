@@ -35,6 +35,7 @@ const prod = {
         the server to /app/template.js
         */
         assets: [
+          `${hash}.shared.bundle.js`,
           `${hash}.app.bundle.css`,
           `${hash}.app.bundle.js`,
           `${hash}.api.bundle.js`
