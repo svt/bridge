@@ -144,4 +144,5 @@ function mergeDeep (targetObj, sourceObj) {
   }
   return targetObj
 }
+
 exports.deep = mergeDeep
