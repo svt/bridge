@@ -225,9 +225,10 @@ function deepClone (obj) {
  *
  * @param { any } item
  * @param { any } type
+ * @param { any } values
  * @returns { any } The item with modified property values
  */
-function populateVariablesMutable (item, type) {
+function populateVariablesMutable (item, type, values) {
   if (!item.data) {
     item.data = {}
   }
@@ -239,7 +240,7 @@ function populateVariablesMutable (item, type) {
     const currentValue = objectPath.get(item.data, key)
 
     if (currentValue != null) {
-      objectPath.set(item.data, key, JSON.parse(variables.substituteInString(JSON.stringify(currentValue))))
+      objectPath.set(item.data, key, JSON.parse(variables.substituteInString(JSON.stringify(currentValue), values)))
     }
   }
 
@@ -263,7 +264,9 @@ async function playItem (id) {
   }
 
   const type = await types.getType(item.type)
-  const clone = populateVariablesMutable(deepClone(item), type)
+  const vars = await variables.getAllVariables()
+  const clone = populateVariablesMutable(deepClone(item), type, vars)
+
   const delay = parseInt(clone?.data?.delay)
 
   if (delay && !Number.isNaN(delay)) {
