@@ -158,7 +158,7 @@ exports.activate = async () => {
     any current parent
     */
     if (item.parent !== newParentId) {
-      await removeItemsFromParent(item.parent, [item.id])
+      await removeItemsFromParent(item.parent, [itemId])
     }
 
     /*
@@ -170,11 +170,27 @@ exports.activate = async () => {
       return appendItem(newParentId, itemId)
     }
 
-    const oldIndex = siblings.indexOf(itemId)
-    const weightedNewIndex = oldIndex < newIndex && oldIndex > -1 ? newIndex - 1 : newIndex
+    let oldIndex = siblings.indexOf(itemId)
 
     if (oldIndex === newIndex) {
       return
+    }
+
+    /*
+    Insert the item at the new index
+    */
+    siblings.splice(newIndex, 0, itemId)
+
+    if (newIndex < oldIndex) {
+      oldIndex += 1
+    }
+
+    /*
+    Remove the old index if the item
+    just moves within its parent
+    */
+    if (item.parent === newParentId) {
+      siblings.splice(oldIndex, 1)
     }
 
     /*
@@ -193,32 +209,27 @@ exports.activate = async () => {
     }]
 
     /*
-    Only remove the old index if it
-    is in the current rundown
-    */
-    if (oldIndex !== -1) {
-      patches.push({
-        items: {
-          [newParentId]: {
-            children: {
-              [oldIndex]: { $delete: true }
-            }
-          }
-        }
-      })
-    }
-
-    /*
     Insert the item at the correct
     index in the new rundown
     */
-    patches.push({
-      items: {
-        [newParentId]: {
-          children: { $insert: itemId, $index: Math.max(0, weightedNewIndex) }
+    patches.push(
+      ...[
+        {
+          items: {
+            [newParentId]: {
+              children: []
+            }
+          }
+        },
+        {
+          items: {
+            [newParentId]: {
+              children: { $replace: siblings }
+            }
+          }
         }
-      }
-    })
+      ]
+    )
 
     await bridge.state.apply(patches)
     bridge.events.emit('item.change', itemId)
@@ -272,6 +283,7 @@ exports.activate = async () => {
       .reduce((prev, cur) => {
         return [...prev, ...cur]
       }, [])
+      .filter(item => item)
 
     return JSON.stringify(items)
   }

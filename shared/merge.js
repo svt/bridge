@@ -11,7 +11,7 @@
  * @param { any } sourceObj
  * @returns { any } The target object
  */
-function mergeDeep (targetObj, sourceObj) {
+function mergeDeep (targetObj = {}, sourceObj = {}) {
   for (const key of Object.keys(sourceObj)) {
     /*
     If the $replace keyword is used,
