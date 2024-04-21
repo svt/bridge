@@ -28,6 +28,15 @@ function getVariable (key) {
 exports.getVariable = getVariable
 
 /**
+ * Get all variables' values
+ * @returns { Promise.<any> }
+ */
+async function getAllVariables () {
+  return state.get('variables')
+}
+exports.getAllVariables = getAllVariables
+
+/**
  * Substitute variables for their
  * values in a string
  *
