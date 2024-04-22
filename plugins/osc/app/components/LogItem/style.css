@@ -2,15 +2,15 @@
   display: flex;
   width: 100%;
 
+  font-size: 0.9em;
+
+  opacity: 0.8;
+
   white-space: nowrap;
 }
 
 .LogItem > div {
   margin-left: 10px;
-}
-
-.LogItem[data-direction='in']{
-  color: var(--base-color--accent1);
 }
 
 .LogItem-timestamp {
