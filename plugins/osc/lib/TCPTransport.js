@@ -6,7 +6,8 @@ const Transport = require('./Transport')
 
 const net = require('node:net')
 
-const DEFAULT_SOCKET_TIMEOUT_MS = 10000
+const Logger = require('../../../lib/Logger')
+const logger = new Logger({ name: 'OSC: TCPTransport' })
 
 class TCPTransport extends Transport {
   /**
@@ -27,7 +28,9 @@ class TCPTransport extends Transport {
       socket.on('timeout', () => {
         socket.end()
       })
-      socket.setTimeout(DEFAULT_SOCKET_TIMEOUT_MS)
+      socket.on('error', err => {
+        logger.debug('Connection error', err)
+      })
     })
 
     this.#server.on('error', err => {
