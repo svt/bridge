@@ -18,12 +18,21 @@
 }
 
 .RundownItem-section--icons {
-  height: 1em;
+  height: 1.2em;
   width: 100px;
 
   justify-content: flex-end;
 
   overflow: hidden;
+}
+
+.RundownItem-icon {
+  display: inline-block;
+  width: 1.2em;
+}
+
+.RundownItem-icon:not(:last-child) {
+  margin-right: 5px;
 }
 
 .RundownItem-section--right {
@@ -84,8 +93,4 @@
 
   opacity: 0.3;
   z-index: -1;
-}
-
-.RundownItem-icon {
-  width: 1em;
 }
