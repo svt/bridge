@@ -72,6 +72,10 @@ bridge.events.on('item.play', async item => {
     return
   }
 
+  if (!PLAY_HANDLERS[item.type]) {
+    return
+  }
+
   /*
   Look up the server id to check if it's a group,
   in that case play the item for all servers
@@ -96,6 +100,10 @@ call the matching handler for the item type
 */
 bridge.events.on('item.stop', async item => {
   if (!(await checkIsLive())) {
+    return
+  }
+
+  if (!STOP_HANDLERS[item.type]) {
     return
   }
 

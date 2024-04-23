@@ -27,6 +27,7 @@
 .RundownGroupItem-arrowWrapper {
   width: 25px;
   margin-right: 7px;
+  z-index: 1;
 }
 
 .RundownGroupItem-arrow {
@@ -36,6 +37,11 @@
   margin-top: -3px;
 
   transform: rotate(0deg);
+}
+
+.RundownGroupItem-arrow:hover {
+  background: var(--base-color--shade1);
+  border-radius: 6px;
 }
 
 .is-collapsed .RundownGroupItem-arrow {
