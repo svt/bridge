@@ -106,6 +106,11 @@ export function RundownGroupItem ({ index, item }) {
     e.stopPropagation()
   }
 
+  function handleToggleCollapsed (e) {
+    e.stopPropagation()
+    setCollapsed(!isCollapsed)
+  }
+
   const itemIds = shared?.items?.[item?.id]?.children || []
   const isCollapsed = item?.['rundown.ui.collapsed']
 
@@ -113,11 +118,11 @@ export function RundownGroupItem ({ index, item }) {
     <div ref={elRef} className={`RundownGroupItem ${isCollapsed ? 'is-collapsed' : ''}`} data-item-type={item.type}>
       <div className='RundownGroupItem-color' style={{ backgroundColor: item?.data?.color }} />
       <div className='RundownGroupItem-background' style={{ backgroundColor: item?.data?.color }} />
-      <div className='RundownGroupItem-header is-scrollTarget' onDoubleClick={() => setCollapsed(!isCollapsed)}>
+      <div className='RundownGroupItem-header is-scrollTarget' onDoubleClick={e => handleToggleCollapsed(e)}>
         <div className='RundownGroupItem-index'>
           {index}
         </div>
-        <div className='RundownGroupItem-arrowWrapper'>
+        <div className='RundownGroupItem-arrowWrapper' onClick={e => handleToggleCollapsed(e)}>
           <div className='RundownGroupItem-arrow'>
             <Icon name='arrowDown' />
           </div>
@@ -139,7 +144,7 @@ export function RundownGroupItem ({ index, item }) {
              ? (
                <div
                  className='RundownGroupItem-dropZone'
-                 onDoubleClick={() => setCollapsed(!isCollapsed)}
+                 onDoubleClick={e => handleToggleCollapsed(e)}
                  onDrop={e => handleDrop(e)}
                />
                )
