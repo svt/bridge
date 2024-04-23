@@ -294,7 +294,8 @@ async function stopItem (id) {
   }
 
   const type = await types.getType(item.type)
-  const clone = populateVariablesMutable(deepClone(item), type)
+  const vars = await variables.getAllVariables()
+  const clone = populateVariablesMutable(deepClone(item), type, vars)
 
   commands.executeCommand('items.stopItem', clone)
 }
