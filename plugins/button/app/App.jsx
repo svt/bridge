@@ -17,19 +17,23 @@ export default function App () {
   React.useEffect(() => {
     async function getItem (itemId) {
       const item = await bridge.items.getItem(itemId)
-      console.log('Got item', item)
       setItem(item)
     }
     getItem(itemId)
   }, [itemId])
 
   React.useEffect(() => {
-    bridge.events.on('item.change', newItem => {
+    function handleItemChange (newItem) {
       if (newItem?.id !== item?.id) {
         return
       }
       setItem(newItem)
-    })
+    }
+
+    bridge.events.on('item.change', handleItemChange)
+    return () => {
+      bridge.events.off('item.change', handleItemChange)
+    }
   }, [item])
 
   function handleItemChange (itemId) {
@@ -53,16 +57,18 @@ export default function App () {
     bridge.items.stopItem(itemId)
   }
 
+  const label = item ? (item?.data?.name || 'Unnamed') : 'Drop an item here'
+
   return (
     <>
       <QueryPath path='play'>
         <ItemDropArea onDrop={itemId => handleItemChange(itemId)}>
-          <ItemButton label={item?.data?.name || 'Drop an item here'} color={item?.data?.color} onClick={() => handlePlayItem()} />
+          <ItemButton label={label} color={item?.data?.color} onClick={() => handlePlayItem()} />
         </ItemDropArea>
       </QueryPath>
       <QueryPath path='stop'>
         <ItemDropArea onDrop={itemId => handleItemChange(itemId)}>
-          <ItemButton label={item?.data?.name || 'Drop an item here'} color={item?.data?.color} onClick={() => handleStopItem()} />
+          <ItemButton label={label} color={item?.data?.color} onClick={() => handleStopItem()} />
         </ItemDropArea>
       </QueryPath>
     </>
