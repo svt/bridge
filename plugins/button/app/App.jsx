@@ -57,16 +57,18 @@ export default function App () {
     bridge.items.stopItem(itemId)
   }
 
+  const label = item ? (item?.data?.name || 'Unnamed') : 'Drop an item here'
+
   return (
     <>
       <QueryPath path='play'>
         <ItemDropArea onDrop={itemId => handleItemChange(itemId)}>
-          <ItemButton label={item?.data?.name || 'Drop an item here'} color={item?.data?.color} onClick={() => handlePlayItem()} />
+          <ItemButton label={label} color={item?.data?.color} onClick={() => handlePlayItem()} />
         </ItemDropArea>
       </QueryPath>
       <QueryPath path='stop'>
         <ItemDropArea onDrop={itemId => handleItemChange(itemId)}>
-          <ItemButton label={item?.data?.name || 'Drop an item here'} color={item?.data?.color} onClick={() => handleStopItem()} />
+          <ItemButton label={label} color={item?.data?.color} onClick={() => handleStopItem()} />
         </ItemDropArea>
       </QueryPath>
     </>
