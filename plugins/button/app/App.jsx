@@ -17,19 +17,23 @@ export default function App () {
   React.useEffect(() => {
     async function getItem (itemId) {
       const item = await bridge.items.getItem(itemId)
-      console.log('Got item', item)
       setItem(item)
     }
     getItem(itemId)
   }, [itemId])
 
   React.useEffect(() => {
-    bridge.events.on('item.change', newItem => {
+    function handleItemChange (newItem) {
       if (newItem?.id !== item?.id) {
         return
       }
       setItem(newItem)
-    })
+    }
+
+    bridge.events.on('item.change', handleItemChange)
+    return () => {
+      bridge.events.off('item.change', handleItemChange)
+    }
   }, [item])
 
   function handleItemChange (itemId) {
