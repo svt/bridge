@@ -111,7 +111,13 @@ export function RundownGroupItem ({ index, item }) {
     setCollapsed(!isCollapsed)
   }
 
-  const itemIds = shared?.items?.[item?.id]?.children || []
+  const itemIds = (shared?.items?.[item?.id]?.children || [])
+    /*
+    Remove any undefined
+    or null entries
+    */
+    .filter(id => id)
+
   const isCollapsed = item?.['rundown.ui.collapsed']
 
   return (
