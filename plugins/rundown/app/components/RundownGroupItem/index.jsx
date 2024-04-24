@@ -127,8 +127,11 @@ export function RundownGroupItem ({ index, item }) {
             <Icon name='arrowDown' />
           </div>
         </div>
-        <div className='RundownGroupItem-property'>
+        <div className='RundownGroupItem-property RundownGroupItem-property--name'>
           {item?.data?.name}
+          <div className='RundownGroupItem-itemCount'>
+            {itemIds.length} {itemIds.length === 1 ? 'item' : 'items'}
+          </div>
         </div>
         <div className='RundownGroupItem-property RundownGroupItem-notes'>
           {item?.data?.notes}

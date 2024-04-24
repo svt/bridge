@@ -44,6 +44,16 @@
   border-radius: 6px;
 }
 
+.RundownGroupItem-property--name {
+  margin-top: -7px;
+}
+
+.RundownGroupItem-itemCount {
+  position: absolute;
+  font-size: 0.7em;
+  opacity: 0.5;
+}
+
 .is-collapsed .RundownGroupItem-arrow {
   transform: rotate(-90deg);
 }
