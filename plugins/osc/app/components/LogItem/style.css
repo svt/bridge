@@ -11,10 +11,18 @@
 
 .LogItem > div {
   margin-left: 10px;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .LogItem-timestamp {
-  width: 100px;
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.LogItem-direction {
+  flex-shrink: 0;
 }
 
 .LogItem:nth-child(odd) {
