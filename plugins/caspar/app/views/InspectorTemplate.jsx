@@ -51,11 +51,16 @@ export const InspectorTemplate = () => {
 
   function handleSave (newValue) {
     try {
-      const parsed = JSON.parse(newValue)
+      const parsed = JSON.stringify(JSON.parse(newValue))
       handleNewValue({
         data: {
           caspar: {
-            templateData: { $replace: parsed },
+            /*
+            templateData holds the actual data sent in commands
+            while templateDataString holds prettified data only shown
+            within the Bridge UI
+            */
+            templateData: parsed,
             templateDataString: newValue
           }
         }

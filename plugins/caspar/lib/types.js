@@ -137,6 +137,21 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.load',
+    name: 'Load',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.media',
+    properties: {
+      'caspar.auto': {
+        name: 'Auto play',
+        type: 'boolean',
+        default: false,
+        'ui.group': 'Timing'
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.template',
     name: 'Template',
     category: 'Caspar',

@@ -95,7 +95,7 @@ exports.clear = opts => `CLEAR ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)} ${file}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? 'AUTO' : ''}`
+exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)}${file ? ` "${file}"` : ''}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? 'AUTO' : ''}`
 
 /**
  * Play a media item in the foreground
@@ -109,7 +109,7 @@ exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${lay
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.play = (file, loop, seek, length, filter, auto, opts) => `PLAY ${layerString(opts)} "${file}"${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? ' AUTO' : ''}`
+exports.play = (file, loop, seek, length, filter, auto, opts) => `PLAY ${layerString(opts)}${file ? ` "${file}"` : ''}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? ' AUTO' : ''}`
 
 /**
  * Play a media item in the foreground that
@@ -137,7 +137,7 @@ exports.stop = opts => `STOP ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} "${template}" ${playOnLoad ? 1 : 0} ${JSON.stringify(JSON.stringify(data))}`
+exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} "${template}" ${playOnLoad ? 1 : 0} ${JSON.stringify(data || '')}`
 
 /**
  * Stop a template
@@ -150,11 +150,11 @@ exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
 /**
  * Update a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-update
- * @param { Object } data
+ * @param { String } data
  * @param { AMCPOptions } opts
  * @returns { String }
  */
-exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(JSON.stringify(data))}`
+exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(data || '')}`
 
 /**
  * Change the opacity of a layer

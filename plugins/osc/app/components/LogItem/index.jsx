@@ -17,7 +17,7 @@ export const LogItem = ({ item = {} }) => {
   return (
     <div className='LogItem' data-direction={item?.direction}>
       <div className='LogItem-timestamp'>{formatTime(item?.timestamp)}</div>
-      <div className='LogItem-direction'>| {item?.direction === 'in' ? '>>' : '<<'}</div>
+      <div className='LogItem-direction'>{item?.direction === 'in' ? '>' : '<'}</div>
       <div className='LogItem-address'>{item?.address}</div>
     </div>
   )

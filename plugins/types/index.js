@@ -14,7 +14,8 @@ const types = require('./lib/types')
 const utils = require('./lib/utils')
 
 const GROUP_PLAY_MODES = {
-  all: 0
+  all: 0,
+  first: 1
 }
 
 const PLAY_HANDLERS = {
@@ -23,10 +24,17 @@ const PLAY_HANDLERS = {
   on the group's play mode
   */
   'bridge.types.group': item => {
-    if (!item?.data?.playMode || item?.data?.playMode === GROUP_PLAY_MODES.all) {
-      for (const child of (item?.children || [])) {
-        bridge.items.playItem(child)
-      }
+    switch (parseInt(item?.data?.playMode)) {
+      case GROUP_PLAY_MODES.first:
+        if (item?.children?.[0]) {
+          bridge.items.playItem(item?.children?.[0])
+        }
+        break
+      case GROUP_PLAY_MODES.all:
+      default:
+        for (const child of (item?.children || [])) {
+          bridge.items.playItem(child)
+        }
     }
   },
 

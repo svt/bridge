@@ -24,6 +24,9 @@ const PLAY_HANDLERS = {
   'bridge.caspar.media': async (serverId, item) => {
     return commands.sendCommand(serverId, 'play', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, undefined, item?.data?.caspar)
   },
+  'bridge.caspar.load': async (serverId, item) => {
+    return commands.sendCommand(serverId, 'loadbg', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, item?.data?.caspar?.auto, item?.data?.caspar)
+  },
   'bridge.caspar.template': (serverId, item) => {
     return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, item?.data?.caspar?.templateData, true, item?.data?.caspar)
   },
@@ -38,6 +41,9 @@ const PLAY_HANDLERS = {
 const STOP_HANDLERS = {
   'bridge.caspar.media': (serverId, item) => {
     return commands.sendCommand(serverId, 'stop', item?.data?.caspar)
+  },
+  'bridge.caspar.load': async (serverId, item) => {
+
   },
   'bridge.caspar.template': (serverId, item) => {
     return commands.sendCommand(serverId, 'cgStop', item?.data?.caspar)
