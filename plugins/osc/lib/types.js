@@ -41,5 +41,33 @@ function init (htmlPath) {
       }
     }
   })
+
+  bridge.types.registerType({
+    id: 'bridge.osc.udp.activate',
+    name: 'Activate UDP server',
+    category: 'OSC',
+    inherits: 'bridge.types.delayable',
+    properties: {
+      'osc.active': {
+        name: 'Activate server',
+        type: 'boolean',
+        'ui.group': 'OSC'
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.osc.tcp.activate',
+    name: 'Activate TCP server',
+    category: 'OSC',
+    inherits: 'bridge.types.delayable',
+    properties: {
+      'osc.active': {
+        name: 'Activate server',
+        type: 'boolean',
+        'ui.group': 'OSC'
+      }
+    }
+  })
 }
 exports.init = init
