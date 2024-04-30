@@ -256,6 +256,18 @@ async function playTrigger (item) {
   })
 }
 
+function updateServerConfig (type, set) {
+  bridge.state.apply({
+    plugins: {
+      [manifest.name]: {
+        settings: {
+          [type]: set
+        }
+      }
+    }
+  })
+}
+
 exports.activate = async () => {
   logger.debug('Activating OSC plugin')
 
@@ -296,8 +308,20 @@ exports.activate = async () => {
   and handle OSC triggers
   */
   bridge.events.on('item.play', async item => {
-    if (item?.type === 'bridge.osc.trigger') {
-      playTrigger(item)
+    switch (item?.type) {
+      case 'bridge.osc.trigger':
+        playTrigger(item)
+        break
+      case 'bridge.osc.udp.activate':
+        updateServerConfig('udp', {
+          active: item?.data?.osc?.active
+        })
+        break
+      case 'bridge.osc.tcp.activate':
+        updateServerConfig('tcp', {
+          active: item?.data?.osc?.active
+        })
+        break
     }
   })
 
