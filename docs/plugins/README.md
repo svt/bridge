@@ -11,6 +11,7 @@ Plugins allows Bridge to be extended with functionality, both through the backen
     - [main](#main)
     - [engines](#engines)
     - [contributes](#contributes)
+  - [Installing plugins](./installation.md)
 - [API reference](/docs/api/README.md)
 
 ## Examples

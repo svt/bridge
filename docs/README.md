@@ -14,6 +14,7 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 - [Guide](/docs/plugins/README.md)
 - [Examples](/examples)
 - [API reference](/docs/api/README.md)
+- [Installing plugins](/docs/plugins/installation.md)
 
 ## Internals
 - [Architecture](/docs/architecture.md)
