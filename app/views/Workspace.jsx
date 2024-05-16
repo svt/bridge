@@ -14,6 +14,7 @@ import * as api from '../api'
 import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
+import { Onboarding } from '../components/Onboarding'
 
 import { Grid } from '../components/Grid'
 import { Palette } from '../components/Palette'
@@ -164,6 +165,7 @@ export const Workspace = () => {
 
   return (
     <>
+      <Onboarding />
       <Header title={getFileNameFromPath(shared._filePath)} />
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
       {

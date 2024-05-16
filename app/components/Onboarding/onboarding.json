@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2024-05-16T11:41:00",
+  "heading": "Welcome to Bridge",
+  "paragraphs": [
+    {
+      "icon": "edit",
+      "heading": "Customize the workspace",
+      "body": "Enter the edit mode to change the layout of your workspace, this mode is always available next to settings in the top right"
+    },
+    {
+      "icon": "widget",
+      "heading": "Widgets",
+      "body": "Use widgets to add functionality to your workspace"
+    },
+    {
+      "icon": "rundown",
+      "heading": "Rundown",
+      "body": "Add items to your rundown by right-clicking or dragging them in"
+    },
+    {
+      "icon": "inspector",
+      "heading": "Inspector",
+      "body": "The inspector lets you edit items"
+    }
+  ]
+}

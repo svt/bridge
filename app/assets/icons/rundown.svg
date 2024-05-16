@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/rundown</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="23" height="6" rx="2"></rect>
+    </defs>
+    <g id="icons/rundown" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-Copy" stroke-opacity="0.225251311" stroke="#FFFFFF" fill-opacity="0.19" fill="#FFFFFF" x="1.5" y="3.08823529" width="22" height="5" rx="2"></rect>
+        <g id="Rectangle" transform="translate(1, 9.5882)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <rect stroke-opacity="0.225251311" stroke="#FFFFFF" x="0.5" y="0.5" width="22" height="5" rx="2"></rect>
+            <rect fill="#FFFFFF" mask="url(#mask-2)" x="0" y="-0.588235294" width="4" height="7"></rect>
+        </g>
+        <rect id="Rectangle-Copy-3" stroke-opacity="0.225251311" stroke="#FFFFFF" fill-opacity="0.19" fill="#FFFFFF" x="1.5" y="17.0882353" width="22" height="5" rx="2"></rect>
+    </g>
+</svg>
