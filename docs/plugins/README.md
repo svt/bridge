@@ -2,6 +2,7 @@
 Plugins allows Bridge to be extended with functionality, both through the backend main process or by creating UI widgets.
 
 ## Table of contents
+- [Examples](#examples)
 - [Getting started](#getting-started)
   - [Structure](#structure)
   - [Plugin manifest](#plugin-manifest)
@@ -11,6 +12,9 @@ Plugins allows Bridge to be extended with functionality, both through the backen
     - [engines](#engines)
     - [contributes](#contributes)
 - [API reference](/docs/api/README.md)
+
+## Examples
+Example plugins can be found in the [examples directory](../../examples)
 
 ## Getting started
 Plugins are Javascript packages located in Bridge's plugin directory.

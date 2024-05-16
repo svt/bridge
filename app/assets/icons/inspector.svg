@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/inspector</title>
+    <g id="icons/inspector" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-Copy" stroke-opacity="0.225251311" stroke="#FFFFFF" fill-opacity="0.19" fill="#FFFFFF" x="1.5" y="7.08823529" width="22" height="9.82352941" rx="4.91176471"></rect>
+        <path d="M18,6.5 C19.5187831,6.5 20.8937831,7.11560847 21.8890873,8.1109127 C22.8843915,9.10621694 23.5,10.4812169 23.5,12 C23.5,13.5187831 22.8843915,14.8937831 21.8890873,15.8890873 C20.8937831,16.8843915 19.5187831,17.5 18,17.5 C16.4812169,17.5 15.1062169,16.8843915 14.1109127,15.8890873 C13.1156085,14.8937831 12.5,13.5187831 12.5,12 C12.5,10.4812169 13.1156085,9.10621694 14.1109127,8.1109127 C15.1062169,7.11560847 16.4812169,6.5 18,6.5 Z" id="Rectangle-Copy-3" stroke="#FFFFFF" fill="#FFFFFF"></path>
+    </g>
+</svg>

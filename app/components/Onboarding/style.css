@@ -1,0 +1,25 @@
+.Onboarding {
+  display: flex;
+  padding: 30px;
+  height: 100%;
+
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.Onboarding-paragraphs {
+  height: 100%;
+  margin: 15px 20px 0;
+  text-align: left;
+}
+
+.Onboarding-paragraph {
+  display: flex;
+  margin-bottom: 15px;
+
+  align-items: center;
+}
+
+.Onboarding-paragraphIcon {
+  margin-right: 15px;
+}
