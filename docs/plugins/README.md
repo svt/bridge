@@ -11,6 +11,7 @@ Plugins allows Bridge to be extended with functionality, both through the backen
     - [main](#main)
     - [engines](#engines)
     - [contributes](#contributes)
+  - [Building plugins](#building-plugins)
   - [Installing plugins](./installation.md)
 - [API reference](/docs/api/README.md)
 
@@ -102,3 +103,10 @@ Declare what version of Bridge is required to run the plugin. This property is r
 #### contributes
 **Optional**  
 Optionally declare contributions made by this plugin. See the [API documentation](/docs/api/README.md) for specifics.
+
+### Building plugins
+Plugins are agnostic to the choice of build tool as long as the resulting code is commonJS (for backend/worker code) and fully resolved (for frontend/widget code), and packaged as a directory with a `package.json` file.
+
+The only call to require that's allowed in frontend code is `require('bridge')` as that will be resolved during runtime.
+
+Backend code can require external libraries.
