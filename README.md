@@ -9,7 +9,7 @@ An extendable graphics playout client that's both a desktop app and a cloud serv
 
 **This project is still in very early development**
 
-![UI](/media/ui.png)
+![Screenshot](/media/screenshot.png)
 
 ## Goals
 
