@@ -1,6 +1,6 @@
 # Full documentation
 
-Welcome to the full documentation for Bridge. Whether you're want to build your own extension or are looking for more information about the internals, this is the place to find it.
+Welcome to the full documentation for Bridge. Whether you want to build your own extension or are looking for more information about the internals, this is the place to find it.
 
 ## Bundled plugins
 - [Inspector](/plugins/inspector/README.md)
@@ -12,6 +12,7 @@ Welcome to the full documentation for Bridge. Whether you're want to build your 
 
 ## Developing plugins
 - [Guide](/docs/plugins/README.md)
+- [Examples](/examples)
 - [API reference](/docs/api/README.md)
 
 ## Internals

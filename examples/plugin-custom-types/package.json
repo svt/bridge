@@ -1,0 +1,32 @@
+{
+  "name": "plugin-custom-types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "contributes": {
+    "types": [
+      {
+        "id": "plugin-custom-types.my-type",
+        "name": "My custom type",
+        "inherits": "bridge.types.delayable",
+        "category": "Custom types",
+        "properties": {
+          "myValue": {
+            "name": "My custom value",
+            "type": "string",
+            "default": "Default value",
+            "ui.group": "My custom type plugin"
+          }
+        }
+      }
+    ]
+  }
+}
