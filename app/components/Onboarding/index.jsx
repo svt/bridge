@@ -13,8 +13,6 @@ export function Onboarding ({ onClose = () => {} }) {
   const [shared, applyShared] = React.useContext(SharedContext)
 
   React.useEffect(() => {
-    console.log('Getting time', new Date(content.updatedAt).getTime(), shared?._userDefaults?.didCompleteOnboarding)
-
     if (shared?._userDefaults == null) {
       return
     }
