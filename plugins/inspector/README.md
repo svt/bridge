@@ -1,4 +1,4 @@
-# Rundown plugin
+# Inspector plugin
 Bridge's default inspector plugin
 
 ## Description
