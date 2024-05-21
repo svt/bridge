@@ -1,0 +1,9 @@
+.TargetSelector {
+  width: 100%;
+  padding: 0 5px 5px;
+  box-sizing: border-box;
+}
+
+.TargetSelector select {
+  width: 100%;
+}

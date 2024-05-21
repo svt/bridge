@@ -1,0 +1,21 @@
+{
+  "name": "bridge-plugin-atem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "author": "Axel Boberg (git@axelboberg.se)",
+  "license": "MIT",
+  "dependencies": {
+    "atem-connection": "^3.5.0"
+  }
+}

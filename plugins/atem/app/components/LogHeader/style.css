@@ -1,0 +1,14 @@
+.LogHeader {
+  width: 100%;
+  padding: 0 10px 10px;
+
+  border-bottom: 1px solid var(--base-color--shade1);
+}
+
+.LogHeader-setting {
+  display: flex;
+}
+
+.LogHeader-settingLabel {
+  margin-left: 10px;
+}
