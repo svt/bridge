@@ -11,11 +11,10 @@ import { SharedContext } from '../../sharedContext'
 import './style.css'
 
 import { HexColorPicker, HexColorInput } from 'react-colorful'
-import { Icon } from '../Icon'
 
-import { name } from '../../../package.json'
+import pkg from '../../../package.json'
 
-const PLUGIN_NAME = name
+const PLUGIN_NAME = pkg.name
 const MAX_RECENT_COLORS_COUNT = 14
 
 export function ColorInput ({
