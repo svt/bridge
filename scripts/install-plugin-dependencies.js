@@ -18,10 +18,10 @@ const PLUGINS_DIR = path.join(__dirname, '../plugins')
 /**
  * Synchronously install NPM
  * dependencies for a path
- * @param { String } path 
+ * @param { String } path
  */
 function npmInstallInPathSync (path) {
-  cp.execSync('npm ci', {
+  cp.execSync('npm install', {
     cwd: path
   })
 }
