@@ -17,8 +17,10 @@ bridge
   |- docs     # Documentation
   |- lib      # Node/backend
   |- media    # Static media for the documentation
-  |- plugins  # Bundled plugins (not external ones)
+  |- plugins  # Bundled plugins
   |- public   # Static files served by the web server
+  |- shared   # Code shared between processes
+  |- scripts  # Helper scripts used by the build process e.t.c. 
 
   These are created during the build process:
   

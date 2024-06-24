@@ -208,7 +208,7 @@ export default function App () {
               }
             }
           })
-          ;(await api.load()).client.setIdentity(localRef.current.id)
+          ;(await api.load()).client.setIdentity(json?.data)
           break
 
         /*
