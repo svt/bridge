@@ -11,7 +11,10 @@
 }
 
 .FrameComponent.is-focused {
+  border-radius: 5px;
   box-shadow: inset 0 0 0 1px var(--base-color--accent4);
+
+  overflow: hidden;
 }
 
 .FrameComponent-header {

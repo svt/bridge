@@ -31,7 +31,7 @@ const ReactGridLayout = WidthProvider(RGL)
  */
 const GRID_COL_COUNT = 24
 const GRID_ROW_COUNT = 12
-const GRID_MARGIN_PX = 2
+const GRID_MARGIN_PX = 3
 
 export function Grid ({ children, data = {}, onChange }) {
   const [shared, applyShared] = React.useContext(SharedContext)
@@ -244,7 +244,7 @@ export function Grid ({ children, data = {}, onChange }) {
         userIsEditingLayout &&
         <Notification
           icon='edit'
-          type='inline'
+          type='fixed'
           title='Editing layout'
           description='Right click to manage widgets'
           controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Leave edit mode</button>}

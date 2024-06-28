@@ -38,9 +38,9 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
         }
       </div>
       <div className='PopupShortcut-actions'>
-        <button className='Button--secondary' onClick={() => onChange(undefined)}>Cancel</button>
-        <button className='Button--secondary' onClick={() => onChange(-1)}>Reset</button>
-        <button className='Button--primary' onClick={() => onChange(trigger)}>OK</button>
+        <button className='Button' onClick={() => onChange(undefined)}>Cancel</button>
+        <button className='Button' onClick={() => onChange(-1)}>Reset</button>
+        <button className='Button--accent' onClick={() => onChange(trigger)}>OK</button>
       </div>
     </Popup>
   )

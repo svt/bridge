@@ -8,8 +8,8 @@ export function PopupConfirm ({ children, open, confirmText = 'Confirm', abortTe
     <Popup open={open}>
       {children}
       <div className='PopupConfirm-actions'>
-        <button className='Button--secondary' onClick={() => onChange(false)}>{abortText}</button>
-        <button className='Button--primary' onClick={() => onChange(true)}>{confirmText}</button>
+        <button className='Button' onClick={() => onChange(false)}>{abortText}</button>
+        <button className='Button--accent' onClick={() => onChange(true)}>{confirmText}</button>
       </div>
     </Popup>
   )
