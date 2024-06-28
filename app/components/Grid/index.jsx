@@ -15,6 +15,8 @@ import { Notification } from '../Notification'
 import { WidgetSelector } from '../WidgetSelector'
 import { GridEmptyContent } from '../GridEmptyContent'
 
+import { GridBackground } from './background'
+
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
 
@@ -257,6 +259,10 @@ export function Grid ({ children, data = {}, onChange }) {
         />
       </Modal>
       <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
+        {
+          userIsEditingLayout &&
+          <GridBackground cols={GRID_COL_COUNT} rows={GRID_ROW_COUNT} />
+        }
         {
           /*
           Render information and call to action
