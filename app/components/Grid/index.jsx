@@ -243,11 +243,10 @@ export function Grid ({ children, data = {}, onChange }) {
       {
         userIsEditingLayout &&
         <Notification
-          icon='edit'
           type='fixed'
           title='Editing layout'
           description='Right click to manage widgets'
-          controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Leave edit mode</button>}
+          controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Done</button>}
         />
       }
       <Modal open={modalItemId} onClose={() => setModalItemId(undefined)} size='small' shade={false} draggable>
