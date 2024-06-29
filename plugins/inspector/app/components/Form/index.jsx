@@ -248,7 +248,8 @@ export function Form () {
     <div className='Form'>
       <div className='Form-header'>
         <div className='Form-headerBackground' style={{
-          backgroundImage: `linear-gradient(transparent, ${getValue('color') || 'white'} 300%)`
+          borderBottom: `1px solid ${getValue('color') || 'var(--base-color--shade)'}`,
+          backgroundImage: `linear-gradient(transparent, ${getValue('color') || 'var(--base-color)'} 300%)`
         }} />
         <div className='Form-headerSection'>
           <ColorInput value={getValue('color')} onChange={value => handleDataChange('color', value)} />
