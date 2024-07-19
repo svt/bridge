@@ -15,6 +15,8 @@ import { Notification } from '../Notification'
 import { WidgetSelector } from '../WidgetSelector'
 import { GridEmptyContent } from '../GridEmptyContent'
 
+import { GridBackground } from './background'
+
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
 
@@ -31,7 +33,7 @@ const ReactGridLayout = WidthProvider(RGL)
  */
 const GRID_COL_COUNT = 24
 const GRID_ROW_COUNT = 12
-const GRID_MARGIN_PX = 2
+const GRID_MARGIN_PX = 3
 
 export function Grid ({ children, data = {}, onChange }) {
   const [shared, applyShared] = React.useContext(SharedContext)
@@ -243,11 +245,10 @@ export function Grid ({ children, data = {}, onChange }) {
       {
         userIsEditingLayout &&
         <Notification
-          icon='edit'
-          type='inline'
+          type='fixed'
           title='Editing layout'
           description='Right click to manage widgets'
-          controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Leave edit mode</button>}
+          controls={<button className='Button Button--ghost' onClick={() => handleLeaveEditMode()}>Done</button>}
         />
       }
       <Modal open={modalItemId} onClose={() => setModalItemId(undefined)} size='small' shade={false} draggable>
@@ -258,6 +259,10 @@ export function Grid ({ children, data = {}, onChange }) {
         />
       </Modal>
       <div ref={elRef} className='Grid' onContextMenu={e => handleContextMenu(e, { type: 'grid' })}>
+        {
+          userIsEditingLayout &&
+          <GridBackground cols={GRID_COL_COUNT} rows={GRID_ROW_COUNT} />
+        }
         {
           /*
           Render information and call to action

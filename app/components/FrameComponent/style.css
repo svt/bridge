@@ -8,19 +8,35 @@
   height: 100%;
 
   flex-direction: column;
+
+  overflow: hidden;
 }
 
-.FrameComponent.is-focused {
+.FrameComponent.is-focused::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  border-radius: 5px;
   box-shadow: inset 0 0 0 1px var(--base-color--accent4);
+
+  pointer-events: none;
+  z-index: 1;
 }
 
 .FrameComponent-header {
   position: relative;
   display: flex;
   width: 100%;
-  height: 40px;
+  height: 30px;
 
   padding: 0 10px;
+
+  font-size: 0.9em;
+  opacity: 0.7;
+
+  flex-shrink: 0;
 
   align-items: center;
   box-sizing: border-box;

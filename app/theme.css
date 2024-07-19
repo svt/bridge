@@ -1,8 +1,14 @@
 :root {
   --base-color: white;
+
   --base-color--accent1: #E543FF;
-  --base-color--accent2: #465055;
-  --base-color--accent3: #fafafa;
+
+  /*
+  Accent 2 should always be an
+  option for text on accent 1
+  */
+  --base-color--accent2: white;
+
   --base-color--accent4: #b9b9b9;
   --base-color--accent5: #0F418C;
 
@@ -10,12 +16,14 @@
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.15);
+  --base-color--shade: rgba(255, 255, 255, 0.1);
   --base-color--shade1: rgba(255, 255, 255, 0.07);
   --base-color--shade2: rgba(57, 58, 61, 0.5);
   --base-color--shade3: rgba(255, 255, 255, 0.5);
 
-  --base-color--background: #1d1e1f;
+  --base-color--shade-3pct: rgba(255, 255, 255, 0.03);
+
+  --base-color--background: #121212;
   --base-color--background1: #292a2c;
 
   --base-color--notificationBackground: #641E78;
@@ -31,9 +39,9 @@
 .u-theme--light {
   --base-color: black;
 
-  --base-color--accent1: #641E78;
-  --base-color--accent2: #7D9196;
-  --base-color--accent3: #fafafa;
+  --base-color--accent1: #E543FF;
+  --base-color--accent2: white;
+
   --base-color--accent4: #b9b9b9;
   --base-color--accent5: #0F418C;
 
@@ -45,6 +53,8 @@
   --base-color--shade1: rgba(0, 0, 0, 0.07);
   --base-color--shade2: rgba(221, 221, 221, 0.5);
   --base-color--shade3: rgba(0, 0, 0, 0.5);
+
+  --base-color--shade-3pct: rgba(0, 0, 0, 0.03);
 
   --base-color--background: white;
   --base-color--background1: #f0f0f0;
@@ -61,8 +71,8 @@
   --base-color: #B48CCD;
 
   --base-color--accent1: #87289B;
-  --base-color--accent2: #641E78;
-  --base-color--accent3: #fafafa;
+  --base-color--accent2: white;
+
   --base-color--accent4: #641E78;
   --base-color--accent5: #0F418C;
 

@@ -1,17 +1,26 @@
-
-
 .GridItem {
   width: 100%;
   height: 100%;
-  background: var(--base-color--background1);
+  background: var(--base-color--shade-3pct);
+  border-radius: 5px;
+
+  box-shadow: inset 0 0 0 1px var(--base-color--shade-3pct);
+  overflow: hidden;
+
+  transition: 0.1s box-shadow;
 }
 
 .GridItem.is-editing {
   box-shadow: inset 0 0 0 1px var(--base-color--shade3);
 }
 
+.GridItem .GridItem-content {
+  opacity: 1;
+  transition: 0.2s opacity;
+}
+
 .GridItem.is-editing .GridItem-content {
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
 }
 

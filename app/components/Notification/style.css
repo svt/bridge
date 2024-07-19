@@ -6,22 +6,37 @@
   box-sizing: border-box;
   justify-content: space-between;
 
-  background-color: var(--base-color--notificationBackground);
+  background-color: var(--base-color--accent1);
 
-  border-radius: 6px;
+  border-radius: 12px;
   
   --color-warning: #FFDC8C;
-  --color-text: var(--base-color--notificationColor);
+  --color-text: var(--base-color--accent2);
   
   color: var(--color-text);
 }
 
 .Notification--inline {
+  position: relative;
   border-radius: 0;
 }
 
+.Notification--fixed {
+  position: fixed;
+  width: unset;
+
+  left: 50%;
+  top: 10px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  transform: translate(-50%, 0);
+
+  z-index: 10;
+}
+
 .Notification-size--normal {
-  padding: 0 0.7em 0 1.4em;
+  padding: 0 0.5em 0 1.4em;
 }
 
 .Notification-size--small {

@@ -246,64 +246,80 @@ export function Form () {
 
   return (
     <div className='Form'>
-      <div className='Form-section'>
-        <div className='Form-notifications'>
+      <div className='Form-header'>
+        <div className='Form-headerBackground' style={{
+          borderBottom: `1px solid ${getValue('color') || 'var(--base-color--shade)'}`,
+          backgroundImage: `linear-gradient(transparent, ${getValue('color') || 'var(--base-color)'} 300%)`
+        }} />
+        <div className='Form-headerSection'>
+          <ColorInput value={getValue('color')} onChange={value => handleDataChange('color', value)} />
+        </div>
+        <div className='Form-headerSection Form-header--type'>
+          {store?.items?.[0]?.type}
+        </div>
+      </div>
+      <div className='Form-scroll'>
+        <div className='Form-section'>
+          <div className='Form-notifications'>
+            {
+              Object.values(store.items?.[0]?.issues ?? {})
+                .map((issue, i) => {
+                  return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' />
+                })
+            }
+          </div>
+          <div className='Form-row'>
+            <div className='Form-input'>
+              <label className='Form-inputLabel'>Name</label>
+              <StringInput value={getValue('name')} onChange={value => handleDataChange('name', value)} large />
+            </div>
+          </div>
+          <div className='Form-row'>
+            <div className='Form-input'>
+              <label className='Form-inputLabel'>Notes</label>
+              <TextInput value={getValue('notes')} onChange={value => handleDataChange('notes', value)} />
+            </div>
+          </div>
+          <div className='Form-row'>
+            <div className='Form-input'>
+              <label className='Form-inputLabel'>ID</label>
+              <label className='Form-inputLabel u-textTransform--none u-selectable'>
+                {
+                  (store.items || []).length > 1
+                    ? 'Multiple items selected'
+                    : store.items?.[0]?.id
+                }
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className='Form-section'>
           {
-            Object.values(store.items?.[0]?.issues ?? {})
-              .map((issue, i) => {
-                return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' />
+            Object.values(groups)
+              /*
+              Don't render the primary group
+              as its controls will be rendered
+              above the accordions
+              */
+              .filter(group => group.name !== '_primary')
+              .map((group, i) => {
+                return (
+                  <div key={i} className='Form-accordion'>
+                    <Accordion title={group.name}>
+                      {
+                        Object.values(group.properties || {})
+                          .filter(property => INPUT_COMPONENTS[property.type])
+                          .map((property, i) => {
+                            const id = `${group.name}_${i}`
+                            return renderProperty(property, id)
+                          })
+                      }
+                    </Accordion>
+                  </div>
+                )
               })
           }
         </div>
-        <div className='Form-row'>
-          <ColorInput value={getValue('color')} onChange={value => handleDataChange('color', value)} />
-          <StringInput value={getValue('name')} onChange={value => handleDataChange('name', value)} large />
-        </div>
-        <div className='Form-row'>
-          <div className='Form-input'>
-            <label className='Form-inputLabel'>Notes</label>
-            <TextInput value={getValue('notes')} onChange={value => handleDataChange('notes', value)} />
-          </div>
-        </div>
-        <div className='Form-row'>
-          <div className='Form-input'>
-            <label className='Form-inputLabel'>ID</label>
-            <label className='Form-inputLabel u-textTransform--none u-selectable'>
-              {
-                (store.items || []).length > 1
-                  ? 'Multiple items selected'
-                  : store.items?.[0]?.id
-              }
-            </label>
-          </div>
-        </div>
-      </div>
-      <div className='Form-section'>
-        {
-          Object.values(groups)
-            /*
-            Don't render the primary group
-            as its controls will be rendered
-            above the accordions
-            */
-            .filter(group => group.name !== '_primary')
-            .map((group, i) => {
-              return (
-                <div key={i} className='Form-accordion'>
-                  <Accordion title={group.name}>
-                    {
-                      Object.values(group.properties || {})
-                        .filter(property => INPUT_COMPONENTS[property.type])
-                        .map((property, i) => {
-                          const id = `${group.name}_${i}`
-                          return renderProperty(property, id)
-                        })
-                    }
-                  </Accordion>
-                </div>
-              )
-            })
-        }
       </div>
     </div>
   )
