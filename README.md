@@ -35,7 +35,7 @@ As developers of production software we found ourselves in a position of rebuild
 - [ ] A fully customizable grid layout
 
 ## Download and install  
-Built packages are available on the releases page.
+Built binaries are available on the releases page.
 
 [Releases and downloads](https://github.com/svt/bridge/releases)
 
