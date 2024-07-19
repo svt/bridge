@@ -1,13 +1,9 @@
-<img src="media/appicon.png" alt="drawing" width="80" style="margin-left:-10px;" />
-
 # Bridge  
 ![Test](https://github.com/svt/bridge/actions/workflows/.github/workflows/test.yml/badge.svg?branch=main)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![REUSE status](https://api.reuse.software/badge/github.com/svt/bridge)](https://api.reuse.software/info/github.com/svt/bridge)  
 
-An extendable graphics playout client that's both a desktop app and a cloud service
-
-**This project is still in very early development**
+Extendable and lightweight graphics playout software
 
 ![Screenshot](/media/screenshot.png)
 
@@ -21,6 +17,7 @@ An extendable graphics playout client that's both a desktop app and a cloud serv
 - [Goals](#goals)
 - [Motivation](#motivation)
 - [Features](#features)
+- [Download and install](#download-and-install)
 - [Documentation and API](#full-documentation-and-api)
 - [Security](#security)
 - [License](#license)
@@ -32,10 +29,15 @@ As developers of production software we found ourselves in a position of rebuild
 
 ## Features
 
-- [ ] Core features are bundled (rundown, default types, timeline e.t.c.)
+- [ ] Core features are bundled (rundown, default types, clock, osc e.t.c.)
 - [ ] Can be run both as a desktop app and a cloud deployment
 - [ ] Can be used by many operators simultaneously with real time sync
 - [ ] A fully customizable grid layout
+
+## Download and install  
+Built packages are available on the releases page.
+
+[Releases and downloads](https://github.com/svt/bridge/releases)
 
 ## Full documentation and API
 

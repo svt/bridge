@@ -69,53 +69,52 @@ button {
 }
 
 .Button,
+.Button--accent,
 .Button--primary,
 .Button--secondary,
 .Button--tertiary,
 .Button--ghost {
-  padding: 0.8em 1.5em;
+  padding: 0.9em 1.5em;
 
   font-size: 1em;
   font-family: var(--base-fontFamily--primary);
   text-decoration: none;
 
   border: none;
-  border-radius: 50px;
+  border-radius: 12px;
 
-  color: var(--base-color--accent3);
-  background: var(--base-color--accent2);
+  box-shadow: inset 0 0 0 1px var(--base-color--shade), 0 2px 5px rgba(0, 0, 0, 0.07);
+
+  color: var(--base-color);
+  background: inherit;
 
   cursor: default;
   white-space: nowrap;
+
+  transition: box-shadow 0.2s;
 }
 
 .Button:active,
+.Button--accent:active,
 .Button--primary:active,
 .Button--secondary:active,
-.Button--tertiary:active,
 .Button--ghost:active{
-  box-shadow: inset 0 0 0 2px var(--base-color--shade);
+  opacity: 0.8;
+  box-shadow: inset 0 0 0 1px var(--base-color--shade), 0 2px 4px transparent;
 }
 
-.Button--secondary {
-  color: var(--base-color);
-  background: var(--base-color--grey1);
-}
-
-.Button--tertiary {
-  color: var(--base-color);
-  background: var(--base-color--grey3);
+.Button--accent {
+  color: var(--base-color--accent2);
+  background: var(--base-color--accent1);
 }
 
 .Button--ghost {
   color: var(--base-color);
-  background: none;
-  border: 1px solid var(--base-color--shade);
 }
 
 .Button--small {
   display: inline-flex;
-  padding: 0.4em 0.75em;
+  padding: 0.5em 0.75em;
 
   align-items: center;
   justify-content: center;
