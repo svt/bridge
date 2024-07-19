@@ -17,6 +17,7 @@ Extendable and lightweight graphics playout software
 - [Goals](#goals)
 - [Motivation](#motivation)
 - [Features](#features)
+- [Download and install](#download-and-install)
 - [Documentation and API](#full-documentation-and-api)
 - [Security](#security)
 - [License](#license)
@@ -28,10 +29,15 @@ As developers of production software we found ourselves in a position of rebuild
 
 ## Features
 
-- [ ] Core features are bundled (rundown, default types, timeline e.t.c.)
+- [ ] Core features are bundled (rundown, default types, clock, osc e.t.c.)
 - [ ] Can be run both as a desktop app and a cloud deployment
 - [ ] Can be used by many operators simultaneously with real time sync
 - [ ] A fully customizable grid layout
+
+## Download and install  
+Built packages are available on the releases page.
+
+[Releases and downloads](https://github.com/svt/bridge/releases)
 
 ## Full documentation and API
 
