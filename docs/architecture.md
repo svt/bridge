@@ -18,7 +18,7 @@ The shared context is simply a react context that's shared between clients. If o
 
 ### How the state is kept in sync
 
-The shared state is synced through a websocket connection between the main process and the renderer processes. Changes to data is sent as a partial update which is merged to the current state in the main process using an [algorithm performing a deep apply](/lib/utils.js) operation. The entire state is then broadcast to other connected clients.
+The shared state is synced through a websocket connection between the main process and the renderer processes. Changes to data is sent as a partial update which is merged to the current state in the main process using an [algorithm performing a deep apply operation](/shared/merge.js). The entire state is then broadcast to other connected clients.
 
 ### Context layout
 
