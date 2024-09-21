@@ -14,6 +14,7 @@ import objectPath from 'object-path'
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
+import { useAsyncValue } from '../../hooks/useAsyncValue'
 
 import { RundownItemProgress } from '../RundownItemProgress'
 
@@ -82,8 +83,11 @@ async function getReadablePropertiesForType (typeName) {
 
 export function RundownItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
-
   const [typeProperties, setTypeProperties] = React.useState([])
+
+  const [name] = useAsyncValue(() => {
+    return bridge.items.renderValue(item.id, 'data.name')
+  }, [item])
 
   const displaySettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.display
 
@@ -118,7 +122,7 @@ export function RundownItem ({ index, item }) {
             {index}
           </div>
           <div className='RundownItem-name'>
-            {item?.data?.name}
+            {name}
           </div>
           {
             displaySettings?.notes &&

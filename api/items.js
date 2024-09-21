@@ -221,7 +221,7 @@ function deepClone (obj) {
 
 /**
  * Populate any variable placeholders
- * in an item's properities - in place
+ * in an item's properties - in place
  *
  * @param { any } item
  * @param { any } type
@@ -359,3 +359,10 @@ async function removeIssue (itemId, issueId) {
   })
 }
 exports.removeIssue = removeIssue
+
+async function renderValue (itemId, path) {
+  const item = await getItem(itemId)
+  const currentValue = objectPath.get(item || {}, path)
+  return variables.substituteInString(currentValue, undefined, { this: item })
+}
+exports.renderValue = renderValue

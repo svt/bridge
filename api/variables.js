@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+const objectPath = require('object-path')
+
 const commands = require('./commands')
 const state = require('./state')
 
@@ -44,12 +46,18 @@ exports.getAllVariables = getAllVariables
  * "Hello $(my variable)" -> "Hello world"
  *
  * @param { String } str
- * @param { any } data Data to substitute variables for,
- *                     defaults to the local state
+ * @param { any } data          Data to substitute variables for,
+ *                              defaults to the local state
+ * @param { any } overrideData  Data that will override the
+ *                              default data rather than replace
  * @returns { String }
  */
-function substituteInString (str, data = (state.getLocalState()?.variables || {})) {
+function substituteInString (str, data = (state.getLocalState()?.variables || {}), overrideData = {}) {
   const text = str.split(VARIABLE_REGEX)
+  const values = {
+    ...data,
+    ...overrideData
+  }
 
   let out = ''
   let i = 0
@@ -58,8 +66,8 @@ function substituteInString (str, data = (state.getLocalState()?.variables || {}
     if (i % 2 === 0) {
       out += text.shift()
     } else {
-      const variableName = text.shift()
-      const value = data[variableName]
+      const path = text.shift()
+      const value = objectPath.get(values, path)
       out += value || ''
     }
     i++

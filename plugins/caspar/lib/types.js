@@ -163,7 +163,7 @@ function init (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Caspar'
       },
-      'caspar.templateData': {
+      'caspar.templateDataSource': {
         name: 'Data',
         type: 'string',
         allowsVariables: true,
