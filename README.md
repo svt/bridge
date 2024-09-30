@@ -46,7 +46,9 @@ The full documentation is hosted in this repository under the [`docs`](/docs/REA
 [Full documentation](/docs/README.md)
 
 ## Security  
-Always keep an eye open when interacting with third party code. As a general rule, **never run code you don't trust.** This includes third party plugins as they have a great amount of access when running on your computer or server.
+We do our best to keep this software secure and its dependencies up-to-date.  
+Be careful when installing and running third party plugins.  
+Please see our security policy for instructions on how to report security issues. 
 
 ## License
 
