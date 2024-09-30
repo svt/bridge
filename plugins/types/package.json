@@ -21,11 +21,13 @@
           "name": {
             "name": "Name",
             "type": "string",
-            "default": "Unnamed"
+            "default": "Unnamed",
+            "allowsVariables": true
           },
           "notes": {
             "name": "Notes",
-            "type": "text"
+            "type": "text",
+            "allowsVariables": true
           },
           "color": {
             "name": "Color",

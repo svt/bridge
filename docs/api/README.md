@@ -341,7 +341,7 @@ Play an item and set its state to 'playing'.
 Stop an item and set its state to 'stopped'.
 
 ### `bridge.items.applyIssue(itemId, issueId, issueSpec): Promise<Void>`  
-Add an issue to an item
+Add an issue to an item.
 
 **Example**
 ```javascript
@@ -357,6 +357,9 @@ Remove an issue from an item
 ```javascript
 bridge.items.removeIssue('6jI2', 'myIssue')
 ```
+
+### `bridge.items.renderValue(itemId, path): Promise<String | any | undefined>`  
+Render a specific value for an item.
 
 ## Client  
 **The client api between the renerer and main processes**  

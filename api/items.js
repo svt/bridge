@@ -221,7 +221,7 @@ function deepClone (obj) {
 
 /**
  * Populate any variable placeholders
- * in an item's properities - in place
+ * in an item's properties - in place
  *
  * @param { any } item
  * @param { any } type
@@ -359,3 +359,30 @@ async function removeIssue (itemId, issueId) {
   })
 }
 exports.removeIssue = removeIssue
+
+/**
+ * Render a value for an item by its id,
+ * this will replace any variable placeholders
+ *
+ * @example
+ *
+ * Item {
+ *  id: '1234',
+ *  data: {
+ *    name: '$(this.data.myValue)',
+ *    myValue: 'Hello World'
+ *  }
+ * }
+ *
+ * renderValue('1234', 'data.name') -> 'Hello World'
+ *
+ * @param { String } itemId The id of the item
+ * @param { String } path The path to the value to render
+ * @returns { Promise.<String | any | undefined> }
+ */
+async function renderValue (itemId, path) {
+  const item = await getItem(itemId)
+  const currentValue = objectPath.get(item || {}, path)
+  return variables.substituteInString(currentValue, undefined, { this: item })
+}
+exports.renderValue = renderValue

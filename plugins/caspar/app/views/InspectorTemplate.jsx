@@ -35,8 +35,12 @@ export const InspectorTemplate = () => {
   React.useEffect(() => {
     async function loadSelection () {
       const item = await bridge.items.getItem(selection[0])
+      if (!item?.id) {
+        return
+      }
+
       setId(item?.id)
-      setValue(item?.data?.caspar?.templateDataString)
+      setValue(item?.data?.caspar?.templateDataSource)
       setUnsavedValue(undefined)
     }
 
@@ -51,17 +55,17 @@ export const InspectorTemplate = () => {
 
   function handleSave (newValue) {
     try {
-      const parsed = JSON.stringify(JSON.parse(newValue))
+      const json = JSON.parse(newValue)
       handleNewValue({
         data: {
+          templateData: { $replace: json },
           caspar: {
             /*
-            templateData holds the actual data sent in commands
-            while templateDataString holds prettified data only shown
-            within the Bridge UI
+            templateDataSource holds the actual data sent in commands
+            while templateDataString holds prettified data only
+            shown within the Bridge UI
             */
-            templateData: parsed,
-            templateDataString: newValue
+            templateDataSource: newValue
           }
         }
       })

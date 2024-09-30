@@ -28,10 +28,10 @@ const PLAY_HANDLERS = {
     return commands.sendCommand(serverId, 'loadbg', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, item?.data?.caspar?.auto, item?.data?.caspar)
   },
   'bridge.caspar.template': (serverId, item) => {
-    return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, item?.data?.caspar?.templateData, true, item?.data?.caspar)
+    return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, getCleanTemplateDataString(item), true, item?.data?.caspar)
   },
   'bridge.caspar.template.update': (serverId, item) => {
-    return commands.sendCommand(serverId, 'cgUpdate', item?.data?.caspar?.templateData, item?.data?.caspar)
+    return commands.sendCommand(serverId, 'cgUpdate', getCleanTemplateDataString(item), item?.data?.caspar)
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', item?.data?.caspar?.opacity, item?.data?.caspar)
@@ -53,6 +53,28 @@ const STOP_HANDLERS = {
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', '1.0', { ...(item?.data?.caspar || {}), transitionDuration: 0 })
+  }
+}
+
+/**
+ * Get an item's template data as a clean string,
+ * that is without formatting such as linebreaks
+ * which is just for the inspector
+ * @param { Item } item
+ * @returns { String }
+ */
+function getCleanTemplateDataString (item) {
+  try {
+    const dirty = item?.data?.caspar?.templateDataSource
+
+    if (dirty == null) {
+      return JSON.stringify({})
+    }
+
+    return JSON.stringify(JSON.parse(dirty))
+  } catch (err) {
+    logger.warn('Failed to clean template data')
+    return JSON.stringify({})
   }
 }
 
