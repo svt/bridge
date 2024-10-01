@@ -7,6 +7,7 @@ const InvalidArgumentError = require('../error/InvalidArgumentError')
 
 const state = require('../state')
 const events = require('../events')
+const commands = require('../commands')
 
 const LazyValue = require('../classes/LazyValue')
 
@@ -285,6 +286,15 @@ async function getConnectionsByRole (role) {
     .filter(connection => connection.role === role)
 }
 
+/**
+ * Send a heartbeat
+ * for this client
+ */
+async function heartbeat () {
+  const id = await awaitIdentity()
+  commands.executeRawCommand('client.heartbeat', id)
+}
+
 module.exports = {
   roles: ROLES,
   setIdentity,
@@ -298,5 +308,6 @@ module.exports = {
   isSelected,
   setRole,
   getAllConnections,
-  getConnectionsByRole
+  getConnectionsByRole,
+  heartbeat
 }
