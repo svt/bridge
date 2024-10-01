@@ -373,6 +373,10 @@ Await the current identity to be set, will return as soon as the identity is set
 **Only available within the render process**  
 Get the client's identity as set by the host app. This may be undefined if it has not yet been set. It's useful for manually getting client parameters if optimizing queries to the state.
 
+### `bridge.client.heartbeat(): Promise<void>`  
+**Only available within the render process**  
+Send a heartbeat
+
 ### `bridge.client.setSelection(itemIds)`  
 **Only available within the render process**  
 Select one or multiple items, will clear the current selection.

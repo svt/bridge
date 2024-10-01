@@ -141,9 +141,9 @@ export default function App () {
   to indicate that the socket is alive
   */
   React.useEffect(() => {
-    function sendHeartbeat () {
-      if (!local.id) return
-      send({ type: 'heartbeat' })
+    async function sendHeartbeat () {
+      const bridge = await api.load()
+      bridge.client.heartbeat()
     }
 
     const ival = setInterval(
