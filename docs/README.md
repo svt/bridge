@@ -19,12 +19,21 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 ## Internals
 - [Architecture](/docs/architecture.md)
 - [Project structure](/docs/structure.md)
+- [Types](/docs/types.md)
 
 ## Terminology
 ![Methodology](/media/docs/architecture/methodology.png)
 
 ### Workspace
 Workspaces are everything you set up for a project. They can be saved and shared as workspace files. A workspace is synced in real time between users connected to the same instance of Bridge.
+
+### Item
+Items are the underlying data structure that can be rendered as lists in the rundown or plain buttons. Most items can be played and stopped, doing so will emit an event that can be acted upon by plugins. All items belong to a [type](#type).
+
+### Type
+Types are blueprints for items. They define what data an item can contain and in some cases how the UI should be rendered. Types are defined by plugins and can be added and inherited.
+
+[Read more about types](/docs/types.md)
 
 ### Tab  
 A workspace can have one or many tabs containing widgets. Tabs can be rearranged and different tabs can be opened in different windows.
