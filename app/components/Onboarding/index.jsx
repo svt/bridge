@@ -39,9 +39,9 @@ export function Onboarding ({ onClose = () => {} }) {
         <h1>{content.heading}</h1>
         <div className='Onboarding-paragraphs'>
           {
-            content.paragraphs.map(paragraph => {
+            content.paragraphs.map((paragraph, i) => {
               return (
-                <div className='Onboarding-paragraph'>
+                <div key={paragraph?.heading || i} className='Onboarding-paragraph'>
                   <div className='Onboarding-paragraphIcon'>
                     {
                       paragraph.icon &&
