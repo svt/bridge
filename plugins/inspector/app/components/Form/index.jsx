@@ -235,13 +235,19 @@ export function Form () {
    */
   function renderProperty (property, id) {
     const Component = INPUT_COMPONENTS[property.type]
+
+    function handleVariableHintClick () {
+      const currentVal = getValue(property.key)
+      handleDataChange(property.key, `${currentVal || ''}$(`)
+    }
+
     return (
       <div key={id} className='Form-input' style={{ width: property['ui.width'] || '100%' }}>
         <div className='Form-inputHeader'>
           <label id={id} className='Form-inputLabel'>{property.name}</label>
           {
             property.allowsVariables &&
-            <VariableHint />
+            <VariableHint onClick={() => handleVariableHintClick()} />
           }
         </div>
         {
@@ -299,7 +305,7 @@ export function Form () {
             <div className='Form-input'>
               <div className='Form-inputHeader'>
                 <label className='Form-inputLabel'>Name</label>
-                <VariableHint />
+                <VariableHint onClick={() => { handleDataChange('name', `${getValue('name') || ''}$(`) }}/>
               </div>
               <VariableStringInput variableContext={variableContext} value={getValue('name')} onChange={value => handleDataChange('name', value)} large />
             </div>
