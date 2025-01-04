@@ -12,7 +12,7 @@
 
   align-items: center;
   justify-content: space-between;
-
+  
   -webkit-app-region: drag;
 
   z-index: 2;
@@ -90,6 +90,8 @@ for the traffic light
 
   align-items: center;
   justify-content: center;
+
+  -webkit-app-region: no-drag;
 
   border-radius: 7px;
   overflow: hidden;
