@@ -15,110 +15,115 @@
  * }} ShortcutOverrideSpec
  */
 
-const state = require('./state')
-const commands = require('./commands')
-
 const InvalidArgumentError = require('./error/InvalidArgumentError')
+const DIController = require('../shared/DIController')
 
-/**
- * Make a shortcut available
- * to the application
- * @param { ShortcutSpec } spec
- */
-function registerShortcut (spec = {}) {
-  return commands.executeCommand('shortcuts.registerShortcut', spec)
-}
-exports.registerShortcut = registerShortcut
+class Shortcuts {
+  #props
 
-/**
- * Get a shortcut's
- * specification
- * @param { String } id
- * @returns { Promise.<ShortcutSpec> }
- */
-function getShortcut (id) {
-  return state.getLocalState()?._shortcuts?.[id]
-}
-exports.getShortcut = getShortcut
+  constructor (props) {
+    this.#props = props
+  }
 
-/**
- * Get all shortcuts'
- * specifications
- * @returns { Promise.<ShortcutSpec[]> }
- */
-async function getShortcuts () {
-  const index = state.getLocalState()?._shortcuts
-  const overrides = state.getLocalState()?._userDefaults?.shortcuts || {}
+  /**
+   * Make a shortcut available
+   * to the application
+   * @param { ShortcutSpec } spec
+   */
+  registerShortcut (spec = {}) {
+    return this.#props.Commands.executeCommand('shortcuts.registerShortcut', spec)
+  }
 
-  return Object.values(index || {})
-    .map(shortcut => {
-      return {
-        ...shortcut,
-        ...(overrides[shortcut.id] || {})
+  /**
+   * Get a shortcut's
+   * specification
+   * @param { String } id
+   * @returns { Promise.<ShortcutSpec> }
+   */
+  getShortcut (id) {
+    return this.#props.State.getLocalState()?._shortcuts?.[id]
+  }
+
+  /**
+   * Get all shortcuts'
+   * specifications
+   * @returns { Promise.<ShortcutSpec[]> }
+   */
+  async getShortcuts () {
+    const index = this.#props.State.getLocalState()?._shortcuts
+    const overrides = this.#props.State.getLocalState()?._userDefaults?.shortcuts || {}
+
+    return Object.values(index || {})
+      .map(shortcut => {
+        return {
+          ...shortcut,
+          ...(overrides[shortcut.id] || {})
+        }
+      })
+  }
+
+  /**
+   * Register a new shortcut override
+   *
+   * Note that the override will be registered
+   * to the user defaults this.#props.State for the current
+   * main process and not necessarily the local
+   * user
+   *
+   * @param { String } id An identifier of the shortcut to override
+   * @param { ShortcutOverrideSpec } spec A specification to use as an override
+   * @returns { Promise.<void> }
+   */
+  async registerShortcutOverride (id, spec) {
+    if (typeof spec !== 'object') {
+      throw new InvalidArgumentError('The provided \'spec\' must be a shortcut override specification')
+    }
+
+    if (typeof id !== 'string') {
+      throw new InvalidArgumentError('The provided \'id\' must be a string')
+    }
+
+    const currentOverride = await this.#props.State.get(`_userDefaults.shortcuts.${id}`)
+    const set = { [id]: spec }
+
+    if (currentOverride) {
+      set[id] = { $replace: spec }
+    }
+
+    this.#props.State.apply({
+      _userDefaults: {
+        shortcuts: set
       }
     })
-}
-exports.getShortcuts = getShortcuts
-
-/**
- * Register a new shortcut override
- *
- * Note that the override will be registered
- * to the user defaults state for the current
- * main process and not necessarily the local
- * user
- *
- * @param { String } id An identifier of the shortcut to override
- * @param { ShortcutOverrideSpec } spec A specification to use as an override
- * @returns { Promise.<void> }
- */
-async function registerShortcutOverride (id, spec) {
-  if (typeof spec !== 'object') {
-    throw new InvalidArgumentError('The provided \'spec\' must be a shortcut override specification')
   }
 
-  if (typeof id !== 'string') {
-    throw new InvalidArgumentError('The provided \'id\' must be a string')
-  }
-
-  const currentOverride = await state.get(`_userDefaults.shortcuts.${id}`)
-  const set = { [id]: spec }
-
-  if (currentOverride) {
-    set[id] = { $replace: spec }
-  }
-
-  state.apply({
-    _userDefaults: {
-      shortcuts: set
-    }
-  })
-}
-exports.registerShortcutOverride = registerShortcutOverride
-
-/**
- * Clear any override for a
- * specific shortcut by its id
- * @param { String } id
- */
-async function clearShortcutOverride (id) {
-  state.apply({
-    _userDefaults: {
-      shortcuts: {
-        [id]: { $delete: true }
+  /**
+   * Clear any override for a
+   * specific shortcut by its id
+   * @param { String } id
+   */
+  async clearShortcutOverride (id) {
+    this.#props.State.apply({
+      _userDefaults: {
+        shortcuts: {
+          [id]: { $delete: true }
+        }
       }
-    }
-  })
-}
-exports.clearShortcutOverride = clearShortcutOverride
+    })
+  }
 
-/**
- * Get a shortcut override specification
- * for a shortcut by its id
- * @param { String } id
- * @returns { Promise.<ShortcutOverrideSpec | undefined> }
- */
-async function getShortcutOverride (id) {
-  return state.get(`_userDefaults.shortcuts.${id}`)
+  /**
+   * Get a shortcut override specification
+   * for a shortcut by its id
+   * @param { String } id
+   * @returns { Promise.<ShortcutOverrideSpec | undefined> }
+   */
+  async getShortcutOverride (id) {
+    return this.#props.State.get(`_userDefaults.shortcuts.${id}`)
+  }
 }
-exports.getShortcutOverride = getShortcutOverride
+
+DIController.main.register('Shortcuts', Shortcuts, [
+  'State',
+  'Commands'
+])
