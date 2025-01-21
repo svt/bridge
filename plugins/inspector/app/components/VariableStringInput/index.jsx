@@ -15,7 +15,7 @@ function stringEndsWithUnclosedVariable (str) {
   if (!str) {
     return false
   }
-  const parts = str.split(VARIABLE_REGEX)
+  const parts = `${str}`.split(VARIABLE_REGEX)
   const lastPart = parts[parts.length - 1]
   return lastPart.indexOf(')') === -1 && parts.length > 1
 }
