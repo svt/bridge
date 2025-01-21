@@ -5,7 +5,7 @@
 const MissingArgumentError = require('../error/MissingArgumentError')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
 
-const DIController = require('../shared/DIController')
+const DIController = require('../../shared/DIController')
 
 /**
  * @typedef {{

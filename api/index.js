@@ -35,6 +35,7 @@ class API {
 }
 
 DIController.main.register('API', API, [
+  'Transport',
   'Variables',
   'Shortcuts',
   'Commands',

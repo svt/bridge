@@ -9,6 +9,8 @@ import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
 import * as api from '../../api'
 
+import * as DIController from '../../../shared/DIController'
+
 import './style.css'
 
 /**

@@ -40,8 +40,11 @@ class Events {
   #localHandlers = new Map()
   #intercepts = new Map()
 
-  constructor (props) {
+  #opts = {}
+
+  constructor (props, opts) {
     this.#props = props
+    this.#opts = opts
   }
 
   /**
@@ -114,7 +117,7 @@ class Events {
       if (Array.isArray(res)) return res
       return [res]
     }
-    appendToMapArray(this.#intercepts, event, { fn, callee: opts?.callee })
+    appendToMapArray(this.#intercepts, event, { fn, callee: opts?.callee || this.#opts?.callee })
   }
 
   /**
@@ -148,7 +151,7 @@ class Events {
    * @returns { Promise.<void> }
    */
   async on (event, handler, opts) {
-    appendToMapArray(this.#localHandlers, event, { handler, callee: opts?.callee })
+    appendToMapArray(this.#localHandlers, event, { handler, callee: opts?.callee || this.#opts?.callee })
 
     /*
     Only setup the command if
@@ -179,11 +182,12 @@ class Events {
    * @param { EventHandlerOpts } opts
    */
   once (event, handler, opts) {
+    const off = this.off
     function handle (...args) {
-      this.off(event, handle)
+      off(event, handle)
       handler(...args)
     }
-    this.on(event, handle.bind(this), opts)
+    this.on(event, handle, opts)
   }
 
   /**
@@ -222,10 +226,10 @@ class Events {
   /**
    * Remove all listeners
    *//**
-  * Remove all listeners associated
-  * with the specified callee
-  * @param { String } callee
-  */
+   * Remove all listeners associated
+   * with the specified callee
+   * @param { String } callee
+   */
   removeAllListeners (callee) {
     for (const event of this.#localHandlers.keys()) {
       for (const { handler, callee: _callee } of this.#localHandlers.get(event)) {

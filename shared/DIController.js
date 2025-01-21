@@ -15,7 +15,7 @@ class DIController {
     })
   }
 
-  instantiate (name, scope = {}) {
+  instantiate (name, scope = {}, ...args) {
     const requirements = this.#getRequirements(name)
     const props = {}
 
@@ -26,7 +26,7 @@ class DIController {
       props[requirement] = scope[requirement]
     }
 
-    return new (this.#getObject(name))(props)
+    return new (this.#getObject(name))(props, ...(args || []))
   }
 
   #getEntry (name) {
