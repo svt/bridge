@@ -10,7 +10,6 @@ const DIControllerError = require('./DIControllerError')
  *  object: any
  *  requirements: String[]
  * }} DIControllerObjectEntry
- *
  */
 class DIController {
   /**
