@@ -1,0 +1,10 @@
+.VariableHint {
+  margin-bottom: 2px;
+  padding: 2px 5px;
+
+  border-radius: 7px;
+  background: var(--base-color--shade);
+  font-size: 0.8em;
+
+  box-sizing: border-box;
+}

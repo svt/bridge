@@ -2,14 +2,10 @@
 //
 // SPDX-License-Identifier: MIT
 
-const state = require('./state')
-const events = require('./events')
-const commands = require('./commands')
-
 const Cache = require('./classes/Cache')
+const DIController = require('../shared/DIController')
 
 const CACHE_MAX_ENTRIES = 100
-const cache = new Cache(CACHE_MAX_ENTRIES)
 
 /**
  * Perform a deep clone
@@ -24,92 +20,106 @@ function deepClone (obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
-/**
- * Render a complete type
- * from a set of type definitions
- *
- * This will make sure that
- * inheritance relations are
- * kept
- * @param { String } id
- * @param { Object.<String, Type> } typesDict
- * @returns { Type }
- */
-function renderType (id, typesDict = {}) {
-  if (!typesDict[id]) return undefined
+class Types {
+  #props
 
-  const type = deepClone(typesDict[id])
+  #cache = new Cache(CACHE_MAX_ENTRIES)
 
-  /*
-  Render the ancestor if this
-  type inherits properties
-  */
-  if (type.inherits) {
-    const ancestor = renderType(type.inherits, typesDict)
+  constructor (props) {
+    this.#props = props
+  }
 
-    type.properties = {
-      ...ancestor?.properties || {},
-      ...type.properties || {}
+  /**
+   * Render a complete type
+   * from a set of type definitions
+   *
+   * This will make sure that
+   * inheritance relations are
+   * kept
+   * @param { String } id
+   * @param { Object.<String, Type> } typesDict
+   * @returns { Type }
+   */
+  renderType (id, typesDict = {}) {
+    if (!typesDict[id]) return undefined
+
+    const type = deepClone(typesDict[id])
+
+    /*
+    Render the ancestor if this
+    type inherits properties
+    */
+    if (type.inherits) {
+      const ancestor = this.renderType(type.inherits, typesDict)
+
+      type.properties = {
+        ...ancestor?.properties || {},
+        ...type.properties || {}
+      }
     }
+
+    return type
   }
 
-  return type
-}
+  /**
+   * @private
+   *
+   * Get the full specification
+   * for a type by its id without
+   * going through the cache
+   *
+   * This is only to
+   * be used internally,
+   * always prefer the
+   * cached version
+   *
+   * @param { String } id The id of a type
+   */
+  async getTypeUncached (id) {
+    const types = this.#props.State.getLocalState()?._types ||
+                  await this.#props.State.get('_types')
 
-/**
- * @private
- *
- * Get the full specification
- * for a type by its id without
- * going through the cache
- *
- * This is only to
- * be used internally,
- * always prefer the
- * cached version
- *
- * @param { String } id The id of a type
- */
-async function getTypeUncached (id) {
-  const types = state.getLocalState()?._types ||
-                await state.get('_types')
-
-  return renderType(id, types)
-}
-
-/**
- * Get the full specification
- * for a type by its id
- *
- * @param { String } id The id of a type
- */
-async function getType (id) {
-  /*
-  Use caching if it's safe to do so
-
-  The cache key must depend on the local state revision
-  in order to not get out of date, and that will only
-  get updated if the client is listening for the
-  'state.change' event
-  */
-  if (
-    events.hasRemoteHandler('state.change') &&
-    state.getLocalRevision() !== 0
-  ) {
-    return cache.cache(`${id}::${state.getLocalRevision()}`, async () => getTypeUncached(id))
+    return this.renderType(id, types)
   }
 
-  return getTypeUncached(id)
-}
-exports.getType = getType
+  /**
+   * Get the full specification
+   * for a type by its id
+   *
+   * @param { String } id The id of a type
+   */
+  async getType (id) {
+    /*
+    Use caching if it's safe to do so
 
-/**
- * Register a type
- * by its specification
- * @param { TypeSpecification } spec A type specification
- * @returns { Promise.<Boolean> }
- */
-function registerType (spec) {
-  return commands.executeCommand('types.registerType', spec)
+    The cache key must depend on the local this.#props.State revision
+    in order to not get out of date, and that will only
+    get updated if the client is listening for the
+    'this.#props.State.change' event
+    */
+    if (
+      this.#props.Events.hasRemoteHandler('this.#props.State.change') &&
+      this.#props.State.getLocalRevision() !== 0
+    ) {
+      return this.#cache.cache(`${id}::${this.#props.State.getLocalRevision()}`, async () => this.getTypeUncached(id))
+    }
+
+    return this.getTypeUncached(id)
+  }
+
+  /**
+   * Register a type
+   * by its specification
+   * @param { TypeSpecification } spec A type specification
+   * @returns { Promise.<Boolean> }
+   */
+  registerType (spec) {
+    return this.#props.Commands.executeCommand('types.registerType', spec)
+  }
 }
-exports.registerType = registerType
+
+DIController.main.register('Types', Types, [
+  'State',
+  'Events',
+  'Commands'
+])

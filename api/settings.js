@@ -10,15 +10,26 @@
  * }} SettingSpecification See lib/schemas/setting.schema.json for complete spec
  */
 
-const commands = require('./commands')
+const DIController = require('../shared/DIController')
 
-/**
- * Register a setting
- * by its specification
- * @param { SettingSpecification } specification A setting specification
- * @returns { Promise.<Boolean> }
- */
-function registerSetting (specification) {
-  return commands.executeCommand('settings.registerSetting', specification)
+class Settings {
+  #props
+
+  constructor (props) {
+    this.#props = props
+  }
+
+  /**
+   * Register a setting
+   * by its specification
+   * @param { SettingSpecification } specification A setting specification
+   * @returns { Promise.<Boolean> }
+   */
+  registerSetting (specification) {
+    return this.#props.Commands.executeCommand('settings.registerSetting', specification)
+  }
 }
-exports.registerSetting = registerSetting
+
+DIController.main.register('Settings', Settings, [
+  'Commands'
+])

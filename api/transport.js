@@ -1,23 +1,23 @@
-// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+// SPDX-FileCopyrightText: 2025 Sveriges Television AB
 //
 // SPDX-License-Identifier: MIT
 
-const transport = (function () {
+;(function () {
   /*
   Use a dummy transport
   for unit-tests
   */
   if (typeof process !== 'undefined' && process.env.JEST_WORKER_ID) {
-    return require('./dummy/transport')
+    require('./dummy/transport')
+    return
   }
   if (module.parent) {
     console.log('[API] Using node transport')
-    return require('./node/transport')
+    require('./node/transport')
+    return
   }
   if (typeof window !== 'undefined') {
     console.log('[API] Using browser transport')
-    return require('./browser/transport')
+    require('./browser/transport')
   }
 })()
-
-module.exports = transport

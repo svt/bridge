@@ -36,14 +36,14 @@ import { Notification } from '../../../../../app/components/Notification'
 
 import { TextInput } from '../TextInput'
 import { ColorInput } from '../ColorInput'
-import { StringInput } from '../StringInput'
 import { SelectInput } from '../SelectInput'
 import { BooleanInput } from '../BooleanInput'
-
+import { VariableHint } from '../VariableHint'
+import { VariableStringInput } from '../VariableStringInput'
 
 const INPUT_COMPONENTS = {
   boolean: BooleanInput,
-  string: StringInput,
+  string: VariableStringInput,
   color: ColorInput,
   enum: SelectInput,
   text: TextInput,
@@ -128,6 +128,20 @@ function orderByGroups (properties) {
 export function Form () {
   const [store] = React.useContext(StoreContext)
   const [groups, setGroups] = React.useState({})
+  const [globalVariableContext, setGlobalVariableContext] = React.useState({})
+
+  /**
+   * Get all global variables when the selection
+   * changes in order to populate the context and 
+   * provide completions
+   */
+  React.useEffect(() => {
+    async function get () {
+      const vars = await bridge.variables.getAllVariables()
+      setGlobalVariableContext(vars)
+    }
+    get()
+  }, [store?.selection])
 
   /*
   Store the value that's currently being edited
@@ -136,6 +150,18 @@ export function Form () {
   directly
   */
   const [localData, setLocalData] = React.useState({})
+
+  /**
+   * A reference to the
+   * first selected item
+   */
+  const firstItem = store?.items?.[0]
+
+  /**
+   * The context used for
+   * variable suggestions
+   */
+  const variableContext = {this: firstItem, ...globalVariableContext}
 
   /*
   Find out what the common properties
@@ -209,13 +235,19 @@ export function Form () {
    */
   function renderProperty (property, id) {
     const Component = INPUT_COMPONENTS[property.type]
+
+    function handleVariableHintClick () {
+      const currentVal = getValue(property.key)
+      handleDataChange(property.key, `${currentVal || ''}$(`)
+    }
+
     return (
       <div key={id} className='Form-input' style={{ width: property['ui.width'] || '100%' }}>
         <div className='Form-inputHeader'>
           <label id={id} className='Form-inputLabel'>{property.name}</label>
           {
             property.allowsVariables &&
-            <div className='Form-inputVariableHint' data-hint='Supports variables as $(name)' data-hint-alignment='right'>=</div>
+            <VariableHint onClick={() => handleVariableHintClick()} />
           }
         </div>
         {
@@ -232,6 +264,7 @@ export function Form () {
                   htmlFor={id}
                   data={property}
                   value={getValue(property.key)}
+                  variableContext={property.allowsVariables && variableContext}
                   onChange={value => handleDataChange(property.key, value)}
                 />
                 {
@@ -270,8 +303,11 @@ export function Form () {
           </div>
           <div className='Form-row'>
             <div className='Form-input'>
-              <label className='Form-inputLabel'>Name</label>
-              <StringInput value={getValue('name')} onChange={value => handleDataChange('name', value)} large />
+              <div className='Form-inputHeader'>
+                <label className='Form-inputLabel'>Name</label>
+                <VariableHint onClick={() => { handleDataChange('name', `${getValue('name') || ''}$(`) }}/>
+              </div>
+              <VariableStringInput variableContext={variableContext} value={getValue('name')} onChange={value => handleDataChange('name', value)} large />
             </div>
           </div>
           <div className='Form-row'>

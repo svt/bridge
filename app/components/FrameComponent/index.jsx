@@ -111,18 +111,7 @@ export function FrameComponent ({ data, onUpdate }) {
           */
           return {
             ...bridge,
-            events: {
-              ...bridge.events,
-              on: (arg0, arg1, opts = {}) => {
-                return bridge.events.on(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              },
-              once: (arg0, arg1, opts = {}) => {
-                return bridge.events.once(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              },
-              intercept: (arg0, arg1, opts = {}) => {
-                return bridge.events.intercept(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              }
-            }
+            events: bridge.events.createScope(callee)
           }
         }
         return {}

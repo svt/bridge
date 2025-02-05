@@ -1,67 +1,57 @@
-// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+// SPDX-FileCopyrightText: 2025 Sveriges Television AB
 //
 // SPDX-License-Identifier: MIT
 
-const handlers = []
+const DIController = require('../../shared/DIController')
 
-let sendQueue = []
+class Transport {
+  #handlers = []
+  #queue = []
 
-/**
- * Replay the send queue and
- * sequentially call send for
- * every message
- */
-function replayQueue () {
-  const tmpQueue = sendQueue
-  sendQueue = []
+  /**
+   * Replay the send queue and
+   * sequentially call send for
+   * every message
+   */
+  replayQueue () {
+    const tmpQueue = this.#queue
+    this.#queue = []
 
-  for (const message of tmpQueue) {
-    this.send(message)
+    for (const message of tmpQueue) {
+      this.send(message)
+    }
+  }
+
+  /**
+   * The entrypoint for messages
+   * coming into the api
+   *
+   * This should be called by the application
+   * when a new message is to be handled
+   *
+   * @param { Object } msg
+   */
+  receive (msg) {
+    this.#handlers.forEach(handler => handler(msg))
+  }
+
+  onMessage (handler) {
+    this.#handlers.push(handler)
+  }
+
+  /**
+   * Send a message with the
+   * transport, for messages
+   * leaving the api
+   *
+   * Unless overridden
+   * messages will be queued
+   *
+   * @param { Object } msg
+   */
+  send (msg) {
+    this.#queue.push(msg)
   }
 }
 
-/**
- * Send a message with the
- * transport, for messages
- * leaving the api
- *
- * Unless overridden
- * messages will be queued
- *
- * @param { Object } message
- */
-function send (message) {
-  sendQueue.push(message)
-}
-
-/**
- * Add a handler to be called when
- * this transport receives a message
- * @param { (Any) -> Void } handler
- */
-function onMessage (handler) {
-  handlers.push(handler)
-}
-
-/**
- * The entrypoint for messages
- * coming into the api
- *
- * This should be called by the application
- * when a new message is to be handled
- *
- * @param { Object } message
- */
-function receive (message) {
-  handlers.forEach(handler => handler(message))
-}
-
-/**
-  * @type { import('../transport').Communicator }
-  */
-module.exports = {
-  send,
-  receive,
-  replayQueue,
-  onMessage
-}
+DIController.main.register('Transport', Transport)
