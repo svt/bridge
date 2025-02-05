@@ -15,196 +15,15 @@
 
 const objectPath = require('object-path')
 
-const state = require('./state')
-const types = require('./types')
-const client = require('./client')
-const events = require('./events')
 const random = require('./random')
-const commands = require('./commands')
-const variables = require('./variables')
 
 const MissingArgumentError = require('./error/MissingArgumentError')
 const InvalidArgumentError = require('./error/InvalidArgumentError')
 
 const Cache = require('./classes/Cache')
+const DIController = require('../shared/DIController')
 
 const CACHE_MAX_ENTRIES = 10
-const cache = new Cache(CACHE_MAX_ENTRIES)
-
-/*
-Intercept the item.change event
-to always include the full item
-*/
-;(function () {
-  events.intercept('item.change', async itemId => {
-    return await getItem(itemId)
-  })
-})()
-
-/**
- * Create a new id for an item
- * that is unique and doesn't
- * already exist
- *
- * It's kept short to be
- * easy to work with
- *
- * @returns { String }
- */
-function createUniqueId () {
-  let proposal
-  while (!proposal || state.getLocalState()?.items?.[proposal]) {
-    proposal = random.string(4)
-  }
-  return proposal
-}
-
-/**
- * Create an item from of a specific
- * type and store it in the state
- * @param { String } type A type identifier to create an item from
- * @returns { Promise.<String> } A Promise resolving to the id of the created item
- */
-async function createItem (type) {
-  const _type = await types.getType(type)
-  if (!_type) {
-    throw new InvalidArgumentError('Received an invalid value for the argument \'type\', no such type exist')
-  }
-
-  const item = {
-    id: createUniqueId(),
-    type: _type.id,
-    data: {}
-  }
-
-  for (const [key, def] of Object.entries(_type.properties)) {
-    objectPath.set(item.data, key, def.default || undefined)
-  }
-
-  applyItem(item.id, item)
-  return item.id
-}
-exports.createItem = createItem
-
-/**
- * Apply changes to an
- * item in the state
- *
- * @param { String } id The id of an item to update
- * @param { Item } set An item object to apply
- */
-async function applyItem (id, set = {}) {
-  if (typeof id !== 'string') {
-    throw new MissingArgumentError('Invalid value for item id, must be a string')
-  }
-
-  if (typeof set !== 'object' || Array.isArray(set)) {
-    throw new InvalidArgumentError('Argument \'item\' must be a valid object that\'s not an array')
-  }
-
-  await state.apply({
-    items: {
-      [id]: set
-    }
-  })
-}
-exports.applyItem = applyItem
-
-/**
- * Apply changes to an
- * already existing item
- * in the state
- *
- * This function checks if the
- * item exists before applying
- * the data
- *
- * @param { String } id The id of an item to update
- * @param { Item } set An item object to apply
- */
-async function applyExistingItem (id, set = {}) {
-  if (typeof id !== 'string') {
-    throw new MissingArgumentError('Invalid value for item id, must be a string')
-  }
-
-  const item = await getItem(id)
-  if (!item) {
-    throw new InvalidArgumentError('Invalid item id, item does not exist')
-  }
-
-  await applyItem(id, set)
-}
-exports.applyExistingItem = applyExistingItem
-
-/**
- * Get an item object by its id
- * @param { String } id The id for the item to get
- * @returns { Promise.<Item> }
- */
-function getItem (id) {
-  /*
-  Use caching if it's safe to do so
-
-  The cache key must depend on the local state revision
-  in order to not get out of date, and that will only
-  get updated if the client is listening for the
-  'state.change' event
-  */
-  if (
-    events.hasRemoteHandler('state.change') &&
-    state.getLocalRevision() !== 0
-  ) {
-    return cache.cache(`${id}::${state.getLocalRevision()}`, () => commands.executeCommand('items.getItem', id))
-  }
-  return commands.executeCommand('items.getItem', id)
-}
-exports.getItem = getItem
-
-/**
- * Get the local representation of an item
- * @param { String } id The id of the item to get
- * @returns { Item }
- */
-function getLocalItem (id) {
-  const curState = state.getLocalState()
-  return curState?.items?.[id]
-}
-exports.getLocalItem = getLocalItem
-
-/**
- * Delete an item by its id
- *
- * Will trigger the
- * items.delete event
- *
- * @param { String } id
- */
-function deleteItem (id) {
-  deleteItems([id])
-}
-exports.deleteItem = deleteItem
-
-/**
- * Delete multiple
- * items by their ids
- *
- * Will trigger the
- * items.delete event
- *
- * @param { String[] } ids
- */
-async function deleteItems (ids) {
-  /*
-  Make sure any deleted items
-  are no longer selected if available
-  in the current context
-  */
-  if (typeof client?.subtractSelection === 'function') {
-    client.subtractSelection(ids)
-  }
-  return commands.executeCommand('items.deleteItems', ids)
-}
-exports.deleteItems = deleteItems
 
 /**
  * Perform a deep clone
@@ -219,170 +38,355 @@ function deepClone (obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
-/**
- * Populate any variable placeholders
- * in an item's properties - in place
- *
- * @param { any } item
- * @param { any } type
- * @param { any } values
- * @returns { any } The item with modified property values
- */
-function populateVariablesMutable (item, type, values) {
-  if (!item.data) {
-    item.data = {}
+class Items {
+  #props
+
+  #cache = new Cache(CACHE_MAX_ENTRIES)
+
+  constructor (props) {
+    this.#props = props
+    this.#setup()
   }
 
-  for (const key of Object.keys(type.properties)) {
-    if (!type.properties[key].allowsVariables) {
-      continue
+  #setup () {
+    /*
+    Intercept the item.change event
+    to always include the full item
+    */
+    this.#props.Events.intercept('item.change', async itemId => {
+      return await this.getItem(itemId)
+    })
+  }
+
+  /**
+   * Create a new id for an item
+   * that is unique and doesn't
+   * already exist
+   *
+   * It's kept short to be
+   * easy to work with
+   *
+   * @returns { String }
+   */
+  createUniqueId () {
+    let proposal
+    while (!proposal || this.#props.State.getLocalState()?.items?.[proposal]) {
+      proposal = random.string(4)
     }
-    const currentValue = objectPath.get(item.data, key)
+    return proposal
+  }
 
-    if (currentValue != null) {
-      objectPath.set(item.data, key, JSON.parse(variables.substituteInString(JSON.stringify(currentValue), values)))
+  /**
+   * Create an item from of a specific
+   * type and store it in the this.#props.State
+   * @param { String } type A type identifier to create an item from
+   * @returns { Promise.<String> } A Promise resolving to the id of the created item
+   */
+  async createItem (type) {
+    const _type = await this.#props.Types.getType(type)
+    if (!_type) {
+      throw new InvalidArgumentError('Received an invalid value for the argument \'type\', no such type exist')
     }
+
+    const item = {
+      id: this.createUniqueId(),
+      type: _type.id,
+      data: {}
+    }
+
+    for (const [key, def] of Object.entries(_type.properties)) {
+      objectPath.set(item.data, key, def.default || undefined)
+    }
+
+    this.applyItem(item.id, item)
+    return item.id
   }
 
-  return item
-}
+  /**
+   * Apply changes to an
+   * item in the this.#props.State
+   *
+   * @param { String } id The id of an item to update
+   * @param { Item } set An item object to apply
+   */
+  async applyItem (id, set = {}) {
+    if (typeof id !== 'string') {
+      throw new MissingArgumentError('Invalid value for item id, must be a string')
+    }
 
-/**
- * Play the item and emit
- * the 'playing' event`
- * @param { String } id
- */
-async function playItem (id) {
-  const item = await getItem(id)
+    if (typeof set !== 'object' || Array.isArray(set)) {
+      throw new InvalidArgumentError('Argument \'item\' must be a valid object that\'s not an array')
+    }
 
-  if (!item) {
-    return
+    await this.#props.State.apply({
+      items: {
+        [id]: set
+      }
+    })
   }
 
-  if (item?.data?.disabled) {
-    return
+  /**
+   * Apply changes to an
+   * already existing item
+   * in the this.#props.State
+   *
+   * This function checks if the
+   * item exists before applying
+   * the data
+   *
+   * @param { String } id The id of an item to update
+   * @param { Item } set An item object to apply
+   */
+  async applyExistingItem (id, set = {}) {
+    if (typeof id !== 'string') {
+      throw new MissingArgumentError('Invalid value for item id, must be a string')
+    }
+
+    const item = await this.getItem(id)
+    if (!item) {
+      throw new InvalidArgumentError('Invalid item id, item does not exist')
+    }
+
+    await this.applyItem(id, set)
   }
 
-  const type = await types.getType(item.type)
-  const vars = await variables.getAllVariables()
-  const clone = populateVariablesMutable(deepClone(item), type, vars)
+  /**
+   * Get an item object by its id
+   * @param { String } id The id for the item to get
+   * @returns { Promise.<Item> }
+   */
+  getItem (id) {
+    /*
+    Use caching if it's safe to do so
 
-  const delay = parseInt(clone?.data?.delay)
-
-  if (delay && !Number.isNaN(delay)) {
-    commands.executeCommand('items.scheduleItem', clone, delay)
-  } else {
-    commands.executeCommand('items.playItem', clone)
-  }
-}
-exports.playItem = playItem
-
-/**
- * Play the item and emit
- * the 'stop' event
- * @param { String } id
- */
-async function stopItem (id) {
-  const item = await getItem(id)
-
-  if (!item) {
-    return
-  }
-
-  if (item?.data?.disabled) {
-    return
+    The cache key must depend on the local this.#props.State revision
+    in order to not get out of date, and that will only
+    get updated if the this.#props.Client is listening for the
+    'this.#props.State.change' event
+    */
+    if (
+      this.#props.Events.hasRemoteHandler('this.#props.State.change') &&
+      this.#props.State.getLocalRevision() !== 0
+    ) {
+      return this.#cache.cache(`${id}::${this.#props.State.getLocalRevision()}`, () => {
+        return this.#props.Commands.executeCommand('items.getItem', id)
+      })
+    }
+    return this.#props.Commands.executeCommand('items.getItem', id)
   }
 
-  const type = await types.getType(item.type)
-  const vars = await variables.getAllVariables()
-  const clone = populateVariablesMutable(deepClone(item), type, vars)
-
-  commands.executeCommand('items.stopItem', clone)
-}
-exports.stopItem = stopItem
-
-/**
- * Add or update an
- * issue by its id
- *
- * An issue indicates a problem with an item
- * and may be reflected in the interface
- *
- * @param { String } itemId
- * @param { String } issueId
- * @param { ItemIssue } issueSpec
- */
-async function applyIssue (itemId, issueId, issueSpec) {
-  if (typeof itemId !== 'string') {
-    throw new MissingArgumentError('Invalid value for item id, must be a string')
+  /**
+   * Get the local representation of an item
+   * @param { String } id The id of the item to get
+   * @returns { Item }
+   */
+  getLocalItem (id) {
+    const curState = this.#props.State.getLocalState()
+    return curState?.items?.[id]
   }
 
-  if (typeof issueId !== 'string') {
-    throw new MissingArgumentError('Invalid value for issue id, must be a string')
+  /**
+   * Delete an item by its id
+   *
+   * Will trigger the
+   * items.delete event
+   *
+   * @param { String } id
+   */
+  deleteItem (id) {
+    this.deleteItems([id])
   }
 
-  if (typeof issueSpec !== 'object' || Array.isArray(issueSpec)) {
-    throw new InvalidArgumentError('Argument \'issueSpec\' must be a valid object that\'s not an array')
+  /**
+   * Delete multiple
+   * items by their ids
+   *
+   * Will trigger the
+   * items.delete event
+   *
+   * @param { String[] } ids
+   */
+  async deleteItems (ids) {
+    /*
+    Make sure any deleted items
+    are no longer selected if available
+    in the current context
+    */
+    if (typeof this.#props.Client?.subtractSelection === 'function') {
+      this.#props.Client.subtractSelection(ids)
+    }
+    return this.#props.Commands.executeCommand('items.deleteItems', ids)
   }
 
-  await applyExistingItem(itemId, {
-    issues: {
-      [issueId]: {
-        ts: Date.now(),
-        ...issueSpec
+  /**
+   * Populate any variable placeholders
+   * in an item's properties - in place
+   *
+   * @param { any } item
+   * @param { any } type
+   * @param { any } values
+   * @returns { any } The item with modified property values
+   */
+  populateVariablesMutable (item, type, values) {
+    if (!item.data) {
+      item.data = {}
+    }
+
+    for (const key of Object.keys(type.properties)) {
+      if (!type.properties[key].allowsVariables) {
+        continue
+      }
+      const currentValue = objectPath.get(item.data, key)
+
+      if (currentValue != null) {
+        objectPath.set(item.data, key, JSON.parse(this.#props.Variables.substituteInString(JSON.stringify(currentValue), values)))
       }
     }
-  })
-}
-exports.applyIssue = applyIssue
 
-/**
- * Remove an issue by its
- * id from an item
- *
- * @param { String } itemId
- * @param { String } issueId
- */
-async function removeIssue (itemId, issueId) {
-  if (typeof itemId !== 'string') {
-    throw new MissingArgumentError('Invalid value for item id, must be a string')
+    return item
   }
 
-  if (typeof issueId !== 'string') {
-    throw new MissingArgumentError('Invalid value for issue id, must be a string')
-  }
+  /**
+   * Play the item and emit
+   * the 'playing' event`
+   * @param { String } id
+   */
+  async playItem (id) {
+    const item = await this.getItem(id)
 
-  applyExistingItem(itemId, {
-    issues: {
-      [issueId]: { $delete: true }
+    if (!item) {
+      return
     }
-  })
-}
-exports.removeIssue = removeIssue
 
-/**
- * Render a value for an item by its id,
- * this will replace any variable placeholders
- *
- * @example
- *
- * Item {
- *  id: '1234',
- *  data: {
- *    name: '$(this.data.myValue)',
- *    myValue: 'Hello World'
- *  }
- * }
- *
- * renderValue('1234', 'data.name') -> 'Hello World'
- *
- * @param { String } itemId The id of the item
- * @param { String } path The path to the value to render
- * @returns { Promise.<String | any | undefined> }
- */
-async function renderValue (itemId, path) {
-  const item = await getItem(itemId)
-  const currentValue = objectPath.get(item || {}, path)
-  return variables.substituteInString(currentValue, undefined, { this: item })
+    if (item?.data?.disabled) {
+      return
+    }
+
+    const type = await this.#props.Types.getType(item.type)
+    const vars = await this.#props.Variables.getAllVariables()
+    const clone = this.populateVariablesMutable(deepClone(item), type, vars)
+
+    const delay = parseInt(clone?.data?.delay)
+
+    if (delay && !Number.isNaN(delay)) {
+      this.#props.Commands.executeCommand('items.scheduleItem', clone, delay)
+    } else {
+      this.#props.Commands.executeCommand('items.playItem', clone)
+    }
+  }
+
+  /**
+   * Play the item and emit
+   * the 'stop' event
+   * @param { String } id
+   */
+  async stopItem (id) {
+    const item = await this.getItem(id)
+
+    if (!item) {
+      return
+    }
+
+    if (item?.data?.disabled) {
+      return
+    }
+
+    const type = await this.#props.Types.getType(item.type)
+    const vars = await this.#props.Variables.getAllVariables()
+    const clone = this.populateVariablesMutable(deepClone(item), type, vars)
+
+    this.#props.Commands.executeCommand('items.stopItem', clone)
+  }
+
+  /**
+   * Add or update an
+   * issue by its id
+   *
+   * An issue indicates a problem with an item
+   * and may be reflected in the interface
+   *
+   * @param { String } itemId
+   * @param { String } issueId
+   * @param { ItemIssue } issueSpec
+   */
+  async applyIssue (itemId, issueId, issueSpec) {
+    if (typeof itemId !== 'string') {
+      throw new MissingArgumentError('Invalid value for item id, must be a string')
+    }
+
+    if (typeof issueId !== 'string') {
+      throw new MissingArgumentError('Invalid value for issue id, must be a string')
+    }
+
+    if (typeof issueSpec !== 'object' || Array.isArray(issueSpec)) {
+      throw new InvalidArgumentError('Argument \'issueSpec\' must be a valid object that\'s not an array')
+    }
+
+    await this.applyExistingItem(itemId, {
+      issues: {
+        [issueId]: {
+          ts: Date.now(),
+          ...issueSpec
+        }
+      }
+    })
+  }
+
+  /**
+   * Remove an issue by its
+   * id from an item
+   *
+   * @param { String } itemId
+   * @param { String } issueId
+   */
+  async removeIssue (itemId, issueId) {
+    if (typeof itemId !== 'string') {
+      throw new MissingArgumentError('Invalid value for item id, must be a string')
+    }
+
+    if (typeof issueId !== 'string') {
+      throw new MissingArgumentError('Invalid value for issue id, must be a string')
+    }
+
+    this.applyExistingItem(itemId, {
+      issues: {
+        [issueId]: { $delete: true }
+      }
+    })
+  }
+
+  /**
+   * Render a value for an item by its id,
+   * this will replace any variable placeholders
+   *
+   * @example
+   *
+   * Item {
+   *  id: '1234',
+   *  data: {
+   *    name: '$(this.data.myValue)',
+   *    myValue: 'Hello World'
+   *  }
+   * }
+   *
+   * renderValue('1234', 'data.name') -> 'Hello World'
+   *
+   * @param { String } itemId The id of the item
+   * @param { String } path The path to the value to render
+   * @returns { Promise.<String | any | undefined> }
+   */
+  async renderValue (itemId, path) {
+    const item = await this.getItem(itemId)
+    const currentValue = objectPath.get(item || {}, path)
+    return this.#props.Variables.substituteInString(currentValue, undefined, { this: item })
+  }
 }
-exports.renderValue = renderValue
+
+DIController.main.register('Items', Items, [
+  'State',
+  'Types',
+  'Client',
+  'Events',
+  'Commands',
+  'Variables'
+])

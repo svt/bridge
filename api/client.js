@@ -2,13 +2,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-const client = (function () {
+;(function () {
   if (module.parent) {
-    return require('./node/client')
+    require('./node/client')
+    return
   }
   if (typeof window !== 'undefined') {
-    return require('./browser/client')
+    require('./browser/client')
   }
 })()
-
-module.exports = client

@@ -5,77 +5,8 @@
 const MissingIdentityError = require('../error/MissingIdentityError')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
 
-const state = require('../state')
-const events = require('../events')
-const commands = require('../commands')
-
 const LazyValue = require('../classes/LazyValue')
-
-/**
- * @typedef {{
- *  id: String,
- *  role: Number,
- *  heartbeat: Number,
- *  isPersistent: Boolean,
- *  isEditingLayout: Boolean
- * }} Connection
- */
-
-/**
- * Roles that a
- * client can assume
- */
-const ROLES = {
-  satellite: 0,
-  main: 1
-}
-
-/**
- * The client's
- * current identity
- * @type { LazyValue }
- */
-const _identity = new LazyValue()
-
-/**
- * @private
- * Set the client's identity
- * @param { String } identity
- */
-function setIdentity (identity) {
-  _identity.set(identity)
-}
-
-/**
- * Get the current identity
- * @returns { String? }
- */
-function getIdentity () {
-  return _identity.get()
-}
-
-/**
- * Await the identity to be set,
- * will return immediately if an
- * identity is already set
- * or otherwise return a
- * Promise
- * @returns { String | Promise.<String> }
- */
-function awaitIdentity () {
-  return _identity.getLazy()
-}
-
-/**
- * @private
- * Assert that an identity is set,
- * will throw an error if not
- */
-function assertIdentity () {
-  if (!getIdentity()) {
-    throw new MissingIdentityError()
-  }
-}
+const DIController = require('../../shared/DIController')
 
 /**
  * @private
@@ -95,219 +26,284 @@ function ensureArray (thing) {
 }
 
 /**
- * Select an item,
- * will replace the
- * current selection
- * @param { String } item A string to select
- *//**
- * Select multiple items,
- * will replace the
- * current selection
- * @param { String[] } item Multiple items to select
+ * @typedef {{
+ *  id: String,
+ *  role: Number,
+ *  heartbeat: Number,
+ *  isPersistent: Boolean,
+ *  isEditingLayout: Boolean
+ * }} Connection
  */
-async function setSelection (item) {
-  assertIdentity()
 
-  const items = ensureArray(item)
-  await state.apply({
-    _connections: {
-      [getIdentity()]: {
-        selection: { $replace: items }
-      }
-    }
-  })
+class Client {
+  #props
 
-  events.emitLocally('selection', items)
-}
-
-/**
- * Select an item by adding to the
- * client's already existing selection
- * @param { String } item The id of an item to add
- *//**
- * Select multiple items by adding to
- * the client's already existing selection
- * @param { String[] } item An array of ids for
- *                           the items to add
- */
-async function addSelection (item) {
-  assertIdentity()
-
-  const currentSelection = await getSelection()
-  const newSelectionSet = new Set(Array.isArray(currentSelection) ? currentSelection : [])
-  const newItems = ensureArray(item)
-
-  for (const item of newItems) {
-    newSelectionSet.add(item)
+  /**
+   * Roles that a
+   * client can assume
+   */
+  get ROLES () {
+    return Object.freeze({
+      satellite: 0,
+      main: 1
+    })
   }
 
-  const newSelection = Array.from(newSelectionSet.values())
-
-  await state.apply({
-    _connections: {
-      [getIdentity()]: {
-        selection: { $replace: newSelection }
-      }
-    }
-  })
-  events.emitLocally('selection', newSelection)
-}
-
-/**
- * Subtract an item from
- * the current selection
- * @param { String } item The id of an item to subtract
- *//**
- * Subtract multiple items
- * from the current selection
- * @param { String[] } item An array of ids of items to subtract
- */
-function subtractSelection (item) {
-  assertIdentity()
-
-  const selection = state.getLocalState()?._connections?.[getIdentity()]?.selection
-  if (!selection) {
-    return
+  constructor (props) {
+    this.#props = props
   }
 
-  const items = new Set(ensureArray(item))
-  const newSelection = selection.filter(id => !items.has(id))
+  /**
+   * The client's
+   * current identity
+   * @type { LazyValue }
+   */
+  #identity = new LazyValue()
 
-  setSelection(newSelection, newSelection)
-}
-
-/**
- * Check whether or not an
- * item is in the selection
- * @param { String } item The id of an item to check
- * @returns { Boolean }
- */
-async function isSelected (item) {
-  assertIdentity()
-  const selection = await state.get(`_connections.${getIdentity()}.selection`)
-  if (!selection) {
-    return false
-  }
-  return selection.includes(item)
-}
-
-/**
- * Clear the current selection
- */
-async function clearSelection () {
-  assertIdentity()
-
-  await state.apply({
-    _connections: {
-      [getIdentity()]: {
-        selection: { $delete: true }
-      }
-    }
-  })
-
-  events.emitLocally('selection', [])
-}
-
-/**
- * Get the current selection
- * @returns { Promise.<String[]> }
- */
-async function getSelection () {
-  assertIdentity()
-  return (await state.get(`_connections.${getIdentity()}.selection`)) || []
-}
-
-/**
- * Get all clients
- * from the state
- * @returns { Promise.<Connection[]> }
- */
-async function getAllConnections () {
-  return Object.entries((await state.get('_connections')) || {})
-    .map(([id, connection]) => ({
-      id,
-      ...connection,
-      role: (connection.role == null ? ROLES.satellite : connection.role)
-    }))
-}
-
-/**
- * Set the role of a
- * client by its id
- * @param { String } id
- * @param { Number } role
- */
-async function setRole (id, role) {
-  if (!id || typeof id !== 'string') {
-    throw new InvalidArgumentError('Invalid argument \'id\', must be a string')
+  /**
+   * @private
+   * Set the client's identity
+   * @param { String } identity
+   */
+  setIdentity (identity) {
+    this.#identity.set(identity)
   }
 
-  if (!Object.values(ROLES).includes(role)) {
-    throw new InvalidArgumentError('Invalid argument \'role\', must be a valid role')
+  /**
+   * Get the current identity
+   * @returns { String? }
+   */
+  getIdentity () {
+    return this.#identity.get()
   }
 
-  const set = {
-    _connections: {
-      [id]: {
-        role
-      }
+  /**
+   * Await the identity to be set,
+   * will return immediately if an
+   * identity is already set
+   * or otherwise return a
+   * Promise
+   * @returns { String | Promise.<String> }
+   */
+  awaitIdentity () {
+    return this.#identity.getLazy()
+  }
+
+  /**
+   * @private
+   * Assert that an identity is set,
+   * will throw an error if not
+   */
+  assertIdentity () {
+    if (!this.getIdentity()) {
+      throw new MissingIdentityError()
     }
   }
 
-  /*
-  There can only be one client with the main role,
-  if set, demote all other mains to satellite
+  /**
+   * Select an item,
+   * will replace the
+   * current selection
+   * @param { String } item A string to select
+   *//**
+  * Select multiple items,
+  * will replace the
+  * current selection
+  * @param { String[] } item Multiple items to select
   */
-  if (role === ROLES.main) {
-    (await getConnectionsByRole(ROLES.main))
-      /*
-      Don't reset the role of the
-      connection we're currently setting
-      */
-      .filter(connection => connection.id !== id)
-      .forEach(connection => { set._connections[connection.id] = { role: ROLES.satellite } })
+  async setSelection (item) {
+    this.assertIdentity()
+
+    const items = ensureArray(item)
+    await this.#props.State.apply({
+      _connections: {
+        [this.getIdentity()]: {
+          selection: { $replace: items }
+        }
+      }
+    })
+
+    this.#props.Events.emitLocally('selection', items)
   }
 
-  state.apply(set)
-}
+  /**
+   * Select an item by adding to the
+   * client's already existing selection
+   * @param { String } item The id of an item to add
+   *//**
+  * Select multiple items by adding to
+  * the client's already existing selection
+  * @param { String[] } item An array of ids for
+  *                           the items to add
+  */
+  async addSelection (item) {
+    this.assertIdentity()
 
-/**
- * Get an array of all clients that
- * have assumed a certain role
- * @param { Number } role A valid role
- * @returns { Promise.<Connection[]> }
- */
-async function getConnectionsByRole (role) {
-  if (!Object.values(ROLES).includes(role)) {
-    throw new InvalidArgumentError('Invalid argument \'role\', must be a valid role')
+    const currentSelection = await this.getSelection()
+    const newSelectionSet = new Set(Array.isArray(currentSelection) ? currentSelection : [])
+    const newItems = ensureArray(item)
+
+    for (const item of newItems) {
+      newSelectionSet.add(item)
+    }
+
+    const newSelection = Array.from(newSelectionSet.values())
+
+    await this.#props.State.apply({
+      _connections: {
+        [this.getIdentity()]: {
+          selection: { $replace: newSelection }
+        }
+      }
+    })
+    this.#props.Events.emitLocally('selection', newSelection)
   }
 
-  return (await getAllConnections())
-    .filter(connection => connection.role === role)
+  /**
+   * Subtract an item from
+   * the current selection
+   * @param { String } item The id of an item to subtract
+   *//**
+  * Subtract multiple items
+  * from the current selection
+  * @param { String[] } item An array of ids of items to subtract
+  */
+  subtractSelection (item) {
+    this.assertIdentity()
+
+    const selection = this.#props.State.getLocalState()?._connections?.[this.getIdentity()]?.selection
+    if (!selection) {
+      return
+    }
+
+    const items = new Set(ensureArray(item))
+    const newSelection = selection.filter(id => !items.has(id))
+
+    this.setSelection(newSelection, newSelection)
+  }
+
+  /**
+   * Check whether or not an
+   * item is in the selection
+   * @param { String } item The id of an item to check
+   * @returns { Boolean }
+   */
+  async isSelected (item) {
+    this.assertIdentity()
+    const selection = await this.#props.State.get(`_connections.${this.getIdentity()}.selection`)
+    if (!selection) {
+      return false
+    }
+    return selection.includes(item)
+  }
+
+  /**
+   * Clear the current selection
+   */
+  async clearSelection () {
+    this.assertIdentity()
+
+    await this.#props.State.apply({
+      _connections: {
+        [this.getIdentity()]: {
+          selection: { $delete: true }
+        }
+      }
+    })
+
+    this.#props.Events.emitLocally('selection', [])
+  }
+
+  /**
+   * Get the current selection
+   * @returns { Promise.<String[]> }
+   */
+  async getSelection () {
+    this.assertIdentity()
+    return (await this.#props.State.get(`_connections.${this.getIdentity()}.selection`)) || []
+  }
+
+  /**
+   * Get all clients
+   * from the this.#props.State
+   * @returns { Promise.<Connection[]> }
+   */
+  async getAllConnections () {
+    return Object.entries((await this.#props.State.get('_connections')) || {})
+      .map(([id, connection]) => ({
+        id,
+        ...connection,
+        role: (connection.role == null ? this.ROLES.satellite : connection.role)
+      }))
+  }
+
+  /**
+   * Set the role of a
+   * client by its id
+   * @param { String } id
+   * @param { Number } role
+   */
+  async setRole (id, role) {
+    if (!id || typeof id !== 'string') {
+      throw new InvalidArgumentError('Invalid argument \'id\', must be a string')
+    }
+
+    if (!Object.values(this.ROLES).includes(role)) {
+      throw new InvalidArgumentError('Invalid argument \'role\', must be a valid role')
+    }
+
+    const set = {
+      _connections: {
+        [id]: {
+          role
+        }
+      }
+    }
+
+    /*
+    There can only be one client with the main role,
+    if set, demote all other mains to satellite
+    */
+    if (role === this.ROLES.main) {
+      (await this.getConnectionsByRole(this.ROLES.main))
+        /*
+        Don't reset the role of the
+        connection we're currently setting
+        */
+        .filter(connection => connection.id !== id)
+        .forEach(connection => { set._connections[connection.id] = { role: this.ROLES.satellite } })
+    }
+
+    this.#props.State.apply(set)
+  }
+
+  /**
+   * Get an array of all clients that
+   * have assumed a certain role
+   * @param { Number } role A valid role
+   * @returns { Promise.<Connection[]> }
+   */
+  async getConnectionsByRole (role) {
+    if (!Object.values(this.ROLES).includes(role)) {
+      throw new InvalidArgumentError('Invalid argument \'role\', must be a valid role')
+    }
+
+    return (await this.getAllConnections())
+      .filter(connection => connection.role === role)
+  }
+
+  /**
+   * Send a heartbeat
+   * for this client
+   */
+  async heartbeat () {
+    const id = await this.awaitIdentity()
+    this.#props.Commands.executeRawCommand('client.heartbeat', id)
+  }
 }
 
-/**
- * Send a heartbeat
- * for this client
- */
-async function heartbeat () {
-  const id = await awaitIdentity()
-  commands.executeRawCommand('client.heartbeat', id)
-}
-
-module.exports = {
-  roles: ROLES,
-  setIdentity,
-  getIdentity,
-  awaitIdentity,
-  setSelection,
-  getSelection,
-  addSelection,
-  subtractSelection,
-  clearSelection,
-  isSelected,
-  setRole,
-  getAllConnections,
-  getConnectionsByRole,
-  heartbeat
-}
+DIController.main.register('Client', Client, [
+  'State',
+  'Events',
+  'Commands'
+])

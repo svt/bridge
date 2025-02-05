@@ -1,77 +1,85 @@
-// SPDX-FileCopyrightText: 2023 Sveriges Television AB
+// SPDX-FileCopyrightText: 2025 Sveriges Television AB
 //
 // SPDX-License-Identifier: MIT
 
 const objectPath = require('object-path')
 
-const commands = require('./commands')
-const state = require('./state')
+const DIController = require('../shared/DIController')
 
 const VARIABLE_REGEX = /\$\((.*?)\)/g
 
-/**
- * Set a variable's value
- * @param { String } key
- * @param { any } value
- */
-function setVariable (key, value) {
-  return commands.executeCommand('variables.setVariable', key, value)
-}
-exports.setVariable = setVariable
+class Variables {
+  #props
 
-/**
- * Get a variable's value
- * @param { String } key
- * @returns { Promise.<any> }
- */
-function getVariable (key) {
-  return commands.executeCommand('variables.getVariable', key)
-}
-exports.getVariable = getVariable
-
-/**
- * Get all variables' values
- * @returns { Promise.<any> }
- */
-async function getAllVariables () {
-  return state.get('variables')
-}
-exports.getAllVariables = getAllVariables
-
-/**
- * Substitute variables for their
- * values in a string
- *
- * @example
- * "Hello $(my variable)" -> "Hello world"
- *
- * @param { String } str
- * @param { any } data          Data to substitute variables for,
- *                              defaults to the local state
- * @param { any } overrideData  Data that will override the
- *                              default data rather than replace
- * @returns { String }
- */
-function substituteInString (str, data = (state.getLocalState()?.variables || {}), overrideData = {}) {
-  const text = str.split(VARIABLE_REGEX)
-  const values = {
-    ...data,
-    ...overrideData
+  constructor (props) {
+    this.#props = props
   }
 
-  let out = ''
-  let i = 0
+  /**
+   * Set a variable's value
+   * @param { String } key
+   * @param { any } value
+   */
+  setVariable (key, value) {
+    return this.#props.Commands.executeCommand('variables.setVariable', key, value)
+  }
 
-  while (text.length > 0) {
-    if (i % 2 === 0) {
-      out += text.shift()
-    } else {
-      const path = text.shift()
-      const value = objectPath.get(values, path)
-      out += value || ''
+  /**
+   * Get a variable's value
+   * @param { String } key
+   * @returns { Promise.<any> }
+   */
+  getVariable (key) {
+    return this.#props.Commands.executeCommand('variables.getVariable', key)
+  }
+
+  /**
+   * Get all variables' values
+   * @returns { Promise.<any> }
+   */
+  async getAllVariables () {
+    return this.#props.State.get('variables')
+  }
+
+  /**
+   * Substitute variables for their
+   * values in a string
+   *
+   * @example
+   * "Hello $(my variable)" -> "Hello world"
+   *
+   * @param { String } str
+   * @param { any } data          Data to substitute variables for,
+   *                              defaults to the local this.#props.State
+   * @param { any } overrideData  Data that will override the
+   *                              default data rather than replace
+   * @returns { String }
+   */
+  substituteInString (str, data = (this.#props.State.getLocalState()?.variables || {}), overrideData = {}) {
+    const text = str.split(VARIABLE_REGEX)
+    const values = {
+      ...data,
+      ...overrideData
     }
-    i++
+
+    let out = ''
+    let i = 0
+
+    while (text.length > 0) {
+      if (i % 2 === 0) {
+        out += text.shift()
+      } else {
+        const path = text.shift()
+        const value = objectPath.get(values, path)
+        out += value || ''
+      }
+      i++
+    }
+    return out
   }
-  return out
 }
-exports.substituteInString = substituteInString
+
+DIController.main.register('Variables', Variables, [
+  'State',
+  'Commands'
+])

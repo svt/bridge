@@ -104,18 +104,7 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
           */
           return {
             ...api,
-            events: {
-              ...api.events,
-              on: (arg0, arg1, opts = {}) => {
-                return api.events.on(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              },
-              once: (arg0, arg1, opts = {}) => {
-                return api.events.once(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              },
-              intercept: (arg0, arg1, opts = {}) => {
-                return api.events.intercept(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              }
-            }
+            events: api.events.createScope(callee)
           }
         }
         return {}

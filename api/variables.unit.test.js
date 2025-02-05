@@ -2,7 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
-const variables = require('./variables')
+require('./variables')
+
+const DIController = require('../shared/DIController')
+
+let variables
+beforeAll(() => {
+  variables = DIController.main.instantiate('Variables', {
+    State: {},
+    Commands: {}
+  })
+})
 
 test('substitutes variables in a string', () => {
   const str = 'This is a $(var 1) with multiple $(var2)'
