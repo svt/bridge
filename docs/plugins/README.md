@@ -95,6 +95,10 @@ The name of the plugin.
 *See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main)*  
 The package's main file which will be run in the main process. If not specified Bridge won't run any script on plugin initialization.
 
+#### disabled
+**Optional**  
+A boolean indicating whether this plugin is disabled or not, this is useful for toggling plugins during development
+
 #### engines
 **Required**  
 *See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines)*  
