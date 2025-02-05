@@ -115,8 +115,6 @@ export default function App () {
     async function setup () {
       const bridge = await api.load()
 
-      console.log('Bridge', bridge)
-
       bridge.transport.send = msg => {
         send(msg)
       }

@@ -9,8 +9,6 @@ import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
 import * as api from '../../api'
 
-import * as DIController from '../../../shared/DIController'
-
 import './style.css'
 
 /**
@@ -113,18 +111,7 @@ export function FrameComponent ({ data, onUpdate }) {
           */
           return {
             ...bridge,
-            events: {
-              ...bridge.events,
-              on: (arg0, arg1, opts = {}) => {
-                return bridge.events.on(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              },
-              once: (arg0, arg1, opts = {}) => {
-                return bridge.events.once(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              },
-              intercept: (arg0, arg1, opts = {}) => {
-                return bridge.events.intercept(arg0, arg1, { ...opts, callee: opts.callee || callee })
-              }
-            }
+            events: bridge.events.createScope(callee)
           }
         }
         return {}

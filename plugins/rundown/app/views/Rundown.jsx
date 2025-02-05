@@ -128,9 +128,7 @@ export function Rundown () {
     }
 
     bridge.events.on('shortcut', onShortcut)
-    console.log('ON', bridge)
     return () => {
-      console.log('OFF', bridge.events)
       bridge.events.off('shortcut', onShortcut)
     }
   }, [rundownId, shared])

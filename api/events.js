@@ -10,6 +10,7 @@ const DIController = require('../shared/DIController')
  * @typedef {{
  *  callee: String
  * }} EventHandlerOpts
+ *
  * @property { String } callee An optional identifier for the
  *                             callee of the function,
  *                             this is used to clean up handlers
@@ -34,17 +35,22 @@ function appendToMapArray (map, key, item) {
 }
 
 class Events {
-  #props
+  /*
+  These would usually be declared private
+  but since we're creating proxies
+  of this class' instances we cannot
+  do that in an easy manner here
+  */
+  props
+  remoteHandlers = new Map()
+  localHandlers = new Map()
+  intercepts = new Map()
 
-  #remoteHandlers = new Map()
-  #localHandlers = new Map()
-  #intercepts = new Map()
-
-  #opts = {}
+  opts = {}
 
   constructor (props, opts) {
-    this.#props = props
-    this.#opts = opts
+    this.props = props
+    this.opts = opts
   }
 
   /**
@@ -61,7 +67,7 @@ class Events {
   async callLocalHandlers (event, ...args) {
     let _args = args
 
-    const handlers = this.#localHandlers.get(event)
+    const handlers = this.localHandlers.get(event)
     if (!handlers) {
       return
     }
@@ -70,7 +76,7 @@ class Events {
     Let any intercepts do their thing
     before calling the event handlers
     */
-    const interceptFns = this.#intercepts.get(event) || []
+    const interceptFns = this.intercepts.get(event) || []
     for (const { fn } of interceptFns) {
       _args = await fn(..._args)
     }
@@ -86,7 +92,7 @@ class Events {
    * @param  { ...any } args Any data to pass along with the event
    */
   emit (event, ...args) {
-    this.#props.Commands.executeRawCommand('events.emit', event, ...args)
+    this.props.Commands.executeRawCommand('events.emit', event, ...args)
   }
 
   /**
@@ -104,7 +110,7 @@ class Events {
   }
 
   /**
-   * Register a function that this.#intercepts a certain event
+   * Register a function that this.intercepts a certain event
    * before calling any handlers with its result
    * @param { String } event The name of the event to intercept
    * @param { (any[]) => any[] } handler A function intercepting the event,
@@ -117,7 +123,7 @@ class Events {
       if (Array.isArray(res)) return res
       return [res]
     }
-    appendToMapArray(this.#intercepts, event, { fn, callee: opts?.callee || this.#opts?.callee })
+    appendToMapArray(this.intercepts, event, { fn, callee: opts?.callee || this.opts?.callee })
   }
 
   /**
@@ -127,7 +133,7 @@ class Events {
    * @param { (any[]) => any[] } handler
    */
   removeIntercept (event, handler) {
-    const handlers = this.#intercepts.get(event)
+    const handlers = this.intercepts.get(event)
     if (!handlers) {
       return
     }
@@ -136,9 +142,9 @@ class Events {
     handlers.splice(index, 1)
 
     if (handlers.length === 0) {
-      this.#intercepts.delete(event)
+      this.intercepts.delete(event)
     } else {
-      this.#intercepts.set(event, handlers)
+      this.intercepts.set(event, handlers)
     }
   }
 
@@ -151,25 +157,25 @@ class Events {
    * @returns { Promise.<void> }
    */
   async on (event, handler, opts) {
-    appendToMapArray(this.#localHandlers, event, { handler, callee: opts?.callee || this.#opts?.callee })
+    appendToMapArray(this.localHandlers, event, { handler, callee: opts?.callee || this.opts?.callee })
 
     /*
     Only setup the command if
     we have just one listener
     */
-    if (this.#localHandlers.get(event).length === 1) {
+    if (this.localHandlers.get(event).length === 1) {
       const command = `event:${random.string(12)}:${event}`
 
       /*
       Register a command handle that will trigger
       all local handlers of the event
       */
-      this.#props.Commands.registerCommand(command, async (...args) => {
+      this.props.Commands.registerCommand(command, async (...args) => {
         this.callLocalHandlers(event, ...args)
       }, false)
 
-      const handlerId = await this.#props.Commands.executeCommand('events.triggerCommand', event, command)
-      this.#remoteHandlers.set(event, [command, handlerId])
+      const handlerId = await this.props.Commands.executeCommand('events.triggerCommand', event, command)
+      this.remoteHandlers.set(event, [command, handlerId])
     }
   }
 
@@ -196,16 +202,16 @@ class Events {
    * @param { EventHandler } handler A handler to remove
    */
   off (event, handler) {
-    if (!this.#localHandlers.has(event)) return
+    if (!this.localHandlers.has(event)) return
 
-    const handlers = this.#localHandlers.get(event)
+    const handlers = this.localHandlers.get(event)
     const index = handlers.findIndex(({ handler: _handler }) => _handler === handler)
     handlers.splice(index, 1)
 
     if (handlers.length === 0) {
-      this.#localHandlers.delete(event)
+      this.localHandlers.delete(event)
 
-      if (!this.#remoteHandlers.has(event)) {
+      if (!this.remoteHandlers.has(event)) {
         return
       }
 
@@ -213,13 +219,13 @@ class Events {
       Remove the command completely as we don't
       have any handlers for this event anymore
       */
-      const [command, handlerId] = this.#remoteHandlers.get(event)
-      this.#props.Commands.removeCommand(command)
-      this.#props.Commands.executeRawCommand('events.off', event, handlerId)
+      const [command, handlerId] = this.remoteHandlers.get(event)
+      this.props.Commands.removeCommand(command)
+      this.props.Commands.executeRawCommand('events.off', event, handlerId)
 
-      this.#remoteHandlers.delete(event)
+      this.remoteHandlers.delete(event)
     } else {
-      this.#localHandlers.set(event, handlers)
+      this.localHandlers.set(event, handlers)
     }
   }
 
@@ -229,34 +235,42 @@ class Events {
    * Remove all listeners associated
    * with the specified callee
    * @param { String } callee
+   * @returns { Number } The number of listeners that were removed
    */
   removeAllListeners (callee) {
-    for (const event of this.#localHandlers.keys()) {
-      for (const { handler, callee: _callee } of this.#localHandlers.get(event)) {
+    let count = 0
+    for (const event of this.localHandlers.keys()) {
+      for (const { handler, callee: _callee } of this.localHandlers.get(event)) {
         if (callee && _callee !== callee) {
           continue
         }
         this.off(event, handler)
+        count++
       }
     }
+    return count
   }
 
   /**
-   * Remove all this.#intercepts
+   * Remove all this.intercepts
    *//**
-  * Remove all this.#intercepts associated
-  * with the specified callee
-  * @param { String } callee
-  */
+   * Remove all this.intercepts associated
+   * with the specified callee
+   * @param { String } callee
+   * @returns { Number } The number of intercepts that were removed
+   */
   removeAllIntercepts (callee) {
-    for (const event of this.#intercepts.keys()) {
-      for (const { fn, callee: _callee } of this.#intercepts.get(event)) {
+    let count = 0
+    for (const event of this.intercepts.keys()) {
+      for (const { fn, callee: _callee } of this.intercepts.get(event)) {
         if (callee && _callee !== callee) {
           continue
         }
         this.removeIntercept(event, fn)
+        count++
       }
     }
+    return count
   }
 
   /**
@@ -266,7 +280,72 @@ class Events {
    * @returns { Boolean }
    */
   hasRemoteHandler (event) {
-    return this.#remoteHandlers.has(event)
+    return this.remoteHandlers.has(event)
+  }
+
+  /**
+   * Create a scoped instance
+   * of the event api
+   *
+   * This is used for being able to do
+   * clean up tasks in batch using the
+   * 'removeAllListeners' and 'removeAllIntercepts'
+   * methods
+   *
+   * @param { String } callee A unique id that can be associated
+   *                      with calls made by the scope
+   *
+   * @returns { Proxy.<Events> }
+   */
+  createScope (callee) {
+    /*
+    Create a scope object with methods
+    that will override the original
+    instance's methods
+
+    Any methods not defined in the scope
+    object will be instead directed to the
+    original instance
+    */
+    const scope = {}
+    scope.id = callee
+
+    scope.intercept = (event, handler, opts) => {
+      return this.intercept(event, handler, {
+        ...opts,
+        callee
+      })
+    }
+
+    scope.on = (event, handler, opts) => {
+      return this.on(event, handler, {
+        ...opts,
+        callee
+      })
+    }
+
+    scope.once = (event, handler, opts) => {
+      return this.once(event, handler, {
+        ...opts,
+        callee
+      })
+    }
+
+    /*
+    Create and return a proxy object
+    that will forward any calls implemented
+    in the scope-object there rather than to
+    the original instance
+    */
+    const intercept = {
+      get: (target, prop, receiver) => {
+        if (scope[prop]) {
+          return scope[prop]
+        }
+        return Reflect.get(target, prop, receiver)
+      }
+    }
+    return new Proxy(this, intercept)
   }
 }
 
