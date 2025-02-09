@@ -10,6 +10,8 @@ exports.TRANSITION_NAME_ENUM = TRANSITION_NAME_ENUM
 const TRANSITION_DIRECTION_ENUM = ['Left', 'Right']
 exports.TRANSITION_DIRECTION_ENUM = TRANSITION_DIRECTION_ENUM
 
+const DEFAULT_SERVER_ID = 'group:0'
+
 function init (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.caspar.amcp',
@@ -20,6 +22,7 @@ function init (htmlPath) {
       'caspar.server': {
         name: 'Server',
         type: 'string',
+        default: DEFAULT_SERVER_ID,
         'ui.group': 'Caspar',
         'ui.uri': `${htmlPath}?path=inspector/server`
       },
@@ -39,6 +42,7 @@ function init (htmlPath) {
       'caspar.server': {
         name: 'Server',
         type: 'string',
+        default: DEFAULT_SERVER_ID,
         'ui.group': 'Caspar',
         'ui.uri': `${htmlPath}?path=inspector/server`
       },
