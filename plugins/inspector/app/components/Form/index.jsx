@@ -23,11 +23,14 @@
 import React from 'react'
 import bridge from 'bridge'
 
+import pkg from '../../../package.json'
+
 import * as objectPath from 'object-path'
 
 import './style.css'
 
 import { StoreContext } from '../../storeContext'
+import { SharedContext } from '../../sharedContext'
 
 import { Accordion } from '../Accordion'
 
@@ -40,6 +43,8 @@ import { SelectInput } from '../SelectInput'
 import { BooleanInput } from '../BooleanInput'
 import { VariableHint } from '../VariableHint'
 import { VariableStringInput } from '../VariableStringInput'
+
+const PLUGIN_NAME = pkg.name
 
 const INPUT_COMPONENTS = {
   boolean: BooleanInput,
@@ -127,6 +132,7 @@ function orderByGroups (properties) {
 
 export function Form () {
   const [store] = React.useContext(StoreContext)
+  const [shared] = React.useContext(SharedContext)
   const [groups, setGroups] = React.useState({})
   const [globalVariableContext, setGlobalVariableContext] = React.useState({})
 
@@ -204,6 +210,21 @@ export function Form () {
       await bridge.items.applyItem(id, { data })
       bridge.events.emit('item.change', id)
     }
+  }
+
+  function handleRecentColorsChange (newRecentColors) {
+    let op = newRecentColors
+    if (newRecentColors.length > 1) {
+      op = { $replace: newRecentColors }
+    }
+
+    bridge.state.apply({
+      plugins: {
+        [PLUGIN_NAME]: {
+          recentColors: op
+        }
+      }
+    })
   }
 
   /**
@@ -285,7 +306,12 @@ export function Form () {
           backgroundImage: `linear-gradient(transparent, ${getValue('color') || 'var(--base-color)'} 300%)`
         }} />
         <div className='Form-headerSection'>
-          <ColorInput value={getValue('color')} onChange={value => handleDataChange('color', value)} />
+          <ColorInput
+            value={getValue('color')}
+            recentColors={shared?.plugins?.[PLUGIN_NAME]?.recentColors || []}
+            onChange={value => handleDataChange('color', value)}
+            onChangeRecent={newRecent => handleRecentColorsChange(newRecent)}
+          />
         </div>
         <div className='Form-headerSection Form-header--type'>
           {store?.items?.[0]?.type}

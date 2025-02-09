@@ -6,24 +6,19 @@
 
 import React from 'react'
 
-import { SharedContext } from '../../sharedContext'
-
 import './style.css'
 
 import { HexColorPicker, HexColorInput } from 'react-colorful'
 
-import pkg from '../../../package.json'
-
-const PLUGIN_NAME = pkg.name
 const MAX_RECENT_COLORS_COUNT = 14
 
 export function ColorInput ({
   className = '',
   value = '',
-  onChange = () => {}
+  recentColors = [],
+  onChange = () => {},
+  onChangeRecent = () => {}
 }) {
-  const [shared, applyShared] = React.useContext(SharedContext)
-
   const [didChange, setDidChange] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState()
 
@@ -32,42 +27,32 @@ export function ColorInput ({
   /**
    * Add a color to the
    * list of recent colors
+   * @param { String[] } currentRecentColors
    * @param { String } color
    */
-  function addToRecent (color) {
-    const recent = shared?.plugins?.[PLUGIN_NAME]?.recentColors || []
+  function addToRecent (currentRecentColors = [], newColor) {
+    const newRecentColorsArray = [...currentRecentColors]
 
     /*
     If the color is already in the array,
     remove it to add it again at index 0
     */
-    const indexOfColor = recent.indexOf(color)
+    const indexOfColor = newRecentColorsArray.indexOf(newColor)
     if (indexOfColor > -1) {
-      recent.splice(indexOfColor, 1)
+      newRecentColorsArray.splice(indexOfColor, 1)
     }
 
-    recent.unshift(color)
+    newRecentColorsArray.unshift(newColor)
 
     /*
     Make sure that there are no more than
     the max number of colors in the array
     */
-    if (recent.length > MAX_RECENT_COLORS_COUNT) {
-      recent.pop()
+    if (newRecentColorsArray.length > MAX_RECENT_COLORS_COUNT) {
+      newRecentColorsArray.pop()
     }
 
-    let op = recent
-    if (recent.length > 1) {
-      op = { $replace: recent }
-    }
-
-    applyShared({
-      plugins: {
-        [PLUGIN_NAME]: {
-          recentColors: op
-        }
-      }
-    })
+    onChangeRecent(newRecentColorsArray)
   }
 
   function handleChange (color) {
@@ -123,11 +108,9 @@ export function ColorInput ({
   React.useEffect(() => {
     if (isOpen) return
     if (!didChange) return
-    addToRecent(value)
+    addToRecent(recentColors, value)
     setDidChange(false)
   }, [isOpen])
-
-  const recentColors = shared?.plugins?.[PLUGIN_NAME]?.recentColors || []
 
   return (
     <div ref={elRef} className={`ColorInput ${className}`}>
