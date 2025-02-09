@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 
+import * as console from './utils/console'
+console.init()
+
 import './index.css'
 
 ReactDOM.render(
