@@ -97,6 +97,10 @@
   margin-right: 10px;
 }
 
+.RundownGroupItem-lastProperty {
+  margin-left: auto;
+}
+
 .RundownGroupItem-notes {
   opacity: 0.6;
 }

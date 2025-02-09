@@ -17,24 +17,6 @@
   align-items: center;
 }
 
-.RundownItem-section--icons {
-  height: 1.2em;
-  width: 100px;
-
-  justify-content: flex-end;
-
-  overflow: hidden;
-}
-
-.RundownItem-icon {
-  display: inline-block;
-  width: 1.2em;
-}
-
-.RundownItem-icon:not(:last-child) {
-  margin-right: 5px;
-}
-
 .RundownItem-section--right {
   justify-content: flex-end;
 }

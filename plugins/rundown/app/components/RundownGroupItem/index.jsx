@@ -5,6 +5,7 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+import { RundownItemIndicatorsSection } from '../RundownItemIndicatorsSection'
 import { RundownItemProgress } from '../RundownItemProgress'
 import { RundownList } from '../RundownList'
 import { Icon } from '../Icon'
@@ -141,6 +142,9 @@ export function RundownGroupItem ({ index, item }) {
         </div>
         <div className='RundownGroupItem-property RundownGroupItem-notes'>
           {item?.data?.notes}
+        </div>
+        <div className='RundownGroupItem-lastProperty'>
+          <RundownItemIndicatorsSection item={item} />
         </div>
         <RundownItemProgress item={item} />
       </div>
