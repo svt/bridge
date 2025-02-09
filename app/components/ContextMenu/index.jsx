@@ -25,7 +25,7 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
   }, [])
 
   React.useEffect(() => {
-    function closeContext () {
+    function closeContext (e) {
       /*
       Check how long the context menu has been opened
       to prevent it from closing on the same event that
@@ -39,7 +39,7 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
 
     window.addEventListener('blur', closeContext)
     window.addEventListener('click', closeContext)
-    window.addEventListener('contextmenu', closeContext, true)
+    window.addEventListener('contextmenu', closeContext)
     return () => {
       window.removeEventListener('blur', closeContext)
       window.removeEventListener('click', closeContext)
