@@ -2,9 +2,10 @@
 <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>icons/arrow-down-play</title>
     <g id="icons/arrow-down-play" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <line x1="12.5" y1="12.5" x2="12.5" y2="4" id="Path-27" stroke="#FFFFFF" stroke-width="1.5"></line>
-        <path d="M9.06066017,4.86827202 L9.06066017,10.868272 C9.06066017,11.4205568 9.50837542,11.868272 10.0606602,11.868272 L16.0606602,11.868272 L16.0606602,11.868272" id="Path-21" stroke="#FFFFFF" stroke-width="1.5" transform="translate(12.5607, 8.3683) rotate(-45) translate(-12.5607, -8.3683)"></path>
-        <line x1="12.5" y1="20.5" x2="12.5" y2="12" id="Path-27" stroke="#FFFFFF" stroke-width="1.5"></line>
-        <path d="M9.06066017,12.868272 L9.06066017,18.868272 C9.06066017,19.4205568 9.50837542,19.868272 10.0606602,19.868272 L16.0606602,19.868272 L16.0606602,19.868272" id="Path-21" stroke="#FFFFFF" stroke-width="1.5" transform="translate(12.5607, 16.3683) rotate(-45) translate(-12.5607, -16.3683)"></path>
+        <g id="Group" transform="translate(7.6109, 1.5)" stroke="#FFFFFF" stroke-width="1.5">
+            <line x1="4.8890873" y1="9.08147545" x2="4.8890873" y2="0.581475452" id="Path-27"></line>
+            <path d="M1.44974747,1.44974747 L1.44974747,7.44974747 C1.44974747,8.00203222 1.89746272,8.44974747 2.44974747,8.44974747 L8.44974747,8.44974747 L8.44974747,8.44974747" id="Path-21" transform="translate(4.9497, 4.9497) rotate(-45) translate(-4.9497, -4.9497)"></path>
+        </g>
+        <polygon id="Combined-Shape" fill="#FFFFFF" points="9 13.5 17.1818182 18 9 22.5"></polygon>
     </g>
 </svg>
