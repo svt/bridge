@@ -48,6 +48,10 @@
   margin-top: -7px;
 }
 
+.RundownGroupItem-itemName {
+  min-height: 1.2em;
+}
+
 .RundownGroupItem-itemCount {
   position: absolute;
   font-size: 0.7em;
