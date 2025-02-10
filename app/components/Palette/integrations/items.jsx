@@ -47,7 +47,7 @@ function ItemRow ({ item }) {
     <div ref={elRef} className='Palette-row--itemRow' onClick={() => handleClick()}>
       <div className='Palette-row--itemRow-background' style={{ background: item?.data?.color }} />
       <div className='Palette-row--itemRow-section'>
-        { item?.data?.name || 'Unnamed' }
+        { item?._renderedName || item?.data?.name || 'Unnamed' }
       </div>
       <div className='Palette-row--itemRow-section'>
         ID: { item?.id }
@@ -67,14 +67,27 @@ async function getItems (query) {
 
   const bridge = await api.load()
   const items = Object.values(bridge.state.getLocalState()?.items || {})
+
+  /*
+  Render the names of items that contain variables
+  as those should be searchable too
+  */
+  for (const item of items) {
+    if (!bridge.variables.stringContainsVariable(item?.data?.name)) {
+      continue
+    }
+    item._renderedName = await bridge.items.renderValue(item.id, 'data.name')
+  }
+
+  return items
     .filter(item =>
       (item?.id || '').toLowerCase().includes(normalizedQuery) ||
-      (item?.data?.name || '').toLowerCase().includes(normalizedQuery)
+      (item?.data?.name || '').toLowerCase().includes(normalizedQuery) || 
+      (item?._renderedName || '').toLowerCase().includes(normalizedQuery)
     )
-
-  return items.map(item => {
-    return <ItemRow key={item?.id} item={item} />
-  })
+    .map(item => {
+      return <ItemRow key={item?.id} item={item} />
+    })
 }
 
 /**
