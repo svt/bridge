@@ -13,6 +13,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Types](#types)
 - [Items](#items)
 - [Client](#client)
+- [Variables](#variables)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 
 ## Getting started  
@@ -413,6 +414,20 @@ Get an array of all current connections
 
 ### `bridge.client.getAllConnectionsByRole(role): Promise<Connection[]>`  
 Get an array of all current connections with a specific role
+
+## Variables
+
+### `bridge.variables.stringContainsVariable(string): Boolean`   
+Check whether or not a string contains at least one variable
+
+### `bridge.variables.setVariable(key, value): Promise.<void>`   
+Set a variable to a value
+
+### `bridge.variables.getVariable(key): Promise.<any>`   
+Get a variable's value
+
+### `bridge.variables.getAllVariables(key): Promise.<any>`   
+Get the values for all variables
 
 ## Keyboard shortcuts  
 Keyboard shortcuts SHOULD be registered with the API to give the user an index of which commands are available.

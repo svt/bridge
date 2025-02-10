@@ -16,6 +16,19 @@ class Variables {
   }
 
   /**
+   * Check if a string contains
+   * at least one variable
+   * @param { String } str
+   * @returns { Boolean }
+   */
+  stringContainsVariable (str) {
+    if (typeof str !== 'string') {
+      return false
+    }
+    return VARIABLE_REGEX.test(str)
+  }
+
+  /**
    * Set a variable's value
    * @param { String } key
    * @param { any } value
@@ -56,7 +69,11 @@ class Variables {
    * @returns { String }
    */
   substituteInString (str, data = (this.#props.State.getLocalState()?.variables || {}), overrideData = {}) {
-    const text = str.split(VARIABLE_REGEX)
+    if (!str) {
+      return ''
+    }
+
+    const text = `${str}`.split(VARIABLE_REGEX)
     const values = {
       ...data,
       ...overrideData
