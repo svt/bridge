@@ -27,6 +27,8 @@
 .RundownGroupItem-arrowWrapper {
   width: 25px;
   margin-right: 7px;
+
+  flex-shrink: 0;
   z-index: 1;
 }
 
