@@ -76,7 +76,7 @@ function copyThemeVariables (fromEl, iframe, variables = COPY_THEME_VARIABLES) {
 }
 
 export function Frame ({ src, api, doUpdateTheme = 1 }) {
-  const [callee] = React.useState(uuidv4())
+  const [caller] = React.useState(uuidv4())
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
@@ -98,13 +98,13 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
       frameRef.current.contentWindow.require = module => {
         if (module === 'bridge') {
           /*
-          Shim certain api functions to add callee
+          Shim certain api functions to add caller
           information for cleanup when the frame is 
           removed
           */
           return {
             ...api,
-            events: api.events.createScope(callee)
+            events: api.events.createScope(caller)
           }
         }
         return {}
@@ -164,10 +164,10 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
   */
   React.useEffect(() => {
     return () => {
-      api.events.removeAllListeners(callee)
-      api.events.removeAllIntercepts(callee)
+      api.events.removeAllListeners(caller)
+      api.events.removeAllIntercepts(caller)
     }
-  }, [callee])
+  }, [caller])
 
   React.useEffect(() => {
     const contentWindow = frameRef.current?.contentWindow

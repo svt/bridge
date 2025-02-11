@@ -378,9 +378,17 @@ Get the client's identity as set by the host app. This may be undefined if it ha
 **Only available within the render process**  
 Send a heartbeat
 
-### `bridge.client.setSelection(itemIds)`  
+### `bridge.client.setSelection(itemIds[, state])`  
 **Only available within the render process**  
 Select one or multiple items, will clear the current selection.
+
+A state object can be included which will be forwarded to event handlers of the `selection` event, currently only in the browser process. The state object looks like the following, where caller is the identity of the component that set the selection, which is useful for determining behaviour for listeners.
+
+```javascript
+{
+  caller: String
+}
+```
 
 ### `bridge.client.addSelection(itemId|itemIds)`  
 **Only available within the render process**  

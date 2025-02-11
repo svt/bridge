@@ -80,7 +80,7 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
 }
 
 export function FrameComponent ({ data, onUpdate }) {
-  const [callee] = React.useState(uuidv4())
+  const [caller] = React.useState(uuidv4())
 
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
@@ -105,13 +105,13 @@ export function FrameComponent ({ data, onUpdate }) {
       frameRef.current.contentWindow.require = module => {
         if (module === 'bridge') {
           /*
-          Shim certain api functions to add callee
+          Shim certain api functions to add caller
           information for cleanup when the frame is 
           removed
           */
           return {
             ...bridge,
-            events: bridge.events.createScope(callee)
+            events: bridge.events.createScope(caller)
           }
         }
         return {}
@@ -163,15 +163,15 @@ export function FrameComponent ({ data, onUpdate }) {
   /*
   Clean up all event listeners 
   added by this frame whenever
-  the URI or callee changes
+  the URI or caller changes
   */
   React.useEffect(() => {
     return async () => {
       const bridge = await api.load()
-      bridge.events.removeAllListeners(callee)
-      bridge.events.removeAllIntercepts(callee)
+      bridge.events.removeAllListeners(caller)
+      bridge.events.removeAllIntercepts(caller)
     }
-  }, [callee, shared?._widgets[data.component]?.uri])
+  }, [caller, shared?._widgets[data.component]?.uri])
 
   /*
   Highligh the component

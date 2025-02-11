@@ -6,7 +6,7 @@ function ItemRow ({ item }) {
 
   async function handleClick () {
     const bridge = await api.load()
-    bridge.client.setSelection(item.id)
+    bridge.client.setSelection(item.id, { caller: 'palette' })
   }
 
   React.useEffect(() => {

@@ -9,6 +9,31 @@ const LazyValue = require('../classes/LazyValue')
 const DIController = require('../../shared/DIController')
 
 /**
+ * @typedef {{
+ *  id: String,
+ *  role: Number,
+ *  heartbeat: Number,
+ *  isPersistent: Boolean,
+ *  isEditingLayout: Boolean
+ * }} Connection
+ *
+ * @typedef {{
+ *   caller: String
+ * }} ClientSelectionState
+ */
+
+/**
+ * The default state object,
+ * if nothing else is specified,
+ * for the 'selection' event
+ *
+ * @type { ClientSelectionState }
+ */
+const DEFAULT_SELECTION_EVENT_STATE = {
+  caller: undefined
+}
+
+/**
  * @private
  * Ensure that a 'thing' is an array,
  * if it's not, one will be created and
@@ -24,16 +49,6 @@ function ensureArray (thing) {
   }
   return arr
 }
-
-/**
- * @typedef {{
- *  id: String,
- *  role: Number,
- *  heartbeat: Number,
- *  isPersistent: Boolean,
- *  isEditingLayout: Boolean
- * }} Connection
- */
 
 class Client {
   #props
@@ -110,8 +125,9 @@ class Client {
   * will replace the
   * current selection
   * @param { String[] } item Multiple items to select
+  * @param { ClientSelectionState } state An optional state to pass with the event
   */
-  async setSelection (item) {
+  async setSelection (item, state = DEFAULT_SELECTION_EVENT_STATE) {
     this.assertIdentity()
 
     const items = ensureArray(item)
@@ -123,7 +139,7 @@ class Client {
       }
     })
 
-    this.#props.Events.emitLocally('selection', items)
+    this.#props.Events.emitLocally('selection', items, state)
   }
 
   /**
@@ -156,7 +172,7 @@ class Client {
         }
       }
     })
-    this.#props.Events.emitLocally('selection', newSelection)
+    this.#props.Events.emitLocally('selection', newSelection, DEFAULT_SELECTION_EVENT_STATE)
   }
 
   /**
@@ -211,7 +227,7 @@ class Client {
       }
     })
 
-    this.#props.Events.emitLocally('selection', [])
+    this.#props.Events.emitLocally('selection', [], DEFAULT_SELECTION_EVENT_STATE)
   }
 
   /**
