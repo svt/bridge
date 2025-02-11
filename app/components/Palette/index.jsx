@@ -188,7 +188,7 @@ export const Palette = ({ open, onClose = () => {} }) => {
                     .map(({ label, rows }) => {
                       return (
                         <>
-                          <label className='Palette-resultLabel u-text--label'>{label}</label>
+                          <label key={label} className='Palette-resultLabel u-text--label'>{label}</label>
                           {
                             rows.map((row, i) => {
                               return (
