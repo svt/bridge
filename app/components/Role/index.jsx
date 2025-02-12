@@ -14,7 +14,7 @@ export function Role ({ currentRole = 0, open, onClose = () => {} }) {
     if (value) {
       const bridge = await api.load()
       const id = bridge.client.getIdentity()
-      bridge.client.setRole(id, bridge.client.roles.main)
+      bridge.client.setRole(id, bridge.client.ROLES.main)
     }
     setPopupIsOpen(false)
   }
