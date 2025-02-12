@@ -1,9 +1,11 @@
+<img src="./media/appicon.png" width="90px">
+
 # Bridge  
 ![Test](https://github.com/svt/bridge/actions/workflows/.github/workflows/test.yml/badge.svg?branch=main)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![REUSE status](https://api.reuse.software/badge/github.com/svt/bridge)](https://api.reuse.software/info/github.com/svt/bridge)  
 
-Extendable and lightweight graphics playout software
+Extendable and lightweight playout software
 
 ![Screenshot](/media/screenshot.png)
 
