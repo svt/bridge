@@ -144,6 +144,34 @@ export function RundownList ({
     scrollIntoView(items[newIndex], true, scrollSettings?.centered)
   }
 
+  /*
+  Handle selections that are made through the palette
+  and scroll to the item if it's in this list
+  */
+  React.useEffect(() => {
+    function onSelection (selection, state) {
+      if (state?.caller !== 'palette') {
+        return
+      }
+
+      if (!selection[0]) {
+        return
+      }
+
+      const el = elRef.current.querySelector(`[data-item-id="${selection[0]}"]`)
+      if (!el) {
+        return
+      }
+
+      scrollIntoView(el, true, scrollSettings?.centered)
+    }
+
+    bridge.events.on('selection', onSelection)
+    return () => {
+      bridge.events.off('selection', onSelection)
+    }
+  }, [itemIds, rundownId, scrollSettings])
+
   React.useEffect(() => {
     function onShortcut (shortcut) {
       /*

@@ -27,6 +27,8 @@
 .RundownGroupItem-arrowWrapper {
   width: 25px;
   margin-right: 7px;
+
+  flex-shrink: 0;
   z-index: 1;
 }
 
@@ -46,6 +48,10 @@
 
 .RundownGroupItem-property--name {
   margin-top: -7px;
+}
+
+.RundownGroupItem-itemName {
+  min-height: 1.2em;
 }
 
 .RundownGroupItem-itemCount {
@@ -95,6 +101,10 @@
 
 .RundownGroupItem-property {
   margin-right: 10px;
+}
+
+.RundownGroupItem-lastProperty {
+  margin-left: auto;
 }
 
 .RundownGroupItem-notes {

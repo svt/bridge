@@ -8,11 +8,11 @@ const DIController = require('../shared/DIController')
 
 /**
  * @typedef {{
- *  callee: String
+ *  caller: String
  * }} EventHandlerOpts
  *
- * @property { String } callee An optional identifier for the
- *                             callee of the function,
+ * @property { String } caller An optional identifier for the
+ *                             caller of the function,
  *                             this is used to clean up handlers
  *                             when a frame is no longer being used
  */
@@ -123,7 +123,7 @@ class Events {
       if (Array.isArray(res)) return res
       return [res]
     }
-    appendToMapArray(this.intercepts, event, { fn, callee: opts?.callee || this.opts?.callee })
+    appendToMapArray(this.intercepts, event, { fn, caller: opts?.caller || this.opts?.caller })
   }
 
   /**
@@ -157,7 +157,7 @@ class Events {
    * @returns { Promise.<void> }
    */
   async on (event, handler, opts) {
-    appendToMapArray(this.localHandlers, event, { handler, callee: opts?.callee || this.opts?.callee })
+    appendToMapArray(this.localHandlers, event, { handler, caller: opts?.caller || this.opts?.caller })
 
     /*
     Only setup the command if
@@ -233,15 +233,15 @@ class Events {
    * Remove all listeners
    *//**
    * Remove all listeners associated
-   * with the specified callee
-   * @param { String } callee
+   * with the specified caller
+   * @param { String } caller
    * @returns { Number } The number of listeners that were removed
    */
-  removeAllListeners (callee) {
+  removeAllListeners (caller) {
     let count = 0
     for (const event of this.localHandlers.keys()) {
-      for (const { handler, callee: _callee } of this.localHandlers.get(event)) {
-        if (callee && _callee !== callee) {
+      for (const { handler, caller: _caller } of this.localHandlers.get(event)) {
+        if (caller && _caller !== caller) {
           continue
         }
         this.off(event, handler)
@@ -255,15 +255,15 @@ class Events {
    * Remove all this.intercepts
    *//**
    * Remove all this.intercepts associated
-   * with the specified callee
-   * @param { String } callee
+   * with the specified caller
+   * @param { String } caller
    * @returns { Number } The number of intercepts that were removed
    */
-  removeAllIntercepts (callee) {
+  removeAllIntercepts (caller) {
     let count = 0
     for (const event of this.intercepts.keys()) {
-      for (const { fn, callee: _callee } of this.intercepts.get(event)) {
-        if (callee && _callee !== callee) {
+      for (const { fn, caller: _caller } of this.intercepts.get(event)) {
+        if (caller && _caller !== caller) {
           continue
         }
         this.removeIntercept(event, fn)
@@ -292,12 +292,12 @@ class Events {
    * 'removeAllListeners' and 'removeAllIntercepts'
    * methods
    *
-   * @param { String } callee A unique id that can be associated
+   * @param { String } caller A unique id that can be associated
    *                      with calls made by the scope
    *
    * @returns { Proxy.<Events> }
    */
-  createScope (callee) {
+  createScope (caller) {
     /*
     Create a scope object with methods
     that will override the original
@@ -308,26 +308,26 @@ class Events {
     original instance
     */
     const scope = {}
-    scope.id = callee
+    scope.id = caller
 
     scope.intercept = (event, handler, opts) => {
       return this.intercept(event, handler, {
         ...opts,
-        callee
+        caller
       })
     }
 
     scope.on = (event, handler, opts) => {
       return this.on(event, handler, {
         ...opts,
-        callee
+        caller
       })
     }
 
     scope.once = (event, handler, opts) => {
       return this.once(event, handler, {
         ...opts,
-        callee
+        caller
       })
     }
 

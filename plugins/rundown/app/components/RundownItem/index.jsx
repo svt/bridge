@@ -17,14 +17,9 @@ import { SharedContext } from '../../sharedContext'
 import { useAsyncValue } from '../../hooks/useAsyncValue'
 
 import { RundownItemProgress } from '../RundownItemProgress'
+import { RundownItemIndicatorsSection } from '../RundownItemIndicatorsSection'
 
 import * as Layout from '../Layout'
-import { Icon } from '../Icon'
-
-const ON_PLAY_ENUM = {
-  'SELECT_NEXT_ITEM': '2',
-  'PLAY_NEXT_ITEM': '1' 
-}
 
 /**
  * An index of type properties
@@ -160,20 +155,7 @@ export function RundownItem ({ index, item }) {
               })
           }
         </div>
-        <div className='RundownItem-section RundownItem-section--icons'>
-          {
-            item?.data?.onPlay === ON_PLAY_ENUM.SELECT_NEXT_ITEM &&
-              <span className='RundownItem-icon'><Icon name='arrowDownSecondary' /></span>
-          }
-          {
-            item?.data?.onPlay === ON_PLAY_ENUM.PLAY_NEXT_ITEM &&
-              <span className='RundownItem-icon'><Icon name='arrowDownPlay' /></span>
-          }
-          {
-            Object.keys(item?.issues ?? {}).length > 0 &&
-              <span className='RundownItem-icon'><Icon name='warning' /></span>
-          }
-        </div>
+        <RundownItemIndicatorsSection item={item} />
       </Layout.Spread>
       <RundownItemProgress item={item} />
     </div>

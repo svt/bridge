@@ -13,6 +13,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Types](#types)
 - [Items](#items)
 - [Client](#client)
+- [Variables](#variables)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 
 ## Getting started  
@@ -377,9 +378,17 @@ Get the client's identity as set by the host app. This may be undefined if it ha
 **Only available within the render process**  
 Send a heartbeat
 
-### `bridge.client.setSelection(itemIds)`  
+### `bridge.client.setSelection(itemIds[, state])`  
 **Only available within the render process**  
 Select one or multiple items, will clear the current selection.
+
+A state object can be included which will be forwarded to event handlers of the `selection` event, currently only in the browser process. The state object looks like the following, where caller is the identity of the component that set the selection, which is useful for determining behaviour for listeners.
+
+```javascript
+{
+  caller: String
+}
+```
 
 ### `bridge.client.addSelection(itemId|itemIds)`  
 **Only available within the render process**  
@@ -413,6 +422,20 @@ Get an array of all current connections
 
 ### `bridge.client.getAllConnectionsByRole(role): Promise<Connection[]>`  
 Get an array of all current connections with a specific role
+
+## Variables
+
+### `bridge.variables.stringContainsVariable(string): Boolean`   
+Check whether or not a string contains at least one variable
+
+### `bridge.variables.setVariable(key, value): Promise.<void>`   
+Set a variable to a value
+
+### `bridge.variables.getVariable(key): Promise.<any>`   
+Get a variable's value
+
+### `bridge.variables.getAllVariables(key): Promise.<any>`   
+Get the values for all variables
 
 ## Keyboard shortcuts  
 Keyboard shortcuts SHOULD be registered with the API to give the user an index of which commands are available.

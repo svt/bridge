@@ -6,13 +6,41 @@ const objectPath = require('object-path')
 
 const DIController = require('../shared/DIController')
 
-const VARIABLE_REGEX = /\$\((.*?)\)/g
+/**
+ * The regex used to match
+ * variables in strings
+ *
+ * @example
+ * "My string $(my_variable)" -> MATCH
+ * "My string no variable" -> NO MATCH
+ *
+ * This should NOT be made global "/g" as that will trigger
+ * an issue where the expression will only match every
+ * other time it's used – this is known behaviour in
+ * multiple browsers
+ *
+ * @type { RegExp }
+ */
+const VARIABLE_REGEX = /\$\((.*?)\)/
 
 class Variables {
   #props
 
   constructor (props) {
     this.#props = props
+  }
+
+  /**
+   * Check if a string contains
+   * at least one variable
+   * @param { String } str
+   * @returns { Boolean }
+   */
+  stringContainsVariable (str) {
+    if (typeof str !== 'string') {
+      return false
+    }
+    return VARIABLE_REGEX.test(str)
   }
 
   /**
@@ -56,7 +84,11 @@ class Variables {
    * @returns { String }
    */
   substituteInString (str, data = (this.#props.State.getLocalState()?.variables || {}), overrideData = {}) {
-    const text = str.split(VARIABLE_REGEX)
+    if (!str) {
+      return ''
+    }
+
+    const text = `${str}`.split(VARIABLE_REGEX)
     const values = {
       ...data,
       ...overrideData

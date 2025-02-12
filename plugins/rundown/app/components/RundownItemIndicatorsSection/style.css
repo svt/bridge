@@ -1,0 +1,17 @@
+.RundownItemIndicatorsSection {
+  display: flex;
+  height: 1.2em;
+  width: 100px;
+
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.RundownItemIndicatorsSection-icon {
+  display: inline-block;
+  width: 1.2em;
+}
+
+.RundownItemIndicatorsSection-icon:not(:last-child) {
+  margin-right: 5px;
+}

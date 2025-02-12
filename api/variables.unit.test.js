@@ -25,3 +25,12 @@ test('substitutes variables in a string without spaces', () => {
   const data = { foo: 'Hello', bar: 'World' }
   expect(variables.substituteInString(str, data)).toEqual('HelloWorld')
 })
+
+test('check if a string contains one or more variables', () => {
+  const str1 = '$(foo)$(bar)'
+  const str2 = 'Hello World'
+  const nonString = 23
+  expect(variables.stringContainsVariable(str1)).toEqual(true)
+  expect(variables.stringContainsVariable(str2)).toEqual(false)
+  expect(variables.stringContainsVariable(nonString)).toEqual(false)
+})

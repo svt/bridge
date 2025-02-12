@@ -39,7 +39,7 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
 
     window.addEventListener('blur', closeContext)
     window.addEventListener('click', closeContext)
-    window.addEventListener('contextmenu', closeContext, true)
+    window.addEventListener('contextmenu', closeContext)
     return () => {
       window.removeEventListener('blur', closeContext)
       window.removeEventListener('click', closeContext)

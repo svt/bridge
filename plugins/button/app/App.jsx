@@ -5,8 +5,32 @@ import { QueryPath } from './components/QueryPath'
 import { ItemButton } from './components/ItemButton'
 import { ItemDropArea } from './components/ItemDropArea'
 
+/**
+ * Get the label to display in a button
+ * for an item or non-item
+ *
+ * @param { any } item 
+ * @returns { Promise.<String> }
+ */
+async function getLabel (item) {
+  if (!item) {
+    return 'Drop an item here'
+  }
+
+  if (!item?.data?.name) {
+    return 'Unnamed'
+  }
+
+  if (!bridge.variables.stringContainsVariable(item?.data?.name)) {
+    return item?.data?.name
+  }
+
+  return await bridge.items.renderValue(item.id, 'data.name')
+}
+
 export default function App () {
   const [itemId, setItemId] = React.useState()
+  const [label, setLabel] = React.useState()
   const [item, setItem] = React.useState()
 
   React.useEffect(() => {
@@ -39,6 +63,14 @@ export default function App () {
     }
   }, [item])
 
+  React.useEffect(() => {
+    async function render () {
+      const label = await getLabel(item)
+      setLabel(label)
+    }
+    render()
+  }, [itemId, item])
+
   function handleItemChange (itemId) {
     window.WIDGET_UPDATE({
       'itemId': itemId
@@ -59,8 +91,6 @@ export default function App () {
     }
     bridge.items.stopItem(itemId)
   }
-
-  const label = item ? (item?.data?.name || 'Unnamed') : 'Drop an item here'
 
   return (
     <>

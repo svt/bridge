@@ -16,19 +16,19 @@ beforeAll(() => {
   })
 })
 
-test('create a new callee scope', () => {
-  const scope = events.createScope('myCallee')
-  expect(scope.id).toEqual('myCallee')
+test('create a new caller scope', () => {
+  const scope = events.createScope('mycaller')
+  expect(scope.id).toEqual('mycaller')
 })
 
-test('remove all listeners for a callee', () => {
-  const scope = events.createScope('mySecondCallee')
+test('remove all listeners for a caller', () => {
+  const scope = events.createScope('mySecondcaller')
   scope.on('test', () => {})
-  expect(events.removeAllListeners('mySecondCallee')).toEqual(1)
+  expect(events.removeAllListeners('mySecondcaller')).toEqual(1)
 })
 
-test('remove all intercepts for a callee', () => {
-  const scope = events.createScope('myThirdCallee')
+test('remove all intercepts for a caller', () => {
+  const scope = events.createScope('myThirdcaller')
   scope.intercept('test', () => {})
-  expect(events.removeAllIntercepts('myThirdCallee')).toEqual(1)
+  expect(events.removeAllIntercepts('myThirdcaller')).toEqual(1)
 })
