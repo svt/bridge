@@ -31,10 +31,16 @@ As developers of production software we found ourselves in a position of rebuild
 
 ## Features
 
-- [ ] Core features are bundled (rundown, default types, clock, osc e.t.c.)
-- [ ] Can be run both as a desktop app and a cloud deployment
-- [ ] Can be used by many operators simultaneously with real time sync
+- [ ] Real-time sync for multiple operators
 - [ ] A fully customizable grid layout
+- [ ] Variables
+- [ ] Item references
+- [ ] Sub-frame accurate timing
+- [ ] Multi-threaded architecture
+- [ ] Nested groups
+- [ ] Multiple rundowns per project
+- [ ] Shotbox-style buttons
+- [ ] OSC API
 
 ## Download and install  
 Built binaries are available on the releases page.
@@ -54,12 +60,9 @@ Please see our security policy for instructions on how to report security issues
 
 ## License
 
-Bridge source code is released under the:
-
-[MIT License](LICENSE.md)
+Bridge source code is released under the [MIT License](LICENSE.md)
 
 Most of the other material as icons are relased under a Creative Commons License, see .reuse/dep5 for further information about them.
-
 
 ----
 
