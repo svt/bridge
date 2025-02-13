@@ -159,13 +159,13 @@ class Items {
     /*
     Use caching if it's safe to do so
 
-    The cache key must depend on the local this.#props.State revision
+    The cache key must depend on the local state revision
     in order to not get out of date, and that will only
     get updated if the this.#props.Client is listening for the
-    'this.#props.State.change' event
+    'state.change' event
     */
     if (
-      this.#props.Events.hasRemoteHandler('this.#props.State.change') &&
+      this.#props.Events.hasRemoteHandler('state.change') &&
       this.#props.State.getLocalRevision() !== 0
     ) {
       return this.#cache.cache(`${id}::${this.#props.State.getLocalRevision()}`, () => {
