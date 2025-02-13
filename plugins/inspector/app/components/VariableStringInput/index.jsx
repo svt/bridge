@@ -33,7 +33,19 @@ function getCompletion (str, completions) {
   return matches[0]
 }
 
+/**
+ * Get all possible paths to
+ * leaves from an object in
+ * dot-notation
+ * 
+ * @param { Object } obj 
+ * @returns { String[] }
+ */
 function getPathsFromObject (obj) {
+  if (!obj || typeof obj !== 'object') {
+    return []
+  }
+
   const out = []
   for (const key of Object.keys(obj)) {
     out.push(key)

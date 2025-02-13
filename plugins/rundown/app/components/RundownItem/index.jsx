@@ -81,8 +81,17 @@ export function RundownItem ({ index, item }) {
   const [typeProperties, setTypeProperties] = React.useState([])
 
   const [name] = useAsyncValue(() => {
+    /*
+    Make sure to check if there
+    really is a variable to render
+    as that operation is rather expensive
+    */
+    if (!bridge.variables.stringContainsVariable(item?.data?.name)) {
+      return item?.data?.name
+    }
+
     return bridge.items.renderValue(item.id, 'data.name')
-  }, [item])
+  }, [item?.data?.name])
 
   const displaySettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.display
 
