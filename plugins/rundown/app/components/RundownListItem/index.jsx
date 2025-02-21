@@ -55,7 +55,6 @@ export function RundownListItem ({
 
   function handleContextMenu (e) {
     e.preventDefault()
-    e.stopPropagation()
     setContextPos([e.pageX, e.pageY])
   }
 

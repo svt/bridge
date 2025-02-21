@@ -22,7 +22,7 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
 
   React.useEffect(() => {
     openTimestampRef.current = Date.now()
-  }, [])
+  }, [x, y])
 
   React.useEffect(() => {
     function closeContext () {
@@ -45,7 +45,7 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
       window.removeEventListener('click', closeContext)
       window.removeEventListener('contextmenu', closeContext)
     }
-  }, [onClose])
+  }, [x, y, onClose])
 
   /*
   Make sure that the menu open in the direction
