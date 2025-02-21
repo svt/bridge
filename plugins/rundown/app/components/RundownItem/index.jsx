@@ -17,6 +17,7 @@ import { SharedContext } from '../../sharedContext'
 import { useAsyncValue } from '../../hooks/useAsyncValue'
 
 import { RundownItemProgress } from '../RundownItemProgress'
+import { RundownItemTimeSection } from '../RundownItemTimeSection'
 import { RundownItemIndicatorsSection } from '../RundownItemIndicatorsSection'
 
 import * as Layout from '../Layout'
@@ -165,6 +166,7 @@ export function RundownItem ({ index, item }) {
           }
         </div>
         <RundownItemIndicatorsSection item={item} />
+        <RundownItemTimeSection item={item} />
       </Layout.Spread>
       <RundownItemProgress item={item} />
     </div>
