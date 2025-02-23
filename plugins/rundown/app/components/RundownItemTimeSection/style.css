@@ -1,5 +1,11 @@
 .RundownItemTimeSection {
   display: flex;
-  margin-left: 10px;
+  padding: 5px 6px;
+  margin: -5px -5px -5px 10px;
+  
+  background: var(--base-color--grey1);
+  border-radius: 5px;
+  
   align-items: center;
+  box-sizing: border-box;
 }

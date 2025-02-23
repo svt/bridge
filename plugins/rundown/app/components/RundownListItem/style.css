@@ -79,7 +79,11 @@
 }
 
 .RundownListItem-lastPlayed {
+  position: absolute;
+  right: 0;
   width: 4px;
+  height: 100%;
+
   background: var(--base-color--accent1);
 }
 

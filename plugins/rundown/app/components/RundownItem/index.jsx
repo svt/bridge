@@ -119,55 +119,57 @@ export function RundownItem ({ index, item }) {
 
   return (
     <div className='RundownItem'>
-      <Layout.Spread>
-        <div className='RundownItem-section'>
-          <div className='RundownItem-color' style={{ backgroundColor: item?.data?.color }} />
-          <div className='RundownItem-background' style={{ backgroundColor: item?.data?.color }} />
-          <div className='RundownItem-index'>
-            {index}
+      <div className='RundownItem-margin'>
+        <Layout.Spread>
+          <div className='RundownItem-section'>
+            <div className='RundownItem-color' style={{ backgroundColor: item?.data?.color }} />
+            <div className='RundownItem-background' style={{ backgroundColor: item?.data?.color }} />
+            <div className='RundownItem-index'>
+              {index}
+            </div>
+            <div className='RundownItem-name'>
+              {name}
+            </div>
+            {
+              displaySettings?.notes &&
+              (
+                <div className='RundownItem-notes'>
+                  {item?.data?.notes}
+                </div>
+              )
+            }
           </div>
-          <div className='RundownItem-name'>
-            {name}
-          </div>
-          {
-            displaySettings?.notes &&
-            (
-              <div className='RundownItem-notes'>
-                {item?.data?.notes}
-              </div>
-            )
-          }
-        </div>
-        <div className='RundownItem-section RundownItem-section--right'>
-          {
-            ([...properties, ...typeProperties])
-              .filter(property => property.if)
-              .map((property, i) => {
-                /*
-                Either read the value directly from
-                the property or use its bind path
-                to get it from the item object
-                */
-                let value = property?.value
-                if (property?.bind) {
-                  value = objectPath.get(item, property?.bind)
-                }
+          <div className='RundownItem-section RundownItem-section--right'>
+            {
+              ([...properties, ...typeProperties])
+                .filter(property => property.if)
+                .map((property, i) => {
+                  /*
+                  Either read the value directly from
+                  the property or use its bind path
+                  to get it from the item object
+                  */
+                  let value = property?.value
+                  if (property?.bind) {
+                    value = objectPath.get(item, property?.bind)
+                  }
 
-                return (
-                  <div className='RundownItem-property' key={i}>
-                    {
-                      !property.hiddenName &&
-                        <div className='RundownItem-propertyName'>{property.name}:</div>
-                    }
-                    <div>{value}</div>
-                  </div>
-                )
-              })
-          }
-        </div>
-        <RundownItemIndicatorsSection item={item} />
-        <RundownItemTimeSection item={item} />
-      </Layout.Spread>
+                  return (
+                    <div className='RundownItem-property' key={i}>
+                      {
+                        !property.hiddenName &&
+                          <div className='RundownItem-propertyName'>{property.name}:</div>
+                      }
+                      <div>{value}</div>
+                    </div>
+                  )
+                })
+            }
+          </div>
+          <RundownItemIndicatorsSection item={item} />
+          <RundownItemTimeSection item={item} />
+        </Layout.Spread>
+      </div>
       <RundownItemProgress item={item} />
     </div>
   )
