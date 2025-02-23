@@ -174,7 +174,7 @@ bridge.events.on('item.end', async coldItem => {
     didStartPlayingAt: Date.now()
   })
 
-  const endDelay = Math.max(hotItem?.data?.delay || 0, 0) + Math.max(hotItem?.data?.duration || 0, 0)
+  const endDelay = Math.max(hotItem?.data?.duration || 0, 0)
   if (!Number.isNaN(endDelay)) {
     bridge.commands.executeCommand('scheduler.delay', `end:${hotItem.id}`, endDelay, 'items.endItem', coldItem)
   }
