@@ -51,6 +51,13 @@
             "default": 0,
             "enum": ["Do nothing", "Play next sibling", "Select next sibling (main client)"],
             "ui.group": "Timing"
+          },
+          "onEnd": {
+            "name": "On end",
+            "type": "enum",
+            "default": 0,
+            "enum": ["Do nothing", "Play next sibling", "Select next sibling (main client)"],
+            "ui.group": "Timing"
           }
         }
       },
