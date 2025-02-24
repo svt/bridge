@@ -11,9 +11,9 @@ Extendable and lightweight playout software
 
 ## Goals
 
-- [ ] ⚡️ To be a server agnostic, lightweight and quick playout client
-- [ ] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
-- [ ] 💪 To provide a reliable backbone for productions
+- [x] ⚡️ To be a server agnostic, lightweight and quick playout client
+- [x] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
+- [x] 💪 To provide a reliable backbone for productions
 
 ## Table of contents
 - [Goals](#goals)
