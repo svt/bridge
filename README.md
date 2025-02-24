@@ -11,14 +11,15 @@ Extendable and lightweight playout software
 
 ## Goals
 
-- [ ] ⚡️ To be a server agnostic, lightweight and quick playout client
-- [ ] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
-- [ ] 💪 To provide a reliable backbone for productions
+- [x] ⚡️ To be a server agnostic, lightweight and quick playout client
+- [x] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
+- [x] 💪 To provide a reliable backbone for productions
 
 ## Table of contents
 - [Goals](#goals)
 - [Motivation](#motivation)
 - [Features](#features)
+- [Compatibility](#compatibility-notes)
 - [Download and install](#download-and-install)
 - [Documentation and API](#full-documentation-and-api)
 - [Security](#security)
@@ -31,16 +32,20 @@ As developers of production software we found ourselves in a position of rebuild
 
 ## Features
 
-- [ ] Real-time sync for multiple operators
-- [ ] A fully customizable grid layout
-- [ ] Variables
-- [ ] Item references
-- [ ] Sub-frame accurate timing
-- [ ] Multi-threaded architecture
-- [ ] Nested groups
-- [ ] Multiple rundowns per project
-- [ ] Shotbox-style buttons
-- [ ] OSC API
+- HTTP Web interface for remote use
+- A fully customizable grid layout
+- Variables
+- Item references
+- Sub-frame accurate timing
+- Multi-threaded architecture
+- Nested groups
+- Multiple rundowns per project
+- Shotbox-style buttons
+- OSC API
+
+## Compatibility notes  
+- Bridge works with Caspar CG Server 2.3 and up.
+- Bridge provides data to HTML templates as JSON.
 
 ## Download and install  
 Built binaries are available on the releases page.

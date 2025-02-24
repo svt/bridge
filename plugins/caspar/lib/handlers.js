@@ -152,3 +152,30 @@ bridge.events.on('item.stop', async item => {
       .catch(err => logger.warn(err.message))
   }
 })
+
+/*
+Handle the item.end event to keep indicating
+that an item is looping, if it is looping
+
+This will recursively schedule
+the endItem function
+*/
+bridge.events.on('item.end', async coldItem => {
+  if (!coldItem?.id) {
+    return
+  }
+
+  const hotItem = await bridge.items.getItem(coldItem.id)
+  if (!hotItem?.data?.caspar?.loop) {
+    return
+  }
+
+  bridge.items.applyItem(hotItem.id, {
+    didStartPlayingAt: Date.now()
+  })
+
+  const endDelay = Math.max(hotItem?.data?.duration || 0, 0)
+  if (!Number.isNaN(endDelay)) {
+    bridge.commands.executeCommand('scheduler.delay', `end:${hotItem.id}`, endDelay, 'items.endItem', coldItem)
+  }
+})

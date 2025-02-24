@@ -5,14 +5,14 @@
 const bridge = require('bridge')
 const commands = require('./commands')
 
-const ON_PLAY_OPTIONS = {
+const ITEM_ACTIONS = {
   playNextSibling: 1,
   selectNextSibling: 2
 }
 
 const MAIN_ROLE_ID = 1
 
-const HANDLERS = [
+const PLAY_HANDLERS = [
   /*
   Handle the on play option
   */
@@ -21,7 +21,7 @@ const HANDLERS = [
     fn: async item => {
       const value = parseInt(item?.data?.onPlay)
 
-      if (value === ON_PLAY_OPTIONS.playNextSibling) {
+      if (value === ITEM_ACTIONS.playNextSibling) {
         const sibling = await commands.getNextSibling(item?.parent, item?.id)
         if (!sibling) {
           return
@@ -30,7 +30,36 @@ const HANDLERS = [
         return
       }
 
-      if (value === ON_PLAY_OPTIONS.selectNextSibling) {
+      if (value === ITEM_ACTIONS.selectNextSibling) {
+        const sibling = await commands.getNextSibling(item?.parent, item?.id)
+        if (!sibling) {
+          return
+        }
+        selectItem(sibling)
+      }
+    }
+  }
+]
+
+const END_HANDLERS = [
+  /*
+  Handle the on play option
+  */
+  {
+    condition: item => item.data?.onEnd,
+    fn: async item => {
+      const value = parseInt(item?.data?.onEnd)
+
+      if (value === ITEM_ACTIONS.playNextSibling) {
+        const sibling = await commands.getNextSibling(item?.parent, item?.id)
+        if (!sibling) {
+          return
+        }
+        bridge.items.playItem(sibling)
+        return
+      }
+
+      if (value === ITEM_ACTIONS.selectNextSibling) {
         const sibling = await commands.getNextSibling(item?.parent, item?.id)
         if (!sibling) {
           return
@@ -77,7 +106,15 @@ async function selectItem (id) {
 }
 
 bridge.events.on('item.play', item => {
-  for (const handler of HANDLERS) {
+  for (const handler of PLAY_HANDLERS) {
+    if (handler.condition(item)) {
+      handler.fn(item)
+    }
+  }
+})
+
+bridge.events.on('item.end', item => {
+  for (const handler of END_HANDLERS) {
     if (handler.condition(item)) {
       handler.fn(item)
     }

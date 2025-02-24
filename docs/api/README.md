@@ -65,6 +65,7 @@ bridge.events.on('item.stop', item => {
 | `state.change` | Emitted every time the remote state changes |
 | `item.play` | Emitted when an item is played, after an optional delay |
 | `item.stop` | Emitted when an item is stopped |
+| `item.end` | Emitted when an item ends, this will not trigger when an item is stopped |
 | `shortcut` | Emitted when a shortcut is triggered |
 | `selection` | Emitted when the selection of the current client changes |
 

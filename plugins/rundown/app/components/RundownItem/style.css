@@ -8,7 +8,11 @@
   display: flex;
   position: relative;
   width: 100%;
-  padding: 1em;
+}
+
+.RundownItem-margin {
+  margin: 1em;
+  width: 100%;
 }
 
 .RundownItem-section {

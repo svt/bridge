@@ -16,6 +16,23 @@ import * as selection from '../../utils/selection'
 
 const INDICATE_PLAYING_TIMEOUT_MS = 100
 
+/**
+ * Get the closest ancestor element
+ * matching the specified CSS selector
+ * @param { HTMLElement } el 
+ * @param { String } selector 
+ * @returns { HTMLElement | undefined }
+ */
+function getClosestAncestorWithSelector (el, selector) {
+  if (!el) {
+    return
+  }
+  if (!el.matches(selector)) {
+    return getClosestAncestorWithSelector(el.parentElement, selector)
+  }
+  return el
+}
+
 export function RundownListItem ({
   children,
   item,
@@ -33,6 +50,8 @@ export function RundownListItem ({
   const [contextPos, setContextPos] = React.useState()
 
   const [indicateIsPlaying, setIndicateIsPlaying] = React.useState(false)
+
+  const elRef = React.useRef()
 
   function handleDragOver (e) {
     e.preventDefault()
@@ -55,7 +74,19 @@ export function RundownListItem ({
 
   function handleContextMenu (e) {
     e.preventDefault()
-    e.stopPropagation()
+
+    /*
+    Check if the rundown item that triggered the event is this item,
+    if not, don't show the context menu
+
+    This prevents a case where groups' context menus
+    would render beneath the menus of the group's children
+    */
+    const targetItem = getClosestAncestorWithSelector(e.target, '.RundownListItem')
+    if (targetItem !== elRef.current) {
+      return
+    }
+
     setContextPos([e.pageX, e.pageY])
   }
 
@@ -123,6 +154,7 @@ export function RundownListItem ({
 
   return (
     <div
+      ref={elRef}
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''} ${item?.data?.disabled ? 'is-disabled' : ''}`}
       onFocus={e => onFocus(e)}
       onDrop={e => handleDrop(e)}
@@ -145,35 +177,34 @@ export function RundownListItem ({
           <div className='RundownListItem-playIndicator' />
       }
       {
-        contextPos
-          ? (
-            <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
-              <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
-              {
-                !multipleItemsSelected &&
-                <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
-              }
-              <ContextMenuItem text='Paste' onClick={() => handlePaste()} />
-              <ContextMenuDivider />
-              <ContextMenuItem text='Add after'>
-                <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
-              </ContextMenuItem>
-              <ContextMenuItem text='Create reference' onClick={() => handleCreateReference()} />
-              <ContextMenuItem text={item?.data?.disabled ? 'Enable' : 'Disable'} onClick={() => selection.disableSelection(!item?.data?.disabled)} />
-              <ContextMenuDivider />
-              <ContextMenuItem text='Remove' onClick={() => handleDelete()} />
-              {
-                ExtraContextItemsComponent &&
-                !multipleItemsSelected && (
-                  <>
-                    <ContextMenuDivider />
-                    <ExtraContextItemsComponent item={item} />
-                  </>
-                )
-              }
-            </ContextMenu>
-            )
-          : <></>
+        contextPos &&
+        (
+          <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
+            <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
+            {
+              !multipleItemsSelected &&
+              <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
+            }
+            <ContextMenuItem text='Paste' onClick={() => handlePaste()} />
+            <ContextMenuDivider />
+            <ContextMenuItem text='Add after'>
+              <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
+            </ContextMenuItem>
+            <ContextMenuItem text='Create reference' onClick={() => handleCreateReference()} />
+            <ContextMenuItem text={item?.data?.disabled ? 'Enable' : 'Disable'} onClick={() => selection.disableSelection(!item?.data?.disabled)} />
+            <ContextMenuDivider />
+            <ContextMenuItem text='Remove' onClick={() => handleDelete()} />
+            {
+              ExtraContextItemsComponent &&
+              !multipleItemsSelected && (
+                <>
+                  <ContextMenuDivider />
+                  <ExtraContextItemsComponent item={item} />
+                </>
+              )
+            }
+          </ContextMenu>
+        )
       }
       {children}
       {

@@ -122,7 +122,7 @@ exports.activate = async () => {
   bridge.settings.registerSetting({
     title: 'Server',
     group: 'Caspar CG',
-    description: 'Configure Caspar servers',
+    description: 'Configure Caspar servers (supports server v2.3 and up)',
     inputs: [
       { type: 'frame', uri: `${htmlPath}?path=settings/servers` }
     ]
