@@ -32,16 +32,16 @@ As developers of production software we found ourselves in a position of rebuild
 
 ## Features
 
-- [ ] HTTP Web interface for remote use
-- [ ] A fully customizable grid layout
-- [ ] Variables
-- [ ] Item references
-- [ ] Sub-frame accurate timing
-- [ ] Multi-threaded architecture
-- [ ] Nested groups
-- [ ] Multiple rundowns per project
-- [ ] Shotbox-style buttons
-- [ ] OSC API
+- HTTP Web interface for remote use
+- A fully customizable grid layout
+- Variables
+- Item references
+- Sub-frame accurate timing
+- Multi-threaded architecture
+- Nested groups
+- Multiple rundowns per project
+- Shotbox-style buttons
+- OSC API
 
 ## Compatibility notes  
 - Bridge works with Caspar CG Server 2.3 and up.
