@@ -32,7 +32,7 @@ As developers of production software we found ourselves in a position of rebuild
 
 ## Features
 
-- HTTP Web interface for remote use
+- HTTP web interface for remote use
 - A fully customizable grid layout
 - Variables
 - Item references
