@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.4
+### Added
+- HTTP plugin with support for GET requests
+
 ## 1.0.0-beta.3
 ### Fixed
 - An issue where context menus would get stuck when triggered by rundown items

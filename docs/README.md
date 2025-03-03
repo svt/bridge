@@ -9,6 +9,7 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 - Clock
 - [Caspar](/plugins/caspar/README.md)
 - [OSC](/plugins/osc/README.md)
+- [HTTP](/plugins/http/README.md)
 
 ## Developing plugins
 - [Guide](/docs/plugins/README.md)
