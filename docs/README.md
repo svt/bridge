@@ -22,6 +22,9 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 - [Project structure](/docs/structure.md)
 - [Types](/docs/types.md)
 
+## Developing Bridge
+- [Build instructions](/docs/build.md)
+
 ## Terminology
 ![Methodology](/media/docs/architecture/methodology.png)
 
