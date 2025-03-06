@@ -9,6 +9,13 @@ const logger = new Logger({ name: 'HTTPPlugin' })
 const RequestManager = require('./lib/RequestManager')
 const requestManager = new RequestManager({ fetchFunction: fetch })
 
+async function getDefaultHeaders () {
+  const version = await bridge.system.getVersion()
+  return {
+    'User-Agent': `Bridge/${version}`
+  }
+}
+
 const PLAY_HANDLERS = {
   /*
   Make requests
@@ -16,7 +23,8 @@ const PLAY_HANDLERS = {
   'bridge.http.get': async item => {
     try {
       logger.debug('Making request:', item?.data?.http?.url)
-      await requestManager.makeRequestForItemWithId(item.id, item?.data?.http?.url, { method: 'GET' })
+      const headers = await getDefaultHeaders()
+      await requestManager.makeRequestForItemWithId(item.id, item?.data?.http?.url, { method: 'GET', headers })
     } catch (e) {
       logger.debug('Request failed:', e)
     }
