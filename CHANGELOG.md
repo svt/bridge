@@ -3,6 +3,7 @@
 ## 1.0.0-beta.4
 ### Added
 - HTTP plugin with support for GET requests
+- A system api for getting the current release version
 
 ## 1.0.0-beta.3
 ### Fixed

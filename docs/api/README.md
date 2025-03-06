@@ -15,6 +15,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Client](#client)
 - [Variables](#variables)
 - [Keyboard shortcuts](#keyboard-shortcuts)
+- [System](#system)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -512,4 +513,16 @@ bridge.shortcuts.registerShortcut({
   description: 'Trigger my command',
   trigger: ['Shift', 'CommandOrControl', 'A']
 })
+```
+
+## System  
+
+### `bridge.system.getVersion(): Promise.<String>`
+Get the system version, that is, the release version of Bridge currently in use
+
+```javascript
+import bridge from 'bridge'
+
+const version = await bridge.system.getVersion()
+// version = '1.0.0'
 ```

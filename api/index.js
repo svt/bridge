@@ -13,6 +13,7 @@ require('./widgets')
 require('./client')
 require('./events')
 require('./server')
+require('./system')
 require('./state')
 require('./types')
 require('./items')
@@ -28,6 +29,7 @@ class API {
     this.client = props.Client
     this.events = props.Events
     this.server = props.Server
+    this.system = props.System
     this.state = props.State
     this.types = props.Types
     this.items = props.Items
@@ -44,6 +46,7 @@ DIController.main.register('API', API, [
   'Client',
   'Events',
   'Server',
+  'System',
   'State',
   'Types',
   'Items'
