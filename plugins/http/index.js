@@ -9,6 +9,11 @@ const logger = new Logger({ name: 'HTTPPlugin' })
 const RequestManager = require('./lib/RequestManager')
 const requestManager = new RequestManager({ fetchFunction: fetch })
 
+/**
+ * Get an object containing default headers for requests,
+ * this includes Bridge's user agent string
+ * @returns { Promise.<any> }
+ */
 async function getDefaultHeaders () {
   const version = await bridge.system.getVersion()
   return {
