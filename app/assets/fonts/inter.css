@@ -14,7 +14,7 @@
   src: url("./InterVariable-Italic.woff2") format("woff2");
 }
 
-@font-feature-values InterVariable {
+@font-feature-values Inter {
     @character-variant {
         cv01: 1; cv02: 2; cv03: 3; cv04: 4; cv05: 5; cv06: 6; cv07: 7; cv08: 8;
         cv09: 9; cv10: 10; cv11: 11; cv12: 12; cv13: 13;
