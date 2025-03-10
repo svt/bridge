@@ -27,7 +27,7 @@ License: CC0-1.0
 
 
 Files: media/appicon.*
-Copyright: 2022 Sveriges Television AB
+Copyright: 2025 Axel Boberg
 License: CC-BY-NC-ND-4.0 
 
 Files: media/*.png 
@@ -62,5 +62,7 @@ Files: */icons/*.svg
 Copyright: 2022 Sveriges Television AB
 License: CC-BY-SA-4.0
 
-
+Files: /app/assets/fonts/Inter*
+Copyright: 2016 The Inter Project Authors
+License: OFL-1.1
 
