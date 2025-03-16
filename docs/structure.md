@@ -15,6 +15,7 @@ bridge
       |- utils      # Utility files
       |- views      # Views
   |- docs     # Documentation
+  |- examples # Plugin examples
   |- lib      # Node/backend
   |- media    # Static media for the documentation
   |- plugins  # Bundled plugins
