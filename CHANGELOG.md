@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.5 - [UNRELEASED]
+### Changed
+- Updated caniuse db
+
 ## 1.0.0-beta.4
 ### Added
 - HTTP plugin with support for GET requests
