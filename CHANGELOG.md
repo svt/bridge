@@ -6,6 +6,7 @@
 - A system api for getting the current release version
 ### Changed
 - The server API is now using dependency injection
+- The default font is now Inter
 
 ## 1.0.0-beta.3
 ### Fixed
