@@ -3,6 +3,7 @@
 ## 1.0.0-beta.5 - [UNRELEASED]
 ### Changed
 - Updated caniuse db
+- Updated Babel dependencies
 
 ## 1.0.0-beta.4
 ### Added
