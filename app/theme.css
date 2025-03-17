@@ -31,7 +31,7 @@
 
   --base-color--alert: #E13241;
 
-  --base-fontFamily--primary: 'publik', -apple-system, BlinkMacSystemFont, 'helvetica', bridge-glyphs, sans-serif;
+  --base-fontFamily--primary: 'Inter', -apple-system, BlinkMacSystemFont, 'helvetica', bridge-glyphs, sans-serif;
 
   --base-color-type--variable: #0F418C;
 }

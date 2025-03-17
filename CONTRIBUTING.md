@@ -7,6 +7,7 @@ There are many ways to contribute - finding bugs, adding documentation and fixin
 
 ## Table of contents
 - [Project structure](#project-structure)
+- [Build instructions](#build-instructions)
 - [Naming conventions](#naming-conventions)
   - [Branches](#branches)
   - [Commits](#commits)
@@ -15,6 +16,9 @@ There are many ways to contribute - finding bugs, adding documentation and fixin
 ## Project structure
 See the documentation on the project structure before getting started.  
 [Project structure documentation](docs/structure.md)
+
+## Build instructions
+[Build instructions](docs/build.md)
 
 ## Naming conventions  
 ### Branches  

@@ -2,7 +2,7 @@
 Bridge's default OSC plugin
 
 ## Description
-This plugis allows external services to communicate to Bridge using the Open Sound Control protocol (OSC).
+This plugin allows external services to communicate to Bridge using the Open Sound Control protocol (OSC).
 
 ## Table of contents
 - [Description](#description)

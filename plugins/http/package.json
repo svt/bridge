@@ -1,0 +1,42 @@
+{
+  "name": "bridge-plugin-http",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "contributes": {
+    "types": [
+      {
+        "id": "bridge.http.request",
+        "inherits": "bridge.types.delayable",
+        "properties": {
+          "http.url": {
+            "name": "URL",
+            "type": "string",
+            "default": "https://",
+            "allowsVariables": true,
+            "ui.group": "HTTP"
+          }
+        }
+      },
+      {
+        "id": "bridge.http.get",
+        "name": "GET",
+        "category": "HTTP",
+        "inherits": "bridge.http.request",
+        "properties": {}
+      }
+    ]
+  },
+  "author": "Axel Boberg (git@axelboberg.se)",
+  "license": "UNLICENSED"
+}

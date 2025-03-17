@@ -9,6 +9,7 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 - Clock
 - [Caspar](/plugins/caspar/README.md)
 - [OSC](/plugins/osc/README.md)
+- [HTTP](/plugins/http/README.md)
 
 ## Developing plugins
 - [Guide](/docs/plugins/README.md)
@@ -20,6 +21,9 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 - [Architecture](/docs/architecture.md)
 - [Project structure](/docs/structure.md)
 - [Types](/docs/types.md)
+
+## Developing Bridge
+- [Build instructions](/docs/build.md)
 
 ## Terminology
 ![Methodology](/media/docs/architecture/methodology.png)

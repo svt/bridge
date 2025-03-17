@@ -21,6 +21,8 @@ html, body, #root {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  font-feature-settings: "tnum";
 }
 
 *.u-selectable {
