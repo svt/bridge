@@ -49,7 +49,7 @@ class DIController {
 
   /**
    * Instantiate a class by its name
-   * and all of its requriements recursively
+   * and all of its requirements recursively
    *
    * @param { String } name
    * @param { any } scope An object for overriding dependencies
