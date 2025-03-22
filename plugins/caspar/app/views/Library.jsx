@@ -4,7 +4,7 @@ import bridge from 'bridge'
 import { LibraryHeader } from '../components/LibraryHeader'
 import { LibraryList } from '../components/LibraryList'
 
-import * as Asset from '../utils/asset'
+import * as asset from '../utils/asset'
 
 /**
  * @typedef {{
@@ -48,10 +48,21 @@ export const Library = () => {
         return
       }
 
-      const res = await bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'cls')
-      const filtered = (res?.data || [])
-        .map(Asset.parseAsset)
-      setItems(filtered)
+      const res = await Promise.all([
+        bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'cls'),
+        bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'tls')
+      ])
+
+      const parsedMediaAssets = (res?.[0]?.data || [])
+        .map(asset.parseMediaAsset)
+
+      const parsedTemplateAssets = (res?.[1]?.data || [])
+        .map(asset.parseTemplateAsset)
+
+      const sortedAssets = [...parsedMediaAssets, ...parsedTemplateAssets]
+        .sort((a, b) => String(a.name || '').localeCompare(b.name || ''))
+
+      setItems(sortedAssets)
     }
     exec()
   }, [filter?.serverId, filter?.refresh])

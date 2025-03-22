@@ -1,27 +1,88 @@
 import React from 'react'
 import './style.css'
 
+import * as asset from '../../utils/asset'
+
 const DEFAULT_DURATION_MS = 5000
 
 const DEFAULT_VALUES = {
-  STILL: {
+  [asset.type.still]: {
     channel: 1,
     layer: 10
   },
-  MOVIE: {
+  [asset.type.movie]: {
     channel: 1,
     layer: 10
   },
-  AUDIO: {
+  [asset.type.audio]: {
     channel: 1,
     layer: 30
+  },
+  [asset.type.template]: {
+    channel: 1,
+    layer: 20
+  }
+}
+
+/**
+ * Item constructor functions
+ * for creating different types
+ * of item inits based on
+ * a specific condition
+ */
+const ITEM_CONSTRUCTORS = [
+  {
+    if: item => [asset.type.still, asset.type.movie, asset.type.audio].includes(item.type),
+    fn: item => {
+      return {
+        type: 'bridge.caspar.media',
+        data: {
+          name: item.name,
+          caspar: {
+            server: item?._filter?.serverId,
+            target: item.name,
+            ...(DEFAULT_VALUES[item.type] || {})
+          },
+          duration: calculateDurationMs(item)
+        }
+      }
+    }
+  },
+  {
+    if: item => asset.type.template === item.type,
+    fn: item => {
+      return {
+        type: 'bridge.caspar.template',
+        data: {
+          name: item.name,
+          caspar: {
+            server: item?._filter?.serverId,
+            target: item.name,
+            ...(DEFAULT_VALUES[item.type] || {})
+          }
+        }
+      }
+    }
+  }
+]
+
+/**
+ * Create an item init object for a library item
+ * @param { LibraryAsset } libraryAsset
+ * @returns { ItemInit | undefined }
+ */
+function constructPlayableItemInit (libraryAsset) {
+  for (const constructor of ITEM_CONSTRUCTORS) {
+    if (constructor.if(libraryAsset)) {
+      return constructor.fn(libraryAsset)
+    }
   }
 }
 
 /**
  * Calculate the duration in milliseconds from an item
  * based on its framerate and duration in frames
- * @param { any } item 
+ * @param { any } item
  * @returns { Number }
  */
 function calculateDurationMs (item) {
@@ -43,26 +104,23 @@ function calculateDurationMs (item) {
   return (item?.duration / framerate) * 1000
 }
 
+/**
+ * @typedef { import('../../utils/asset').LibraryAsset } LibraryAsset
+ *
+ * @param {{
+ *  item: LibraryAsset
+ * }} arg0
+ */
 export const LibraryListItem = ({ item = {} }) => {
   async function handleDragStart (e) {
-    e.dataTransfer.setData('bridge/item', JSON.stringify({
-      type: 'bridge.caspar.media',
-      data: {
-        name: item.name,
-        caspar: {
-          server: item?._filter?.serverId,
-          target: item.name,
-          ...(DEFAULT_VALUES[item.type] || {})
-        },
-        duration: calculateDurationMs(item)
-      }
-    }))
+    const data = constructPlayableItemInit(item)
+    e.dataTransfer.setData('bridge/item', JSON.stringify(data))
     e.stopPropagation()
   }
 
   return (
     <li className='LibraryListItem' onDragStart={e => handleDragStart(e)} draggable>
-      <div className='LibraryListItem-name LibraryListItem-col'>
+      <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
         {item?.name}
       </div>
       <div>
