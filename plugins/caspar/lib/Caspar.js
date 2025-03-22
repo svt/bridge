@@ -237,6 +237,9 @@ class Caspar extends EventEmitter {
    * SuperflyTV
    *
    * @see https://github.com/SuperFlyTV/casparcg-connection/blob/master/src/connection.ts
+   *
+   * @todo Refactor this into
+   *       something more readable
    */
   _processData (chunk) {
     if (!this._unprocessedData) {
@@ -263,6 +266,9 @@ class Caspar extends EventEmitter {
 
         if (resObject.code === '200') {
           const indexOfTermination = this._unprocessedLines.indexOf('')
+          if (indexOfTermination === -1) {
+            break
+          }
 
           resObject.data = this._unprocessedLines.slice(1, indexOfTermination)
           processedLines += resObject.data.length + 1
@@ -275,7 +281,6 @@ class Caspar extends EventEmitter {
         }
 
         this._unprocessedLines.splice(0, processedLines)
-
         this._resolveResponseObject(resObject)
       } else {
         /*
