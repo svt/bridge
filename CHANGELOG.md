@@ -6,6 +6,9 @@
 - Updated Babel dependencies
 ### Fixed
 - An issue resulting in event handlers not being properly dropped by owner
+- An issue where large responses from Caspar was cut off
+### Added
+- Listing of templates in the Caspar library widget
 
 ## 1.0.0-beta.4
 ### Added
