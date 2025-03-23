@@ -14,6 +14,7 @@ Plugins allows Bridge to be extended with functionality, both through the backen
   - [Building plugins](#building-plugins)
   - [Installing plugins](./installation.md)
 - [API reference](/docs/api/README.md)
+- [Styling](/docs/plugins/styling.md)
 
 ## Examples
 Example plugins can be found in the [examples directory](../../examples)

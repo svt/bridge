@@ -1,4 +1,5 @@
 import React from 'react'
+import bridge from 'bridge'
 import './style.css'
 
 import * as asset from '../../utils/asset'
@@ -118,8 +119,23 @@ export const LibraryListItem = ({ item = {} }) => {
     e.stopPropagation()
   }
 
+  /*
+   * Create a new item and append it to
+   * the rundown root on double click
+   */
+  async function handleDoubleClick (e) {
+    const data = constructPlayableItemInit(item)
+    const itemId = await bridge.items.createItem(data.type, data.data)
+    bridge.commands.executeCommand('rundown.appendItem', 'RUNDOWN_ROOT', itemId)
+  }
+
   return (
-    <li className='LibraryListItem' onDragStart={e => handleDragStart(e)} draggable>
+    <li
+      className='LibraryListItem'
+      onDragStart={e => handleDragStart(e)}
+      onDoubleClick={e => handleDoubleClick(e)}
+      draggable
+    >
       <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
         {item?.name}
       </div>
