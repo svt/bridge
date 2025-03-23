@@ -1,6 +1,10 @@
 # Styling plugins
 Bridge provides CSS variables and a stylesheet for plugins to use in widgets in order to better fit within the application. Using Bridge's provided values is not mandatory but highly recommended.
 
+## Table of contents
+- [CSS Variables](#css-variables)
+- [Stylesheet](#stylesheet)
+
 ## CSS variables
 The following CSS variables will be available in all widgets running locally within Bridge. They are updated on load to match the currently selected theme.
 
