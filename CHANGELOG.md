@@ -9,6 +9,8 @@
 - An issue where large responses from Caspar was cut off
 ### Added
 - Listing of templates in the Caspar library widget
+- UX improvements
+- Stability improvements
 
 ## 1.0.0-beta.4
 ### Added
