@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.0.0-beta.6 - [UNRELEASED]
+
 ## 1.0.0-beta.5
 ### Changed
 - Updated caniuse db
