@@ -18,6 +18,15 @@ html, body, .View--flex {
   flex-direction: column;
 }
 
+.View--center {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  align-items: center;
+  justify-content: center;
+}
+
 .View--spread {
   display: flex;
 }
@@ -36,4 +45,8 @@ html, body, .View--flex {
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.u-textAlign--center {
+  text-align: center;
 }

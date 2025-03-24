@@ -307,3 +307,80 @@ select:focus {
 [data-hint-alignment="right"]:hover::before {
   transform: translate(-100%, 5px);
 }
+
+/* Loader */
+
+.Loader {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.Loader::after {
+  content: '';
+  position: relative;
+
+  width: 50px;
+  height: 50px;
+
+  background-color: var(--base-color);
+
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-image: url('./assets/icons/spinner.svg');
+  -webkit-mask-size: 90%;
+
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-image: url('./assets/icons/spinner.svg');
+  mask-size: 90%;
+
+  animation-name: Loader-spinner;
+  animation-duration: 750ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes Loader-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Warning */
+
+.Warning {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.Warning::after {
+  content: '';
+  position: relative;
+
+  width: 50px;
+  height: 50px;
+
+  background-color: var(--base-color);
+
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-image: url('./assets/icons/warning.svg');
+  -webkit-mask-size: 90%;
+
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-image: url('./assets/icons/warning.svg');
+  mask-size: 90%;
+}

@@ -80,12 +80,18 @@ class Items {
    * Create an item from of a specific
    * type and store it in the this.#props.State
    * @param { String } type A type identifier to create an item from
+   * @param { any } data Optional data that should be set to the data property
    * @returns { Promise.<String> } A Promise resolving to the id of the created item
    */
-  async createItem (type) {
+  async createItem (type, data = {}) {
     const _type = await this.#props.Types.getType(type)
     if (!_type) {
       throw new InvalidArgumentError('Received an invalid value for the argument \'type\', no such type exist')
+    }
+
+    let _data = {}
+    if (typeof data === 'object' && !Array.isArray(data)) {
+      _data = data
     }
 
     const item = {
@@ -94,9 +100,17 @@ class Items {
       data: {}
     }
 
+    /*
+     * Set defaults for this type
+     */
     for (const [key, def] of Object.entries(_type.properties)) {
       objectPath.set(item.data, key, def.default || undefined)
     }
+
+    /*
+     * Set data that was provided to this function
+     */
+    Object.assign(item.data, _data)
 
     this.applyItem(item.id, item)
     return item.id

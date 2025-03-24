@@ -54,10 +54,10 @@ class TcpSocket extends EventEmitter {
 
   /**
    * Get the socket's current state
-   * @type { 'open' | 'opening' | 'readOnly' | 'writeOnly' }
+   * @type { 'open' | 'opening' | 'readOnly' | 'writeOnly' | undefined }
    */
   get readyState () {
-    return this._socket.readyState
+    return this._socket?.readyState
   }
 
   /**

@@ -14,6 +14,7 @@ Welcome to the full documentation for Bridge. Whether you want to build your own
 ## Developing plugins
 - [Guide](/docs/plugins/README.md)
 - [Examples](/examples)
+- [Styling](/docs/plugins/styling.md)
 - [API reference](/docs/api/README.md)
 - [Installing plugins](/docs/plugins/installation.md)
 

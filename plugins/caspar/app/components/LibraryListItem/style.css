@@ -1,9 +1,14 @@
 .LibraryListItem {
   display: flex;
-  padding: 0.3em;
+  padding: 0.4em 0.5em;
   font-size: 0.9em;
 
+  border-radius: 3px;
   justify-content: space-between;
+}
+
+.LibraryListItem:active {
+  box-shadow: inset 0 0 1px 1px var(--base-color);
 }
 
 .LibraryListItem:nth-child(odd) {

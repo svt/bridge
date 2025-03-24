@@ -34,7 +34,7 @@ export function Rundown () {
    * Get the last rendered item from a set,
    * this function utilizes the dom as provided
    * items may belong to different parents
-   * @param { String[] } itemIds 
+   * @param { String[] } itemIds
    * @returns { String | undefined }
    */
   function getLastRenderedItemOfSet (itemIds = []) {
@@ -45,7 +45,7 @@ export function Rundown () {
     if (!Array.isArray(itemIds)) {
       return undefined
     }
-    
+
     /*
     Find all items that are currently rendered in the dom,
     as the provided ids may belong to different parents
@@ -60,7 +60,7 @@ export function Rundown () {
       ones as early as possible
       */
       .filter(item => itemIds.includes(item.dataset['itemId']))
-      .map(item =>item.dataset['itemId'])
+      .map(item => item.dataset['itemId'])
 
     return order[order.length - 1]
   }

@@ -3,6 +3,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 
 ## Table of contents  
 - [Getting started](#getting-started)
+- [Styling](#styling)
 - [Commands](#commands)
 - [Events](#events)
   - [Available events](#available-events)
@@ -322,7 +323,7 @@ Register a type
 ## Items
 Items are playable objects containing the metadata of a certain type.
 
-### `bridge.items.createItem(typeId): Promise<String>`
+### `bridge.items.createItem(typeId[, initialData]): Promise<String>`
 Create a new item of a specific type, its id will be returned as a promise.
 
 ### `bridge.items.applyItem(id, item)`  
