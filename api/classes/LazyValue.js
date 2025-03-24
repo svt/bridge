@@ -54,7 +54,7 @@ class LazyValue {
    */
   getLazy () {
     if (this.#value) {
-      return this.#value
+      return Promise.resolve(this.#value)
     }
     return new Promise(resolve => {
       this.#promises.push({ resolve })
