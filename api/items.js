@@ -132,11 +132,13 @@ class Items {
       throw new InvalidArgumentError('Argument \'item\' must be a valid object that\'s not an array')
     }
 
-    await this.#props.State.apply({
+    this.#props.State.apply({
       items: {
         [id]: set
       }
     })
+
+    this.#props.Events.emit('item.apply', id, set)
   }
 
   /**

@@ -55,10 +55,8 @@ export const InspectorTemplate = () => {
 
   function handleSave (newValue) {
     try {
-      const json = JSON.parse(newValue)
       handleNewValue({
         data: {
-          templateData: { $replace: json },
           caspar: {
             /*
             templateDataSource holds the actual data sent in commands
