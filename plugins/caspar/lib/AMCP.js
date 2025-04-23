@@ -166,7 +166,7 @@ exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLaye
 exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity}${transitionString(opts)}`
 
 /**
- * Change the opacity of a layer
+ * Change the volume of a layer
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#mixer-volume
  * @param { String } volume
  * @param { AMCPOptions } opts
