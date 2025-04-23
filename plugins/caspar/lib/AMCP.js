@@ -166,6 +166,15 @@ exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLaye
 exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity}${transitionString(opts)}`
 
 /**
+ * Change the opacity of a layer
+ * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#mixer-volume
+ * @param { String } volume
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.mixerVolume = (volume, opts) => `MIXER ${layerString(opts)} VOLUME ${volume}${transitionString(opts)}`
+
+/**
  * Get the thumbnail for a file
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#thumbnail-retrieve
  * @param { String } fileName
