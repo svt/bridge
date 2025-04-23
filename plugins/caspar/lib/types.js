@@ -243,6 +243,7 @@ function init (htmlPath) {
       }
     }
   })
+  
   bridge.types.registerType({
     id: 'bridge.caspar.volume',
     name: 'Volume',
