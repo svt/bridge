@@ -243,5 +243,19 @@ function init (htmlPath) {
       }
     }
   })
+  bridge.types.registerType({
+    id: 'bridge.caspar.volume',
+    name: 'Volume',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.mixable',
+    properties: {
+      'caspar.volume': {
+        name: 'Volume',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      }
+    }
+  })
 }
 exports.init = init

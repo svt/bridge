@@ -35,6 +35,9 @@ const PLAY_HANDLERS = {
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', item?.data?.caspar?.opacity, item?.data?.caspar)
+  },
+  'bridge.caspar.volume': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerVolume', item?.data?.caspar?.volume, item?.data?.caspar)
   }
 }
 
@@ -53,6 +56,9 @@ const STOP_HANDLERS = {
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', '1.0', { ...(item?.data?.caspar || {}), transitionDuration: 0 })
+  },
+  'bridge.caspar.volume': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerVolume', '1.0', { ...(item?.data?.caspar || {}), transitionDuration: 0 })
   }
 }
 
@@ -150,32 +156,5 @@ bridge.events.on('item.stop', async item => {
   } else {
     STOP_HANDLERS[item.type]?.(item?.data?.caspar?.server, item)
       .catch(err => logger.warn(err.message))
-  }
-})
-
-/*
-Handle the item.end event to keep indicating
-that an item is looping, if it is looping
-
-This will recursively schedule
-the endItem function
-*/
-bridge.events.on('item.end', async coldItem => {
-  if (!coldItem?.id) {
-    return
-  }
-
-  const hotItem = await bridge.items.getItem(coldItem.id)
-  if (!hotItem?.data?.caspar?.loop) {
-    return
-  }
-
-  bridge.items.applyItem(hotItem.id, {
-    didStartPlayingAt: Date.now()
-  })
-
-  const endDelay = Math.max(hotItem?.data?.duration || 0, 0)
-  if (!Number.isNaN(endDelay)) {
-    bridge.commands.executeCommand('scheduler.delay', `end:${hotItem.id}`, endDelay, 'items.endItem', coldItem)
   }
 })
