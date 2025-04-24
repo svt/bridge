@@ -104,7 +104,6 @@ function calculateDurationMs (item) {
   const [divisor, dividend] = item?.framerate.split('/')
   const framerate = dividend / divisor;
 
-
   return (item?.duration / framerate) * 1000
 }
 
