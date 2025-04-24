@@ -13,10 +13,10 @@ import * as browser from './utils/browser'
 import * as api from './api'
 
 import {
-  BrowserRouter as Router,
-  Switch,
+  BrowserRouter,
+  Routes,
   Route
-} from 'react-router-dom'
+} from 'react-router'
 
 /**
  * Define the interval of heartbeats
@@ -249,16 +249,12 @@ export default function App () {
     <SocketContext.Provider value={[send, data]}>
       <LocalContext.Provider value={[local, applyLocal]}>
         <SharedContext.Provider value={[shared, applyShared]}>
-          <Router>
-            <Switch>
-              <Route path='/workspaces/:workspace'>
-                <Workspace />
-              </Route>
-              <Route path='/'>
-                <Start />
-              </Route>
-            </Switch>
-          </Router>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/workspaces/:workspace' element={<Workspace />} />
+              <Route path='/' element={<Start />} />
+            </Routes>
+          </BrowserRouter>
         </SharedContext.Provider>
       </LocalContext.Provider>
     </SocketContext.Provider>
