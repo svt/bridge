@@ -3,6 +3,8 @@
 ## 1.0.0-beta.6 - [UNRELEASED]
 ### Changed
 - item.data.caspar.data replaces item.data.templateData for structured template data
+- Update implementation of react-router 
+- Update dependencies
 ### Added
 - The `item.apply` event
 - A volume item type for the Caspar plugin
