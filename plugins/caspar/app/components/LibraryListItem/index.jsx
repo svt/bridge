@@ -99,8 +99,11 @@ function calculateDurationMs (item) {
    * Extract the framerate from the item - which is written as a fraction
    * @example
    * '1/25' -> 25
+   * '1001/30000' -> 29.97
    */
-  const [, framerate] = item?.framerate.split('/')
+  const [divisor, dividend] = item?.framerate.split('/')
+  const framerate = dividend / divisor;
+
 
   return (item?.duration / framerate) * 1000
 }
