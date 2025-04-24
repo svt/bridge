@@ -35,6 +35,9 @@ const PLAY_HANDLERS = {
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', item?.data?.caspar?.opacity, item?.data?.caspar)
+  },
+  'bridge.caspar.volume': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerVolume', item?.data?.caspar?.volume, item?.data?.caspar)
   }
 }
 
@@ -53,6 +56,9 @@ const STOP_HANDLERS = {
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', '1.0', { ...(item?.data?.caspar || {}), transitionDuration: 0 })
+  },
+  'bridge.caspar.volume': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerVolume', '1.0', { ...(item?.data?.caspar || {}), transitionDuration: 0 })
   }
 }
 
@@ -177,5 +183,37 @@ bridge.events.on('item.end', async coldItem => {
   const endDelay = Math.max(hotItem?.data?.duration || 0, 0)
   if (!Number.isNaN(endDelay)) {
     bridge.commands.executeCommand('scheduler.delay', `end:${hotItem.id}`, endDelay, 'items.endItem', coldItem)
+  }
+})
+
+/*
+ * Handle changes to item data by updating the item
+ * with a parsed value of the same data in order for
+ * variables to be able to utilize it
+ */
+bridge.events.on('item.apply', (itemId, set) => {
+  /*
+   * Make sure that the apply operation actually
+   * modifies the templateDataSource value
+   */
+  if (!set?.data?.caspar?.templateDataSource) {
+    return
+  }
+
+  try {
+    /*
+     * Parse the data and
+     * apply it to the item
+     */
+    const structuredData = JSON.parse(set?.data?.caspar?.templateDataSource)
+    bridge.items.applyItem(itemId, {
+      data: {
+        caspar: {
+          data: { $replace: structuredData }
+        }
+      }
+    })
+  } catch (e) {
+    logger.warn('Failed to apply structured data to item with error: ', e)
   }
 })

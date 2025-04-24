@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-beta.6 - [UNRELEASED]
+### Changed
+- item.data.caspar.data replaces item.data.templateData for structured template data
+### Added
+- The `item.apply` event
+- A volume item type for the Caspar plugin
+
 ## 1.0.0-beta.5
 ### Changed
 - Updated caniuse db
