@@ -1,0 +1,39 @@
+.LibraryListFolderName {
+  background-color: var(--base-color-background);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.VerticalLine {
+  position: relative; 
+  padding-left: 1px;
+  border-left: 1.5px solid var(--base-color);
+}
+
+.FolderHeader {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0.15em 0em 0em 0em;
+}
+
+.FolderItems {
+  margin-left: auto;
+  color: gray;
+  padding: 0 0.5em;
+}
+
+.FolderName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FolderIcon {
+  transition: 200ms ease-in-out; /* Same as folder opening speed */
+}
+
+.FolderIcon.open {
+  transform: rotate(90deg);
+}

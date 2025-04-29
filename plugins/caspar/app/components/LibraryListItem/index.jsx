@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import bridge from 'bridge'
 import './style.css'
 
 import * as asset from '../../utils/asset'
+import { toLowerCaseExceptFirst } from '../../utils/library'
 
 const DEFAULT_DURATION_MS = 5000
 
@@ -131,6 +132,8 @@ export const LibraryListItem = ({ item = {} }) => {
     bridge.commands.executeCommand('rundown.appendItem', 'RUNDOWN_ROOT', itemId)
   }
 
+  const formattedName = toLowerCaseExceptFirst(item?.name)
+
   return (
     <li
       className='LibraryListItem'
@@ -138,8 +141,8 @@ export const LibraryListItem = ({ item = {} }) => {
       onDoubleClick={e => handleDoubleClick(e)}
       draggable
     >
-      <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
-        {item?.name}
+      <div className='LibraryListItem-name LibraryListItem-col' title={formattedName}>
+        {formattedName}
       </div>
       <div>
         <div className='LibraryListItem-col LibraryListItem-metadata'>
@@ -149,3 +152,5 @@ export const LibraryListItem = ({ item = {} }) => {
     </li>
   )
 }
+
+export default LibraryListItem
