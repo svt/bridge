@@ -115,7 +115,7 @@ export function RundownListItem ({
 
     await bridge.items.applyItem(newItemId, {
       data: {
-        name: `Reference to ${item?.data?.path}`,
+        name: `Reference to ${item?.data?.target}`,
         targetId: item.id
       }
     })
