@@ -1,4 +1,4 @@
-import React, {useMemo, useEffect} from "react"
+import React, {useMemo} from "react"
 
 import { SharedContext } from "../../sharedContext"
 
@@ -16,7 +16,6 @@ export const LibraryList = ({ items, onNodeClick }) => {
     [shared]
   )
 
-  console.log('Folder Setting: ', folderSetting)
   const folderizedItems = useMemo(() => buildFolderTree(items), [items])
 
   return (
@@ -27,8 +26,8 @@ export const LibraryList = ({ items, onNodeClick }) => {
       <ul className={`LibraryList ${!folderSetting}`}>
       {
         (items || []).map((item, i) => {
-          const itemWithPath = { ...item, path: item.name }
-          return <LibraryListItem key={i} item={itemWithPath} />
+          const itemWithTarget = { ...item, target: item.name }
+          return <LibraryListItem key={i} item={itemWithTarget} />
         })
       }
       </ul>
