@@ -1,51 +1,45 @@
 import React, { useState } from "react"
-import styled from "styled-components"
-import { IoIosArrowForward } from "react-icons/io"
 
+import { Icon } from '../Icon'
 import "./style.css"
 
-import { Collapsible } from '../Collapsible'
 import { toLowerCaseExceptFirst } from "../../utils/library"
 
 const FolderName = ({ isOpen, name, handleClick }) => {
   const formattedName = toLowerCaseExceptFirst(name)
 
   return (
-    <div onClick={handleClick} className="FolderName">
-      <IoIosArrowForward className={`FolderIcon ${isOpen ? 'open' : ''}`} />
-      &nbsp;{formattedName}
-    </div>
-  );
+    <div className={`FolderName ${isOpen ? 'is-open' : ''}`} onClick={handleClick}>
+      <div className='FolderName-icon'>
+        <Icon name='arrow-down' />
+      </div>
+      <div className="FolderName-text">
+        {formattedName}
+      </div>
+    </div>    
+  )
 }
 
-const LibraryListFolder = ({ id, name, children, node }) => {
-  const [isOpen, setIsOpen] = useState(true)
+const LibraryListFolder = ({ name, children, node }) => {
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <StyledFolder key={id}>
-      <div className="FolderHeader">
+    <section className={'FolderWrapper'}>
+      <div className={'FolderHeader'}>
         <FolderName
           name={name}
           isOpen={isOpen}
           handleClick={() => setIsOpen(!isOpen)}
         />
-        <div className="FolderItems">{node?.files?.length} items</div>
+        <div className="FolderItems">{node?.files?.length ?? 0} items</div>
       </div>
-      <Collapsible isOpen={isOpen}>
+      <div className={`CollapsibleFolder ${isOpen ? 'open' : 'closed'}`}>
         <div className="VerticalLine">
           {children}
         </div>
-      </Collapsible>
-    </StyledFolder>
+      </div>
+    </section>
   )
 }
 
 export { LibraryListFolder }
-
-const StyledFolder = styled.section`
-  font-weight: normal;
-  padding-left: ${(p) => p.theme.indent}px;
-  .tree__file {
-    padding-left: ${(p) => p.theme.indent}px;
-  }
-`

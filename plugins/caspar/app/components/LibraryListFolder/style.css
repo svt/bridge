@@ -1,8 +1,30 @@
-.LibraryListFolderName {
+.FolderName {
   background-color: var(--base-color-background);
   display: flex;
   align-items: center;
   cursor: pointer;
+  max-width: 100%;
+  overflow: hidden;
+  flex-grow: 1;
+  margin-bottom: 0.15em;
+}
+
+.FolderName .FolderName-icon {
+  margin-right: .1em;
+  display: flex;
+  transform: rotate(-90deg);
+  justify-items: center;
+  scale: 80%;
+}
+
+.FolderName.is-open .FolderName-icon {
+  transform: rotate(0deg);
+}
+
+.FolderName-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .VerticalLine {
@@ -14,26 +36,23 @@
 .FolderHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   position: relative;
   padding: 0.15em 0em 0em 0em;
 }
 
 .FolderItems {
+  white-space: nowrap;
   margin-left: auto;
   color: gray;
-  padding: 0 0.5em;
+  padding: 0 .6em 0 0;
 }
 
-.FolderName {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.FolderWrapper {
+  margin-left: 10px;
 }
 
-.FolderIcon {
-  transition: 200ms ease-in-out; /* Same as folder opening speed */
-}
-
-.FolderIcon.open {
-  transform: rotate(90deg);
+.CollapsibleFolder.closed {
+  display: none;
 }

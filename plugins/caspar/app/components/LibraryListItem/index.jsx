@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import bridge from 'bridge'
 import './style.css'
+
+import { SharedContext } from '../../sharedContext'
 
 import * as asset from '../../utils/asset'
 import { toLowerCaseExceptFirst } from '../../utils/library'
@@ -42,7 +44,7 @@ const ITEM_CONSTRUCTORS = [
           name: item.name,
           caspar: {
             server: item?._filter?.serverId,
-            target: item.name,
+            target: item.path,
             ...(DEFAULT_VALUES[item.type] || {})
           },
           duration: calculateDurationMs(item)
@@ -59,7 +61,7 @@ const ITEM_CONSTRUCTORS = [
           name: item.name,
           caspar: {
             server: item?._filter?.serverId,
-            target: item.name,
+            target: item.path,
             ...(DEFAULT_VALUES[item.type] || {})
           }
         }
@@ -132,7 +134,10 @@ export const LibraryListItem = ({ item = {} }) => {
     bridge.commands.executeCommand('rundown.appendItem', 'RUNDOWN_ROOT', itemId)
   }
 
-  const formattedName = toLowerCaseExceptFirst(item?.name)
+
+  const [shared] = React.useContext(SharedContext)
+  const folderSetting =  shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
+  const formattedName = folderSetting ? toLowerCaseExceptFirst(item?.name) : item?.name
 
   return (
     <li

@@ -1,12 +1,10 @@
-
 .LibraryListItem {
   display: flex;
   padding: 0.3em 0.4em;
   font-size: 0.9em;
-
   border-radius: 3px;
   justify-content: space-between;
-  margin: 0 .3em .3em .3em;
+  margin: 0.3em 0.3em .3em .3em;
   background: var(--base-color--shade1);
 }
 
@@ -41,12 +39,4 @@
 
 .LibraryListItem-name {
   font-weight: normal;
-}
-
-li:last-of-type {
-  margin-bottom: 0;
-}
-
-li:first-of-type {
-  margin-top: 0.3em;
 }

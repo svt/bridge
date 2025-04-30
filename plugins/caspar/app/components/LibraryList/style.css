@@ -9,3 +9,7 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.LibraryList.false{
+  display: none;
+}

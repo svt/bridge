@@ -1,5 +1,6 @@
-import React from "react"
-import { ThemeProvider } from "styled-components"
+import React, {useMemo, useEffect} from "react"
+
+import { SharedContext } from "../../sharedContext"
 
 import { LibraryListItem } from "../LibraryListItem"
 import { LibraryListFolder } from "../LibraryListFolder"
@@ -8,13 +9,30 @@ import { buildFolderTree } from "../../utils/library"
 import "./style.css"
 
 export const LibraryList = ({ items, onNodeClick }) => {
-  const folderizedItems = buildFolderTree(items)
+  const [shared] = React.useContext(SharedContext)
+
+  const folderSetting = useMemo(() =>
+    shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder,
+    [shared]
+  )
+
+  console.log('Folder Setting: ', folderSetting)
+  const folderizedItems = useMemo(() => buildFolderTree(items), [items])
+
   return (
-    <ThemeProvider theme={{ indent: 10 }}>
-      <div className="LibraryList">
+    <div>
+      <div className={`LibraryList ${folderSetting}`}>
         <FolderRecursive data={folderizedItems} parentNode={folderizedItems} />
       </div>
-    </ThemeProvider>
+      <ul className={`LibraryList ${!folderSetting}`}>
+      {
+        (items || []).map((item, i) => {
+          const itemWithPath = { ...item, path: item.name }
+          return <LibraryListItem key={i} item={itemWithPath} />
+        })
+      }
+      </ul>
+    </div>
   )
 }
 
