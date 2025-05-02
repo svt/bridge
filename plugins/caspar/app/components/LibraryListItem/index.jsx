@@ -4,7 +4,7 @@ import './style.css'
 
 import * as asset from '../../utils/asset'
 
-const DEFAULT_DURATION_MS = 5000
+import { calculateDurationMs } from '../../utils/asset'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
@@ -78,31 +78,6 @@ function constructPlayableItemInit (libraryAsset) {
       return constructor.fn(libraryAsset)
     }
   }
-}
-
-/**
- * Calculate the duration in milliseconds from an item
- * based on its framerate and duration in frames
- * @param { any } item
- * @returns { Number }
- */
-function calculateDurationMs (item) {
-  if (!item?.duration) {
-    return DEFAULT_DURATION_MS
-  }
-
-  if (!item?.framerate) {
-    return DEFAULT_DURATION_MS
-  }
-
-  /**
-   * Extract the framerate from the item - which is written as a fraction
-   * @example
-   * '1/25' -> 25
-   */
-  const [, framerate] = item?.framerate.split('/')
-
-  return (item?.duration / framerate) * 1000
 }
 
 /**
