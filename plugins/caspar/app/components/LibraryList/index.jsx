@@ -1,12 +1,13 @@
-import React, {useMemo} from "react"
+import React, {useMemo} from 'react'
 
-import { SharedContext } from "../../sharedContext"
+import { SharedContext } from '../../sharedContext'
 
-import { LibraryListItem } from "../LibraryListItem"
-import { LibraryListFolder } from "../LibraryListFolder"
-import { buildFolderTree } from "../../utils/library"
+import { LibraryListItem } from '../LibraryListItem'
+import { LibraryListFolder } from '../LibraryListFolder'
 
-import "./style.css"
+const { buildFolderTree } = require('../../utils/library.cjs')
+
+import './style.css'
 
 export const LibraryList = ({ items, onNodeClick }) => {
   const [shared] = React.useContext(SharedContext)
@@ -26,7 +27,10 @@ export const LibraryList = ({ items, onNodeClick }) => {
       <ul className={`LibraryList ${!folderSetting}`}>
       {
         (items || []).map((item, i) => {
-          const itemWithTarget = { ...item, target: item.name }
+          const itemWithTarget = {
+            ...item,
+            target: item.name
+          }
           return <LibraryListItem key={i} item={itemWithTarget} />
         })
       }

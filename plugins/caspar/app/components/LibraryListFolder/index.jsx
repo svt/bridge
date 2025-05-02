@@ -3,18 +3,14 @@ import React, { useState } from "react"
 import { Icon } from '../Icon'
 import "./style.css"
 
-import { toLowerCaseExceptFirst } from "../../utils/library"
-
 const FolderName = ({ isOpen, name, handleClick }) => {
-  const formattedName = toLowerCaseExceptFirst(name)
-
   return (
     <div className={`FolderName ${isOpen ? 'is-open' : ''}`} onClick={handleClick}>
       <div className='FolderName-icon'>
         <Icon name='arrow-down' />
       </div>
       <div className="FolderName-text">
-        {formattedName}
+        {name}
       </div>
     </div>    
   )

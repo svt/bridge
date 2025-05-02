@@ -2,10 +2,10 @@ import React from 'react'
 import bridge from 'bridge'
 import './style.css'
 
-import { SharedContext } from '../../sharedContext'
-
 import * as asset from '../../utils/asset'
-import { toLowerCaseExceptFirst } from '../../utils/library'
+
+const { getFileName } = require('../../utils/library.cjs')
+const { calculateDurationMs } = require('../../utils/duration.cjs')
 
 const DEFAULT_DURATION_MS = 5000
 
@@ -84,33 +84,6 @@ function constructPlayableItemInit (libraryAsset) {
 }
 
 /**
- * Calculate the duration in milliseconds from an item
- * based on its framerate and duration in frames
- * @param { any } item
- * @returns { Number }
- */
-function calculateDurationMs (item) {
-  if (!item?.duration) {
-    return DEFAULT_DURATION_MS
-  }
-
-  if (!item?.framerate) {
-    return DEFAULT_DURATION_MS
-  }
-
-  /**
-   * Extract the framerate from the item - which is written as a fraction
-   * @example
-   * '1/25' -> 25
-   * '1001/30000' -> 29.97
-   */
-  const [divisor, dividend] = item?.framerate.split('/')
-  const framerate = dividend / divisor;
-
-  return (item?.duration / framerate) * 1000
-}
-
-/**
  * @typedef { import('../../utils/asset').LibraryAsset } LibraryAsset
  *
  * @param {{
@@ -118,7 +91,9 @@ function calculateDurationMs (item) {
  * }} arg0
  */
 export const LibraryListItem = ({ item = {} }) => {
+
   async function handleDragStart (e) {
+    item.name = getFileName(item.name)
     const data = constructPlayableItemInit(item)
     e.dataTransfer.setData('bridge/item', JSON.stringify(data))
     e.stopPropagation()
@@ -129,15 +104,11 @@ export const LibraryListItem = ({ item = {} }) => {
    * the rundown root on double click
    */
   async function handleDoubleClick (e) {
+    item.name = getFileName(item.name)
     const data = constructPlayableItemInit(item)
     const itemId = await bridge.items.createItem(data.type, data.data)
     bridge.commands.executeCommand('rundown.appendItem', 'RUNDOWN_ROOT', itemId)
   }
-
-
-  const [shared] = React.useContext(SharedContext)
-  const folderSetting =  shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
-  const formattedName = folderSetting ? toLowerCaseExceptFirst(item?.name) : item?.name
 
   return (
     <li
@@ -146,8 +117,8 @@ export const LibraryListItem = ({ item = {} }) => {
       onDoubleClick={e => handleDoubleClick(e)}
       draggable
     >
-      <div className='LibraryListItem-name LibraryListItem-col' title={formattedName}>
-        {formattedName}
+      <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
+        {item?.name}
       </div>
       <div>
         <div className='LibraryListItem-col LibraryListItem-metadata'>

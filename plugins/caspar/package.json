@@ -23,7 +23,7 @@
         "inputs": [
           {
             "type": "boolean",
-            "label": "Folder view",
+            "label": "Folder View",
             "bind": "shared.plugins.bridge-plugin-caspar.settings.folder",
             "default": true
           }
