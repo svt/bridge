@@ -6,7 +6,7 @@
   margin: 0;
 
   list-style: none;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 

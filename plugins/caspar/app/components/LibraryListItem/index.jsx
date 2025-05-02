@@ -4,7 +4,8 @@ import './style.css'
 
 import * as asset from '../../utils/asset'
 
-import { calculateDurationMs } from '../../utils/asset'
+import { calculateDurationMs } from '../../utils/duration.cjs'
+import { getFileName } from '../../utils/library.cjs'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
