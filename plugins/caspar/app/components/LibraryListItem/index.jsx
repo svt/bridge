@@ -126,5 +126,3 @@ export const LibraryListItem = ({ item = {} }) => {
     </li>
   )
 }
-
-export default LibraryListItem
