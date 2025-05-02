@@ -6,10 +6,15 @@
   margin: 0;
 
   list-style: none;
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
-.LibraryList.false{
+.InnerList {
+  padding: 0;
+  margin: 0;
+}
+
+.InnerList.false{
   display: none;
 }

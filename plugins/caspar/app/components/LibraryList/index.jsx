@@ -28,11 +28,11 @@ export const LibraryList = ({ items = [] }) => {
   const folderizedItems = useMemo(() => buildFolderTree(items), [items])
 
   return (
-    <div>
-      <div className={`LibraryList ${folderSetting}`}>
+    <div className='LibraryList'>
+      <div className={`InnerList ${folderSetting}`}>
         <FolderRecursive data={folderizedItems} />
       </div>
-      <ul className={`LibraryList ${!folderSetting}`}>
+      <ul className={`InnerList ${!folderSetting}`}>
       {
         (items || []).map((item, i) => {
           const itemWithTarget = {
