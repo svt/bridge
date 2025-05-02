@@ -9,7 +9,15 @@ const { buildFolderTree } = require('../../utils/library.cjs')
 
 import './style.css'
 
-export const LibraryList = ({ items, onNodeClick }) => {
+/**
+ * Renders a list of items as folder tree, optionally as flat list.
+ * 
+ * Uses plugin setting to determine whether to display as folder tree or flat list.
+ * 
+ * @param {Array} items - The list of files with target path.
+ * @returns {JSX.Element} Rendered list of library items.
+ */
+export const LibraryList = ({ items = [] }) => {
   const [shared] = React.useContext(SharedContext)
 
   const folderSetting = useMemo(() =>
@@ -22,7 +30,7 @@ export const LibraryList = ({ items, onNodeClick }) => {
   return (
     <div>
       <div className={`LibraryList ${folderSetting}`}>
-        <FolderRecursive data={folderizedItems} parentNode={folderizedItems} />
+        <FolderRecursive data={folderizedItems} />
       </div>
       <ul className={`LibraryList ${!folderSetting}`}>
       {
@@ -39,7 +47,18 @@ export const LibraryList = ({ items, onNodeClick }) => {
   )
 }
 
-const FolderRecursive = ({ data, parentNode }) => {
+/**
+ * Recursively renders a tree of files and folders.
+ * 
+ * Iterates through the `data` array, rendering each item as either:
+ * - A `LibraryListItem` component if the item is a file (`item.file === true`).
+ * - A `LibraryListFolder` component if the item is a folder (`item.file === false`),
+ *   and recursively calls `FolderRecursive` on its `files` array.
+ * 
+ * @param {Array} data - An array of file and folder objects to render.
+ * @returns {JSX.Element[]} An array of rendered file and folder components.
+ */
+const FolderRecursive = ({ data }) => {
   return data.map((item) => {
     if (item.file === true) {
       return <LibraryListItem key={item.id} item={item} className="LibraryListItem" />
@@ -52,7 +71,7 @@ const FolderRecursive = ({ data, parentNode }) => {
           name={item.name}
           node={item}
         >
-          <FolderRecursive data={item.files} parentNode={item} />
+          <FolderRecursive data={item.files}/>
         </LibraryListFolder>
       )
     }

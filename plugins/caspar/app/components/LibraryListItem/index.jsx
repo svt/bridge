@@ -7,8 +7,6 @@ import * as asset from '../../utils/asset'
 const { getFileName } = require('../../utils/library.cjs')
 const { calculateDurationMs } = require('../../utils/duration.cjs')
 
-const DEFAULT_DURATION_MS = 5000
-
 const DEFAULT_VALUES = {
   [asset.type.still]: {
     channel: 1,
