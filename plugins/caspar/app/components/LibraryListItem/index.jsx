@@ -6,8 +6,8 @@ import { SharedContext } from '../../sharedContext'
 
 import * as asset from '../../utils/asset'
 
-import { calculateDurationMs } from '../../utils/duration'
 import { getFileName } from '../../utils/library'
+import { calculateDurationMs } from '../../utils/duration'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {

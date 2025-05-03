@@ -53,3 +53,8 @@ test('calculateDurationMs should return 0 for STILL image', () => {
   }
   expect(calculateDurationMs(item)).toEqual(0)
 })
+
+test('calculateDurationMs should parse float duration strings correctly', () => {
+  const item = { framerate: '1/25', duration: '10.5' }
+  expect(calculateDurationMs(item)).toEqual(420)
+})
