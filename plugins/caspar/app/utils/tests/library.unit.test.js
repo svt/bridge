@@ -1,4 +1,3 @@
-import { desktopCapturer } from 'electron'
 import { buildFolderTree, getFileName } from '../library'
 
 describe('buildFolderTree function', () => {
