@@ -62,6 +62,4 @@ function frameRateFractionToDecimal (fraction) {
   return dividend / divisor
 }
 
-module.exports = {
-  calculateDurationMs
-}
+export { calculateDurationMs }

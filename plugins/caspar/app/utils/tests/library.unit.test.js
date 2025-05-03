@@ -1,4 +1,5 @@
-const { buildFolderTree } = require('../library.cjs')
+import { desktopCapturer } from 'electron'
+import { buildFolderTree, getFileName } from '../library'
 
 describe('buildFolderTree function', () => {
   const testCases = [
@@ -9,13 +10,11 @@ describe('buildFolderTree function', () => {
         {
           file: false,
           name: 'folder',
-          target: 'folder',
           id: expect.any(String),
           files: [
             {
               file: true,
-              name: 'file',
-              target: 'folder/file',
+              name: 'folder/file',
               id: expect.any(String)
             }
           ]
@@ -39,13 +38,11 @@ describe('buildFolderTree function', () => {
         {
           file: false,
           name: 'folder',
-          target: 'folder',
           id: expect.any(String),
           files: [
             {
               file: true,
-              name: 'file',
-              target: 'folder/file',
+              name: 'folder/file',
               id: expect.any(String)
             }
           ]
@@ -59,13 +56,11 @@ describe('buildFolderTree function', () => {
         {
           file: false,
           name: 'folder',
-          target: 'folder',
           id: expect.any(String),
           files: [
             {
               file: true,
-              name: 'file',
-              target: 'folder/file',
+              name: 'folder/file',
               id: expect.any(String)
             }
           ]
@@ -73,26 +68,55 @@ describe('buildFolderTree function', () => {
       ]
     },
     {
-      description: 'Weird file names should be handled correctly',
+      description: 'File names with points and dashes should be handled correctly',
       input: [{ name: 'folder/file.with-dash' }],
       expected: [
         {
           file: false,
           name: 'folder',
-          target: 'folder',
           id: expect.any(String),
           files: [
             {
               file: true,
-              name: 'file.with-dash',
-              target: 'folder/file.with-dash',
+              name: 'folder/file.with-dash',
               id: expect.any(String)
             }
           ]
         }
       ]
+    },
+    {
+      description: 'Folder with trailing slash should be treated as folder',
+      input: [{ name: 'folder/' }],
+      expected: [
+        {
+          file: false,
+          name: 'folder',
+          id: expect.any(String),
+          files: []
+        }
+      ]
+    },
+    {
+      description: 'Trailing slash should be folder with no items',
+      input: [{ name: 'folder1/folder2/' }],
+      expected: [
+        {
+          file: false,
+          name: 'folder1',
+          id: expect.any(String),
+          files: [
+            {
+              file: false,
+              name: 'folder2',
+              id: expect.any(String),
+              files: []
+            }
+          ]
+        }
+      ]
     }
-  ];
+  ]
 
   testCases.forEach(({ description, input, expected }) => {
     it(description, () => {
@@ -103,7 +127,7 @@ describe('buildFolderTree function', () => {
 })
 
 
-const { getFileName } = require('../library.cjs')
+
 
 describe('getFileName function', () => {
   const testCases = [
