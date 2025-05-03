@@ -44,7 +44,7 @@ const ITEM_CONSTRUCTORS = [
           name: item.name,
           caspar: {
             server: item?._filter?.serverId,
-            target: item?.name,
+            target: item.name,
             ...(DEFAULT_VALUES[item.type] || {})
           },
           duration: calculateDurationMs(item)
@@ -61,7 +61,7 @@ const ITEM_CONSTRUCTORS = [
           name: item.name,
           caspar: {
             server: item?._filter?.serverId,
-            target: item?.name,
+            target: item.name,
             ...(DEFAULT_VALUES[item.type] || {})
           }
         }
