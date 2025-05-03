@@ -53,6 +53,6 @@
   margin-left: 10px;
 }
 
-.CollapsibleFolder.closed {
+.CollapsibleFolder.is-closed {
   display: none;
 }

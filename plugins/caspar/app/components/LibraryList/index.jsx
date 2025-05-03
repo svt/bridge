@@ -5,7 +5,7 @@ import { SharedContext } from '../../sharedContext'
 import { LibraryListItem } from '../LibraryListItem'
 import { LibraryListFolder } from '../LibraryListFolder'
 
-const { buildFolderTree } = require('../../utils/library.cjs')
+import { buildFolderTree } from '../../utils/library'
 
 import './style.css'
 
@@ -20,28 +20,20 @@ import './style.css'
 export const LibraryList = ({ items = [] }) => {
   const [shared] = React.useContext(SharedContext)
 
-  const folderSetting = useMemo(() =>
-    shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder,
-    [shared]
-  )
+  const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
 
-  const folderizedItems = useMemo(() => buildFolderTree(items), [items])
+  // Only re-compute when items change, otherwise folders will close each update
+  const folderizedItems = useMemo(() => buildFolderTree(items), [items]) 
 
   return (
-    <div className='LibraryList'>
-      <div className={`InnerList ${folderSetting}`}>
+    <div className="LibraryList">
+      <div className={`LibraryList ${folderSetting ? 'is-visible' : 'is-hidden'}`}>
         <FolderRecursive data={folderizedItems} />
       </div>
-      <ul className={`InnerList ${!folderSetting}`}>
-      {
-        (items || []).map((item, i) => {
-          const itemWithTarget = {
-            ...item,
-            target: item.name
-          }
-          return <LibraryListItem key={i} item={itemWithTarget} />
-        })
-      }
+      <ul className={`LibraryList ${folderSetting ? 'is-hidden' : 'is-visible'}`}>
+        {items.map((item, i) => {
+          return <LibraryListItem key={i} item={item} />
+        })}
       </ul>
     </div>
   )

@@ -2,10 +2,12 @@ import React from 'react'
 import bridge from 'bridge'
 import './style.css'
 
+import { SharedContext } from '../../sharedContext'
+
 import * as asset from '../../utils/asset'
 
-import { calculateDurationMs } from '../../utils/duration.cjs'
-import { getFileName } from '../../utils/library.cjs'
+import { calculateDurationMs } from '../../utils/duration'
+import { getFileName } from '../../utils/library'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
@@ -42,7 +44,7 @@ const ITEM_CONSTRUCTORS = [
           name: item.name,
           caspar: {
             server: item?._filter?.serverId,
-            target: item?.target,
+            target: item?.name,
             ...(DEFAULT_VALUES[item.type] || {})
           },
           duration: calculateDurationMs(item)
@@ -59,7 +61,7 @@ const ITEM_CONSTRUCTORS = [
           name: item.name,
           caspar: {
             server: item?._filter?.serverId,
-            target: item?.target,
+            target: item?.name,
             ...(DEFAULT_VALUES[item.type] || {})
           }
         }
@@ -89,9 +91,10 @@ function constructPlayableItemInit (libraryAsset) {
  * }} arg0
  */
 export const LibraryListItem = ({ item = {} }) => {
+  const [shared] = React.useContext(SharedContext)
+  const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
 
   async function handleDragStart (e) {
-    item.name = getFileName(item.name)
     const data = constructPlayableItemInit(item)
     e.dataTransfer.setData('bridge/item', JSON.stringify(data))
     e.stopPropagation()
@@ -102,7 +105,6 @@ export const LibraryListItem = ({ item = {} }) => {
    * the rundown root on double click
    */
   async function handleDoubleClick (e) {
-    item.name = getFileName(item.name)
     const data = constructPlayableItemInit(item)
     const itemId = await bridge.items.createItem(data.type, data.data)
     bridge.commands.executeCommand('rundown.appendItem', 'RUNDOWN_ROOT', itemId)
@@ -116,7 +118,7 @@ export const LibraryListItem = ({ item = {} }) => {
       draggable
     >
       <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
-        {item?.name}
+        {folderSetting ? getFileName(item?.name) : item?.name}
       </div>
       <div>
         <div className='LibraryListItem-col LibraryListItem-metadata'>

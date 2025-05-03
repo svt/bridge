@@ -45,7 +45,7 @@ const LibraryListFolder = ({ name, children, node }) => {
         />
         <div className="FolderItems">{node?.files?.length ?? 0} items</div>
       </div>
-      <div className={`CollapsibleFolder ${isOpen ? 'open' : 'closed'}`}>
+      <div className={`CollapsibleFolder ${isOpen ? 'is-open' : 'is-closed'}`}>
         <div className="VerticalLine">
           {children}
         </div>
