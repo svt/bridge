@@ -16,13 +16,16 @@ function buildFolderTree (paths) {
   for (const path of paths) {
     // Split the path into parts by '/' or '\' and remove any empty segments
     const parts = path.name.split(delimiters).filter(Boolean)
-    const isFolderPath = /[\/\\]$/.test(path.name) // eslint-disable-line 
+
+    // If path ends with a delimiter, it's a folder path
+    const isFolderPath = /[\/\\]$/.test(path.name) // eslint-disable-line
+
     let currentLevel = root
 
     parts.forEach((part, index) => {
       const isLast = index === parts.length - 1
-      const isFile = !isFolderPath && isLast
-      const pwd = parts.slice(0, index + 1).join('/')
+      const isFile = !isFolderPath && isLast // Only the last part can be a file
+      const pwd = parts.slice(0, index + 1).join('/') // Join parts to get the path
 
       let existing = currentLevel.find((item) => item.name === part) // Check if folder exists on current level
 

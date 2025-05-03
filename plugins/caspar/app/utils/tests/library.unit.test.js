@@ -85,18 +85,6 @@ describe('buildFolderTree function', () => {
       ]
     },
     {
-      description: 'Folder with trailing slash should be treated as folder',
-      input: [{ name: 'folder/' }],
-      expected: [
-        {
-          file: false,
-          name: 'folder',
-          id: expect.any(String),
-          files: []
-        }
-      ]
-    },
-    {
       description: 'Trailing slash should be folder with no items',
       input: [{ name: 'folder1/folder2/' }],
       expected: [
