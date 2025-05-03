@@ -1,5 +1,5 @@
 import React from 'react'
-import icons from '../icons'
+import arrowDown from './arrow-down.svg'
 
 import './style.css'
 
@@ -8,7 +8,7 @@ export function Icon ({ name = 'placeholder', color = 'var(--base-color)' }) {
     <span
       className='Icon'
       style={{ '--Icon-color': color }}
-      dangerouslySetInnerHTML={{ __html: icons[name] || icons.placeholder }}
+      dangerouslySetInnerHTML={{ __html: arrowDown || '' }}
     />
   )
 }
