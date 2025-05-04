@@ -30,7 +30,7 @@ export const LibraryList = ({ items = [] }) => {
       <div className={`LibraryList ${folderSetting ? 'is-visible' : 'is-hidden'}`}>
         <FolderRecursive data={folderizedItems} />
       </div>
-      <ul className={`LibraryList ${folderSetting ? 'is-hidden' : 'is-visible'}`}>
+      <ul className={`LibraryList ${folderSetting ? 'is-hidden' : 'is-visible'} ul`}>
         {items.map((item, i) => {
           return <LibraryListItem key={i} item={item} />
         })}

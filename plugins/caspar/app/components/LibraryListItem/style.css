@@ -40,3 +40,7 @@
 .LibraryListItem-name {
   font-weight: normal;
 }
+
+.LibraryListItem.is-list {
+  margin: 0;
+}

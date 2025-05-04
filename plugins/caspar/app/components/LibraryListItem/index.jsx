@@ -112,7 +112,7 @@ export const LibraryListItem = ({ item = {} }) => {
 
   return (
     <li
-      className='LibraryListItem'
+      className={`LibraryListItem ${folderSetting ? 'is-folder' : 'is-list'}`} 
       onDragStart={e => handleDragStart(e)}
       onDoubleClick={e => handleDoubleClick(e)}
       draggable
