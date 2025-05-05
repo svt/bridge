@@ -14,5 +14,8 @@
     "plugin"
   ],
   "author": "Axel Boberg (axel.boberg@svt.se)",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@pgrabovets/json-view": "^2.7.6"
+  }
 }
