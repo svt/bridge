@@ -1,11 +1,7 @@
 import React from 'react'
 import bridge from 'bridge'
 
-import { TreeView } from './components/TreeView'
-
-function getCSSVar (variableName) {
-  return window.getComputedStyle(document.body).getPropertyValue(variableName)
-}
+import { TreeView } from './components/TreeView'
 
 export default function App () {
   const [state, setState] = React.useState({})
