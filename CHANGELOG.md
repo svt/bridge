@@ -11,6 +11,7 @@
 ### Added
 - The `item.apply` event
 - A volume item type for the Caspar plugin
+- Support for additional frame rates when calculating durations of items in the Caspar plugin
 
 ## 1.0.0-beta.5
 ### Changed
