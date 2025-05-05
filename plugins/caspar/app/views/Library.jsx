@@ -4,7 +4,7 @@ import bridge from 'bridge'
 import { LibraryHeader } from '../components/LibraryHeader'
 import { LibraryList } from '../components/LibraryList'
 
-import * as asset from '../utils/asset'
+import * as asset from '../utils/asset.cjs'
 
 /**
  * Statuses that the
