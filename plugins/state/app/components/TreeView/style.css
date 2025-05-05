@@ -1,0 +1,12 @@
+.TreeView .TreeView-tree * {
+  font-family: var(--base-fontFamily--primary);
+  background-color: unset;
+}
+
+.TreeView .TreeView-tree .json-key {
+  color: var(--base-color);
+}
+
+.TreeView .TreeView-tree .json-value.json-number {
+  color: var(--base-color--accent1);
+}
