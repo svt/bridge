@@ -1,4 +1,24 @@
-.FolderName {
+.LibraryListFolder {
+  margin-left: 10px;
+}
+
+.LibraryListFolder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  padding: 0.15em 0em 0em 0em;
+}
+
+.LibraryListFolder-items {
+  white-space: nowrap;
+  margin-left: auto;
+  color: gray;
+  padding: 0 .6em 0 0;
+}
+
+.LibraryListFolder-name {
   background-color: var(--base-color-background);
   display: flex;
   align-items: center;
@@ -9,7 +29,7 @@
   margin-bottom: 0.15em;
 }
 
-.FolderName .FolderName-icon {
+.LibraryListFolder-nameIcon {
   margin-right: .1em;
   display: flex;
   transform: rotate(-90deg);
@@ -17,42 +37,22 @@
   scale: 80%;
 }
 
-.FolderName.is-open .FolderName-icon {
+.LibraryListFolder-name.is-open .LibraryListFolder-nameIcon {
   transform: rotate(0deg);
 }
 
-.FolderName-text {
+.LibraryListFolder-nameText {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.VerticalLine {
+.LibraryListFolder.is-closed .LibraryListFolder-folder {
+  display: none;
+}
+
+.LibraryListFolder-line {
   position: relative; 
   padding-left: 1px;
   border-left: 1.5px solid var(--base-color);
-}
-
-.FolderHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  position: relative;
-  padding: 0.15em 0em 0em 0em;
-}
-
-.FolderItems {
-  white-space: nowrap;
-  margin-left: auto;
-  color: gray;
-  padding: 0 .6em 0 0;
-}
-
-.FolderWrapper {
-  margin-left: 10px;
-}
-
-.CollapsibleFolder.is-closed {
-  display: none;
 }
