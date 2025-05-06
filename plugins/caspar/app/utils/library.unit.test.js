@@ -1,4 +1,4 @@
-import { buildFolderTree, getFileName } from './library'
+const { buildFolderTree, getFileName } = require('./library.cjs')
 
 describe('buildFolderTree function', () => {
   const testCases = [
@@ -112,9 +112,6 @@ describe('buildFolderTree function', () => {
     })
   })
 })
-
-
-
 
 describe('getFileName function', () => {
   const testCases = [

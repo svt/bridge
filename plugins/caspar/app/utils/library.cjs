@@ -84,4 +84,4 @@ function getFileName (path) {
   return parts[parts.length - 1] || ''
 }
 
-export { buildFolderTree, getFileName }
+module.exports = { buildFolderTree, getFileName }
