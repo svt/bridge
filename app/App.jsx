@@ -2,6 +2,8 @@ import React from 'react'
 import { Start } from './views/Start'
 import { Workspace } from './views/Workspace'
 
+import { Router } from './components/Router'
+
 import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
 import { SocketContext } from './socketContext'
@@ -11,12 +13,6 @@ import { useWebsocket } from './hooks/useWebsocket'
 import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
 import * as api from './api'
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
 
 /**
  * Define the interval of heartbeats
@@ -249,16 +245,16 @@ export default function App () {
     <SocketContext.Provider value={[send, data]}>
       <LocalContext.Provider value={[local, applyLocal]}>
         <SharedContext.Provider value={[shared, applyShared]}>
-          <Router>
-            <Switch>
-              <Route path='/workspaces/:workspace'>
-                <Workspace />
-              </Route>
-              <Route path='/'>
-                <Start />
-              </Route>
-            </Switch>
-          </Router>
+          <Router routes={[
+            {
+              path: /^\/workspaces\/.+$/,
+              render: () => <Workspace />
+            },
+            {
+              path: '/',
+              render: () => <Start />
+            }
+          ]}/>
         </SharedContext.Provider>
       </LocalContext.Provider>
     </SocketContext.Provider>

@@ -1,13 +1,11 @@
 import React from 'react'
 import bridge from 'bridge'
+
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
-import * as asset from '../../utils/asset'
-
-import { getFileName } from '../../utils/library'
-import { calculateDurationMs } from '../../utils/duration'
+import * as asset from '../../utils/asset.cjs'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
@@ -47,7 +45,7 @@ const ITEM_CONSTRUCTORS = [
             target: item.name,
             ...(DEFAULT_VALUES[item.type] || {})
           },
-          duration: calculateDurationMs(item)
+          duration: asset.calculateDurationMs(item)
         }
       }
     }
@@ -84,7 +82,7 @@ function constructPlayableItemInit (libraryAsset) {
 }
 
 /**
- * @typedef { import('../../utils/asset').LibraryAsset } LibraryAsset
+ * @typedef { import('../../utils/asset.cjs').LibraryAsset } LibraryAsset
  *
  * @param {{
  *  item: LibraryAsset
