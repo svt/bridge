@@ -7,6 +7,8 @@ import { SharedContext } from '../../sharedContext'
 
 import * as asset from '../../utils/asset.cjs'
 
+const { getFileName } = require('../../utils/library')
+
 const DEFAULT_VALUES = {
   [asset.type.still]: {
     channel: 1,
