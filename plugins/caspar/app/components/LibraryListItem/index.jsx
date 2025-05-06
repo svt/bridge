@@ -7,7 +7,7 @@ import { SharedContext } from '../../sharedContext'
 
 import * as asset from '../../utils/asset.cjs'
 
-const { getFileName } = require('../../utils/library.cjs')
+import * as library from '../../utils/library.cjs'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
@@ -118,7 +118,7 @@ export const LibraryListItem = ({ item = {} }) => {
       draggable
     >
       <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
-        {folderSetting ? getFileName(item?.name) : item?.name}
+        {folderSetting ? library.getFileName(item?.name) : item?.name}
       </div>
       <div>
         <div className='LibraryListItem-col LibraryListItem-metadata'>
