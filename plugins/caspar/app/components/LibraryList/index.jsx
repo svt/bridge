@@ -5,7 +5,7 @@ import { SharedContext } from '../../sharedContext'
 import { LibraryListItem } from '../LibraryListItem'
 import { LibraryListFolder } from '../LibraryListFolder'
 
-const { buildFolderTree } = require('../../utils/library')
+const { buildFolderTree } = require('../../utils/library.cjs')
 
 import './style.css'
 

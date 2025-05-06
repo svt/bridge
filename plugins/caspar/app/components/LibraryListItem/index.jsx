@@ -7,7 +7,7 @@ import { SharedContext } from '../../sharedContext'
 
 import * as asset from '../../utils/asset.cjs'
 
-const { getFileName } = require('../../utils/library')
+const { getFileName } = require('../../utils/library.cjs')
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
