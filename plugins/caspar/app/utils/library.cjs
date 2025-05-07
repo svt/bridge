@@ -37,7 +37,7 @@ function buildFolderTree (paths) {
             name: pwd,
             id: uuid.v4()
           }
-        } else {
+        } else { // It is a folder then save name instead of path
           existing = {
             file: false,
             name: part,
@@ -55,6 +55,7 @@ function buildFolderTree (paths) {
   }
   return root
 }
+exports.buildFolderTree = buildFolderTree
 
 /**
  * Extracts the file name from a given path. Delimited by '/'.
@@ -83,5 +84,4 @@ function getFileName (path) {
   // Return the last part of the path, which should be the file name
   return parts[parts.length - 1] || ''
 }
-
-module.exports = { buildFolderTree, getFileName }
+exports.getFileName = getFileName
