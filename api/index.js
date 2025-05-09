@@ -8,6 +8,7 @@ require('./transport')
 require('./variables')
 require('./shortcuts')
 require('./commands')
+require('./messages')
 require('./settings')
 require('./widgets')
 require('./client')
@@ -24,6 +25,7 @@ class API {
     this.variables = props.Variables
     this.shortcuts = props.Shortcuts
     this.commands = props.Commands
+    this.messages = props.Messages
     this.settings = props.Settings
     this.widgets = props.Widgets
     this.client = props.Client
@@ -41,6 +43,7 @@ DIController.main.register('API', API, [
   'Variables',
   'Shortcuts',
   'Commands',
+  'Messages',
   'Settings',
   'Widgets',
   'Client',

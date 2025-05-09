@@ -8,6 +8,7 @@ import close from './close.svg'
 import person from './person.svg'
 import widget from './widget.svg'
 import rundown from './rundown.svg'
+import success from './success.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
 import inspector from './inspector.svg'
@@ -23,6 +24,7 @@ export default {
   person,
   widget,
   rundown,
+  success,
   warning,
   selector,
   inspector,
