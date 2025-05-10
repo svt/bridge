@@ -3,7 +3,11 @@ import bridge from 'bridge'
 
 import './style.css'
 
+import { SharedContext } from '../../sharedContext'
+
 import * as asset from '../../utils/asset.cjs'
+
+import * as library from '../../utils/library.cjs'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
@@ -87,6 +91,9 @@ function constructPlayableItemInit (libraryAsset) {
  * }} arg0
  */
 export const LibraryListItem = ({ item = {} }) => {
+  const [shared] = React.useContext(SharedContext)
+  const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
+
   async function handleDragStart (e) {
     const data = constructPlayableItemInit(item)
     e.dataTransfer.setData('bridge/item', JSON.stringify(data))
@@ -105,13 +112,13 @@ export const LibraryListItem = ({ item = {} }) => {
 
   return (
     <li
-      className='LibraryListItem'
+      className={`LibraryListItem ${folderSetting ? 'is-folder' : 'is-list'}`} 
       onDragStart={e => handleDragStart(e)}
       onDoubleClick={e => handleDoubleClick(e)}
       draggable
     >
       <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
-        {item?.name}
+        {folderSetting ? library.getFileName(item?.name) : item?.name}
       </div>
       <div>
         <div className='LibraryListItem-col LibraryListItem-metadata'>
