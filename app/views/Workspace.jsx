@@ -169,7 +169,15 @@ export const Workspace = () => {
       <Onboarding />
       <Header title={getFileNameFromPath(shared._filePath)} />
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
-      <MessageContainer />
+      {
+        /*
+        Render the message container unless
+        the 'hide messages' setting is set
+        to true
+        */
+        !shared?._userDefaults?.hideMessages &&
+        <MessageContainer />
+      }
       {
         /*
         Loop through the components from the store

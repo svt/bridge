@@ -18,5 +18,12 @@
     "inputs": [
       { "type": "boolean", "bind": "shared._userDefaults.httpBindToAll", "label": "Bind to 0.0.0.0" }
     ]
+  },
+    {
+    "title": "Hide messages",
+    "description": "Hide all status messages that are normally shown in the bottom right of the app",
+    "inputs": [
+      { "type": "boolean", "bind": "shared._userDefaults.hideMessages", "label": "Hide messages" }
+    ]
   }
 ]

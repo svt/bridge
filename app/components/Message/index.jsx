@@ -51,7 +51,9 @@ export function SuccessMessage (props) {
   return (
     <Message {...props}>
       <div className='Message-content--split'>
-        <Icon name='success' />
+        <div className='Message-icon'>
+          <Icon name='colorSuccess' originalColors />
+        </div>
         <div className='Message-text'>{props?.text}</div>
       </div>
     </Message>
@@ -62,7 +64,7 @@ export function WarningMessage (props) {
   return (
     <Message {...props}>
       <div className='Message-content--split'>
-        <div className='Message-icon'>
+        <div className='Message-icon Message-icon--large'>
           <Icon name='warning' />
         </div>
         <div className='Message-text'>{props?.text}</div>

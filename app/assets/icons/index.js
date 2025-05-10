@@ -8,7 +8,6 @@ import close from './close.svg'
 import person from './person.svg'
 import widget from './widget.svg'
 import rundown from './rundown.svg'
-import success from './success.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
 import inspector from './inspector.svg'
@@ -17,6 +16,9 @@ import editDetail from './edit-detail.svg'
 import placeholder from './placeholder.svg'
 import preferences from './preferences.svg'
 
+import colorSuccess from './color-success.svg'
+import colorWarning from './color-warning.svg'
+
 export default {
   add,
   edit,
@@ -24,12 +26,13 @@ export default {
   person,
   widget,
   rundown,
-  success,
   warning,
   selector,
   inspector,
   arrowRight,
   editDetail,
   placeholder,
-  preferences
+  preferences,
+  colorSuccess,
+  colorWarning
 }

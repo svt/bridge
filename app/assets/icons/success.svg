@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>icons/caspar/connected</title>
-    <g id="icons/caspar/connected" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle" fill="#10B273" x="0" y="0" width="16" height="16" rx="8"></rect>
-        <path d="M4,7.23809524 L6.68199505,10.2553397 C6.86545406,10.4617311 7.18149025,10.4803214 7.38788163,10.2968624 C7.39981455,10.2862554 7.41123257,10.2750829 7.42209646,10.2633833 L12,5.33333333 L12,5.33333333" id="Path-22" stroke="#FFFFFF" stroke-width="1.5"></path>
-    </g>
-</svg>
