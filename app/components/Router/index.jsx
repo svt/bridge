@@ -24,7 +24,7 @@ export function Router ({ routes = DEFAULT_ROUTES }) {
      * Feature check as window.navigation may
      * not yet be supported in all browsers
      */
-    if (!window?.navigation || typeof window?.navigation === 'undefined') {
+    if (!window?.navigation || typeof window?.navigation === 'undefined') {
       return
     }
 
@@ -38,10 +38,14 @@ export function Router ({ routes = DEFAULT_ROUTES }) {
     }
   }, [])
 
-  if (!path || !Array.isArray(routes)) {
-    return <></>
-  }
+  const body = React.useMemo(() => {
+    if (!path || !Array.isArray(routes)) {
+      return <></>
+    }
+  
+    const route = router.findRoute(path, routes)
+    return route?.render() || <></>
+  }, [path, routes])
 
-  const route = router.findRoute(path, routes)
-  return route?.render() || <></>
+  return body
 }
