@@ -10,6 +10,12 @@ import {
 
 import * as api from '../../api'
 
+/**
+ * The maximum number of
+ * messages to show at a time
+ */
+const MAX_SHOWN_MESSAGE_COUNT = 5
+
 const MESSAGE_TYPES = {
   text: {
     component: TextMessage
@@ -51,12 +57,18 @@ export function MessageContainer () {
     }
   }, [])
 
+  /**
+   * Dismiss a message by removing
+   * it from the component state
+   * @param { String } id The message's UUID
+   */
   function handleDismiss (id) {
     setMessages(messages => {
       const index = messages.findIndex(message => message.id === id)
       if (index === -1) {
         return messages
       }
+
       const newMessages = [...messages]
       newMessages.splice(index, 1)
       return newMessages
@@ -67,7 +79,17 @@ export function MessageContainer () {
     <div className='MessageContainer'>
       {
         messages
+          /*
+          Filer out messages that are of an invalid type
+          */
           .filter(message => MESSAGE_TYPES[message.type])
+          
+          /*
+          Never show more messages than
+          the max message count
+          */
+          .slice(Math.max(messages.length - MAX_SHOWN_MESSAGE_COUNT, 0), messages.length)
+          
           .map(message => {
             const Component = MESSAGE_TYPES[message.type].component
             return (
