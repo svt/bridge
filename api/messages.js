@@ -4,7 +4,9 @@
 
 /**
  * @typedef {{
- *   text: String
+ *   text: String,
+ *   ttl: Number | undefined,
+ *   dismissable: Boolean | undefined
  * }} TextMessageSpec
  */
 
@@ -18,6 +20,10 @@ const DEFAULT_MESSAGE_TTL_MS = 10000
 class Messages {
   #props
 
+  get defaultMessageTtlMs () {
+    return DEFAULT_MESSAGE_TTL_MS
+  }
+
   constructor (props) {
     this.#props = props
   }
@@ -26,7 +32,13 @@ class Messages {
     return uuid.v4()
   }
 
-  #validateMessageSpec (spec, override = {}) {
+  /**
+   * Validate a message specification
+   * @param { TextMessageSpec } spec
+   * @param { any } override
+   * @returns { TextMessageSpec }
+   */
+  validateMessageSpec (spec, override = {}) {
     if (typeof spec !== 'object' || Array.isArray(spec)) {
       throw new InvalidArgumentError('Argument \'textMessageSpec\' must be a valid object that\'s not an array')
     }
@@ -51,7 +63,7 @@ class Messages {
    * @param { TextMessageSpec } textMessageSpec
    */
   createTextMessage (textMessageSpec) {
-    const spec = this.#validateMessageSpec(textMessageSpec, {
+    const spec = this.validateMessageSpec(textMessageSpec, {
       dismissable: true,
       type: 'text',
       id: this.#getMessageId()
@@ -63,7 +75,7 @@ class Messages {
    * @param { TextMessageSpec } textMessageSpec
    */
   createSuccessMessage (textMessageSpec) {
-    const spec = this.#validateMessageSpec(textMessageSpec, {
+    const spec = this.validateMessageSpec(textMessageSpec, {
       dismissable: true,
       type: 'success',
       id: this.#getMessageId()
@@ -75,7 +87,7 @@ class Messages {
    * @param { TextMessageSpec } textMessageSpec
    */
   createWarningMessage (textMessageSpec) {
-    const spec = this.#validateMessageSpec(textMessageSpec, {
+    const spec = this.validateMessageSpec(textMessageSpec, {
       dismissable: true,
       type: 'warning',
       id: this.#getMessageId()
