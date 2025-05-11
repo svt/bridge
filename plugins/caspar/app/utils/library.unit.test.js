@@ -3,7 +3,8 @@ const { buildFolderTree, getFileName } = require('./library.cjs')
 test('multiple folders with same name', () => {
   const input = [
     { name: 'folder1/file1' },
-    { name: 'folder1/file2' }
+    { name: 'folder1/file2' },
+    { name: 'folder2/folder1/file3'}
   ]
 
   const expected = [
@@ -21,6 +22,25 @@ test('multiple folders with same name', () => {
           file: true,
           name: 'folder1/file2',
           id: expect.any(String)
+        }
+      ]
+    },
+    {
+      file: false,
+      name: 'folder2',
+      id: expect.any(String),
+      files: [
+        {
+          file: false,
+          name: 'folder1',
+          id: expect.any(String),
+          files: [
+            {
+              file: true,
+              name: 'folder2/folder1/file3',
+              id: expect.any(String)
+            }
+          ]
         }
       ]
     }

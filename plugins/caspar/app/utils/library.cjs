@@ -68,7 +68,7 @@ function buildFolderTree (paths) {
       const pwd = parts.slice(0, index + 1).join('/') // Join parts to get the path
 
       let existing = currentLevel.find((item) => item.name === part) // Check if folder exists on current level
-
+      
       // If the folder exists, go into it
       if (existing) {
         if (!isFile) {

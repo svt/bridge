@@ -32,13 +32,13 @@
 .LibraryListFolder-nameIcon {
   margin-right: .1em;
   display: flex;
-  transform: rotate(-90deg);
+  transform: rotate(0deg);
   justify-items: center;
   scale: 80%;
 }
 
 .LibraryListFolder-name.is-open .LibraryListFolder-nameIcon {
-  transform: rotate(0deg);
+  transform: rotate(90deg);
 }
 
 .LibraryListFolder-nameText {

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import { Icon } from '../../../../inspector/app/components/Icon'
+import { Icon } from '../../../../../app/components/Icon'
 
 import "./style.css"
 
@@ -11,7 +11,7 @@ const LibraryListFolderName = ({ isOpen, name, handleClick }) => {
       onClick={handleClick}
     >
       <div className='LibraryListFolder-nameIcon'>
-        <Icon name='arrow-down' />
+        <Icon name='arrowRight' />
       </div>
       <div className="LibraryListFolder-nameText">
         {name}
