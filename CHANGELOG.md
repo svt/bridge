@@ -4,7 +4,6 @@
 ### Changed
 - item.data.caspar.data replaces item.data.templateData for structured template data
 - Update dependencies
-- React is now updated to version 19
 - react-router has been removed in favor of a custom component
 ### Fixed
 - Security patches
@@ -12,6 +11,7 @@
 - The `item.apply` event
 - A volume item type for the Caspar plugin
 - Support for additional frame rates when calculating durations of items in the Caspar plugin
+- Status messages that indicate background activity to the user
 
 ## 1.0.0-beta.5
 ### Changed
