@@ -5,7 +5,8 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![REUSE status](https://api.reuse.software/badge/github.com/svt/bridge)](https://api.reuse.software/info/github.com/svt/bridge)  
 
-Playout control software that can be customized to fit your needs. Developed for CasparCG but can control anything that supports OSC.
+Playout control software that can be customized to fit your needs.  
+Developed for CasparCG but can control anything that supports OSC.
 
 ![Screenshot](/media/screenshot.png)
 
@@ -41,7 +42,7 @@ Playout control software that can be customized to fit your needs. Developed for
 - CasparCG library, playout and templates
 
 ## Community plugins  
-- [CRON - triggers based on the time of day]()
+- [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)
 
 ## Compatibility notes  
 - Bridge works with Caspar CG Server 2.3 and up.
