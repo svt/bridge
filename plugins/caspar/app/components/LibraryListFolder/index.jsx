@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 
-import { Icon } from '../Icon'
+import { Icon } from '../../../../inspector/app/components/Icon'
+
 import "./style.css"
 
 const LibraryListFolderName = ({ isOpen, name, handleClick }) => {
