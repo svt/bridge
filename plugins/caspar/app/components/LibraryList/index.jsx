@@ -5,7 +5,7 @@ import { SharedContext } from '../../sharedContext'
 import { LibraryListItem } from '../LibraryListItem'
 import { LibraryListFolder } from '../LibraryListFolder'
 
-const { buildFolderTree } = require('../../utils/library.cjs')
+import * as library from '../../utils/library.cjs'
 
 import './style.css'
 
@@ -23,14 +23,14 @@ export const LibraryList = ({ items = [] }) => {
   const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
 
   // Only re-compute when items change, otherwise folders will close each update
-  const folderizedItems = useMemo(() => buildFolderTree(items), [items]) 
+  const folderizedItems = useMemo(() => library.buildFolderTree(items), [items]) 
 
   return (
     <div className="LibraryList">
       <div className={`LibraryList ${folderSetting ? 'is-visible' : 'is-hidden'}`}>
         <FolderRecursive data={folderizedItems} />
       </div>
-      <ul className={`LibraryList ${folderSetting ? 'is-hidden' : 'is-visible'} ul`}>
+      <ul className={`LibraryList ${folderSetting ? 'is-hidden' : 'is-visible'}`}>
         {items.map((item, i) => {
           return <LibraryListItem key={i} item={item} />
         })}
