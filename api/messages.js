@@ -40,7 +40,7 @@ class Messages {
       throw new InvalidArgumentError('Argument \'textMessageSpec\' must contain a text property with a string value')
     }
 
-    if (typeof validatedSpec?.ttl !== 'number') {
+    if (typeof validatedSpec?.ttl !== 'number' || validatedSpec?.ttl < 0) {
       validatedSpec.ttl = DEFAULT_MESSAGE_TTL_MS
     }
 
@@ -50,7 +50,7 @@ class Messages {
   /**
    * @param { TextMessageSpec } textMessageSpec
    */
-  async createTextMessage (textMessageSpec) {
+  createTextMessage (textMessageSpec) {
     const spec = this.#validateMessageSpec(textMessageSpec, {
       dismissable: true,
       type: 'text',
@@ -62,7 +62,7 @@ class Messages {
   /**
    * @param { TextMessageSpec } textMessageSpec
    */
-  async createSuccessMessage (textMessageSpec) {
+  createSuccessMessage (textMessageSpec) {
     const spec = this.#validateMessageSpec(textMessageSpec, {
       dismissable: true,
       type: 'success',
@@ -74,7 +74,7 @@ class Messages {
   /**
    * @param { TextMessageSpec } textMessageSpec
    */
-  async createWarningMessage (textMessageSpec) {
+  createWarningMessage (textMessageSpec) {
     const spec = this.#validateMessageSpec(textMessageSpec, {
       dismissable: true,
       type: 'warning',
