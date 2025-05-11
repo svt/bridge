@@ -11,23 +11,27 @@ const FILE_PATH_DELIMITER = /[\/\\]+/ // eslint-disable-line
 const ENDS_WITH_DELIMITER = /[\/\\]$/ // eslint-disable-line 
 
 /**
+ * @typedef {{
+ *   file: boolean
+ *   name: string
+ *   id: string
+ *   path?: Object // Original path object that may contain properties like caspar, data, etc.
+ * }} File
+ *
+ * @typedef {{
+ *   file: boolean
+ *   name: string
+ *   id: string
+ *   files?: Folder[] // Nested files or folders
+ * }} Folder
+ */
+
+/**
  * Converts a list of file paths into a nested folder structure.
  * The function assumes that paths are strings with folders and files separated by '/' or '\'.
- *
- * @typedef {Object} File
- * @property {boolean} file     - A flag indicating whether the object is a file (true) or a folder (false).
- * @property {string} name      - The full path as a string (e.g., 'folder1/folder2/item').
- * @property {string} id        - A unique identifier.
- * @property {Object} [path]    - The original path object that contains additional properties such as caspar, data etc.
- *
- * @typedef {Object} Folder
- * @property {boolean} file     - A flag indicating whether the object is a file (true) or a folder (false).
- * @property {string} name      - The name of the file/folder.
- * @property {string} id        - A unique identifier.
- * @property {Array[]} [files]  - An array of nested files/folders.
  * 
- * @param {Array[]} paths - An array of path objects, where each object contains at least a `name` property with the full path.
- * @returns {Folder[]} - A nested folder structure represented as an array of folder objects.
+ * @param {{ name: string, [key: string]: any }[]} paths - An array of path objects with at least a `name` string.
+ * @returns {Folder[Folder|File]} - A nested folder structure represented as an array of folder objects.
  * @example 
  * Input: [{ path.name: 'folder1/item' }]
  * Output: [
