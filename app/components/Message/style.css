@@ -1,0 +1,107 @@
+.Message {
+  display: flex;
+  position: relative;
+
+  width: 300px;
+  margin-top: 5px;
+
+  background: var(--base-color--background1);
+
+  box-shadow:
+    inset 0 0 0 1px var(--base-color--shade),
+    0 0 10px rgba(0, 0, 0, 0.5);
+
+  padding: 9px 12px 9px 12px;
+  border-radius: 7px;
+
+  box-sizing: border-box;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Message::before {
+  content: '';
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  
+  border-radius: 7px;
+
+  box-shadow: inset 0 0 0 0px var(--base-color--accent1);
+
+  pointer-events: none;
+
+  animation-name: Message-highlight;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+
+  z-index: 1;
+}
+
+@keyframes Message-highlight {
+  0% {
+    box-shadow: inset 0 0 0 0px var(--base-color--accent1);
+  }
+  10% {
+    box-shadow: inset 0 0 0 2px var(--base-color--accent1);
+  }
+  80% {
+    box-shadow: inset 0 0 0 2px var(--base-color--accent1);
+  }
+  100% {
+    box-shadow: inset 0 0 0 0px var(--base-color--accent1);
+  }
+}
+
+.Message-body {
+  margin-right: 10px;
+}
+
+.Message-actions {
+  display: flex;
+  height: 100%;
+  margin-right: -3px;
+
+  flex-shrink: 0;
+  align-items: flex-start;
+}
+
+.Message-dismissBtn {
+  width: 1.8em;
+  height: 1.8em;
+
+  background: none;
+
+  border: none;
+  border-radius: 5px;
+}
+
+.Message-dismissBtn:active {
+  opacity: 0.5;
+}
+
+.Message-content--split {
+  display: flex;
+  align-items: center;
+}
+
+.Message-icon {
+  display: flex;
+  width: 1.8em;
+  height: 1.8em;
+  margin-right: 10px;
+
+  transform: scale(0.8);
+
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.Message-icon--large {
+  transform: scale(0.3);
+}

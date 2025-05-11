@@ -5,7 +5,8 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![REUSE status](https://api.reuse.software/badge/github.com/svt/bridge)](https://api.reuse.software/info/github.com/svt/bridge)  
 
-Extendable and lightweight playout software
+Playout control software that can be customized to fit your needs.  
+Developed for CasparCG but can control anything that supports OSC.
 
 ![Screenshot](/media/screenshot.png)
 
@@ -17,8 +18,8 @@ Extendable and lightweight playout software
 
 ## Table of contents
 - [Goals](#goals)
-- [Motivation](#motivation)
 - [Features](#features)
+- [Community plugins](#community-plugins)
 - [Compatibility](#compatibility-notes)
 - [Download and install](#download-and-install)
 - [Documentation and API](#full-documentation-and-api)
@@ -26,12 +27,7 @@ Extendable and lightweight playout software
 - [License](#license)
 - [Maintainers](#primary-maintainer)
 
-## Motivation  
-
-As developers of production software we found ourselves in a position of rebuilding tools with similar functionality and core features time and time again. Bridge is an experiment for a collection of core tools and a platform for plugins that enables reuse of the tools we build. Not only does it encourage a mix-and-match mindset where operators can choose from a selection of already built components, it cuts down on development time and enforces stability.
-
 ## Features
-
 - HTTP web interface for remote use
 - A fully customizable grid layout
 - Variables
@@ -41,7 +37,12 @@ As developers of production software we found ourselves in a position of rebuild
 - Nested groups
 - Multiple rundowns per project
 - Shotbox-style buttons
-- OSC API
+- OSC API and triggers
+- HTTP triggers
+- CasparCG library, playout and templates
+
+## Community plugins  
+- [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)
 
 ## Compatibility notes  
 - Bridge works with Caspar CG Server 2.3 and up.
