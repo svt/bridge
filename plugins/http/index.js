@@ -30,8 +30,24 @@ const PLAY_HANDLERS = {
       logger.debug('Making request:', item?.data?.http?.url)
       const headers = await getDefaultHeaders()
       await requestManager.makeRequestForItemWithId(item.id, item?.data?.http?.url, { method: 'GET', headers })
+
+      /*
+       * Announce to the user that
+       * the request succeeded
+       */
+      bridge.messages.createSuccessMessage({
+        text: 'HTTP: Request succeeded'
+      })
     } catch (e) {
       logger.debug('Request failed:', e)
+
+      /*
+       * Announce to the user that
+       * the request failed
+       */
+      bridge.messages.createWarningMessage({
+        text: 'HTTP: Request failed'
+      })
     }
   }
 }

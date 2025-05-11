@@ -268,6 +268,18 @@ function updateServerConfig (type, set) {
   })
 }
 
+/**
+ * Create a status message indicating
+ * that the server status changed
+ * @param { 'tcp' | 'udp' } type
+ * @param { Boolean } active
+ */
+function createServerStatusMessage (type, active) {
+  bridge.messages.createTextMessage({
+    text: `OSC: ${active ? 'Starting' : 'Stopping'} ${type} server`
+  })
+}
+
 exports.activate = async () => {
   logger.debug('Activating OSC plugin')
 
@@ -316,11 +328,13 @@ exports.activate = async () => {
         updateServerConfig('udp', {
           active: item?.data?.osc?.active
         })
+        createServerStatusMessage('udp', item?.data?.osc?.active)
         break
       case 'bridge.osc.tcp.activate':
         updateServerConfig('tcp', {
           active: item?.data?.osc?.active
         })
+        createServerStatusMessage('tcp', item?.data?.osc?.active)
         break
     }
   })

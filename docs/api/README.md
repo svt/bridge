@@ -17,6 +17,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Variables](#variables)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 - [System](#system)
+- [Messages](#messages)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -527,4 +528,43 @@ import bridge from 'bridge'
 
 const version = await bridge.system.getVersion()
 // version = '1.0.0'
+```
+
+## Messages  
+Status messages can be shown to notify the user of background activity. Use wisely and sparingly to avoid spamming the user.
+
+### `bridge.messages.createTextMessage(spec): void`
+Create a simple text message
+
+```javascript
+import bridge from 'bridge'
+
+bridge.messages.createTextMessage({
+  text: 'MyPlugin: My message',
+  ttl: 5000 // Default, optional, hides the message after 5s
+})
+```
+
+### `bridge.messages.createSuccessMessage(spec): void`
+Create a success message, such that a background activity succeeded
+
+```javascript
+import bridge from 'bridge'
+
+bridge.messages.createSuccessMessage({
+  text: 'MyPlugin: My success message',
+  ttl: 5000 // Default, optional, hides the message after 5s
+})
+```
+
+### `bridge.messages.createWarningMessage(spec): void`
+Create a warning message
+
+```javascript
+import bridge from 'bridge'
+
+bridge.messages.createWarningMessage({
+  text: 'MyPlugin: My warning',
+  ttl: 5000 // Default, optional, hides the message after 5s
+})
 ```

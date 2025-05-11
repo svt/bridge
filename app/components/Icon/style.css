@@ -6,10 +6,10 @@
   --Icon-color: var(--base-color);
 }
 
-.Icon svg [stroke]:not([stroke='none']) {
+.Icon:not(.Icon--originalColors) svg [stroke]:not([stroke='none']) {
   stroke: var(--Icon-color);
 }
 
-.Icon svg [fill]:not([fill='none']) {
+.Icon:not(.Icon--originalColors) svg [fill]:not([fill='none']) {
   fill: var(--Icon-color);
 }

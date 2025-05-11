@@ -19,6 +19,7 @@ import { Onboarding } from '../components/Onboarding'
 import { Grid } from '../components/Grid'
 import { Palette } from '../components/Palette'
 import { GridItem } from '../components/GridItem'
+import { MessageContainer } from '../components/MessageContainer'
 
 import { TabsComponent } from '../components/TabsComponent'
 import { EmptyComponent } from '../components/EmptyComponent'
@@ -168,6 +169,15 @@ export const Workspace = () => {
       <Onboarding />
       <Header title={getFileNameFromPath(shared._filePath)} />
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
+      {
+        /*
+        Render the message container unless
+        the 'hide messages' setting is set
+        to true
+        */
+        !shared?._userDefaults?.hideMessages &&
+        <MessageContainer />
+      }
       {
         /*
         Loop through the components from the store

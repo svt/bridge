@@ -16,6 +16,9 @@ import editDetail from './edit-detail.svg'
 import placeholder from './placeholder.svg'
 import preferences from './preferences.svg'
 
+import colorSuccess from './color-success.svg'
+import colorWarning from './color-warning.svg'
+
 export default {
   add,
   edit,
@@ -29,5 +32,7 @@ export default {
   arrowRight,
   editDetail,
   placeholder,
-  preferences
+  preferences,
+  colorSuccess,
+  colorWarning
 }
