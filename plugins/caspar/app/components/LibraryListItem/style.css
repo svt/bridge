@@ -2,6 +2,7 @@
   display: flex;
   padding: 0.4em 0.5em;
   font-size: 0.9em;
+
   border-radius: 3px;
   justify-content: space-between;
   background: var(--base-color--shade1);
