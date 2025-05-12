@@ -79,8 +79,7 @@ async function initSettings () {
     plugins: {
       [manifest.name]: {
         settings: {
-          servers: [],
-          folder: true
+          servers: []
         }
       }
     }
