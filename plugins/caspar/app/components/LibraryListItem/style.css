@@ -1,10 +1,9 @@
 .LibraryListItem {
   display: flex;
-  padding: 0.3em 0.4em;
+  padding: 0.4em 0.5em;
   font-size: 0.9em;
   border-radius: 3px;
   justify-content: space-between;
-  margin: 0.3em;
   background: var(--base-color--shade1);
 }
 
@@ -37,10 +36,10 @@
   opacity: 0.5;
 }
 
-.LibraryListItem-name {
-  font-weight: normal;
-}
-
 .LibraryListItem.is-list {
   margin: 0;
+}
+
+.LibraryListItem.is-folder {
+  margin: 0.3em;
 }

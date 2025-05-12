@@ -34,7 +34,7 @@ const LibraryListFolder = ({ name, children, node }) => {
         <div className="LibraryListFolder-items">{node?.files?.length ?? 0} items</div>
       </div>
       <div className="LibraryListFolder-folder">
-        <div className="LibraryListFolder-line">
+        <div className="LibraryListFolder-verticalLine">
           {children}
         </div>
       </div>

@@ -51,7 +51,7 @@
   display: none;
 }
 
-.LibraryListFolder-line {
+.LibraryListFolder-verticalLine {
   position: relative; 
   padding-left: 1px;
   border-left: 1.5px solid var(--base-color);
