@@ -22,7 +22,7 @@ export const LibraryList = ({ items = [] }) => {
 
   const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
 
-  // Only re-compute when items change, otherwise folders will close each update
+  // Only re-compute when items change, otherwise folders will close each state.change
   const folderizedItems = useMemo(() => library.buildFolderTree(items), [items]) 
 
   return (
