@@ -92,7 +92,7 @@ function constructPlayableItemInit (libraryAsset) {
  */
 export const LibraryListItem = ({ item = {} }) => {
   const [shared] = React.useContext(SharedContext)
-  const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
+  const folderView = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folderview
 
   async function handleDragStart (e) {
     const data = constructPlayableItemInit(item)
@@ -112,13 +112,13 @@ export const LibraryListItem = ({ item = {} }) => {
 
   return (
     <li
-      className={`LibraryListItem ${folderSetting ? 'is-folder' : 'is-list'}`} 
+      className={`LibraryListItem ${folderView ? 'is-folder' : 'is-list'}`} 
       onDragStart={e => handleDragStart(e)}
       onDoubleClick={e => handleDoubleClick(e)}
       draggable
     >
       <div className='LibraryListItem-name LibraryListItem-col' title={item?.name}>
-        {folderSetting ? library.getFileName(item?.name) : item?.name}
+        {folderView ? library.getFileName(item?.name) : item?.name}
       </div>
       <div>
         <div className='LibraryListItem-col LibraryListItem-metadata'>
