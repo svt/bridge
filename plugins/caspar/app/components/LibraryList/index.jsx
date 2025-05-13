@@ -19,17 +19,17 @@ import * as library from '../../utils/library.cjs'
 export const LibraryList = ({ items = [] }) => {
   const [shared] = React.useContext(SharedContext)
 
-  const folderSetting = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folder
+  const folderView = shared?.plugins?.['bridge-plugin-caspar']?.settings?.folderview
 
   // Only re-compute when items change, otherwise folders will close each state.change
   const folderizedItems = useMemo(() => library.buildFolderTree(items), [items]) 
 
   return (
     <div className="LibraryList">
-      <div className={`LibraryList ${folderSetting ? 'is-visible' : 'is-hidden'}`}>
+      <div className={`LibraryList ${folderView ? 'is-visible' : 'is-hidden'}`}>
         <FolderRecursive data={folderizedItems} />
       </div>
-      <ul className={`LibraryList ${folderSetting ? 'is-hidden' : 'is-visible'}`}>
+      <ul className={`LibraryList ${folderView ? 'is-hidden' : 'is-visible'}`}>
         {items.map((item, i) => {
           return <LibraryListItem key={i} item={item} />
         })}
