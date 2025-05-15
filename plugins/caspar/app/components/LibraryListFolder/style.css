@@ -27,7 +27,7 @@
   scale: 80%;
 }
 
-.LibraryListFolder-name.is-open .LibraryListFolder-nameIcon {
+.LibraryListFolder.is-open .LibraryListFolder-nameIcon {
   transform: rotate(90deg);
 }
 

@@ -9,12 +9,12 @@ import { LibraryListFolder } from '../LibraryListFolder'
 import * as library from '../../utils/folder.cjs'
 
 /**
- * Renders a list of items as folder tree, optionally as flat list.
+ * Renders a list of items as folder tree, optionally as flat list
  * 
- * Uses plugin setting to determine whether to display as folder tree or flat list.
+ * Uses plugin setting to determine whether to display as folder tree or flat list
  * 
- * @param {Array} items - The list of files with target path.
- * @returns {JSX.Element} Rendered list of library items.
+ * @param {Array} items - The list of files with target path
+ * @returns {JSX.Element} Rendered list of library items
  */
 export const LibraryList = ({ items = [] }) => {
   const [shared] = React.useContext(SharedContext)
@@ -42,12 +42,12 @@ export const LibraryList = ({ items = [] }) => {
  * Recursively renders a tree of files and folders.
  * 
  * Iterates through the `data` array, rendering each item as either:
- * - A `LibraryListItem` component if the item is a file (`item.file === true`).
- * - A `LibraryListFolder` component if the item is a folder (`item.file === false`),
- *   and recursively calls `FolderRecursive` on its `files` array.
+ * - A `LibraryListItem` component if the item is a file (`item.file === true`)
+ * - A `LibraryListFolder` component if the item is a folder (`item.file === false`)
+ *   and recursively calls `FolderRecursive` on its `files` array
  * 
- * @param {Array} data - An array of file and folder objects to render.
- * @returns {JSX.Element[]} An array of rendered file and folder components.
+ * @param {Array} data - An array of file and folder objects to render
+ * @returns {JSX.Element[]} An array of rendered file and folder components
  */
 const FolderRecursive = ({ data }) => {
   return data.map((item) => {

@@ -4,10 +4,17 @@ import { Icon } from '../../../../../app/components/Icon'
 
 import "./style.css"
 
-const LibraryListFolderName = ({ isOpen, name, handleClick }) => {
+/**
+ * Folder name component with click handler
+ * 
+ * @param {string} name - Name of the folder
+ * @param {function} handleClick - Callback to toggle folder open/closed
+ * @returns {JSX.Element} Clickable folder name row
+ */
+const LibraryListFolderName = ({ name, handleClick }) => {
   return (
     <div
-      className={`LibraryListFolder-name ${isOpen ? 'is-open' : ''}`}
+      className={`LibraryListFolder-name`}
       onClick={handleClick}
     >
       <div className='LibraryListFolder-nameIcon'>
@@ -20,6 +27,15 @@ const LibraryListFolderName = ({ isOpen, name, handleClick }) => {
   )
 }
 
+/**
+ * Expandable folder component.
+ * 
+ * @param {string} name - Name of the folder
+ * @param {React.ReactNode} children - Nested content inside the folder
+ * @param {Object} node - Folder data object
+ * @param {Array} node.files - Array of files within the folder
+ * @returns {JSX.Element} Folder section with collapsible content
+ */
 const LibraryListFolder = ({ name, children, node }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -28,7 +44,6 @@ const LibraryListFolder = ({ name, children, node }) => {
       <div className='LibraryListFolder-header'>
         <LibraryListFolderName
           name={name}
-          isOpen={isOpen}
           handleClick={() => setIsOpen(!isOpen)}
         />
         <div className="LibraryListFolder-items">{node?.files?.length ?? 0} items</div>
