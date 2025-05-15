@@ -1,21 +1,14 @@
-.LibraryListFolder {
-  margin-left: 10px;
-}
-
 .LibraryListFolder-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  position: relative;
-  padding: 0.15em 0em 0em 0em;
+  margin: 0.3em 0.15em;
 }
 
 .LibraryListFolder-items {
   white-space: nowrap;
-  margin-left: auto;
-  color: gray;
-  padding: 0 .6em 0 0;
+  opacity: 0.5;
+  margin-right: 0.5em;
 }
 
 .LibraryListFolder-name {
@@ -23,10 +16,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  max-width: 100%;
   overflow: hidden;
-  flex-grow: 1;
-  margin-bottom: 0.15em;
 }
 
 .LibraryListFolder-nameIcon {
@@ -52,7 +42,6 @@
 }
 
 .LibraryListFolder-verticalLine {
-  position: relative; 
-  padding-left: 1px;
-  border-left: 1.5px solid var(--base-color);
+  margin-left: 9px;
+  border-left: 1.4px solid var(--base-color);
 }
