@@ -42,6 +42,6 @@
 }
 
 .LibraryListFolder-verticalLine {
-  margin-left: 9px;
-  border-left: 1.4px solid var(--base-color);
+  margin-left: 10px;
+  border-left: 1.5px solid var(--base-color);
 }

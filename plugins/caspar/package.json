@@ -24,8 +24,7 @@
           {
             "type": "boolean",
             "label": "Folder View",
-            "bind": "shared.plugins.bridge-plugin-caspar.settings.folderview",
-            "default": false
+            "bind": "shared.plugins.bridge-plugin-caspar.settings.folderview"
           }
         ]
       }
