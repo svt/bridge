@@ -12,10 +12,10 @@ const FOLDER_END_DELIMITER = /[\/\\]$/
 
 /**
  * @typedef {{
- *    file: true,   // Indicates this is a file (not a folder)
+ *    file: true,   // Indicates this is a file
  *    name: string, // The name of the file 
  *    id: string,   // A unique identifier for the file
- *    path?: Object // Optional additional properties (e.g., caspar, data, etc.)
+ *    path?: Object // Additional properties (e.g., caspar, data, etc.)
  * }} File
  * 
  * @typedef {{
@@ -28,7 +28,7 @@ const FOLDER_END_DELIMITER = /[\/\\]$/
 
 /**
  * Converts a list of file paths into a nested folder structure.
- * The function assumes that paths are strings with folders and files separated by '/' or '\'.
+ * The function assumes that paths are strings with folders and files separated by '/', '\' or multiples.
  * 
  * @param {{ name: string, [key: string]: any }[]} items - An array of path objects with at least a `name` string.
  * @returns {Folder[]} - A nested folder structure represented as an array of folder objects.
@@ -59,13 +59,13 @@ function buildFolderTree (items) {
     // Split the path into parts by '/' or '\' and remove any empty segments
     const parts = item.name.split(FILE_PATH_DELIMITER).filter(Boolean)
 
-    const isFolderPath = FOLDER_END_DELIMITER.test(item.name) // Check if the path ends with a delimiter
+    const isFolderPath = FOLDER_END_DELIMITER.test(item.name)
 
     let currentLevel = root
 
     parts.forEach((part, index) => {
-      const isLast = index === parts.length - 1
-      const isFile = isLast && !isFolderPath // Only the last part can be a file, unless the path ends with a delimiter
+      const isLast = index === parts.length - 1 // Only the last part can be a file
+      const isFile = isLast && !isFolderPath // It can be a file if the last part and not a folderpath
       const pwd = parts.slice(0, index + 1).join('/') // Join parts to get the path
 
       let existing = currentLevel.find((item) => item.name === part) // Check if folder exists on current level

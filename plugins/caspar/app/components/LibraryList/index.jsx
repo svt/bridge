@@ -6,7 +6,7 @@ import { SharedContext } from '../../sharedContext'
 import { LibraryListItem } from '../LibraryListItem'
 import { LibraryListFolder } from '../LibraryListFolder'
 
-import * as library from '../../utils/library.cjs'
+import * as library from '../../utils/folder.cjs'
 
 /**
  * Renders a list of items as folder tree, optionally as flat list.

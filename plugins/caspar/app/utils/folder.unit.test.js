@@ -1,4 +1,4 @@
-const { buildFolderTree, getFileName } = require('./library.cjs')
+const { buildFolderTree, getFileName } = require('./folder.cjs')
 
 test('multiple folders with same name', () => {
   const input = [
