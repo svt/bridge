@@ -84,9 +84,9 @@ test('Undefined or empty input should return empty array', () => {
 })
 
 
-test('Multiple delimiters should return correct structure', () => {
-  const input = [{ name: 'folder///file' }]
-  const expected = [
+test('Delimiters should return correct structure', () => {
+  let input = [{ name: 'folder///file' }]
+  let expected = [
     {
       file: false,
       name: 'folder',
@@ -101,13 +101,11 @@ test('Multiple delimiters should return correct structure', () => {
     }
   ]
 
-  const result = buildFolderTree(input)
+  let result = buildFolderTree(input)
   expect(result).toEqual(expected)
-})
 
-test('Different delimiter (backslash) should return correct structure', () => {
-  const input = [{ name: 'folder\\file' }]
-  const expected = [
+  input = [{ name: 'folder\\file' }]
+  expected = [
     {
       file: false,
       name: 'folder',
@@ -122,7 +120,7 @@ test('Different delimiter (backslash) should return correct structure', () => {
     }
   ]
 
-  const result = buildFolderTree(input)
+  result = buildFolderTree(input)
   expect(result).toEqual(expected)
 })
 
@@ -197,8 +195,8 @@ test('Delimiters should be handled correctly', () => {
   expect(getFileName(input)).toEqual(expected)
 })
 
-test('Multiple folders should return correct file name', () => {
-  const input = 'folder1/folder2/file'
+test('Nested folder path should return correct file name', () => {
+  const input = 'folder1/folder2/folder3/file'
   const expected = 'file'
   expect(getFileName(input)).toEqual(expected)
 })
