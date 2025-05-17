@@ -15,6 +15,21 @@
   ],
   "author": "Axel Boberg (axel.boberg@svt.se)",
   "license": "UNLICENSED",
+  "contributes": {
+    "settings": [
+      {
+        "group": "Caspar CG",
+        "title": "Library Layout",
+        "inputs": [
+          {
+            "type": "boolean",
+            "label": "Folder View",
+            "bind": "shared.plugins.bridge-plugin-caspar.settings.folderview"
+          }
+        ]
+      }
+    ]
+  },
   "dependencies": {
     "monaco-editor": "^0.45.0",
     "tinycolor2": "^1.6.0"

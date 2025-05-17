@@ -1,0 +1,47 @@
+.LibraryListFolder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.3em 0.15em;
+}
+
+.LibraryListFolder-items {
+  white-space: nowrap;
+  opacity: 0.5;
+  margin-right: 0.5em;
+}
+
+.LibraryListFolder-name {
+  background-color: var(--base-color-background);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.LibraryListFolder-nameIcon {
+  margin-right: .1em;
+  display: flex;
+  transform: rotate(0deg);
+  justify-items: center;
+  scale: 80%;
+}
+
+.LibraryListFolder.is-open .LibraryListFolder-nameIcon {
+  transform: rotate(90deg);
+}
+
+.LibraryListFolder-nameText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.LibraryListFolder.is-closed .LibraryListFolder-folder {
+  display: none;
+}
+
+.LibraryListFolder-verticalLine {
+  margin-left: 10px;
+  border-left: 1.5px solid var(--base-color);
+}

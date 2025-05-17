@@ -5,6 +5,7 @@
 
   border-radius: 3px;
   justify-content: space-between;
+  background: var(--base-color--shade1);
 }
 
 .LibraryListItem:active {
@@ -34,4 +35,12 @@
 
 .LibraryListItem-metadata {
   opacity: 0.5;
+}
+
+.LibraryListItem.is-list {
+  margin: 0;
+}
+
+.LibraryListItem.is-folder {
+  margin: 0.15em 0.15em 0.15em 0.3em;
 }
