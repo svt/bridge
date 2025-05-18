@@ -50,6 +50,36 @@ test('multiple folders with same name', () => {
   expect(result).toEqual(expected)
 })
 
+test('folders with same name as file on same level', () => {
+  const input = [
+    { name: 'file1/file1' },
+    { name: 'file1' }
+  ]
+
+  const expected = [
+    {
+      file: false,
+      name: 'file1',
+      id: expect.any(String),
+      files: [
+        {
+          file: true,
+          name: 'file1/file1',
+          id: expect.any(String)
+        }
+      ]
+    },
+    {
+      file: true,
+      name: 'file1',
+      id: expect.any(String)
+    }
+  ]
+
+  const result = buildFolderTree(input)
+  expect(result).toEqual(expected)
+})
+
 test('Folder with one child', () => {
   const input = [{ name: 'folder/file' }]
   const expected = [

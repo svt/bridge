@@ -66,42 +66,35 @@ function buildFolderTree (items) {
     parts.forEach((part, index) => {
       const isLast = index === parts.length - 1 // Only the last part can be a file
       const isFile = isLast && !isFolderPath // It can be a file if the last part and not a folderpath
-      const pwd = parts.slice(0, index + 1).join('/') // Join parts to get the path
+      const fullPath = parts.slice(0, index + 1).join('/') // Join parts to get the full path
 
-      let existing = currentLevel.find((item) => item.name === part) // Check if folder exists on current level
-      
-      // If the folder exists, go into it
-      if (existing) {
-        if (!isFile) {
-          currentLevel = existing.files
-        }
-        return
-      }
-      
-      // Create new folder or file object
+      // If it is a file then add it to level and return.
       if (isFile) {
-        existing = {
+        currentLevel.push({
           ...item,
           file: true,
-          name: pwd,
+          name: fullPath,
           id: uuid.v4()
-        }
-      } else {
+        })
+        return
+      }
+
+      // Check if a folder exists on current level
+      let existing = currentLevel.find((item) => item.name === part && item.file === false)
+    
+      // Create a new folder if it does not exist
+      if (!existing) {
         existing = {
           file: false,
           name: part,
           id: uuid.v4(),
           files: []
         }
+        currentLevel.push(existing)
       }
 
-      // Add new object to current level
-      currentLevel.push(existing)
-      
-      // Descend into if it's a folder
-      if (!isFile) {
-        currentLevel = existing.files
-      }
+      // Go deeper into new or existing folder
+      currentLevel = existing.files
     })
   }
   return root
