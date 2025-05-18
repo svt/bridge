@@ -45,7 +45,7 @@ Developed for CasparCG but can control anything that supports OSC.
 - [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)
 
 ## Compatibility notes  
-- Bridge works with Caspar CG Server 2.3 and up.
+- Bridge works best with CasparCG server 2.3 and up, although a compatibility mode is available for older setups.
 - Bridge provides data to HTML templates as JSON.
 
 ## Download and install  

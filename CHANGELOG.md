@@ -12,6 +12,7 @@
 - A volume item type for the Caspar plugin
 - Support for additional frame rates when calculating durations of items in the Caspar plugin
 - Status messages that indicate background activity to the user
+- A compatibility mode for servers running versions of CasparCG prior to 2.1.0
 
 ## 1.0.0-beta.5
 ### Changed

@@ -10,6 +10,10 @@
  * @typedef {
  *  'ERROR' | 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED'
  * } CasparStatusEnum
+ *
+ * @typedef {
+ *  'DEFAULT' | 'COMPATIBILITY'
+ * } CasparModeEnum
  */
 
 const TcpSocket = require('./TcpSocket')
@@ -52,6 +56,11 @@ class Caspar extends EventEmitter {
     ERROR: 'ERROR'
   })
 
+  static mode = Object.freeze({
+    DEFAULT: 'DEFAULT',
+    COMPATIBILITY: 'COMPATIBILITY'
+  })
+
   /**
    * @type { String }
    */
@@ -71,6 +80,26 @@ class Caspar extends EventEmitter {
    */
   get status () {
     return this.#status
+  }
+
+  /**
+   * @private
+   * @type { CasparModeEnum }
+   */
+  #mode = Caspar.mode.DEFAULT
+
+  /**
+   * @type { CasparModeEnum }
+   */
+  get mode () {
+    return this.#mode
+  }
+
+  /**
+   * @type { CasparModeEnum }
+   */
+  set mode (newValue) {
+    this.#mode = newValue
   }
 
   /**
@@ -382,8 +411,12 @@ class Caspar extends EventEmitter {
       throw new CasparError('Socket not connected', 'ERR_NOT_CONNECTED')
     }
 
-    const { id, promise } = this.#createTransaction()
+    if (this.mode === Caspar.mode.COMPATIBILITY) {
+      this.#socket.send(`${payload}\r\n`)
+      return Promise.resolve()
+    }
 
+    const { id, promise } = this.#createTransaction()
     this.#socket.send(`REQ ${id} ${payload}\r\n`)
     return promise
   }

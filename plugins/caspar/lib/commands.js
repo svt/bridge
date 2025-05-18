@@ -65,7 +65,8 @@ async function setupServer (description) {
   }
 
   const server = new Caspar({
-    reconnect: true
+    reconnect: true,
+    compatibilityMode: description?.compatibilityMode
   })
 
   server.on('status', newStatus => {
@@ -153,6 +154,8 @@ async function editServer (serverId, description) {
       }
       return description
     })
+
+  server.mode = description.compatibilityMode ? Caspar.mode.COMPATIBILITY : Caspar.mode.DEFAULT
 
   bridge.state.apply({
     plugins: {

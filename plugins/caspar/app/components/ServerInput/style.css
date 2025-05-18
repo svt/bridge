@@ -19,6 +19,10 @@
   text-align: right;
 }
 
+.ServerInput-space {
+  height: 7px;
+}
+
 .ServerInput-input {
   margin-bottom: 10px;
 }
@@ -33,6 +37,10 @@
 
 .ServerInput-input input {
   margin-right: 5px;
+}
+
+.ServerInput-input--switch {
+  margin-top: 7px;
 }
 
 .ServerInput-flexInputs {

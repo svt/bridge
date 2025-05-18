@@ -44,6 +44,12 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
               <option value='1'>Secondary</option>
             </select>
           </div>
+          <div className='ServerInput-space' />
+          <div className='ServerInput-input'>
+            <h3>Compatibility mode</h3>
+            For servers prior to version 2.1.0, some functionality will be disabled<br/>
+            <input type='checkbox' className='Switch ServerInput-input--switch' checked={data?.compatibilityMode ?? false} onChange={e => handleInput('compatibilityMode', e.target.checked)} />
+          </div>
         </div>
         <div className='ServerInput-actions'>
           <button className='Button Button--ghost' onClick={() => handleDelete()}>Delete</button><br />
