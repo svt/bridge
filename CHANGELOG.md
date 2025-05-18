@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.6 - [UNRELEASED]
+## 1.0.0-beta.6
 ### Changed
 - item.data.caspar.data replaces item.data.templateData for structured template data
 - Update dependencies
