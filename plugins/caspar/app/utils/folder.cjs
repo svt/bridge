@@ -93,6 +93,11 @@ function buildFolderTree (items) {
         currentLevel.push(existing)
       }
 
+      //Make sure the existing folder has a file entry
+      if (!Array.isArray(existing.files)) {
+        existing.files = []
+      }
+
       // Go deeper into new or existing folder
       currentLevel = existing.files
     })
