@@ -76,7 +76,6 @@ function buildFolderTree (items) {
           name: fullPath,
           id: uuid.v4()
         })
-        console.log(currentLevel.at(currentLevel.length-1))
         return
       }
 
