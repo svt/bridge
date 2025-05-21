@@ -50,29 +50,39 @@ test('multiple folders with same name', () => {
   expect(result).toEqual(expected)
 })
 
-test('folders with same name as file on same level', () => {
+test('folders and files with same name as file on same level but different type', () => {
   const input = [
-    { name: 'file1/file1' },
-    { name: 'file1' }
+    { name: 'file1', type: 'MEDIA'},
+    { name: 'file1/file1', type: 'MEDIA'},
+    { name: 'file1', type: 'TEMPLATE'}
   ]
 
   const expected = [
     {
+      file: true,
+      name: 'file1',
+      id: expect.any(String),
+      type: 'MEDIA'
+    },
+    {
       file: false,
       name: 'file1',
       id: expect.any(String),
+      type: 'MEDIA',
       files: [
         {
           file: true,
           name: 'file1/file1',
-          id: expect.any(String)
+          id: expect.any(String),
+          type: 'MEDIA'
         }
       ]
     },
     {
       file: true,
       name: 'file1',
-      id: expect.any(String)
+      id: expect.any(String),
+      type: 'TEMPLATE'
     }
   ]
 
@@ -99,8 +109,6 @@ test('Folder with one child', () => {
 
   const result = buildFolderTree(input)
   expect(result).toEqual(expected)
-
-
 })
 
 test('Undefined or empty input should return empty array', () => {
