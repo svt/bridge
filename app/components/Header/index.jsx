@@ -35,7 +35,7 @@ async function handleMaximize () {
   bridge.commands.executeCommand('window.toggleMaximize')
 }
 
-export function Header ({ title = 'Bridge', onOpenPalette = () => {} }) {
+export function Header ({ title = 'Bridge' }) {
   const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
