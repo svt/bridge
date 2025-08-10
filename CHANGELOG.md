@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.7
+### Changed
+- Worker errors now show as messages in the UI
+
 ## 1.0.0-beta.6
 ### Changed
 - item.data.caspar.data replaces item.data.templateData for structured template data
