@@ -6,6 +6,8 @@ import add from './add.svg'
 import edit from './edit.svg'
 import close from './close.svg'
 import person from './person.svg'
+import reload from './reload.svg'
+import search from './search.svg'
 import widget from './widget.svg'
 import rundown from './rundown.svg'
 import warning from './warning.svg'
@@ -24,6 +26,8 @@ export default {
   edit,
   close,
   person,
+  reload,
+  search,
   widget,
   rundown,
   warning,

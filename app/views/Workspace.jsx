@@ -9,8 +9,6 @@
 
 import React from 'react'
 
-import * as api from '../api'
-
 import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
@@ -53,41 +51,11 @@ function getFileNameFromPath (filePath) {
 
 export const Workspace = () => {
   const [shared, applyShared] = React.useContext(SharedContext)
-
-  const [paletteIsOpen, setPaletteIsOpen] = React.useState(false)
-
   const sharedRef = React.useRef(shared)
 
   React.useEffect(() => {
     sharedRef.current = shared
   }, [shared])
-
-  /*
-  Listen for shortcuts
-  to open the palette
-  */
-  React.useEffect(() => {
-    function onShortcut (shortcut) {
-      switch (shortcut) {
-        case 'openPalette':
-          setPaletteIsOpen(true)
-      }
-    }
-
-    async function setup () {
-      const bridge = await api.load()
-      bridge.events.on('shortcut', onShortcut)
-    }
-    setup()
-
-    return () => {
-      async function teardown () {
-        const bridge = await api.load()
-        bridge.events.off('shortcut', onShortcut)
-      }
-      teardown()
-    }
-  }, [])
 
   /**
    * Define render functions for the
@@ -157,18 +125,10 @@ export const Workspace = () => {
     })
   }
 
-  /**
-   * Close the palette
-   */
-  function handlePaletteClose () {
-    setPaletteIsOpen(false)
-  }
-
   return (
     <>
       <Onboarding />
       <Header title={getFileNameFromPath(shared._filePath)} />
-      <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
       {
         /*
         Render the message container unless

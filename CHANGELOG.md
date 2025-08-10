@@ -1,8 +1,10 @@
 # Changelog
 
-## 1.0.0-beta.7
+## 1.0.0-beta.7 - UNRELEASED
 ### Changed
 - Worker errors now show as messages in the UI
+### Added
+- Buttons for reload and the palette to the header
 
 ## 1.0.0-beta.6
 ### Changed
