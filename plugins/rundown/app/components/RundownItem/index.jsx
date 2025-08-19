@@ -95,6 +95,7 @@ export function RundownItem ({ index, item }) {
   }, [item?.data?.name])
 
   const displaySettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.display
+  const isCompact = shared?.plugins?.['bridge-plugin-rundown']?.settings?.compact
 
   const properties = [
     { if: displaySettings?.id, name: 'ID', value: item?.id },
@@ -118,7 +119,7 @@ export function RundownItem ({ index, item }) {
   }, [item?.type])
 
   return (
-    <div className='RundownItem'>
+    <div className={`RundownItem ${isCompact ? 'is-compact' : ''}`}>
       <div className='RundownItem-margin'>
         <Layout.Spread>
           <div className='RundownItem-section'>

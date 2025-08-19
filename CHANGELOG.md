@@ -6,6 +6,7 @@
 ### Added
 - Buttons for reload and the palette to the header
 - Floating widgets
+- A compact option for rundown items
 
 ## 1.0.0-beta.6
 ### Changed

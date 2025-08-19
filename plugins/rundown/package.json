@@ -35,6 +35,14 @@
         "inputs": [
           { "type": "boolean", "bind": "centered", "label": "Use centered scrolling" }
         ]
+      },
+      {
+        "group": "Rundown",
+        "title": "Size",
+        "bind": "shared.plugins.bridge-plugin-rundown.settings",
+        "inputs": [
+          { "type": "boolean", "bind": "compact", "label": "Make items compact" }
+        ]
       }
     ],
     "shortcuts": [
