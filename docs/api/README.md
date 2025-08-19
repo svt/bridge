@@ -215,7 +215,8 @@ bridge.widgets.registerWidget({
   id: 'myplugin.widget',
   name: 'My widget',
   uri: '/server/id-of-widget-entry',
-  description: 'A widget meant for demo purposes'
+  description: 'A widget meant for demo purposes',
+  supportsFloat: true
 })
 ```
 
