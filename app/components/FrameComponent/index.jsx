@@ -5,11 +5,23 @@ import { v4 as uuidv4 } from 'uuid'
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
+import { Icon } from '../Icon'
+
 import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
 import * as api from '../../api'
 
 import './style.css'
+
+/**
+ * The workspace id for
+ * the current workspace
+ * @type { String }
+ */
+const workspaceId = window.APP.workspace
+
+const host = window.APP.address
+const port = window.APP.port
 
 /**
  * Whether or not to enable
@@ -79,7 +91,7 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
-export function FrameComponent ({ data, onUpdate }) {
+export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
   const [caller] = React.useState(uuidv4())
 
   const [shared] = React.useContext(SharedContext)
@@ -151,7 +163,7 @@ export function FrameComponent ({ data, onUpdate }) {
       }
     }
 
-    const uri = shared?._widgets[data.component]?.uri
+    const uri = shared?._widgets?.[data.component]?.uri
 
     const snapshot = JSON.stringify([data, uri])
     if (snapshot === snapshotRef.current) return
@@ -171,7 +183,7 @@ export function FrameComponent ({ data, onUpdate }) {
       bridge.events.removeAllListeners(caller)
       bridge.events.removeAllIntercepts(caller)
     }
-  }, [caller, shared?._widgets[data.component]?.uri])
+  }, [caller, shared?._widgets?.[data.component]?.uri])
 
   /*
   Highligh the component
@@ -224,10 +236,25 @@ export function FrameComponent ({ data, onUpdate }) {
     copyThemeVariables(frameRef.current)
   }, [local.appliedTheme])
 
+  async function handleOpenAsWindow (widgetId) {
+    const bridge = await api.load()
+    bridge.commands.executeCommand('window.openChildWindow', `http://${host}:${port}/workspaces/${workspaceId}/widgets/${widgetId}`)
+  }
+
   return (
     <div className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`}>
       <header className='FrameComponent-header'>
-        {shared?._widgets[data.component]?.name}
+        <div>
+          {shared?._widgets?.[data.component]?.name}
+        </div>
+        <div className='FrameComponent-headerButtons'>
+          {
+            enableFloat && shared?._widgets?.[data.component]?.supportsFloat &&
+            <button className='FrameComponent-headerButton' onClick={() => handleOpenAsWindow(data?.id)}>
+              <Icon name='float' />
+            </button>
+          }
+        </div>
       </header>
       <div ref={wrapperRef} className='FrameComponent-wrapper' />
     </div>

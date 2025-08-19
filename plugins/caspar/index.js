@@ -132,21 +132,24 @@ exports.activate = async () => {
     id: 'bridge.plugins.caspar.status',
     name: 'Caspar status',
     uri: `${htmlPath}?path=status`,
-    description: 'A widget displaying the servers\' statuses'
+    description: 'A widget displaying the servers\' statuses',
+    supportsFloat: true
   })
 
   bridge.widgets.registerWidget({
     id: 'bridge.plugins.caspar.library',
     name: 'Library',
     uri: `${htmlPath}?path=library`,
-    description: 'The media library for Caspar CG'
+    description: 'The media library for Caspar CG',
+    supportsFloat: true
   })
 
   bridge.widgets.registerWidget({
     id: 'bridge.plugins.caspar.liveSwitch',
     name: 'Live switch',
     uri: `${htmlPath}?path=liveSwitch`,
-    description: 'Control the live status of Caspar CG'
+    description: 'Control the live status of Caspar CG',
+    supportsFloat: true
   })
 
   bridge.widgets.registerWidget({

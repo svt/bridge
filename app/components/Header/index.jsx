@@ -35,7 +35,7 @@ async function handleMaximize () {
   bridge.commands.executeCommand('window.toggleMaximize')
 }
 
-export function Header ({ title = 'Bridge' }) {
+export function Header ({ title = 'Bridge', features }) {
   const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
@@ -89,6 +89,13 @@ export function Header ({ title = 'Bridge' }) {
     setPaletteIsOpen(true)
   }
 
+  function featureShown (feature) {
+    if (!Array.isArray(features)) {
+      return true
+    }
+    return features.includes(feature)
+  }
+
   /**
    * Set the `isEditingLayout` toggle on
    * this client's object in the shared state
@@ -112,35 +119,65 @@ export function Header ({ title = 'Bridge' }) {
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
       <header className={`Header ${isMacOS() && isElectron() ? 'has-leftMargin' : ''}`} onDoubleClick={() => handleMaximize()}>
         <div>
-          { title }
+          { featureShown('title') && title }
         </div>
         <div className='Header-center'></div>
         <div className='Header-block'>
-          <div className='Header-actionSection'>
-            <button className={`Header-button Header-roleBtn ${role === 1 ? 'is-main' : ''}`} onClick={() => setRoleOpen(true)}>
-              {role === 1 ? 'Main' : 'Satellite'}
-            </button>
-            <Role currentRole={role} open={roleOpen} onClose={() => setRoleOpen(false)} />
-          </div>
-          <div className='Header-actionSection'>
-            <button className='Header-button Header-sharingBtn' onClick={() => setSharingOpen(true)}>
-              <Icon name='person' />
-              {connectionCount || 0}
-            </button>
-            <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
-          </div>
-          <button className='Header-button Header-editBtn' onClick={() => handlePaletteOpen()} title='Open palette'>
-            <Icon name='search' />
-          </button>
-          <button className='Header-button Header-editBtn' onClick={() => handleReload()} title='Reload'>
-            <Icon name='reload' />
-          </button>
-          <button className={`Header-button Header-editBtn ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)} title='Edit layout'>
-            <Icon name='edit' color={isEditingLayout ? 'var(--base-color--accent1)' : 'var(--base-color)'} />
-          </button>
-          <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)} title='Preferences'>
-            <Icon name='preferences' />
-          </button>
+          {
+            featureShown('role') &&
+            (
+              <div className='Header-actionSection'>
+                <button className={`Header-button Header-roleBtn ${role === 1 ? 'is-main' : ''}`} onClick={() => setRoleOpen(true)}>
+                  {role === 1 ? 'Main' : 'Satellite'}
+                </button>
+                <Role currentRole={role} open={roleOpen} onClose={() => setRoleOpen(false)} />
+              </div>
+            )
+          }
+          {
+            featureShown('sharing') &&
+            (
+              <div className='Header-actionSection'>
+                <button className='Header-button Header-sharingBtn' onClick={() => setSharingOpen(true)}>
+                  <Icon name='person' />
+                  {connectionCount || 0}
+                </button>
+                <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
+              </div>
+            )
+          }
+          {
+            featureShown('palette') &&
+            (
+              <button className='Header-button Header-editBtn' onClick={() => handlePaletteOpen()} title='Open palette'>
+                <Icon name='search' />
+              </button>
+            )
+          }
+          {
+            featureShown('reload') &&
+            (
+              <button className='Header-button Header-editBtn' onClick={() => handleReload()} title='Reload'>
+                <Icon name='reload' />
+              </button>
+            )
+          }
+          {
+            featureShown('editLayout') &&
+            (
+              <button className={`Header-button Header-editBtn ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)} title='Edit layout'>
+                <Icon name='edit' color={isEditingLayout ? 'var(--base-color--accent1)' : 'var(--base-color)'} />
+              </button>
+            )
+          }
+          {
+            featureShown('preferences') &&
+            (
+              <button className='Header-button Header-preferencesBtn' onClick={() => setPrefsOpen(true)} title='Preferences'>
+                <Icon name='preferences' />
+              </button>
+            )
+          }
         </div>
       </header>
     </>

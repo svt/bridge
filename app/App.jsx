@@ -1,6 +1,7 @@
 import React from 'react'
 import { Start } from './views/Start'
 import { Workspace } from './views/Workspace'
+import { WorkspaceWidget } from './views/WorkspaceWidget'
 
 import { Router } from './components/Router'
 
@@ -246,6 +247,10 @@ export default function App () {
       <LocalContext.Provider value={[local, applyLocal]}>
         <SharedContext.Provider value={[shared, applyShared]}>
           <Router routes={[
+            {
+              path: /^\/workspaces\/.+\/widgets\/.+$/,
+              render: () => <WorkspaceWidget />
+            },
             {
               path: /^\/workspaces\/.+$/,
               render: () => <Workspace />

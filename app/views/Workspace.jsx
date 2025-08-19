@@ -14,15 +14,10 @@ import { SharedContext } from '../sharedContext'
 import { Header } from '../components/Header'
 import { Onboarding } from '../components/Onboarding'
 
-import { Grid } from '../components/Grid'
-import { Palette } from '../components/Palette'
-import { GridItem } from '../components/GridItem'
 import { MessageContainer } from '../components/MessageContainer'
-
-import { TabsComponent } from '../components/TabsComponent'
-import { EmptyComponent } from '../components/EmptyComponent'
-import { FrameComponent } from '../components/FrameComponent'
 import { MissingComponent } from '../components/MissingComponent'
+
+import { WidgetRenderer, widgetExists } from '../components/WidgetRenderer'
 
 /**
  * Get the file name without extension
@@ -56,61 +51,6 @@ export const Workspace = () => {
   React.useEffect(() => {
     sharedRef.current = shared
   }, [shared])
-
-  /**
-   * Define render functions for the
-   * internal components such as
-   * basic layouts
-   */
-  const INTERNAL_COMPONENTS = React.useRef({
-    'bridge.internals.grid': (data, onUpdate) => {
-      return (
-        <Grid data={data} onChange={onUpdate}>
-          {
-            (data.children ? Object.entries(data.children) : [])
-              .map(([id, component]) => (
-                <GridItem key={id}>
-                  {
-                    renderComponent({ id, ...component }, data => onUpdate({
-                      children: {
-                        [id]: data
-                      }
-                    }))
-                  }
-                </GridItem>
-              ))
-          }
-        </Grid>
-      )
-    },
-    'bridge.internals.tabs': (data, onUpdate) => {
-      return <TabsComponent data={data} onUpdate={onUpdate} renderComponent={renderComponent} />
-    },
-    'bridge.internals.empty': () => {
-      return <EmptyComponent />
-    }
-  })
-
-  /**
-   * A helper function for rendering
-   * a component from its manifest
-   * data from the store
-   * @param { String } id
-   * @param { ComponentData } data
-   * @param { (arg1: any) => {} } onUpdate
-   * @returns { React.ReactElement }
-   */
-  function renderComponent (data, onUpdate) {
-    if (INTERNAL_COMPONENTS.current[data.component]) {
-      return INTERNAL_COMPONENTS.current[data.component](data, onUpdate)
-    }
-
-    if (sharedRef.current?._widgets?.[data.component]) {
-      return <FrameComponent data={data} onUpdate={onUpdate} />
-    }
-
-    return <MissingComponent data={data} />
-  }
 
   /**
    * Handle updates of component data
@@ -147,10 +87,9 @@ export const Workspace = () => {
           .map(([id, component]) => (
             <div key={id} className='View-component'>
               {
-                renderComponent(
-                  component,
-                  data => handleComponentUpdate({ [id]: data })
-                )
+                widgetExists(component.component, sharedRef.current?._widgets)
+                  ? <WidgetRenderer data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
+                  : <MissingComponent data={component} />
               }
             </div>
           ))

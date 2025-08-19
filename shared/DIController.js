@@ -89,7 +89,7 @@ class DIController {
   #getEntry (name) {
     const entry = this.#index.get(name)
     if (!entry) {
-      throw new DIControllerError('No registered entry was found with the provided name')
+      throw new DIControllerError(`No registered entry was found with the provided name: ${name}`)
     }
     return entry
   }
