@@ -84,7 +84,7 @@ export default function App () {
   const [local, setLocal] = React.useState({})
   const [shared, setShared] = React.useState({})
 
-  const [data, send, readyState] = useWebsocket(`${socketHost}/api/v1/ws?workspace=${workspace}`, true)
+  const [data, send, readyState] = useWebsocket(workspace && `${socketHost}/api/v1/ws?workspace=${workspace}`, true)
 
   /**
     * Setup a reference to hold

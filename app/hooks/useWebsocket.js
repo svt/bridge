@@ -78,13 +78,18 @@ export const useWebsocket = (url, _reconnect) => {
       socket.current = _socket
       setRes(undefined)
     }
+
+    if (typeof url !== 'string') {
+      return
+    }
+
     setupSocket(url)
 
     return () => {
       reconnect.current = false
       socket?.current?.close()
     }
-  }, [])
+  }, [url])
 
   /**
     * Send some data over the websocket
