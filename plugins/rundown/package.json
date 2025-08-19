@@ -41,7 +41,7 @@
         "title": "Size",
         "bind": "shared.plugins.bridge-plugin-rundown.settings",
         "inputs": [
-          { "type": "boolean", "bind": "compact", "label": "Make items compact" }
+          { "type": "boolean", "bind": "compact", "label": "Compact items" }
         ]
       }
     ],
