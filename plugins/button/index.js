@@ -50,6 +50,5 @@ async function initWidget () {
 }
 
 exports.activate = async () => {
-  bridge.commands.registerCommand('bridge.plugins.clock.time', echo => ({ echo, time: Date.now() }))
   initWidget()
 }
