@@ -25,6 +25,7 @@
 
   --base-color--background: #121212;
   --base-color--background1: #292a2c;
+  --base-color--background2: rgba(18, 18, 18, 0.75);
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
@@ -58,6 +59,7 @@
 
   --base-color--background: white;
   --base-color--background1: #f0f0f0;
+  --base-color--background2: rgba(255, 255, 255, 0.9);
 
   --base-color--alert: #FF5E6C;
 
@@ -87,6 +89,7 @@
 
   --base-color--background: #271033;
   --base-color--background1: #3c204a;
+  --base-color--background2: rgba(39, 16, 51, 0.75);
 
   --base-color--alert: #87289B;
 

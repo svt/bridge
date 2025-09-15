@@ -4,6 +4,7 @@ import { Workspace } from './views/Workspace'
 import { WorkspaceWidget } from './views/WorkspaceWidget'
 
 import { Router } from './components/Router'
+import { Transparency } from './components/Transparency'
 
 import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
@@ -246,6 +247,7 @@ export default function App () {
     <SocketContext.Provider value={[send, data]}>
       <LocalContext.Provider value={[local, applyLocal]}>
         <SharedContext.Provider value={[shared, applyShared]}>
+          <Transparency />
           <Router routes={[
             {
               path: /^\/workspaces\/.+\/widgets\/.+$/,
