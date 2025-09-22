@@ -5,7 +5,7 @@
 const MissingIdentityError = require('../error/MissingIdentityError')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
 
-const LazyValue = require('../classes/LazyValue')
+const LazyValue = require('../../shared/LazyValue')
 const DIController = require('../../shared/DIController')
 
 /**
