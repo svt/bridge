@@ -13,7 +13,7 @@ const ASSET_HTML = {
   '.css': asset => `<link rel="stylesheet" href="${asset}"/>`
 }
 
-function render (state, assets) {
+function render (state, assets, nonce) {
   /**
    * Render assets as HTML
    * based on their extensions
@@ -35,7 +35,7 @@ function render (state, assets) {
         <base href="/" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=0">
         ${renderedAssets}
-        <script>
+        <script nonce="${nonce}">
           window.APP = ${JSON.stringify(state)}
         </script>
         <title>Bridge</title>
