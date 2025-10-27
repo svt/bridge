@@ -14,6 +14,7 @@ import { useWebsocket } from './hooks/useWebsocket'
 
 import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
+import * as auth from './auth'
 import * as api from './api'
 
 /**
@@ -132,6 +133,18 @@ export default function App () {
     if (readyState !== 1) return
     setup()
   }, [readyState])
+
+  React.useEffect(() => {
+    async function setup () {
+      const token = await auth.getToken()
+      /**
+       * @todo
+       * Use token to authenticate against API
+       */
+      console.log('Got token', token)
+    }
+    setup()
+  }, [])
 
   /*
   Setup an interval to send a heartbeat
