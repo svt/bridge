@@ -4,6 +4,7 @@
 
 const DIController = require('../shared/DIController')
 
+require('./connection')
 require('./transport')
 require('./variables')
 require('./shortcuts')
@@ -21,6 +22,7 @@ require('./items')
 
 class API {
   constructor (props) {
+    this.connection = props.Connection
     this.transport = props.Transport
     this.variables = props.Variables
     this.shortcuts = props.Shortcuts
@@ -39,6 +41,7 @@ class API {
 }
 
 DIController.main.register('API', API, [
+  'Connection',
   'Transport',
   'Variables',
   'Shortcuts',

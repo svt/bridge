@@ -102,11 +102,6 @@ export default function App () {
   }, [local])
 
   React.useEffect(() => {
-    if (readyState !== 1) return
-    send({ type: 'id', data: local.id })
-  }, [readyState])
-
-  React.useEffect(() => {
     /**
      * Setup the Bridge api
      * and attach listeners
@@ -117,6 +112,10 @@ export default function App () {
       bridge.transport.send = msg => {
         send(msg)
       }
+
+      const id = await bridge.connection.registerConnection()
+      applyLocal({ id })
+
       bridge.transport.replayQueue()
 
       bridge.events.on('state.change', state => {
@@ -124,7 +123,7 @@ export default function App () {
       })
 
       window.onbeforeunload = () => {
-        send({ type: 'disconnect' })
+        bridge.connection.removeConnection()
       }
 
       const initialState = await bridge.state.get()
@@ -154,7 +153,7 @@ export default function App () {
   React.useEffect(() => {
     async function sendHeartbeat () {
       const bridge = await api.load()
-      bridge.client.heartbeat()
+      bridge.connection.heartbeat()
     }
 
     const ival = setInterval(
@@ -210,7 +209,7 @@ export default function App () {
         unique identifier and setup the
         client's initial state
         */
-        case 'id':
+/*         case 'id':
           applyLocal({ id: json?.data })
           applyShared({
             _connections: {
@@ -220,7 +219,7 @@ export default function App () {
             }
           })
           ;(await api.load()).client.setIdentity(json?.data)
-          break
+          break */
 
         /*
         Forward the message to

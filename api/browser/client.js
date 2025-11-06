@@ -307,15 +307,6 @@ class Client {
     return (await this.getAllConnections())
       .filter(connection => connection.role === role)
   }
-
-  /**
-   * Send a heartbeat
-   * for this client
-   */
-  async heartbeat () {
-    const id = await this.awaitIdentity()
-    this.#props.Commands.executeRawCommand('client.heartbeat', id)
-  }
 }
 
 DIController.main.register('Client', Client, [
