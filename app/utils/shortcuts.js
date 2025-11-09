@@ -6,7 +6,8 @@ import * as api from '../api'
 
 const TRANSLATIONS = {
   Meta: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
-  Control: () => 'CommandOrControl'
+  Control: () => 'CommandOrControl',
+  ' ': () => 'Space'
 }
 
 /**
