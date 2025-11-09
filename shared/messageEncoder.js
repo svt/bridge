@@ -10,7 +10,8 @@ const ENCODING_TABLE = {
   args: 'a',
   refresh: 'r',
   type: 't',
-  headers: 'h'
+  headers: 'h',
+  error: 'e'
 }
 
 const DECODING_TABLE = invert(ENCODING_TABLE)
