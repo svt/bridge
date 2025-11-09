@@ -1,12 +1,14 @@
 # Changelog
 
-## 1.0.0 - UNRELEASED
+## 1.0.0-beta.7
 ### Changed
 - Worker errors now show as messages in the UI
+- Refactored websocket logic
 ### Added
 - Buttons for reload and the palette to the header
 - Floating widgets
 - A compact option for rundown items
+- Authorization for commands
 
 ## 1.0.0-beta.6
 ### Changed
