@@ -35,7 +35,8 @@ async function initWidget () {
     id: 'bridge.plugins.state',
     name: 'State',
     uri: `${htmlPath}`,
-    description: 'View the internal state in real time'
+    description: 'View the internal state in real time',
+    supportsFloat: true
   })
 }
 

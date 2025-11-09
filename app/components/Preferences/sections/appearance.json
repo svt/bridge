@@ -13,5 +13,11 @@
         ]
       }
     ]
+  },
+  {
+    "title": "Transparency",
+    "inputs": [
+      { "type": "boolean", "bind": "shared._userDefaults.appearance.transparency", "label": "Enable transparency" }
+    ]
   }
 ]

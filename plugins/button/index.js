@@ -36,18 +36,19 @@ async function initWidget () {
     id: 'bridge.plugins.button.play',
     name: 'Play button',
     uri: `${htmlPath}?path=play`,
-    description: 'A button playing an item'
+    description: 'A button playing an item',
+    supportsFloat: true
   })
 
   bridge.widgets.registerWidget({
     id: 'bridge.plugins.button.stop',
     name: 'Stop button',
     uri: `${htmlPath}?path=stop`,
-    description: 'A button stopping an item'
+    description: 'A button stopping an item',
+    supportsFloat: true
   })
 }
 
 exports.activate = async () => {
-  bridge.commands.registerCommand('bridge.plugins.clock.time', echo => ({ echo, time: Date.now() }))
   initWidget()
 }

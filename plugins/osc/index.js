@@ -299,7 +299,8 @@ exports.activate = async () => {
     id: 'bridge.plugins.osc.log',
     name: 'OSC log',
     uri: `${htmlPath}?path=widget/log`,
-    description: 'Log the most recent incoming OSC traffic'
+    description: 'Log the most recent incoming OSC traffic',
+    supportsFloat: true
   })
 
   /*

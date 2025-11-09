@@ -42,7 +42,8 @@ async function initWidget () {
     id: 'bridge.plugins.rundown',
     name: 'Rundown',
     uri: `${htmlPath}?path=rundown`,
-    description: 'The default rundown'
+    description: 'The default rundown',
+    supportsFloat: true
   })
 }
 

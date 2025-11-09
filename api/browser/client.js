@@ -2,10 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+const ApiError = require('../error/ApiError')
 const MissingIdentityError = require('../error/MissingIdentityError')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
 
-const LazyValue = require('../classes/LazyValue')
+const LazyValue = require('../../shared/LazyValue')
 const DIController = require('../../shared/DIController')
 
 /**
@@ -13,7 +14,6 @@ const DIController = require('../../shared/DIController')
  *  id: String,
  *  role: Number,
  *  heartbeat: Number,
- *  isPersistent: Boolean,
  *  isEditingLayout: Boolean
  * }} Connection
  *
@@ -116,17 +116,41 @@ class Client {
   }
 
   /**
+   * Register this instance as
+   * a new client with the API
+   * @returns
+   */
+  async registerClient () {
+    if (this.getIdentity()) {
+      throw new ApiError('This client has already been registered')
+    }
+    const id = await this.#props.Commands.executeCommand('client.registerClient')
+    this.setIdentity(id)
+    return id
+  }
+
+  /**
+   * Remove this client from the API,
+   * this should be called before the
+   * client closes
+   */
+  removeClient () {
+    this.assertIdentity()
+    this.#props.Commands.executeCommand('client.removeClient', this.getIdentity())
+  }
+
+  /**
    * Select an item,
    * will replace the
    * current selection
    * @param { String } item A string to select
    *//**
-  * Select multiple items,
-  * will replace the
-  * current selection
-  * @param { String[] } item Multiple items to select
-  * @param { ClientSelectionState } state An optional state to pass with the event
-  */
+   * Select multiple items,
+   * will replace the
+   * current selection
+   * @param { String[] } item Multiple items to select
+   * @param { ClientSelectionState } state An optional state to pass with the event
+   */
   async setSelection (item, state = DEFAULT_SELECTION_EVENT_STATE) {
     this.assertIdentity()
 
@@ -147,11 +171,11 @@ class Client {
    * client's already existing selection
    * @param { String } item The id of an item to add
    *//**
-  * Select multiple items by adding to
-  * the client's already existing selection
-  * @param { String[] } item An array of ids for
-  *                           the items to add
-  */
+   * Select multiple items by adding to
+   * the client's already existing selection
+   * @param { String[] } item An array of ids for
+   *                           the items to add
+   */
   async addSelection (item) {
     this.assertIdentity()
 
@@ -180,10 +204,10 @@ class Client {
    * the current selection
    * @param { String } item The id of an item to subtract
    *//**
-  * Subtract multiple items
-  * from the current selection
-  * @param { String[] } item An array of ids of items to subtract
-  */
+   * Subtract multiple items
+   * from the current selection
+   * @param { String[] } item An array of ids of items to subtract
+   */
   subtractSelection (item) {
     this.assertIdentity()
 
@@ -306,15 +330,6 @@ class Client {
 
     return (await this.getAllConnections())
       .filter(connection => connection.role === role)
-  }
-
-  /**
-   * Send a heartbeat
-   * for this client
-   */
-  async heartbeat () {
-    const id = await this.awaitIdentity()
-    this.#props.Commands.executeRawCommand('client.heartbeat', id)
   }
 }
 

@@ -2,36 +2,23 @@
 //
 // SPDX-License-Identifier: MIT
 
-/**
- * Load the api
- * @returns { Promise.<any> } The api
- */
-export const load = (function () {
-  let bridge = window.bridge
-  let resolvers = []
+import { LazyValue } from './utils/LazyValue'
 
-  if (!bridge) {
-    /*
-    Observe window.bridge and resolve all
-    pending promises as soon as it's set
-    */
-    Object.defineProperty(window, 'bridge', {
-      configurable: true,
-      set: value => {
-        bridge = value
-        resolvers.forEach(resolve => resolve(bridge))
-        resolvers = undefined
-      },
-      get: () => bridge
-    })
-  }
+const value = new LazyValue()
 
-  return () => {
-    if (bridge) {
-      return Promise.resolve(bridge)
-    }
-    return new Promise(resolve => {
-      resolvers.push(resolve)
-    })
-  }
+;(function () {
+  Object.defineProperty(window, 'bridge', {
+    configurable: true,
+    set: newValue => {
+      value.set(newValue)
+    },
+    get: () => value.get()
+  })
 })()
+
+/**
+ * A lazy value to await
+ * in order to get the api
+ * @returns { Promise.<any> }
+ */
+export const load = () => value.get()

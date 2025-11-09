@@ -36,14 +36,16 @@ async function initWidget () {
     id: 'bridge.plugins.clock.latency',
     name: 'Command latency',
     uri: `${htmlPath}?view=latency`,
-    description: 'A widget showing the latency between commands sent to the main thread'
+    description: 'A widget showing the latency between commands sent to the main thread',
+    supportsFloat: true
   })
 
   bridge.widgets.registerWidget({
     id: 'bridge.plugins.clock.time',
     name: 'Current time',
     uri: `${htmlPath}?view=time`,
-    description: 'A widget showing the current time'
+    description: 'A widget showing the current time',
+    supportsFloat: true
   })
 }
 

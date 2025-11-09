@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/reload</title>
+    <g id="icons/reload" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(6, 3.4)" stroke="#FFFFFF" stroke-width="1.5">
+            <path d="M7.75,3.5 C7.6669228,3.5 6.33420962,3.50155857 6.25188812,3.50464806 C2.77701294,3.63505878 0,6.49322633 0,10 C0,13.5898509 2.91014913,16.5 6.5,16.5 C10.0898509,16.5 13,13.5898509 13,10" id="Path"></path>
+            <path d="M2.58578644,1.03553391 L2.58578644,5.33553391 C2.58578644,5.72213323 2.89918711,6.03553391 3.28578644,6.03553391 L7.58578644,6.03553391 L7.58578644,6.03553391" id="Path-21" transform="translate(5.0858, 3.5355) rotate(225) translate(-5.0858, -3.5355)"></path>
+        </g>
+    </g>
+</svg>

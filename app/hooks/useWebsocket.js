@@ -4,6 +4,8 @@
 
 import React from 'react'
 
+import * as messageEncoder from '../../shared/messageEncoder'
+
 /**
   * A timeout delay for when
   * a connection closes
@@ -12,17 +14,51 @@ import React from 'react'
   */
 const RECONNECT_TIMEOUT_MS = 500
 
-export const useWebsocket = (url, _reconnect) => {
-  const [readyState, setReadyState] = React.useState()
-  const [res, setRes] = React.useState()
+/**
+ * Define the interval of heartbeats
+ * sent to the server to indicate that
+ * the socket is alive
+ *
+ * This value MUST be smaller than the
+ * ttl of a socket defined in the server
+ *
+ * Defaults to 5 seconds
+ *
+ * @type { Number }
+ */
+const HEARTBEAT_INTERVAL_MS = 5000
 
+function createQueryString (queryParameters = {}) {
+  const str = Object.entries(queryParameters)
+    .filter(([, value]) => !!value)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&')
+  return `?${str}`
+}
+
+export const useWebsocket = (url, _reconnect, query) => {
+  const [readyState, setReadyState] = React.useState()
+  const [data, setData] = React.useState()
+
+  const idRef = React.useRef()
+  const refreshRef = React.useRef()
+
+  const socketRef = React.useRef()
   const sendQueue = React.useRef([])
   const reconnect = React.useRef(_reconnect)
-  const socket = React.useRef()
 
   React.useEffect(() => {
     function setupSocket (url) {
-      const _socket = new window.WebSocket(url)
+      const _query = {
+        id: idRef.current,
+        refresh: refreshRef.current,
+        ...query
+      }
+      const _socket = new window.WebSocket(`${url}${createQueryString(_query)}`)
+
+      window.__DISCONNECT_SOCKET = () => {
+        _socket.close()
+      }
 
       /**
         * Send all messages in the queue
@@ -46,7 +82,18 @@ export const useWebsocket = (url, _reconnect) => {
         * @param { MessageEvent } e
         */
       function onMessage (e) {
-        setRes(e)
+        const strData = e?.data
+        try {
+          const data = JSON.parse(strData)
+          const decoded = messageEncoder.decodeMessage(data)
+          if (decoded.type === 'id') {
+            idRef.current = decoded.id
+            refreshRef.current = decoded.refresh
+          }
+          setData(decoded)
+        } catch (err) {
+          console.warn('[useWebsocket]', err)
+        }
       }
 
       /**
@@ -75,16 +122,21 @@ export const useWebsocket = (url, _reconnect) => {
       _socket.addEventListener('open', onOpen)
       _socket.addEventListener('close', onClose)
       _socket.addEventListener('message', onMessage)
-      socket.current = _socket
-      setRes(undefined)
+      socketRef.current = _socket
+      setData(undefined)
     }
+
+    if (typeof url !== 'string') {
+      return
+    }
+
     setupSocket(url)
 
     return () => {
       reconnect.current = false
-      socket?.current?.close()
+      socketRef?.current?.close()
     }
-  }, [])
+  }, [url, JSON.stringify(query)])
 
   /**
     * Send some data over the websocket
@@ -93,12 +145,25 @@ export const useWebsocket = (url, _reconnect) => {
     * @param { Object.<Any> } data An object to send
     */
   const send = React.useCallback(data => {
-    if (socket?.current?.readyState !== 1) {
+    if (socketRef?.current?.readyState !== 1) {
       sendQueue.current.push(data)
       return
     }
-    socket.current.send(JSON.stringify(data))
+    const encoded = messageEncoder.encodeMessage(data)
+    socketRef.current.send(JSON.stringify(encoded))
   }, [])
 
-  return [res?.data, send, readyState]
+  React.useEffect(() => {
+    if (readyState !== 1) {
+      return
+    }
+
+    const ival = setInterval(() => {
+      send({ type: 'heartbeat' })
+    }, HEARTBEAT_INTERVAL_MS)
+
+    return () => clearInterval(ival)
+  }, [readyState])
+
+  return [data, send, readyState]
 }

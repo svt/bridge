@@ -9,12 +9,14 @@ import { ContextMenuDivider } from '../ContextMenuDivider'
 import { PopupConfirm } from '../Popup/confirm'
 import { Tabs } from '../Tabs'
 
+import { WidgetRenderer } from '../WidgetRenderer'
+
 /**
  * A tab widget
  * @param { params } param0
  * @returns { React.Component }
  */
-export function TabsComponent ({ data, onUpdate = () => {}, renderComponent = () => {} }) {
+export function TabsComponent ({ data, onUpdate = () => {} }) {
   const [activeTab, setActiveTab] = React.useState()
   const [tabToRemove, setTabToRemove] = React.useState()
 
@@ -167,7 +169,7 @@ export function TabsComponent ({ data, onUpdate = () => {}, renderComponent = ()
     if (!data?.children[id]) {
       return <></>
     }
-    return renderComponent(data?.children[activeTab], data => handleChildUpdate(activeTab, data))
+    return <WidgetRenderer data={data?.children[activeTab]} onUpdate={data => handleChildUpdate(activeTab, data)} />
   }
 
   const tabs = (data?.order || [])

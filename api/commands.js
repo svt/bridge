@@ -34,6 +34,7 @@ class Commands {
   #props
 
   #handlers = new Map()
+  #headers = {}
 
   constructor (props) {
     this.#props = props
@@ -76,6 +77,14 @@ class Commands {
     })
   }
 
+  setHeader (key, value) {
+    this.#headers[key] = value
+  }
+
+  getHeader (key) {
+    return this.#headers[key]
+  }
+
   /**
    * Execute a command
    * @param { String } command A command to execute
@@ -89,7 +98,6 @@ class Commands {
 
       this.registerCommand(transaction, (res, err) => {
         this.removeCommand(transaction)
-
         if (err) {
           const error = new Error(err.message)
           error.stack = err.stack
@@ -116,7 +124,11 @@ class Commands {
    * @param { ...any } args Arguments to pass to the command
    */
   executeRawCommand (command, ...args) {
-    this.#props.Transport.send({ command, args: [...args] })
+    this.#props.Transport.send({
+      command,
+      args: [...args],
+      headers: this.#headers
+    })
   }
 
   /**

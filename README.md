@@ -11,7 +11,6 @@ Developed for CasparCG but can control anything that supports OSC.
 ![Screenshot](/media/screenshot.png)
 
 ## Goals
-
 - [x] ⚡️ To be a server agnostic, lightweight and quick playout client
 - [x] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
 - [x] 💪 To provide a reliable backbone for productions

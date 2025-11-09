@@ -39,6 +39,8 @@
   flex-shrink: 0;
 
   align-items: center;
+  justify-content: space-between;
+
   box-sizing: border-box;
 }
 
@@ -53,4 +55,51 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.FrameComponent-headerButtons {
+  margin-right: -10px;
+}
+
+.FrameComponent-headerButton {
+  display: flex;
+  position: relative;
+  width: 30px;
+  height: 30px;
+
+  margin-left: 7px;
+  border: none;
+
+  color: inherit;
+  font-size: 1em;
+  font-family: var(--base-fontFamily--primary);
+
+  background: none;
+
+  align-items: center;
+  justify-content: center;
+
+  -webkit-app-region: no-drag;
+
+  transform: scale(0.8);
+
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.FrameComponent-headerButton:not(.is-active):hover {
+  background: var(--base-color--shade);
+  opacity: 0.7;
+}
+
+.FrameComponent-headerButton.is-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: var(--base-color--accent1);
+  opacity: 0.15;
 }

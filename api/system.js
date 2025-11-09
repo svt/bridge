@@ -37,6 +37,15 @@ class System {
         return res
       })
   }
+
+  /**
+   * Log a message to the system log
+   * @param { String } message
+   * @returns { Promise.<Void> }
+   */
+  log (message) {
+    return this.#props.Commands.executeCommand('system.log', message)
+  }
 }
 
 DIController.main.register('System', System, [
