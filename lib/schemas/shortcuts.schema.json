@@ -81,7 +81,8 @@
           "ArrowRight",
           "CommandOrControl",
           "Backspace",
-          "Delete"
+          "Delete",
+          "Space"
         ]
       }
     }
