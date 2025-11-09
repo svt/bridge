@@ -11,13 +11,17 @@ Developed for CasparCG but can control anything that supports OSC.
 ![Screenshot](/media/screenshot.png)
 
 ## Goals
-
 - [x] ⚡️ To be a server agnostic, lightweight and quick playout client
 - [x] 🧑‍💻 To be easily extendable with plugins and encourage contribution 
 - [x] 💪 To provide a reliable backbone for productions
 
+## Roadmap
+The roadmap is available on Notion  
+[View roadmap](https://bridge-playout.notion.site/2833cf582c13809d933edb438e165a0c?v=2833cf582c138040afe3000c90f38fb0)
+
 ## Table of contents
 - [Goals](#goals)
+- [Roadmap](#roadmap)
 - [Features](#features)
 - [Community plugins](#community-plugins)
 - [Compatibility](#compatibility-notes)
