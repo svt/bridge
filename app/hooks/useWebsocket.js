@@ -4,6 +4,8 @@
 
 import React from 'react'
 
+import * as messageEncoder from '../../shared/messageEncoder'
+
 /**
   * A timeout delay for when
   * a connection closes
@@ -41,9 +43,9 @@ export const useWebsocket = (url, _reconnect, query) => {
   const idRef = React.useRef()
   const refreshRef = React.useRef()
 
+  const socketRef = React.useRef()
   const sendQueue = React.useRef([])
   const reconnect = React.useRef(_reconnect)
-  const socket = React.useRef()
 
   React.useEffect(() => {
     function setupSocket (url) {
@@ -53,6 +55,10 @@ export const useWebsocket = (url, _reconnect, query) => {
         ...query
       }
       const _socket = new window.WebSocket(`${url}${createQueryString(_query)}`)
+
+      window.__DISCONNECT_SOCKET = () => {
+        _socket.close()
+      }
 
       /**
         * Send all messages in the queue
@@ -79,11 +85,12 @@ export const useWebsocket = (url, _reconnect, query) => {
         const strData = e?.data
         try {
           const data = JSON.parse(strData)
-          if (data.type === 'id') {
-            idRef.current = data.id
-            refreshRef.current = data.refresh
+          const decoded = messageEncoder.decodeMessage(data)
+          if (decoded.type === 'id') {
+            idRef.current = decoded.id
+            refreshRef.current = decoded.refresh
           }
-          setData(data)
+          setData(decoded)
         } catch (err) {
           console.warn('[useWebsocket]', err)
         }
@@ -115,7 +122,7 @@ export const useWebsocket = (url, _reconnect, query) => {
       _socket.addEventListener('open', onOpen)
       _socket.addEventListener('close', onClose)
       _socket.addEventListener('message', onMessage)
-      socket.current = _socket
+      socketRef.current = _socket
       setData(undefined)
     }
 
@@ -127,7 +134,7 @@ export const useWebsocket = (url, _reconnect, query) => {
 
     return () => {
       reconnect.current = false
-      socket?.current?.close()
+      socketRef?.current?.close()
     }
   }, [url, JSON.stringify(query)])
 
@@ -138,11 +145,12 @@ export const useWebsocket = (url, _reconnect, query) => {
     * @param { Object.<Any> } data An object to send
     */
   const send = React.useCallback(data => {
-    if (socket?.current?.readyState !== 1) {
+    if (socketRef?.current?.readyState !== 1) {
       sendQueue.current.push(data)
       return
     }
-    socket.current.send(JSON.stringify(data))
+    const encoded = messageEncoder.encodeMessage(data)
+    socketRef.current.send(JSON.stringify(encoded))
   }, [])
 
   React.useEffect(() => {

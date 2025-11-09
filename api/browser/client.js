@@ -13,7 +13,6 @@ const DIController = require('../../shared/DIController')
  *  id: String,
  *  role: Number,
  *  heartbeat: Number,
- *  isPersistent: Boolean,
  *  isEditingLayout: Boolean
  * }} Connection
  *
