@@ -115,6 +115,17 @@ class Client {
     }
   }
 
+  async registerClient () {
+    const id = await this.#props.Commands.executeCommand('client.registerClient')
+    this.setIdentity(id)
+    return id
+  }
+
+  removeClient () {
+    this.assertIdentity()
+    this.#props.Commands.executeCommand('client.removeClient', this.getIdentity())
+  }
+
   /**
    * Select an item,
    * will replace the

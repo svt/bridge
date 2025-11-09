@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 const DIController = require('../shared/DIController')
+const MissingIdentityError = require('./error/MissingIdentityError')
+const InvalidArgumentError = require('./error/InvalidArgumentError')
 
 class Connection {
   #props
@@ -19,7 +21,7 @@ class Connection {
     */
     if (this.#id) {
       this.#props.Commands.executeCommand('connections.registerConnection', this.#id)
-      return
+      return this.#id
     }
 
     /*
@@ -32,7 +34,7 @@ class Connection {
   }
 
   removeConnection () {
-    this.#props.Commands.executeCommand('connections.removeConnection')
+    return this.#props.Commands.executeCommand('connections.removeConnection')
   }
 
   heartbeat () {
@@ -40,6 +42,16 @@ class Connection {
       return
     }
     this.#props.Commands.executeRawCommand('connections.heartbeat', this.#id)
+  }
+
+  authenticate (token) {
+    if (!this.token || typeof token !== 'string') {
+      throw new InvalidArgumentError()
+    }
+    if (!this.#id) {
+      throw new MissingIdentityError()
+    }
+    return this.#props.Commands.executeCommand('connections.auth', token)
   }
 }
 

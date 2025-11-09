@@ -18,25 +18,11 @@ import * as auth from './auth'
 import * as api from './api'
 
 /**
- * Define the interval of heartbeats
- * sent to the server to indicate that
- * the socket is alive
- *
- * This value MUST be smaller than the
- * ttl of a socket defined in the server
- *
- * Defaults to 5 seconds
- *
- * @type { Number }
- */
-const HEARTBEAT_INTERVAL_MS = 5000
-
-/**
   * The protocol (wss or ws)
   * that sockets should use
   * based on the current http
   * protocol
-  * @type { String }
+  * @type { string }
   */
 const socketProtocol = (function () {
   if (window.location.protocol === 'https:') {
@@ -82,11 +68,15 @@ root html tag for platform-specific styling e.t.c.
   window.document.documentElement.dataset.platform = browser.platform()
 })()
 
+const websocketQuery = {
+  workspace
+}
+
 export default function App () {
   const [local, setLocal] = React.useState({})
   const [shared, setShared] = React.useState({})
 
-  const [data, send, readyState] = useWebsocket(workspace && `${socketHost}/api/v1/ws?workspace=${workspace}`, true)
+  const [data, send, readyState] = useWebsocket(workspace && `${socketHost}/api/v1/ws`, true, websocketQuery)
 
   /**
     * Setup a reference to hold
@@ -113,9 +103,11 @@ export default function App () {
         send(msg)
       }
 
-      const id = await bridge.connection.registerConnection()
-      applyLocal({ id })
-
+      if (!bridge.client.getIdentity()) {
+        const id = await bridge.client.registerClient()
+        applyLocal({ id })
+      }
+      
       bridge.transport.replayQueue()
 
       bridge.events.on('state.change', state => {
@@ -123,7 +115,7 @@ export default function App () {
       })
 
       window.onbeforeunload = () => {
-        bridge.connection.removeConnection()
+        bridge.client.removeClient()
       }
 
       const initialState = await bridge.state.get()
@@ -136,34 +128,12 @@ export default function App () {
   React.useEffect(() => {
     async function setup () {
       const token = await auth.getToken()
-      /**
-       * @todo
-       * Use token to authenticate against API
-       */
-      console.log('Got token', token)
-    }
-    setup()
-  }, [])
-
-  /*
-  Setup an interval to send a heartbeat
-  at a regular interval to the server
-  to indicate that the socket is alive
-  */
-  React.useEffect(() => {
-    async function sendHeartbeat () {
       const bridge = await api.load()
-      bridge.connection.heartbeat()
+      bridge.commands.setHeader('authentication', token)
     }
-
-    const ival = setInterval(
-      () => sendHeartbeat(),
-      HEARTBEAT_INTERVAL_MS
-    )
-    sendHeartbeat()
-
-    return () => clearInterval(ival)
-  }, [local])
+    if (readyState !== 1) return
+    setup()
+  }, [readyState])
 
   /**
    * Apply data to the shared state,
@@ -201,37 +171,11 @@ export default function App () {
   */
   React.useEffect(() => {
     ;(async function () {
-      if (!data) return
-      const json = JSON.parse(data)
-      switch (json?.type) {
-        /*
-        Keep track of this connection's
-        unique identifier and setup the
-        client's initial state
-        */
-/*         case 'id':
-          applyLocal({ id: json?.data })
-          applyShared({
-            _connections: {
-              [json?.data]: {
-                isPersistent: browser.isElectron()
-              }
-            }
-          })
-          ;(await api.load()).client.setIdentity(json?.data)
-          break */
-
-        /*
-        Forward the message to
-        the api for processing
-        */
-        default:
-          ;(async function () {
-            const bridge = await api.load()
-            bridge.transport.receive(json)
-          })()
-          break
+      if (!data) {
+        return
       }
+      const bridge = await api.load()
+      bridge.transport.receive(data)
     })()
   }, [data])
 
