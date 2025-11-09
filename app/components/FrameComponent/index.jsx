@@ -237,8 +237,16 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
   }, [local.appliedTheme])
 
   async function handleOpenAsWindow (widgetId) {
-    const bridge = await api.load()
-    bridge.commands.executeCommand('window.openChildWindow', `http://${host}:${port}/workspaces/${workspaceId}/widgets/${widgetId}`)
+    const url = `http://${host}:${port}/workspaces/${workspaceId}/widgets/${widgetId}`
+
+    if (browser.isElectron()) {
+      const bridge = await api.load()
+      bridge.commands.executeCommand('window.openChildWindow', url)
+    } else {
+      window.open(url, '_blank', {
+        popup: true
+      })
+    }
   }
 
   return (
