@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+const ApiError = require('../error/ApiError')
 const MissingIdentityError = require('../error/MissingIdentityError')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
 
@@ -114,12 +115,25 @@ class Client {
     }
   }
 
+  /**
+   * Register this instance as
+   * a new client with the API
+   * @returns
+   */
   async registerClient () {
+    if (this.getIdentity()) {
+      throw new ApiError('This client has already been registered')
+    }
     const id = await this.#props.Commands.executeCommand('client.registerClient')
     this.setIdentity(id)
     return id
   }
 
+  /**
+   * Remove this client from the API,
+   * this should be called before the
+   * client closes
+   */
   removeClient () {
     this.assertIdentity()
     this.#props.Commands.executeCommand('client.removeClient', this.getIdentity())
@@ -131,12 +145,12 @@ class Client {
    * current selection
    * @param { String } item A string to select
    *//**
-  * Select multiple items,
-  * will replace the
-  * current selection
-  * @param { String[] } item Multiple items to select
-  * @param { ClientSelectionState } state An optional state to pass with the event
-  */
+   * Select multiple items,
+   * will replace the
+   * current selection
+   * @param { String[] } item Multiple items to select
+   * @param { ClientSelectionState } state An optional state to pass with the event
+   */
   async setSelection (item, state = DEFAULT_SELECTION_EVENT_STATE) {
     this.assertIdentity()
 
@@ -157,11 +171,11 @@ class Client {
    * client's already existing selection
    * @param { String } item The id of an item to add
    *//**
-  * Select multiple items by adding to
-  * the client's already existing selection
-  * @param { String[] } item An array of ids for
-  *                           the items to add
-  */
+   * Select multiple items by adding to
+   * the client's already existing selection
+   * @param { String[] } item An array of ids for
+   *                           the items to add
+   */
   async addSelection (item) {
     this.assertIdentity()
 
@@ -190,10 +204,10 @@ class Client {
    * the current selection
    * @param { String } item The id of an item to subtract
    *//**
-  * Subtract multiple items
-  * from the current selection
-  * @param { String[] } item An array of ids of items to subtract
-  */
+   * Subtract multiple items
+   * from the current selection
+   * @param { String[] } item An array of ids of items to subtract
+   */
   subtractSelection (item) {
     this.assertIdentity()
 
