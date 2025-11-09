@@ -56,10 +56,6 @@ export const useWebsocket = (url, _reconnect, query) => {
       }
       const _socket = new window.WebSocket(`${url}${createQueryString(_query)}`)
 
-      window.__DISCONNECT_SOCKET = () => {
-        _socket.close()
-      }
-
       /**
         * Send all messages in the queue
         * when the socket connects

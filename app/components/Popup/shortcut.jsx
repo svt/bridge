@@ -17,7 +17,8 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
       return
     }
 
-    function onKeyDown () {
+    function onKeyDown (e) {
+      e.preventDefault()
       setTrigger(shortcuts.getPressed())
     }
 

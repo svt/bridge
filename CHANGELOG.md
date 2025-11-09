@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.8 - UNRELEASED
+### Fixed
+- The space key can now be used for keyboard shortcuts
+
 ## 1.0.0-beta.7
 ### Changed
 - Worker errors now show as messages in the UI
