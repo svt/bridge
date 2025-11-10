@@ -329,8 +329,8 @@ export function RundownList ({
       }
 
       const listItems = Array.from(elRef.current.querySelectorAll('.RundownListItem'))
-      const indexA = listItems.findIndex(el => el.dataset.itemId === itemId)
-      const indexB = listItems.findIndex(el => el.dataset.itemId === lastSelection)
+      const indexA = listItems.findIndex(el => el.dataset.itemId === lastSelection)
+      const indexB = listItems.findIndex(el => el.dataset.itemId === itemId)
 
       const firstIndex = Math.min(indexA, indexB)
       const lastIndex = Math.max(indexA, indexB)
@@ -338,6 +338,14 @@ export function RundownList ({
       const itemsBetween = listItems
         .slice(firstIndex, lastIndex + 1)
         .map(el => el.dataset.itemId)
+
+      /*
+      Make sure that all elements are added
+      to the selection in the correct order
+      */
+      if (indexA > indexB) {
+        itemsBetween.reverse()
+      }
 
       bridge.client.selection.addSelection(itemsBetween)
       return
