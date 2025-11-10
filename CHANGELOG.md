@@ -3,6 +3,9 @@
 ## 1.0.0-beta.8 - UNRELEASED
 ### Fixed
 - The space key can now be used for keyboard shortcuts
+- An issue where items in the rundown couldn't rapidly be selected and de-selected
+### Added
+- Support for selecting multiple items at once with the shift key
 
 ## 1.0.0-beta.7
 ### Changed
