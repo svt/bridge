@@ -33,7 +33,7 @@ export function RundownGroupItem ({ index, item }) {
       return
     }
 
-    const selection = await bridge.client.getSelection()
+    const selection = await bridge.client.selection.getSelection()
     if (!(selection.includes(item.id))) {
       return
     }

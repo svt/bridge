@@ -21,7 +21,7 @@ export const InspectorTemplate = () => {
 
   React.useEffect(() => {
     async function updateSelection () {
-      const selection = await bridge.client.getSelection()
+      const selection = await bridge.client.selection.getSelection()
       selectionRef.current = selection
       setSelection(selection)
     }

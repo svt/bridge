@@ -9,11 +9,12 @@ const InvalidArgumentError = require('../error/InvalidArgumentError')
 const LazyValue = require('../../shared/LazyValue')
 const DIController = require('../../shared/DIController')
 
+require('./selection')
+
 /**
  * @typedef {{
  *  id: String,
  *  role: Number,
- *  heartbeat: Number,
  *  isEditingLayout: Boolean
  * }} Connection
  *
@@ -21,34 +22,6 @@ const DIController = require('../../shared/DIController')
  *   caller: String
  * }} ClientSelectionState
  */
-
-/**
- * The default state object,
- * if nothing else is specified,
- * for the 'selection' event
- *
- * @type { ClientSelectionState }
- */
-const DEFAULT_SELECTION_EVENT_STATE = {
-  caller: undefined
-}
-
-/**
- * @private
- * Ensure that a 'thing' is an array,
- * if it's not, one will be created and
- * the 'thing' will be inserted
- * @param { any } thing Anything to make into an array
- *                      if it isn't one already
- * @returns { any[] }
- */
-function ensureArray (thing) {
-  let arr = thing
-  if (!Array.isArray(thing)) {
-    arr = [thing]
-  }
-  return arr
-}
 
 class Client {
   #props
@@ -64,8 +37,13 @@ class Client {
     })
   }
 
+  get selection () {
+    return this.#props.Selection
+  }
+
   constructor (props) {
     this.#props = props
+    this.#props.Selection.client = this
   }
 
   /**
@@ -137,130 +115,6 @@ class Client {
   removeClient () {
     this.assertIdentity()
     this.#props.Commands.executeCommand('client.removeClient', this.getIdentity())
-  }
-
-  /**
-   * Select an item,
-   * will replace the
-   * current selection
-   * @param { String } item A string to select
-   *//**
-   * Select multiple items,
-   * will replace the
-   * current selection
-   * @param { String[] } item Multiple items to select
-   * @param { ClientSelectionState } state An optional state to pass with the event
-   */
-  async setSelection (item, state = DEFAULT_SELECTION_EVENT_STATE) {
-    this.assertIdentity()
-
-    const items = ensureArray(item)
-    await this.#props.State.apply({
-      _connections: {
-        [this.getIdentity()]: {
-          selection: { $replace: items }
-        }
-      }
-    })
-
-    this.#props.Events.emitLocally('selection', items, state)
-  }
-
-  /**
-   * Select an item by adding to the
-   * client's already existing selection
-   * @param { String } item The id of an item to add
-   *//**
-   * Select multiple items by adding to
-   * the client's already existing selection
-   * @param { String[] } item An array of ids for
-   *                           the items to add
-   */
-  async addSelection (item) {
-    this.assertIdentity()
-
-    const currentSelection = await this.getSelection()
-    const newSelectionSet = new Set(Array.isArray(currentSelection) ? currentSelection : [])
-    const newItems = ensureArray(item)
-
-    for (const item of newItems) {
-      newSelectionSet.add(item)
-    }
-
-    const newSelection = Array.from(newSelectionSet.values())
-
-    await this.#props.State.apply({
-      _connections: {
-        [this.getIdentity()]: {
-          selection: { $replace: newSelection }
-        }
-      }
-    })
-    this.#props.Events.emitLocally('selection', newSelection, DEFAULT_SELECTION_EVENT_STATE)
-  }
-
-  /**
-   * Subtract an item from
-   * the current selection
-   * @param { String } item The id of an item to subtract
-   *//**
-   * Subtract multiple items
-   * from the current selection
-   * @param { String[] } item An array of ids of items to subtract
-   */
-  subtractSelection (item) {
-    this.assertIdentity()
-
-    const selection = this.#props.State.getLocalState()?._connections?.[this.getIdentity()]?.selection
-    if (!selection) {
-      return
-    }
-
-    const items = new Set(ensureArray(item))
-    const newSelection = selection.filter(id => !items.has(id))
-
-    this.setSelection(newSelection, newSelection)
-  }
-
-  /**
-   * Check whether or not an
-   * item is in the selection
-   * @param { String } item The id of an item to check
-   * @returns { Boolean }
-   */
-  async isSelected (item) {
-    this.assertIdentity()
-    const selection = await this.#props.State.get(`_connections.${this.getIdentity()}.selection`)
-    if (!selection) {
-      return false
-    }
-    return selection.includes(item)
-  }
-
-  /**
-   * Clear the current selection
-   */
-  async clearSelection () {
-    this.assertIdentity()
-
-    await this.#props.State.apply({
-      _connections: {
-        [this.getIdentity()]: {
-          selection: { $delete: true }
-        }
-      }
-    })
-
-    this.#props.Events.emitLocally('selection', [], DEFAULT_SELECTION_EVENT_STATE)
-  }
-
-  /**
-   * Get the current selection
-   * @returns { Promise.<String[]> }
-   */
-  async getSelection () {
-    this.assertIdentity()
-    return (await this.#props.State.get(`_connections.${this.getIdentity()}.selection`)) || []
   }
 
   /**
@@ -336,5 +190,6 @@ class Client {
 DIController.main.register('Client', Client, [
   'State',
   'Events',
-  'Commands'
+  'Commands',
+  'Selection'
 ])

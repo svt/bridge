@@ -12,7 +12,7 @@ export const InspectorTransition = () => {
 
   React.useEffect(() => {
     async function updateSelection () {
-      const selection = await bridge.client.getSelection()
+      const selection = await bridge.client.selection.getSelection()
       setSelection(selection)
     }
     updateSelection()

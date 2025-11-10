@@ -380,11 +380,7 @@ Await the current identity to be set, will return as soon as the identity is set
 **Only available within the render process**  
 Get the client's identity as set by the host app. This may be undefined if it has not yet been set. It's useful for manually getting client parameters if optimizing queries to the state.
 
-### `bridge.client.heartbeat(): Promise<void>`  
-**Only available within the render process**  
-Send a heartbeat
-
-### `bridge.client.setSelection(itemIds[, state])`  
+### `bridge.client.selection.setSelection(itemIds[, state])`  
 **Only available within the render process**  
 Select one or multiple items, will clear the current selection.
 
@@ -396,27 +392,27 @@ A state object can be included which will be forwarded to event handlers of the 
 }
 ```
 
-### `bridge.client.addSelection(itemId|itemIds)`  
+### `bridge.client.selection.addSelection(itemId|itemIds)`  
 **Only available within the render process**  
 Add one or more items to the selecton by their ids.
 
-### `bridge.client.subtractSelection(itemId|itemIds)`  
+### `bridge.client.selection.subtractSelection(itemId|itemIds)`  
 **Only available within the render process**  
 Subtract one or more items to the selecton by their ids.
 
-### `bridge.client.isSelected(itemId): Promise<Boolean>`  
+### `bridge.client.selection.isSelected(itemId): Promise<Boolean>`  
 **Only available within the render process**  
 Check whether or not an item is selected by the current client.  
 
-### `bridge.client.clearSelection()`  
+### `bridge.client.selection.clearSelection()`  
 **Only available within the render process**  
 Clear the current selection
 
-### `bridge.client.getSelection(): Promise<String[]>`  
+### `bridge.client.selection.getSelection(): Promise<String[]>`  
 **Only available within the render process**  
 Get the current selection  
 
-### `bridge.client.getSelection(connectionId): Promise<String[]>`  
+### `bridge.client.selection.getSelection(connectionId): Promise<String[]>`  
 **Only available within main processes**  
 Get the current selection of a connection by its id  
 

@@ -69,8 +69,9 @@ export function RundownList ({
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
+  const focusRef = React.useRef()
+
   const itemIds = shared?.items?.[rundownId]?.children || []
-  const selection = shared?._connections?.[bridge.client.getIdentity()]?.selection || []
 
   const scrollSettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.scrolling
 
@@ -109,7 +110,7 @@ export function RundownList ({
       return
     }
 
-    const selection = await bridge.client.getSelection()
+    const selection = await bridge.client.selection.getSelection()
 
     /*
     Find the currently selected item id,
@@ -235,7 +236,7 @@ export function RundownList ({
     hasDoneInitialScrollingRef.current = true
 
     ;(async function () {
-      const selection = await bridge.client.getSelection()
+      const selection = await bridge.client.selection.getSelection()
       const lastId = selection[selection.length - 1]
       if (!lastId) {
         return
@@ -276,24 +277,73 @@ export function RundownList ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
   }
 
-  async function handleFocus (itemId) {
+  async function handleFocus (itemId, eventType) {
+    /*
+    This handler will be called on both focus and mousedown events
+    as focus won't be triggered if the item was already in focus
+    
+    As mousedown will always trigger before focus we can skip
+    the event if we know that focus will be triggered
+
+    So below we're keeping track of the last focused element
+    to determine if the focus event will be called so that
+    we can avoid double-triggers
+    */
+    if (focusRef.current === itemId && eventType === 'focus') {
+      return
+    }
+    if (focusRef.current !== itemId && eventType === 'mousedown') {
+      return
+    }
+    focusRef.current = itemId
+
+    /*
+    Handle selection
+    using the meta key
+    */
     if (keyboard.keyIsPressed('meta')) {
-      const isSelected = await bridge.client.isSelected(itemId)
+      const isSelected = bridge.client.selection.isSelected(itemId)
       if (isSelected) {
-        bridge.client.subtractSelection(itemId)
+        bridge.client.selection.subtractSelection(itemId)
       } else {
-        bridge.client.addSelection(itemId)
+        bridge.client.selection.addSelection(itemId)
       }
       return
     }
 
+    /*
+    Handle selection
+    using the shift key by
+    looking up all elements
+    between the focused ones
+    and adding them to the
+    selection
+    */
     if (keyboard.keyIsPressed('shift')) {
-      // Select all items between the last selection and the new item
-      // Check data-item-id
+      const selection = await bridge.client.selection.getSelection()
+      const lastSelection = selection[selection.length - 1]
+
+      if (!lastSelection) {
+        bridge.client.selection.addSelection(itemId)
+        return
+      }
+
+      const listItems = Array.from(elRef.current.querySelectorAll('.RundownListItem'))
+      const indexA = listItems.findIndex(el => el.dataset.itemId === itemId)
+      const indexB = listItems.findIndex(el => el.dataset.itemId === lastSelection)
+
+      const firstIndex = Math.min(indexA, indexB)
+      const lastIndex = Math.max(indexA, indexB)
+
+      const itemsBetween = listItems
+        .slice(firstIndex, lastIndex + 1)
+        .map(el => el.dataset.itemId)
+
+      bridge.client.selection.addSelection(itemsBetween)
       return
     }
 
-    bridge.client.setSelection(itemId)
+    bridge.client.selection.setSelection(itemId)
   }
 
   function handleFocusPropagation (e) {
@@ -340,7 +390,7 @@ export function RundownList ({
           .map(id => bridge.items.getLocalItem(id))
           .filter(item => item)
           .map((item, i) => {
-            const isSelected = selection?.includes(item.id)
+            const isSelected = bridge.client.selection.isSelected(item.id)
             const ItemComponent = TYPE_COMPONENTS[item.type]?.item || RundownItem
             const ExtraContextComponent = TYPE_COMPONENTS[item.type]?.context
             return (
@@ -350,7 +400,8 @@ export function RundownList ({
                 index={i}
                 rundownId={rundownId}
                 onDrop={e => handleDrop(e, i)}
-                onFocus={() => handleFocus(item.id)}
+                onFocus={e => handleFocus(item.id, 'focus')}
+                onMouseDown={e => handleFocus(item.id, 'mousedown')}
                 extraContextItems={ExtraContextComponent}
                 selected={isSelected}
               >

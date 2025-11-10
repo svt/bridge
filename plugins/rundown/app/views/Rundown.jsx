@@ -67,7 +67,7 @@ export function Rundown () {
 
   async function handlePaste () {
     const items = await clipboard.readJson()
-    const selection = await bridge.client.getSelection()
+    const selection = await bridge.client.selection.getSelection()
 
     /*
     Paste the items into the
@@ -104,7 +104,7 @@ export function Rundown () {
       ids.push(element.dataset.itemId)
     }
 
-    bridge.client.setSelection(ids)
+    bridge.client.selection.setSelection(ids)
   }
 
   React.useEffect(() => {

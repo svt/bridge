@@ -40,6 +40,7 @@ export function RundownListItem ({
   rundownId,
   onDrop = () => {},
   onFocus = () => {},
+  onClick = () => {},
   onMouseDown = () => {},
   extraContextItems: ExtraContextItemsComponent,
   selected: isSelected
@@ -91,12 +92,12 @@ export function RundownListItem ({
   }
 
   async function handleDelete () {
-    const selection = await bridge.client.getSelection()
+    const selection = await bridge.client.selection.getSelection()
     bridge.items.deleteItems(selection)
   }
 
   async function handleCopy () {
-    const selection = await bridge.client.getSelection()
+    const selection = await bridge.client.selection.getSelection()
     const string = await bridge.commands.executeCommand('rundown.copyItems', selection)
     clipboard.copyText(string)
   }
@@ -157,6 +158,7 @@ export function RundownListItem ({
       ref={elRef}
       className={`RundownListItem ${isDraggedOver ? 'is-draggedOver' : ''} ${isSelected ? 'is-selected' : ''} ${item?.data?.disabled ? 'is-disabled' : ''}`}
       onFocus={e => onFocus(e)}
+      onClick={e => onClick(e)}
       onDrop={e => handleDrop(e)}
       onDragOver={e => handleDragOver(e)}
       onDragLeave={e => handleDragLeave(e)}
