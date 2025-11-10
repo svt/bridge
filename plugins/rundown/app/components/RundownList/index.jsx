@@ -313,11 +313,33 @@ export function RundownList ({
 
     /*
     Handle selection
-    using the shift key
+    using the shift key by
+    looking up all elements
+    between the focused ones
+    and adding them to the
+    selection
     */
     if (keyboard.keyIsPressed('shift')) {
-      // Select all items between the last selection and the new item
-      // Check data-item-id
+      const selection = await bridge.client.selection.getSelection()
+      const lastSelection = selection[selection.length - 1]
+
+      if (!lastSelection) {
+        bridge.client.selection.addSelection(itemId)
+        return
+      }
+
+      const listItems = Array.from(elRef.current.querySelectorAll('.RundownListItem'))
+      const indexA = listItems.findIndex(el => el.dataset.itemId === itemId)
+      const indexB = listItems.findIndex(el => el.dataset.itemId === lastSelection)
+
+      const firstIndex = Math.min(indexA, indexB)
+      const lastIndex = Math.max(indexA, indexB)
+
+      const itemsBetween = listItems
+        .slice(firstIndex, lastIndex + 1)
+        .map(el => el.dataset.itemId)
+
+      bridge.client.selection.addSelection(itemsBetween)
       return
     }
 
@@ -378,8 +400,8 @@ export function RundownList ({
                 index={i}
                 rundownId={rundownId}
                 onDrop={e => handleDrop(e, i)}
-                onFocus={e => handleFocus(item.id, e, 'focus')}
-                onMouseDown={e => handleFocus(item.id, e, 'mousedown')}
+                onFocus={e => handleFocus(item.id, 'focus')}
+                onMouseDown={e => handleFocus(item.id, 'mousedown')}
                 extraContextItems={ExtraContextComponent}
                 selected={isSelected}
               >
