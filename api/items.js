@@ -229,7 +229,7 @@ class Items {
     in the current context
     */
     if (typeof this.#props.Client?.subtractSelection === 'function') {
-      this.#props.Client.subtractSelection(ids)
+      this.#props.client.selection.subtractSelection(ids)
     }
     return this.#props.Commands.executeCommand('items.deleteItems', ids)
   }

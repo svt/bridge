@@ -5,7 +5,7 @@ import { ReferenceButton } from '../components/ReferenceButton'
 
 export const InspectorReferenceButton = () => {
   async function handleClick () {
-    const selection = await bridge.client.getSelection()
+    const selection = await bridge.client.selection.getSelection()
     if (!selection?.[0]) {
       return
     }
@@ -16,7 +16,7 @@ export const InspectorReferenceButton = () => {
       return
     }
 
-    bridge.client.setSelection(targetId)
+    bridge.client.selection.setSelection(targetId)
   }
 
   return (
