@@ -1,0 +1,16 @@
+.TimelineTrack {
+  margin: 3px 0;
+  height: 35px;
+}
+
+.TimelineTrack-item {
+  display: flex;
+  height: inherit;
+  padding: 7px 5px;
+
+  border-radius: 5px;
+
+  align-items: center;
+
+  box-sizing: border-box;
+}

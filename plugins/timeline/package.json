@@ -1,0 +1,18 @@
+{
+  "name": "bridge-plugin-timeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "author": "Axel Boberg (hello@axelboberg.se)",
+  "license": "UNLICENSED"
+}

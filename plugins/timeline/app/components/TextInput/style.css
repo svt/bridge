@@ -1,0 +1,17 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Sveriges Television AB
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.TextInput {
+  width: 100%;
+  padding: 0.5em 0.75em;
+
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.TextInput--large {
+  font-size: 1.1em;
+}

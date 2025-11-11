@@ -1,0 +1,133 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Sveriges Television AB
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.Form {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding-top: 5px;
+
+  flex-direction: column;
+}
+
+.Form-header {
+  display: flex;
+  position: sticky;
+  padding: 3px 10px;
+
+  width: 100%;
+  top: 0;
+
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.Form-headerBackground {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  opacity: 0.5;
+}
+
+.Form-headerSection {
+  z-index: 1;
+}
+
+.Form-header--type {
+  max-width: 50%;
+
+  font-size: 0.9em;
+  opacity: 0.7;
+
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  overflow: hidden;
+}
+
+.Form-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.Form-input {
+  display: inline-block;
+  width: 100%;
+  margin: 5px 0 0;
+  padding: 0 3px;
+
+  box-sizing: border-box;
+}
+
+.Form-inputHeader,
+.Form-inputValue {
+  display: flex;
+  margin-bottom: 3px;
+  justify-content: space-between;
+}
+
+.Form-inputValue {
+  align-items: center;
+}
+
+.Form-inputLabel,
+.Form-inputUnit {
+  display: block;
+  margin: 0 5px 3px;
+
+  font-size: 0.8em;
+  text-transform: uppercase;
+
+  opacity: 0.7;
+}
+
+.Form-inputUnit {
+  margin: 0 5px 0 10px;
+  text-transform: none;
+}
+
+.Form-section {
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+.Form-row {
+  display: flex;
+  margin-top: 7px;
+}
+
+.Form-row:first-child {
+  margin-top: 0;
+}
+
+.Form-row > * {
+  margin-left: 5px;
+}
+
+.Form-row > *:first-child {
+  margin-left: 0;
+}
+
+.Form-accordion {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+
+  border-top: 1px solid var(--base-color--shade);
+}
+
+.Form-notifications .Notification {
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
