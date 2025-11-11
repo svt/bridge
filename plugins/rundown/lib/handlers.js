@@ -99,7 +99,12 @@ async function selectItem (id) {
   bridge.state.apply({
     _connections: {
       [mainClientId]: {
-        selection: { $replace: [id] }
+        /*
+        Use a key that the
+        client can listen to
+        and act on
+        */
+        _serverSelection: { $replace: [id] }
       }
     }
   })
