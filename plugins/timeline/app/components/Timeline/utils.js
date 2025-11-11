@@ -27,20 +27,45 @@ export function getPixelWidth (time, scale) {
   return (time / 1000) * DEFAULT_SECOND_WIDTH_PX * scale
 }
 
-export function getDisplayUnit (scale) {
-  if (scale > 10) {
-    return TIME_UNIT.frame
+export function getDisplayUnitDurationMS (scale, frameRate) {
+  const SCALE_BREAKPOINTS = [
+    {
+      scale: 50,
+      duration: UNIT_MS_DURATION.frame(frameRate)
+    },
+    {
+      scale: 25,
+      duration: UNIT_MS_DURATION.frame(frameRate) * 2
+    },
+    {
+      scale: 10,
+      duration: UNIT_MS_DURATION.frame(frameRate) * 5
+    },
+    {
+      scale: 5,
+      duration: UNIT_MS_DURATION.frame(frameRate) * 10
+    },
+    {
+      scale: 0.1,
+      duration: UNIT_MS_DURATION.second()
+    },
+    {
+      scale: 0.01,
+      duration: UNIT_MS_DURATION.minute()
+    },
+    {
+      scale: 0.001,
+      duration: UNIT_MS_DURATION.hour()
+    }
+  ]
+
+  for (const breakpoint of SCALE_BREAKPOINTS) {
+    if (scale > breakpoint.scale) {
+      return breakpoint.duration
+    }
   }
 
-  if (scale < 0.1) {
-    return TIME_UNIT.minute
-  }
-
-  if (scale < 0.01) {
-    return TIME_UNIT.hour
-  }
-
-  return TIME_UNIT.second
+  return UNIT_MS_DURATION.second()
 }
 
 export function getMSDurationForUnit (unit, frameRate) {

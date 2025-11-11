@@ -8,9 +8,8 @@ export function TimelineHeader ({ spec }) {
   const [blockDuration, setBlockDuration] = React.useState(utils.UNIT_MS_DURATION.second)
 
   React.useEffect(() => {
-    const unit = utils.getDisplayUnit(spec.scale)
-    const blockDuration = utils.getMSDurationForUnit(unit, spec.frameRate)
-    setBlockDuration(blockDuration)
+    const blockDurationMs = utils.getDisplayUnitDurationMS(spec.scale, spec.frameRate)
+    setBlockDuration(blockDurationMs)
   }, [spec])
 
   const blockWidth = utils.getPixelWidth(blockDuration, spec.scale)
