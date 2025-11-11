@@ -49,3 +49,19 @@ export function getMSDurationForUnit (unit, frameRate) {
   }
   return UNIT_MS_DURATION[unit](frameRate)
 }
+
+function zeroPad (n) {
+  if (n < 10) {
+    return `0${n}`
+  }
+  return `${n}`
+}
+
+export function getSMPTETimecodeFromMs (ms, frameRate) {
+  const hours = Math.floor(ms / UNIT_MS_DURATION.hour())
+  const minutes = Math.floor((ms - hours * UNIT_MS_DURATION.hour()) / UNIT_MS_DURATION.minute())
+  const seconds = Math.floor((ms - hours * UNIT_MS_DURATION.hour() - minutes * UNIT_MS_DURATION.minute()) / UNIT_MS_DURATION.second())
+  const frames = Math.floor((ms - hours * UNIT_MS_DURATION.hour() - minutes * UNIT_MS_DURATION.minute() - seconds * UNIT_MS_DURATION.second()) / UNIT_MS_DURATION.frame(frameRate))
+
+  return `${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(seconds)}:${zeroPad(frames)}`
+}

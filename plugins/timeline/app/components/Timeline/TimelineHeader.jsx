@@ -22,7 +22,9 @@ export function TimelineHeader ({ spec }) {
           .map((_, i) => {
             return (
               <div key={i} className='TimelineHeader-block' style={{ width: `${blockWidth}px` }}>
-                {i}
+                <div className='TimelineHeader-blockTimecode'>
+                  {utils.getSMPTETimecodeFromMs(blockDuration * i, spec.frameRate)}
+                </div>
               </div>
             )
           })
