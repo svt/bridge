@@ -1,0 +1,5 @@
+.Timeline {
+  --Timeline-color--background: var(--base-color--background2);
+  --Timeline-color--border: var(--base-color--shade);
+  --Timeline-color--text: var(--base-color);
+}

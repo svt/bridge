@@ -1,21 +1,46 @@
-.TimelineHeader {
+.TimelineHeader,
+.TimelineHeader-backgroundColor,
+.TimelineHeader-backgroundBlur {
   position: sticky;
   top: 0;
-
-  height: 40px;
+  height: 20px;
   white-space: nowrap;
+}
+
+.TimelineHeader {
+  display: flex;
+}
+
+.TimelineHeader-backgroundColor,
+.TimelineHeader-backgroundBlur {
+  position: fixed;
+  width: 100%;
+}
+
+.TimelineHeader-backgroundColor {
+  background: var(--Timeline-color--background);
+  opacity: 0.6;
+}
+
+.TimelineHeader-backgroundBlur {
+  backdrop-filter: blur(10px);
 }
 
 .TimelineHeader-block {
   display: inline-block;
   padding-left: 5px;
 
-  font-size: 0.7em;
-  border-left: 1px solid white;
+  height: 100%;
 
+  font-size: 0.7em;
+  border-left: 1px solid var(--Timeline-color--text);
+
+  flex-shrink: 0;
   box-sizing: border-box;
+
+  opacity: 0.5;
 }
 
 .TimelineHeader-blockTimecode {
-  opacity: 0.6;
+  margin-top: 0.25em;
 }
