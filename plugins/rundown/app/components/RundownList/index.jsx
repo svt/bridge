@@ -60,6 +60,23 @@ function scrollIntoView (el, animate = true, centered = true) {
   })
 }
 
+/**
+ * Blur the currently active element,
+ * this should be called on mousedown
+ * as that will enable the following
+ * focus event
+ * 
+ * Without this an element that just was focused won't
+ * trigger the focus event when clicked a second time,
+ * causing the CMD+select operation to have no effect –
+ * when it should, in fact, unselect the item
+ * 
+ * mousedown is always triggered before focus
+ */
+function blurActiveElementBeforeFocus () {
+  document.activeElement?.blur()
+}
+
 export function RundownList ({
   rundownId = '',
   className = '',
@@ -277,26 +294,7 @@ export function RundownList ({
     bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
   }
 
-  async function handleFocus (itemId, eventType) {
-    /*
-    This handler will be called on both focus and mousedown events
-    as focus won't be triggered if the item was already in focus
-    
-    As mousedown will always trigger before focus we can skip
-    the event if we know that focus will be triggered
-
-    So below we're keeping track of the last focused element
-    to determine if the focus event will be called so that
-    we can avoid double-triggers
-    */
-    if (focusRef.current === itemId && eventType === 'focus') {
-      return
-    }
-    if (focusRef.current !== itemId && eventType === 'mousedown') {
-      return
-    }
-    focusRef.current = itemId
-
+  async function handleFocus (itemId) {
     /*
     Handle selection
     using the meta key
@@ -408,8 +406,8 @@ export function RundownList ({
                 index={i}
                 rundownId={rundownId}
                 onDrop={e => handleDrop(e, i)}
-                onFocus={e => handleFocus(item.id, 'focus')}
-                onMouseDown={e => handleFocus(item.id, 'mousedown')}
+                onFocus={e => handleFocus(item.id)}
+                onMouseDown={e => blurActiveElementBeforeFocus()}
                 extraContextItems={ExtraContextComponent}
                 selected={isSelected}
               >
