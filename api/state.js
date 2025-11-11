@@ -64,7 +64,7 @@ class State {
         this.applyLocally(set)
       }
 
-      return this.#state
+      return [this.#state, set]
     })
   }
 

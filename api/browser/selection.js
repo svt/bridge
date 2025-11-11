@@ -43,10 +43,37 @@ class Selection {
       return
     }
     this.#client = newValue
+    this.#setup()
   }
 
   constructor (props) {
     this.#props = props
+  }
+
+  async #setup () {
+    /*
+    Only listen to changes to
+    the _serverSelection key
+    and set the selection in this
+    thread when it changes
+
+    Typically the API shouldn't
+    attach event listeners itself
+    as it may force data to be pushed
+    even though it's not used by the client
+
+    - but make an exception here as
+    this code is only run in the renderer
+    thread and listeners on state.change
+    are required anyway
+    */
+    this.#props.Events.on('state.change', (state, set) => {
+      if (!set?._connections?.[this.#client.getIdentity()]?._serverSelection) {
+        return
+      }
+      const newSelection = state?._connections?.[this.#client.getIdentity()]?._serverSelection
+      this.setSelection(newSelection)
+    })
   }
 
   /**
