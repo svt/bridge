@@ -46,8 +46,25 @@ export function Timeline ({ items = DUMMY_DATA }) {
     setSpec(utils.getTimelineSpec(items))
   }, [items])
 
+  /*
+  Allow zooming by using
+  the alt-key and scrolling
+  */
+  function handleWheel (e) {
+    if (!e.altKey) {
+      return
+    }
+
+    setSpec(current => {
+      return {
+        ...current,
+        scale: current.scale + e.deltaY * -0.05
+      }
+    })
+  }
+
   return (
-    <div className='Timeline'>
+    <div className='Timeline' onWheel={e => handleWheel(e)}>
       <TimelineHeader spec={spec} />
       {
         items.map((item, i) => {
