@@ -59,7 +59,7 @@ function renderItemSpec (spec, key) {
     <Component key={key} {...sanitizeItemSpec(spec)} text={spec?.label} onClick={() => handleClick()}>
       {
         (spec?.children || [])
-          .map((child, i) => renderItemSpec(child, i))
+          .map((child, i) => renderItemSpec(child, `${key}_${i}`))
       }
     </Component>
   )
@@ -121,8 +121,8 @@ export function ContextMenuBoundary ({ children }) {
           <ContextMenu x={contextPos.x} y={contextPos.y} onClose={() => handleClose()}>
             {
               Array.isArray(spec)
-                ? spec.map((item, i) => renderItemSpec(item, `spec_${i}`))
-                : renderItemSpec(spec)
+                ? spec.map((item, i) => renderItemSpec(item, `contextMenu_${i}`))
+                : renderItemSpec(spec, id)
             }
           </ContextMenu>
         )
