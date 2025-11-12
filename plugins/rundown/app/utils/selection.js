@@ -1,7 +1,5 @@
 import bridge from 'bridge'
 
-import * as clipboard from './clipboard'
-
 /**
  * Toggle the disabled property
  * of the currently selected items
@@ -70,7 +68,7 @@ export async function deleteSelection () {
 export async function copySelection () {
   const selection = await bridge.client.selection.getSelection()
   const str = await bridge.commands.executeCommand('rundown.copyItems', selection)
-  await clipboard.copyText(str)
+  await bridge.client.clipboard.writeText(str)
 }
 
 /**

@@ -172,16 +172,18 @@ export function RundownGroupItem ({ index, item }) {
   )
 }
 
-export function RundownGroupItemContext ({ item }) {
+export function getContextMenuItems (item) {
   function handleEnterGroup () {
     window.WIDGET_UPDATE({
       'rundown.id': item.id
     })
   }
 
-  return (
-    <>
-      <ContextMenuItem text='Step inside' onClick={() => handleEnterGroup()} />
-    </>
-  )
+  return [
+    {
+      type: 'item',
+      label: 'Step inside',
+      onClick: () => handleEnterGroup()
+    }
+  ]
 }

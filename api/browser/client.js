@@ -9,6 +9,7 @@ const InvalidArgumentError = require('../error/InvalidArgumentError')
 const LazyValue = require('../../shared/LazyValue')
 const DIController = require('../../shared/DIController')
 
+require('./clipboard')
 require('./selection')
 
 /**
@@ -39,6 +40,10 @@ class Client {
 
   get selection () {
     return this.#props.Selection
+  }
+
+  get clipboard () {
+    return this.#props.Clipboard
   }
 
   constructor (props) {
@@ -191,5 +196,6 @@ DIController.main.register('Client', Client, [
   'State',
   'Events',
   'Commands',
+  'Clipboard',
   'Selection'
 ])

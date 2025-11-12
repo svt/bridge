@@ -5,12 +5,14 @@ import { WorkspaceWidget } from './views/WorkspaceWidget'
 
 import { Router } from './components/Router'
 import { Transparency } from './components/Transparency'
+import { ContextMenuBoundary } from './components/ContextMenuBoundary'
 
 import { LocalContext } from './localContext'
 import { SharedContext } from './sharedContext'
 import { SocketContext } from './socketContext'
 
 import { useWebsocket } from './hooks/useWebsocket'
+
 
 import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
@@ -203,21 +205,23 @@ export default function App () {
     <SocketContext.Provider value={[send, data]}>
       <LocalContext.Provider value={[local, applyLocal]}>
         <SharedContext.Provider value={[shared, applyShared]}>
-          <Transparency />
-          <Router routes={[
-            {
-              path: /^\/workspaces\/.+\/widgets\/.+$/,
-              render: () => <WorkspaceWidget />
-            },
-            {
-              path: /^\/workspaces\/.+$/,
-              render: () => <Workspace />
-            },
-            {
-              path: '/',
-              render: () => <Start />
-            }
-          ]}/>
+          <ContextMenuBoundary>
+            <Transparency />
+            <Router routes={[
+              {
+                path: /^\/workspaces\/.+\/widgets\/.+$/,
+                render: () => <WorkspaceWidget />
+              },
+              {
+                path: /^\/workspaces\/.+$/,
+                render: () => <Workspace />
+              },
+              {
+                path: '/',
+                render: () => <Start />
+              }
+            ]}/>
+          </ContextMenuBoundary>
         </SharedContext.Provider>
       </LocalContext.Provider>
     </SocketContext.Provider>
