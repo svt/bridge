@@ -86,7 +86,6 @@ export function RundownList ({
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
-  const focusRef = React.useRef()
 
   const itemIds = shared?.items?.[rundownId]?.children || []
 

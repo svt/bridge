@@ -2,13 +2,7 @@ import React from 'react'
 import bridge from 'bridge'
 
 import { SharedContext } from '../sharedContext'
-
 import { RundownList } from '../components/RundownList'
-import { ContextAddMenu } from '../components/ContextAddMenu'
-
-import { ContextMenu } from '../../../../app/components/ContextMenu'
-import { ContextMenuItem } from '../../../../app/components/ContextMenuItem'
-import { ContextMenuDivider } from '../../../../app/components/ContextMenuDivider'
 
 import * as config from '../config'
 import * as contextMenu from '../utils/contextMenu'
@@ -150,19 +144,6 @@ export function Rundown () {
 
   return (
     <div ref={elRef} className='View' onContextMenu={e => handleContextMenu(e)}>
-      {
-        contextPos
-          ? (
-            <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
-              <ContextMenuItem text='Paste' onClick={() => handlePaste()} />
-              <ContextMenuDivider />
-              <ContextMenuItem text='Add'>
-                <ContextAddMenu onAdd={newItemId => handleItemCreate(newItemId)}/>
-              </ContextMenuItem>
-            </ContextMenu>
-            )
-          : <></>
-      }
       <RundownList rundownId={rundownId} />
     </div>
   )
