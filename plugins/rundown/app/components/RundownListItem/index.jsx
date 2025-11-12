@@ -6,7 +6,6 @@ import './style.css'
 import { SharedContext } from '../../sharedContext'
 
 import * as contextMenu from '../../utils/contextMenu'
-import * as clipboard from '../../utils/clipboard'
 import * as selection from '../../utils/selection'
 
 const INDICATE_PLAYING_TIMEOUT_MS = 100
@@ -148,12 +147,12 @@ export function RundownListItem ({
   async function handleCopy () {
     const selection = await bridge.client.selection.getSelection()
     const string = await bridge.commands.executeCommand('rundown.copyItems', selection)
-    clipboard.copyText(string)
+    bridge.client.clipboard.writeText(string)
   }
 
   function handleCopyId () {
     const string = item.id
-    clipboard.copyText(string)
+    bridge.client.clipboard.writeText(string)
   }
 
   async function handleAdd (typeId) {
@@ -191,7 +190,7 @@ export function RundownListItem ({
   }, [item?.state, item?.didStartPlayingAt])
 
   async function handlePaste () {
-    const items = await clipboard.readJson()
+    const items = await bridge.client.clipboard.readJson()
     bridge.commands.executeCommand('rundown.pasteItems', items, rundownId, index + 1)
   }
 

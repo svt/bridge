@@ -11,7 +11,6 @@ import { ContextMenuItem } from '../../../../app/components/ContextMenuItem'
 import { ContextMenuDivider } from '../../../../app/components/ContextMenuDivider'
 
 import * as config from '../config'
-import * as clipboard from '../utils/clipboard'
 import * as contextMenu from '../utils/contextMenu'
 
 export function Rundown () {
@@ -35,7 +34,7 @@ export function Rundown () {
       {
         type: 'item',
         label: 'Paste',
-        fn: () => handlePaste()
+        onClick: () => handlePaste()
       },
       { type: 'divider' },
       {
@@ -82,7 +81,7 @@ export function Rundown () {
   }
 
   async function handlePaste () {
-    const items = await clipboard.readJson()
+    const items = await bridge.client.clipboard.readJson()
     const selection = await bridge.client.selection.getSelection()
 
     /*
