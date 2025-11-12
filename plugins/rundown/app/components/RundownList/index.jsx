@@ -7,7 +7,7 @@ import { SharedContext } from '../../sharedContext'
 
 import { RundownVariableItem } from '../RundownVariableItem'
 import { RundownDividerItem } from '../RundownDividerItem'
-import { RundownGroupItem, RundownGroupItemContext } from '../RundownGroupItem'
+import { RundownGroupItem, getContextMenuItems as rundownGroupItemGetContextMenuItems } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
 
@@ -26,7 +26,7 @@ const TYPE_COMPONENTS = {
   'bridge.types.divider': { item: RundownDividerItem },
   'bridge.types.group': {
     item: RundownGroupItem,
-    context: RundownGroupItemContext
+    getContextMenuItems: item => rundownGroupItemGetContextMenuItems(item)
   }
 }
 
@@ -398,7 +398,12 @@ export function RundownList ({
           .map((item, i) => {
             const isSelected = bridge.client.selection.isSelected(item.id)
             const ItemComponent = TYPE_COMPONENTS[item.type]?.item || RundownItem
-            const ExtraContextComponent = TYPE_COMPONENTS[item.type]?.context
+
+            let contextMenuItems
+            if (typeof TYPE_COMPONENTS[item.type]?.getContextMenuItems === 'function') {
+              contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems(item)
+            }
+
             return (
               <RundownListItem
                 key={item.id}
@@ -408,7 +413,7 @@ export function RundownList ({
                 onDrop={e => handleDrop(e, i)}
                 onFocus={e => handleFocus(item.id)}
                 onMouseDown={e => blurActiveElementBeforeFocus()}
-                extraContextItems={ExtraContextComponent}
+                contextMenuItems={contextMenuItems}
                 selected={isSelected}
               >
                 <ItemComponent index={`${indexPrefix}${i + 1}`} item={item}/>

@@ -12,6 +12,7 @@ import { ContextMenuDivider } from '../../../../app/components/ContextMenuDivide
 
 import * as config from '../config'
 import * as clipboard from '../utils/clipboard'
+import * as contextMenu from '../utils/contextMenu'
 
 export function Rundown () {
   const [shared] = React.useContext(SharedContext)
@@ -21,13 +22,28 @@ export function Rundown () {
 
   const rundownId = window.WIDGET_DATA?.['rundown.id'] || config.DEFAULT_RUNDOWN_ID
 
-  function handleContextMenu (e) {
-    e.preventDefault()
-    setContextPos([e.pageX, e.pageY])
+  async function handleItemCreate (typeId) {
+    const itemId = await bridge.items.createItem(typeId)
+    bridge.commands.executeCommand('rundown.appendItem', rundownId, itemId)
   }
 
-  async function handleItemCreate (itemId) {
-    bridge.commands.executeCommand('rundown.appendItem', rundownId, itemId)
+  async function handleContextMenu (e) {
+    e.preventDefault()
+
+    const types = await bridge.state.get('_types')
+    bridge.ui.contextMenu.open({ x: e.screenX, y: e.screenY }, [
+      {
+        type: 'item',
+        label: 'Paste',
+        fn: () => handlePaste()
+      },
+      { type: 'divider' },
+      {
+        type: 'item',
+        label: 'Add',
+        children: contextMenu.generateAddContextMenuItems(types, typeId => handleItemCreate(typeId))
+      }
+    ])
   }
 
   /**

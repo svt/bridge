@@ -5,12 +5,7 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
-import { ContextMenu } from '../../../../../app/components/ContextMenu'
-import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
-import { ContextMenuDivider } from '../../../../../app/components/ContextMenuDivider'
-
-import { ContextAddMenu } from '../ContextAddMenu'
-
+import * as contextMenu from '../../utils/contextMenu'
 import * as clipboard from '../../utils/clipboard'
 import * as selection from '../../utils/selection'
 
@@ -33,6 +28,10 @@ function getClosestAncestorWithSelector (el, selector) {
   return el
 }
 
+function isMultipleItemsSelected () {
+  return bridge.client.selection.getSelection.length > 1
+}
+
 export function RundownListItem ({
   children,
   item,
@@ -42,14 +41,12 @@ export function RundownListItem ({
   onFocus = () => {},
   onClick = () => {},
   onMouseDown = () => {},
-  extraContextItems: ExtraContextItemsComponent,
+  contextMenuItems: extraContextMenuItems,
   selected: isSelected
 }) {
   const [state] = React.useContext(SharedContext)
 
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
-  const [contextPos, setContextPos] = React.useState()
-
   const [indicateIsPlaying, setIndicateIsPlaying] = React.useState(false)
 
   const elRef = React.useRef()
@@ -73,7 +70,7 @@ export function RundownListItem ({
     onDrop(e)
   }
 
-  function handleContextMenu (e) {
+  async function handleContextMenu (e) {
     e.preventDefault()
 
     /*
@@ -88,7 +85,59 @@ export function RundownListItem ({
       return
     }
 
-    setContextPos([e.pageX, e.pageY])
+    const types = await bridge.state.get('_types')
+
+    const spec = [
+      {
+        type: 'item',
+        label: 'Copy',
+        onClick: () => handleCopy()
+      },
+      {
+        ...(isMultipleItemsSelected ? {} : {
+          type: 'item',
+          label: 'Copy id',
+          onClick: () => handleCopyId()
+        })
+      },
+      {
+        type: 'item',
+        label: 'Paste',
+        onClick: () => handlePaste()
+      },
+      { type: 'divider' },
+      {
+        type: 'item',
+        label: 'Add after',
+        children: contextMenu.generateAddContextMenuItems(types, typeId => handleAdd(typeId))
+      },
+      {
+        type: 'item',
+        label: 'Create reference',
+        onClick: () => handleCreateReference()
+      },
+      {
+        type: 'item',
+        label: item?.data?.disabled ? 'Enable' : 'Disable',
+        onClick: () => selection.disableSelection(!item?.data?.disabled)
+      },
+      { type: 'divider' },
+      {
+        type: 'item',
+        label: 'Remove',
+        onClick: () => handleDelete()
+      },
+      ...(
+        !isMultipleItemsSelected() && extraContextMenuItems
+        ? [
+          { type: 'divider' },
+          ...extraContextMenuItems
+        ]
+        : []
+      )
+    ]
+
+    bridge.ui.contextMenu.open({ x: e.screenX, y: e.screenY }, spec)
   }
 
   async function handleDelete () {
@@ -107,8 +156,9 @@ export function RundownListItem ({
     clipboard.copyText(string)
   }
 
-  function handleAdd (newItemId) {
-    bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
+  async function handleAdd (typeId) {
+    const itemId = await bridge.items.createItem(typeId)
+    bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, itemId)
   }
 
   async function handleCreateReference () {
@@ -145,10 +195,6 @@ export function RundownListItem ({
     bridge.commands.executeCommand('rundown.pasteItems', items, rundownId, index + 1)
   }
 
-  const multipleItemsSelected = React.useMemo(() => {
-    return (state?._connections?.[bridge.client.getIdentity()]?.selection || []).length > 1
-  }, [state])
-
   const isLastPlayed = React.useMemo(() => {
     return (state?.plugins?.['bridge-plugin-rundown']?.lastPlayedItems || {})[item.id]
   }, [state, item])
@@ -177,36 +223,6 @@ export function RundownListItem ({
       {
         indicateIsPlaying &&
           <div className='RundownListItem-playIndicator' />
-      }
-      {
-        contextPos &&
-        (
-          <ContextMenu x={contextPos[0]} y={contextPos[1]} onClose={() => setContextPos(undefined)}>
-            <ContextMenuItem text='Copy' onClick={() => handleCopy()} />
-            {
-              !multipleItemsSelected &&
-              <ContextMenuItem text='Copy id' onClick={() => handleCopyId()} />
-            }
-            <ContextMenuItem text='Paste' onClick={() => handlePaste()} />
-            <ContextMenuDivider />
-            <ContextMenuItem text='Add after'>
-              <ContextAddMenu onAdd={newItemId => handleAdd(newItemId)} />
-            </ContextMenuItem>
-            <ContextMenuItem text='Create reference' onClick={() => handleCreateReference()} />
-            <ContextMenuItem text={item?.data?.disabled ? 'Enable' : 'Disable'} onClick={() => selection.disableSelection(!item?.data?.disabled)} />
-            <ContextMenuDivider />
-            <ContextMenuItem text='Remove' onClick={() => handleDelete()} />
-            {
-              ExtraContextItemsComponent &&
-              !multipleItemsSelected && (
-                <>
-                  <ContextMenuDivider />
-                  <ExtraContextItemsComponent item={item} />
-                </>
-              )
-            }
-          </ContextMenu>
-        )
       }
       {children}
       {
