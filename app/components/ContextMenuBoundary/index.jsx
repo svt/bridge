@@ -96,7 +96,7 @@ export function ContextMenuBoundary ({ children }) {
 
     async function setup () {
       bridge = await api.load()
-      bridge.events.on('ui.contextMenu', onRequestContextMenu)
+      bridge.events.on('ui.contextMenu.open', onRequestContextMenu)
     }
     setup()
 
@@ -104,7 +104,28 @@ export function ContextMenuBoundary ({ children }) {
       if (!bridge) {
         return
       }
-      bridge.events.off('ui.contextMenu', onRequestContextMenu)
+      bridge.events.off('ui.contextMenu.open', onRequestContextMenu)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    let bridge
+  
+    function onContextMenuClose () {
+      setContextPos(undefined)
+    }
+
+    async function setup () {
+      bridge = await api.load()
+      bridge.events.on('ui.contextMenu.close', onContextMenuClose)
+    }
+    setup()
+
+    return () => {
+      if (!bridge) {
+        return
+      }
+      bridge.events.off('ui.contextMenu.close', onContextMenuClose)
     }
   }, [])
 
@@ -122,7 +143,7 @@ export function ContextMenuBoundary ({ children }) {
             {
               Array.isArray(spec)
                 ? spec.map((item, i) => renderItemSpec(item, `contextMenu_${i}`))
-                : renderItemSpec(spec, id)
+                : renderItemSpec(spec, 'contextMenu')
             }
           </ContextMenu>
         )

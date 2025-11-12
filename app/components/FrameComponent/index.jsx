@@ -194,12 +194,22 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
     if (!contentWindow) {
       return
     }
-    function onFocus () {
+
+    async function onClick () {
+      const bridge = await api.load()
+      bridge.ui.contextMenu.close()
+    }
+    contentWindow.addEventListener('click', onClick)
+
+    async function onFocus () {
       setHasFocus(true)
       contentWindow.bridgeFrameHasFocus = true
+      
+      const bridge = await api.load()
+      bridge.ui.contextMenu.close()
     }
     contentWindow.addEventListener('focus', onFocus)
-
+    
     function onBlur () {
       setHasFocus(false)
       contentWindow.bridgeFrameHasFocus = false
@@ -207,6 +217,7 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
     contentWindow.addEventListener('blur', onBlur)
 
     return () => {
+      contentWindow.removeEventListener('click', onClick)
       contentWindow.removeEventListener('focus', onFocus)
       contentWindow.removeEventListener('blur', onBlur)
     }
