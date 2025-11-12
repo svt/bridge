@@ -4,8 +4,11 @@
 ### Fixed
 - The space key can now be used for keyboard shortcuts
 - An issue where items in the rundown couldn't rapidly be selected and de-selected
+- An issue where context menus were cut off in the rundown
 ### Added
 - Support for selecting multiple items at once with the shift key
+- An API for managing context menus
+- An API for managing the clipboard
 
 ## 1.0.0-beta.7
 ### Changed
