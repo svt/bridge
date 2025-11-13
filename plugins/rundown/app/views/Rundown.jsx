@@ -24,7 +24,7 @@ export function Rundown () {
     e.preventDefault()
 
     const types = await bridge.state.get('_types')
-    bridge.ui.contextMenu.open({ x: e.screenX, y: e.screenY }, [
+    bridge.ui.contextMenu.open([
       {
         type: 'item',
         label: 'Paste',
@@ -36,7 +36,7 @@ export function Rundown () {
         label: 'Add',
         children: contextMenu.generateAddContextMenuItems(types, typeId => handleItemCreate(typeId))
       }
-    ])
+    ], { x: e.screenX, y: e.screenY, searchable: true })
   }
 
   /**

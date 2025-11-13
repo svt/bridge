@@ -4,6 +4,7 @@ import * as api from '../../api'
 import { ContextMenu } from '../ContextMenu'
 import { ContextMenuItem } from '../ContextMenuItem'
 import { ContextMenuDivider } from '../ContextMenuDivider'
+import { ContextMenuSearchItem } from '../ContextSearchItem'
 
 const TYPES = {
   item: ContextMenuItem,
@@ -14,6 +15,8 @@ const ALLOWED_SPEC_PROPERTIES = [
   'type',
   'label'
 ]
+
+const MENU_WIDTH_IF_SEARCH_PX = 250
 
 function isNumber (x) {
   return typeof x === 'number' && !Number.isNaN(x)
@@ -41,7 +44,7 @@ function sanitizeItemSpec (spec) {
   return out
 }
 
-function renderItemSpec (spec, key) {
+function renderItemSpec (spec, key, onClose = () => {}) {
   if (!TYPES[spec?.type]) {
     return <></>
   }
@@ -53,13 +56,14 @@ function renderItemSpec (spec, key) {
       return
     }
     spec.onClick()
+    onClose()
   }
 
   return (
     <Component key={key} {...sanitizeItemSpec(spec)} text={spec?.label} onClick={() => handleClick()}>
       {
         (spec?.children || [])
-          .map((child, i) => renderItemSpec(child, `${key}_${i}`))
+          .map((child, i) => renderItemSpec(child, `${key}_${i}`, onClose))
       }
     </Component>
   )
@@ -67,12 +71,15 @@ function renderItemSpec (spec, key) {
 
 export function ContextMenuBoundary ({ children }) {
   const [contextPos, setContextPos] = React.useState()
-  const [spec, setSpec] = React.useState()
+
+  const [originalSpec, setOriginalSpec] = React.useState()
+  const [renderedSpec, setRenderedSpec] = React.useState()
+  const [opts, setOpts] = React.useState()
 
   React.useEffect(() => {
     let bridge
   
-    function onRequestContextMenu (opts, spec) {
+    function onRequestContextMenu (spec, opts) {
       if (!isNumber(opts?.x) || !isNumber(opts?.y)) {
         console.warn('Missing context menu position')
         return
@@ -91,7 +98,9 @@ export function ContextMenuBoundary ({ children }) {
         y: Math.max(pageCoords.y, 0)
       })
 
-      setSpec(spec)
+      setOpts(opts)
+      setRenderedSpec(spec)
+      setOriginalSpec(spec)
     }
 
     async function setup () {
@@ -131,7 +140,13 @@ export function ContextMenuBoundary ({ children }) {
 
   function handleClose () {
     setContextPos(undefined)
-    setSpec(undefined)
+
+    setOriginalSpec(undefined)
+    setRenderedSpec(undefined)
+  }
+
+  function handleSearch (newSpec) {
+    setRenderedSpec(newSpec)
   }
 
   return (
@@ -139,11 +154,20 @@ export function ContextMenuBoundary ({ children }) {
       {
         contextPos &&
         (
-          <ContextMenu x={contextPos.x} y={contextPos.y} onClose={() => handleClose()}>
+          <ContextMenu
+            x={contextPos.x}
+            y={contextPos.y}
+            width={opts?.searchable && MENU_WIDTH_IF_SEARCH_PX}
+            onClose={() => handleClose()}
+          >
             {
-              Array.isArray(spec)
-                ? spec.map((item, i) => renderItemSpec(item, `contextMenu_${i}`))
-                : renderItemSpec(spec, 'contextMenu')
+              opts?.searchable &&
+              <ContextMenuSearchItem spec={originalSpec} onSearch={newSpec => handleSearch(newSpec)} />
+            }
+            {
+              Array.isArray(renderedSpec)
+                ? renderedSpec.map((item, i) => renderItemSpec(item, `contextMenu_${i}`, handleClose))
+                : renderItemSpec(renderedSpec, 'contextMenu', handleClose)
             }
           </ContextMenu>
         )

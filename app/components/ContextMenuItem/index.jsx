@@ -38,6 +38,16 @@ export const ContextMenuItem = ({ text, children = [], onClick = () => {} }) => 
     }, MOUSE_LEAVE_DELAY_MS)
   }
 
+  function handleKeyDown (e) {
+    if (e.key === 'Enter') {
+      onClick()
+    }
+  }
+
+  function handleFocus (e) {
+    setHover(true)
+  }
+
   const bounds = elRef.current?.getBoundingClientRect()
 
   return (
@@ -47,6 +57,9 @@ export const ContextMenuItem = ({ text, children = [], onClick = () => {} }) => 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => onClick()}
+      onKeyDown={e => handleKeyDown(e)}
+      onFocus={e => handleFocus(e)}
+      tabIndex={0}
     >
       <div className='ContextMenuItem-text'>
         {text}

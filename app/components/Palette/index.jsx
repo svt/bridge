@@ -185,26 +185,23 @@ export const Palette = ({ open, onClose = () => {} }) => {
                   */
                   result
                     .filter(({ rows }) => rows.length)
-                    .map(({ label, rows }) => {
-                      return (
-                        <>
-                          <label key={label} className='Palette-resultLabel u-text--label'>{label}</label>
-                          {
-                            rows.map((row, i) => {
-                              return (
-                                <div
-                                  key={`${label}:${i}`}
-                                  className='Palette-row is-selectable'
-                                  onClick={() => onClose()}
-                                  onKeyDown={e => handleRowKeyDown(e)}
-                                  tabIndex={0}
-                                >
-                                  {row}
-                                </div>
-                              )
-                            })
-                          }
-                        </>
+                    .flatMap(({ label, rows }) => {
+                      return ([
+                          <label key={label} className='Palette-resultLabel u-text--label'>{label}</label>,
+                          rows.flatMap((row, i) => {
+                            return (
+                              <div
+                                key={`${label}:${i}`}
+                                className='Palette-row is-selectable'
+                                onClick={() => onClose()}
+                                onKeyDown={e => handleRowKeyDown(e)}
+                                tabIndex={0}
+                              >
+                                {row}
+                              </div>
+                            )
+                          })
+                        ]
                       )
                     })
                 }

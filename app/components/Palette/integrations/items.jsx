@@ -16,7 +16,7 @@ function ItemRow ({ item }) {
       otherwise the shortcut shouldn't be
       performed
       */
-      if (document.activeElement !== elRef.current.parentElement) {
+      if (document.activeElement !== elRef.current?.parentElement) {
         return
       }
 
@@ -32,13 +32,17 @@ function ItemRow ({ item }) {
       }
     }
 
+    let bridge
     async function setup () {
-      const bridge = await api.load()
+      bridge = await api.load()
       bridge.events.on('shortcut', onShortcut)
     }
     setup()
 
     return () => {
+      if (!bridge) {
+        return
+      }
       bridge.events.off('shortcut', onShortcut)
     }
   }, [item])

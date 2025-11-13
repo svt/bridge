@@ -3,9 +3,20 @@
   padding: 0.2em;
 }
 
+.ContextMenuItem:focus .ContextMenuItem-text {
+  box-shadow: inset 0 0 0 2px var(--base-color--shade);
+}
+
 .ContextMenuItem-text {
-  padding: 0.5em;
+  padding: 0.4em 0.5em;
   border-radius: 4px;
+
+  font-size: 0.95em;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  overflow: hidden;
 }
 
 .ContextMenuItem .Icon {

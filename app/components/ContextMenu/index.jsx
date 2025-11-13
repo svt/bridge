@@ -10,11 +10,23 @@ import './style.css'
  * This it to prevent the same event to
  * both open and close a context menu
  * 
- * @type { Number }
+ * @type { number }
  */
 const OPEN_THRESHOLD_MS = 100
 
-export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
+/**
+ * The default width of
+ * a context menu in pixels,
+ * 
+ * will be used unless a new width
+ * is specified as a property
+ * to the component
+ * 
+ * @type { number }
+ */
+const DEFAULT_WIDTH_PX = 150
+
+export const ContextMenu = ({ x, y, width = DEFAULT_WIDTH_PX, children, onClose = () => {} }) => {
   const elRef = React.useRef()
   const openTimestampRef = React.useRef()
 
@@ -47,6 +59,18 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
     }
   }, [x, y, onClose])
 
+  React.useEffect(() => {
+    function closeContext (e) {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', closeContext)
+    return () => {
+      window.removeEventListener('keydown', closeContext)
+    }
+  }, [x, y, onClose])
+
   /*
   Make sure that the menu open in the direction
   where it's got the most free space
@@ -64,7 +88,11 @@ export const ContextMenu = ({ x, y, children, onClose = () => {} }) => {
     <>
       {
         createPortal(
-          <div ref={elRef} className={`ContextMenu u-theme--light ContextMenu--${direction}`} style={{ top: y, left: x }}>
+          <div
+            ref={elRef}
+            className={`ContextMenu u-theme--light ContextMenu--${direction}`}
+            style={{ top: y, left: x, width: width }}
+          >
             {children}
           </div>,
           document.body
