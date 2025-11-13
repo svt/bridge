@@ -35,9 +35,9 @@ class UIContextMenu {
     this.#props.Events.emitLocally('ui.contextMenu.close')
   }
 
-  open (opts, spec) {
+  open (spec, opts) {
     this.#openedAt = Date.now()
-    this.#props.Events.emitLocally('ui.contextMenu.open', opts, spec)
+    this.#props.Events.emitLocally('ui.contextMenu.open', spec, opts)
   }
 }
 

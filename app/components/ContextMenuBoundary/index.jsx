@@ -78,7 +78,7 @@ export function ContextMenuBoundary ({ children }) {
   React.useEffect(() => {
     let bridge
   
-    function onRequestContextMenu (opts, spec) {
+    function onRequestContextMenu (spec, opts) {
       if (!isNumber(opts?.x) || !isNumber(opts?.y)) {
         console.warn('Missing context menu position')
         return
