@@ -6,7 +6,7 @@
 }
 
 .VerticalNavigation-section:not(:first-child) {
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 .VerticalNavigation-section .VerticalNavigation-sectionLabel {

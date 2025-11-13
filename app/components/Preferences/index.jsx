@@ -20,14 +20,22 @@ import './style.css'
  * Internal settings defined
  * by json files
  */
-const INTERNAL_SETTINGS = {
-  items: [
-    { title: 'General', items: general },
-    { title: 'Appearance', items: appearance },
-    { title: 'Keyboard shortcuts', items: shortcuts },
-    { title: 'State', items: state }
-  ]
-}
+const INTERNAL_SETTINGS = [
+  {
+    title: 'System',
+    items: [
+      { title: 'General', items: general },
+      { title: 'Appearance', items: appearance },
+      { title: 'Keyboard shortcuts', items: shortcuts }
+    ]
+  },
+  {
+    title: 'Project',
+    items: [      
+      { title: 'State', items: state }
+    ]
+  }
+]
 
 export function Preferences ({ onClose = () => {} }) {
   const [shared, applyShared] = React.useContext(SharedContext)
@@ -43,7 +51,7 @@ export function Preferences ({ onClose = () => {} }) {
    * aggregated together
    */
   const sections = [
-    INTERNAL_SETTINGS,
+    ...INTERNAL_SETTINGS,
     pluginSettings.current
   ]
 
