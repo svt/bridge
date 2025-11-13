@@ -1,0 +1,12 @@
+.ContextMenuSearchItem {
+  padding: 0;
+}
+
+.ContextMenuSearchItem input.ContextMenuSearchItem-input{
+  width: 100%;
+
+  background: none;
+
+  border-radius: 0;
+  box-shadow: none;
+}
