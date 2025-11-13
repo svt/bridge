@@ -59,6 +59,18 @@ export const ContextMenu = ({ x, y, width = DEFAULT_WIDTH_PX, children, onClose 
     }
   }, [x, y, onClose])
 
+  React.useEffect(() => {
+    function closeContext (e) {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', closeContext)
+    return () => {
+      window.removeEventListener('keydown', closeContext)
+    }
+  }, [x, y, onClose])
+
   /*
   Make sure that the menu open in the direction
   where it's got the most free space

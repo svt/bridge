@@ -44,7 +44,7 @@ function sanitizeItemSpec (spec) {
   return out
 }
 
-function renderItemSpec (spec, key) {
+function renderItemSpec (spec, key, onClose = () => {}) {
   if (!TYPES[spec?.type]) {
     return <></>
   }
@@ -56,13 +56,14 @@ function renderItemSpec (spec, key) {
       return
     }
     spec.onClick()
+    onClose()
   }
 
   return (
     <Component key={key} {...sanitizeItemSpec(spec)} text={spec?.label} onClick={() => handleClick()}>
       {
         (spec?.children || [])
-          .map((child, i) => renderItemSpec(child, `${key}_${i}`))
+          .map((child, i) => renderItemSpec(child, `${key}_${i}`, onClose))
       }
     </Component>
   )
@@ -165,8 +166,8 @@ export function ContextMenuBoundary ({ children }) {
             }
             {
               Array.isArray(renderedSpec)
-                ? renderedSpec.map((item, i) => renderItemSpec(item, `contextMenu_${i}`))
-                : renderItemSpec(renderedSpec, 'contextMenu')
+                ? renderedSpec.map((item, i) => renderItemSpec(item, `contextMenu_${i}`, handleClose))
+                : renderItemSpec(renderedSpec, 'contextMenu', handleClose)
             }
           </ContextMenu>
         )
