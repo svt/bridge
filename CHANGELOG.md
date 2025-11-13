@@ -11,6 +11,8 @@
 - Support for selecting multiple items at once with the shift key
 - An API for managing context menus
 - An API for managing the clipboard
+- Search in context menus
+- Keyboard control in context menus
 
 ## 1.0.0-beta.7
 ### Changed
