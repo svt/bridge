@@ -13,6 +13,7 @@
 - An API for managing the clipboard
 - Search in context menus
 - Keyboard control in context menus
+- Allow for setting default on play and on end actions
 
 ## 1.0.0-beta.7
 ### Changed
