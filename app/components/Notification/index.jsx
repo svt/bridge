@@ -1,7 +1,9 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
+
 import './style.css'
 
-import { Icon } from '../Icon'
+import { Icon } from '../Icon'
 
 export function Notification ({ type, size = 'normal', icon, title, description, controls = <></>, closable }) {
   const [isHidden, setIsHidden] = React.useState(false)
@@ -19,22 +21,29 @@ export function Notification ({ type, size = 'normal', icon, title, description,
   }
 
   return (
-    <div className={`Notification Notification--${type} Notification-size--${size}`}>
-      <div className='Notification-content'>
-        {
-          icon && <span className='Notification-contentSection Notification-icon'><Icon name={icon} color='var(--color-text)' /></span>
-        }
-        {
-          title && <span className='Notification-contentSection Notification-title'>{title}</span>
-        }
-        {
-          description && <span className='Notification-contentSection Notification-description'>{description}</span>
-        }
-      </div>
-      <div className='Notification-controls'>
-        { controls }
-        { closable && <button className='Notification-hideBtn Link' onClick={() => handleHideBtnClick()}>Dölj</button> }
-      </div>
-    </div>
+    <>
+      {
+        createPortal(
+          <div className={`Notification Notification--${type} Notification-size--${size}`}>
+            <div className='Notification-content'>
+              {
+                icon && <span className='Notification-contentSection Notification-icon'><Icon name={icon} color='var(--color-text)' /></span>
+              }
+              {
+                title && <span className='Notification-contentSection Notification-title'>{title}</span>
+              }
+              {
+                description && <span className='Notification-contentSection Notification-description'>{description}</span>
+              }
+            </div>
+            <div className='Notification-controls'>
+              { controls }
+              { closable && <button className='Notification-hideBtn Link' onClick={() => handleHideBtnClick()}>Dölj</button> }
+            </div>
+          </div>,
+          document.body
+        )
+      }
+    </>
   )
 }
