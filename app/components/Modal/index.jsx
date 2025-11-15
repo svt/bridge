@@ -4,28 +4,34 @@ import { useDraggable } from '../../hooks/useDraggable'
 
 import './style.css'
 
+import * as modalStack from '../../utils/modals'
+
 export function Modal ({ children, open, size = 'large', onClose = () => {}, draggable = false, shade = true }) {
+  const elRef = React.useRef()
   const handleRef = React.useRef()
+
   const [offset] = useDraggable(handleRef.current)
 
-  /*
-  Trigger the onClose callback
-  if the escape key is pressed
-  */
   React.useEffect(() => {
-    function onKeyUp (e) {
-      if (e.key !== 'Escape') return
+    if (!open) {
+      return
+    }
+
+    function handleClose () {
+      if (typeof onClose !== 'function') {
+        return
+      }
       onClose()
     }
 
-    window.addEventListener('keyup', onKeyUp)
+    const id = modalStack.addToStack(handleClose)
     return () => {
-      window.removeEventListener('keyup', onKeyUp)
+      modalStack.removeFromStack(id)
     }
-  }, [])
+  }, [open])
 
   return (
-    <div className={`Modal Modal--${size} u-theme--light ${open ? 'is-open' : ''} ${draggable ? 'is-draggable' : ''} ${!shade ? 'has-noShade' : ''}`}>
+    <div ref={elRef} className={`Modal Modal--${size} u-theme--light ${open ? 'is-open' : ''} ${draggable ? 'is-draggable' : ''} ${!shade ? 'has-noShade' : ''}`}>
       <div className='Modal-wrapper' style={{ transform: `translate(${offset[0]}px, ${offset[1]}px)` }}>
         <div className='Modal-content'>
           {

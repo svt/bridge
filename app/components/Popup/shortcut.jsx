@@ -4,6 +4,7 @@ import { Popup } from '.'
 import './shortcut.css'
 
 import * as shortcuts from '../../utils/shortcuts'
+import * as modalStack from '../../utils/modals'
 
 export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
   const [trigger, setTrigger] = React.useState(shortcut?.trigger)
@@ -17,8 +18,25 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
       return
     }
 
+    function onClose () {
+      onChange(undefined)
+    }
+
+    const id = modalStack.addToStack(onClose)
+    return () => {
+      modalStack.removeFromStack(id)
+    }
+  }, [open])
+
+  React.useEffect(() => {
+    if (!open) {
+      return
+    }
+
     function onKeyDown (e) {
-      e.preventDefault()
+      if (e.key === 'Escape') {
+        return
+      }
       setTrigger(shortcuts.getPressed())
     }
 

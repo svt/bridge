@@ -14,6 +14,8 @@
   --color-text: var(--base-color--accent2);
   
   color: var(--color-text);
+
+  -webkit-app-region: no-drag;
 }
 
 .Notification--inline {
