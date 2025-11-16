@@ -17,6 +17,7 @@
 - Keyboard control in context menus
 - Allow for setting default on play and on end actions
 - A modal stack for controlling the order in which modals are closed
+- A prompt to save if unsaved changes are detected
 
 ## 1.0.0-beta.7
 ### Changed

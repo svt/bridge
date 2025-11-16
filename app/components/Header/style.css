@@ -23,8 +23,23 @@ Add an extra margin when running
 on macOS in order to leave space
 for the traffic light
 */
-.Header.has-leftMargin {
+.Header.hasLeftMargin {
   padding-left: 85px;
+}
+
+.Header-title {
+  display: flex;
+  align-items: center;
+}
+
+.Header-unsavedDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 5px;
+
+  border-radius: 10px;
+  background: var(--base-color);
 }
 
 .Header-center {

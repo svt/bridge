@@ -15,6 +15,8 @@ import * as api from '../../api'
 
 import './style.css'
 
+const DEFAULT_TITLE = 'Unnamed'
+
 function isMacOS () {
   return window.APP.platform === 'darwin'
 }
@@ -35,7 +37,7 @@ async function handleMaximize () {
   bridge.commands.executeCommand('window.toggleMaximize')
 }
 
-export function Header ({ title = 'Bridge', features }) {
+export function Header ({ title = DEFAULT_TITLE, features }) {
   const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
@@ -117,9 +119,13 @@ export function Header ({ title = 'Bridge', features }) {
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
-      <header className={`Header ${isMacOS() && isElectron() ? 'has-leftMargin' : ''}`} onDoubleClick={() => handleMaximize()}>
-        <div>
+      <header className={`Header ${isMacOS() && isElectron() ? 'hasLeftMargin' : ''}`} onDoubleClick={() => handleMaximize()}>
+        <div className='Header-title'>
           { featureShown('title') && title }
+          {
+            shared?._hasUnsavedChanges &&
+            <div className='Header-unsavedDot' />
+          }
         </div>
         <div className='Header-center'></div>
         <div className='Header-block'>
