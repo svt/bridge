@@ -14,6 +14,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Types](#types)
 - [Items](#items)
 - [Client](#client)
+  - [Clipboard](#clipboard)
 - [Variables](#variables)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 - [System](#system)
@@ -428,6 +429,20 @@ Get an array of all current connections
 
 ### `bridge.client.getAllConnectionsByRole(role): Promise<Connection[]>`  
 Get an array of all current connections with a specific role
+
+
+### Clipboard
+
+**Note: this API is only available in widgets (browser process)**
+
+#### `bridge.client.clipboard.writeText(string): Promise.<any?>`
+Write a string to the clipboard
+
+#### `bridge.client.clipboard.readJson(): Promise<object?>`
+Retrieve the contents of the clipboard as an object
+
+#### `bridge.client.clipboard.readText(): Promise<object?>`
+Retrieve the contents of the clipboard as a string
 
 ## Variables
 
