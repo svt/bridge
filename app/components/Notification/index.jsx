@@ -1,5 +1,4 @@
 import React from 'react'
-import { createPortal } from 'react-dom'
 
 import './style.css'
 
@@ -21,29 +20,22 @@ export function Notification ({ type, size = 'normal', icon, title, description,
   }
 
   return (
-    <>
-      {
-        createPortal(
-          <div className={`Notification Notification--${type} Notification-size--${size}`}>
-            <div className='Notification-content'>
-              {
-                icon && <span className='Notification-contentSection Notification-icon'><Icon name={icon} color='var(--color-text)' /></span>
-              }
-              {
-                title && <span className='Notification-contentSection Notification-title'>{title}</span>
-              }
-              {
-                description && <span className='Notification-contentSection Notification-description'>{description}</span>
-              }
-            </div>
-            <div className='Notification-controls'>
-              { controls }
-              { closable && <button className='Notification-hideBtn Link' onClick={() => handleHideBtnClick()}>Dölj</button> }
-            </div>
-          </div>,
-          document.body
-        )
-      }
-    </>
+    <div className={`Notification Notification--${type} Notification-size--${size}`}>
+      <div className='Notification-content'>
+        {
+          icon && <span className='Notification-contentSection Notification-icon'><Icon name={icon} color='var(--color-text)' /></span>
+        }
+        {
+          title && <span className='Notification-contentSection Notification-title'>{title}</span>
+        }
+        {
+          description && <span className='Notification-contentSection Notification-description'>{description}</span>
+        }
+      </div>
+      <div className='Notification-controls'>
+        { controls }
+        { closable && <button className='Notification-hideBtn Link' onClick={() => handleHideBtnClick()}>Dölj</button> }
+      </div>
+    </div>
   )
 }

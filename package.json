@@ -36,6 +36,7 @@
     "ajv": "^8.10.0",
     "bufferutil": "^4.0.7",
     "express": "^4.19.2",
+    "fast-equals": "^5.3.3",
     "jose": "^6.0.13",
     "jszip": "^3.10.1",
     "node-fetch": "^2.6.1",

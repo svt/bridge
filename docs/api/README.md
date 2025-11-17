@@ -14,10 +14,13 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Types](#types)
 - [Items](#items)
 - [Client](#client)
+  - [Clipboard](#clipboard)
 - [Variables](#variables)
 - [Keyboard shortcuts](#keyboard-shortcuts)
 - [System](#system)
 - [Messages](#messages)
+- [UI](#ui)
+  - [Context menus](#context-menus)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -63,15 +66,17 @@ bridge.events.on('item.stop', item => {
 ```
 
 ### Available events
-| Event | Description |
-| ----- | ----------- |
-| `state.change` | Emitted every time the remote state changes |
-| `item.play` | Emitted when an item is played, after an optional delay |
-| `item.stop` | Emitted when an item is stopped |
-| `item.end` | Emitted when an item ends, this will not trigger when an item is stopped |
-| `item.apply` | Emitted when an item data is applied to an item using the item.apply api, this can be used to react to item changes |
-| `shortcut` | Emitted when a shortcut is triggered |
-| `selection` | Emitted when the selection of the current client changes |
+| Event | Description | Availability |
+| ----- | ----------- | ------------ |
+| `state.change` | Emitted every time the remote state changes | Everywhere |
+| `item.play` | Emitted when an item is played, after an optional delay | Everywhere |
+| `item.stop` | Emitted when an item is stopped | Everywhere |
+| `item.end` | Emitted when an item ends, this will not trigger when an item is stopped | Everywhere |
+| `item.apply` | Emitted when an item data is applied to an item using the item.apply api, this can be used to react to item changes | Everywhere |
+| `shortcut` | Emitted when a shortcut is triggered | Browser |
+| `selection` | Emitted when the selection of the current client changes | Browser |
+| `ui.contextMenu.open` | A context menu was opened | Browser |
+| `ui.contextMenu.close` | A context menu was closed | Browser |
 
 ### `bridge.events.emit(event, ...parameters)`
 Emit an event with or without any data
@@ -425,6 +430,20 @@ Get an array of all current connections
 ### `bridge.client.getAllConnectionsByRole(role): Promise<Connection[]>`  
 Get an array of all current connections with a specific role
 
+
+### Clipboard
+
+**Note: this API is only available in widgets (browser process)**
+
+#### `bridge.client.clipboard.writeText(string): Promise.<any?>`
+Write a string to the clipboard
+
+#### `bridge.client.clipboard.readJson(): Promise<object?>`
+Retrieve the contents of the clipboard as an object
+
+#### `bridge.client.clipboard.readText(): Promise<object?>`
+Retrieve the contents of the clipboard as a string
+
 ## Variables
 
 ### `bridge.variables.stringContainsVariable(string): Boolean`   
@@ -564,4 +583,83 @@ bridge.messages.createWarningMessage({
   text: 'MyPlugin: My warning',
   ttl: 5000 // Default, optional, hides the message after 5s
 })
+```
+
+## UI
+
+### Context menus
+
+**Note: this API is only available in widgets (browser process)**
+
+#### `bridge.ui.contextMenu.open(spec, opts): void`
+Open a context menu at the screen x and screen y position specified in the options object
+
+This api is designed to be used together with the native contextmenu event
+
+Opening a context menu while there's already one open will automatically close the first one
+
+```javascript
+import bridge from 'bridge'
+
+/*
+Define items and
+their actions
+*/
+const spec = [
+  {
+    {
+      type: 'item',
+      label: 'My first item',
+      onClick: () => {} // Do something when the item is activated
+    },
+    { type: 'divider' },
+    {
+      type: 'item',
+      label: 'My submenu',
+      children: [
+        {
+          type: 'item',
+          label: 'Another item',
+          onClick: () => {}
+        },
+        {
+          type: 'item',
+          label: 'A third item',
+          onClick: () => {}
+        }
+      ]
+    }
+  }
+]
+
+window.addEventListener('contextmenu', e => {
+  bridge.ui.contextMenu.open(spec, {
+    x: e.screenX, // Required
+    y: e.screenY, // Required
+    searchable: true // Optional, defaults to false, whether or not to show a search field and allow the user to search for any items in the menu
+  })
+})
+```
+
+**Tip!**  
+Use the `ui.contextMenu.close` and `ui.contextMenu.open` events to act when a menu is closed or opened by the user or the system
+
+```javascript
+import bridge from 'bridge'
+
+bridge.events.on('ui.contextMenu.close', () => {
+  // Do something when the context menu closed
+})
+
+bridge.events.on('ui.contextMenu.open', () => {
+  // Do something when the context menu opened
+})
+```
+
+#### `bridge.ui.contextMenu.close(): void`
+Close any opened context menus, this does not need to be called as a response to the `ui.contextMenu.close` event but is to be used should you, the developer, want to close the menu programatically
+
+```javascript
+import bridge from 'bridge'
+bridge.ui.contextMenu.close()
 ```
