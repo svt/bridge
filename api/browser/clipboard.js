@@ -33,7 +33,7 @@ class Clipboard {
   /**
    * Read the contents of the clipboard as a json object,
    * will return undefined if unable to parse the data
-   * @returns { Promise.<string?> }
+   * @returns { Promise.<object?> }
    */
   async readJson () {
     try {
