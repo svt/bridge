@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.8 - UNRELEASED
+## 1.0.0-beta.8
 ### Fixed
 - The space key can now be used for keyboard shortcuts
 - An issue where items in the rundown couldn't rapidly be selected and de-selected
@@ -8,7 +8,8 @@
 - An issue with the palette not setting proper keys
 - An issue with the palette not removing event listeners
 - The escape key causes weird behaviour when editing a shortcut
-- Closing shortcuts with the escape key prevents context menus in the edit mode 
+- Closing shortcuts with the escape key prevents context menus in the edit mode
+- An issue that crashed the app in windows when opened with an invalid file path as runtime argument
 ### Added
 - Support for selecting multiple items at once with the shift key
 - An API for managing context menus
