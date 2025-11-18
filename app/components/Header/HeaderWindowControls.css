@@ -1,0 +1,28 @@
+.HeaderWindowControls {
+  margin-left: 20px;
+  -webkit-app-region: no-drag;
+
+  --icon-color: var(--base-color);
+}
+
+.HeaderWindowControls-button {
+  width: 56px;
+  height: 36px;
+
+  background: none;
+  border: none;
+  
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition: 0.2s;
+}
+
+.HeaderWindowControls-button:hover {
+  background: var(--base-color--shade);
+}
+
+.HeaderWindowControls-button--close:hover {
+  background: #DE061A;
+  --icon-color: white;
+}

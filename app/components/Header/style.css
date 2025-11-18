@@ -18,6 +18,10 @@
   z-index: 2;
 }
 
+html[data-platform="windows"] .Header {
+  padding: 0 0 0 20px;
+}
+
 /*
 Add an extra margin when running
 on macOS in order to leave space

@@ -8,33 +8,19 @@ import { Modal } from '../Modal'
 import { Palette } from '../Palette'
 import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
+import { HeaderWindowControls } from './HeaderWindowControls'
 
 import { Icon } from '../Icon'
 
 import * as api from '../../api'
+import * as windowUtils from './utils'
 
 import './style.css'
 
 const DEFAULT_TITLE = 'Unnamed'
 
-function isMacOS () {
-  return window.APP.platform === 'darwin'
-}
-
-function isElectron () {
-  return window.navigator.userAgent.includes('Bridge')
-}
-
 function handleReload () {
   window.location.reload()
-}
-
-async function handleMaximize () {
-  if (!isElectron()) {
-    return
-  }
-  const bridge = await api.load()
-  bridge.commands.executeCommand('window.toggleMaximize')
 }
 
 export function Header ({ title = DEFAULT_TITLE, features }) {
@@ -119,7 +105,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
-      <header className={`Header ${isMacOS() && isElectron() ? 'hasLeftMargin' : ''}`} onDoubleClick={() => handleMaximize()}>
+      <header className={`Header ${windowUtils.isMacOS() && windowUtils.isElectron() ? 'hasLeftMargin' : ''}`} onDoubleClick={() => windowUtils.toggleMaximize()}>
         <div className='Header-title'>
           { featureShown('title') && title }
           {
@@ -183,6 +169,10 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
                 <Icon name='preferences' />
               </button>
             )
+          }
+          {
+            windowUtils.isWindows() && windowUtils.isElectron() &&
+            <HeaderWindowControls />
           }
         </div>
       </header>
