@@ -13,11 +13,17 @@ export function HeaderWindowControls () {
   React.useEffect(() => {
     let bridge
 
-    function onMaximize () {
+    function onMaximize (id) {
+      if (id !== windowUtils.getWindowId()) {
+        return
+      }
       setIsMaximized(true)
     }
 
     function onUnMaximize () {
+      if (id !== windowUtils.getWindowId()) {
+        return
+      }
       setIsMaximized(false)
     }
 

@@ -12,12 +12,16 @@ export function isWindows () {
   return window.APP.platform === 'win32'
 }
 
+export function getWindowId () {
+  return window.BRIDGE_WINDOW_ID
+}
+
 export async function toggleMaximize () {
   if (!isElectron()) {
     return
   }
   const bridge = await api.load()
-  bridge.commands.executeRawCommand('window.toggleMaximize')
+  bridge.commands.executeRawCommand('window.toggleMaximize', getWindowId())
 }
 
 export async function minimize () {
@@ -25,7 +29,7 @@ export async function minimize () {
     return
   }
   const bridge = await api.load()
-  bridge.commands.executeRawCommand('window.minimize')
+  bridge.commands.executeRawCommand('window.minimize', getWindowId())
 }
 
 export async function close () {
@@ -33,5 +37,5 @@ export async function close () {
     return
   }
   const bridge = await api.load()
-  bridge.commands.executeRawCommand('window.close')
+  bridge.commands.executeRawCommand('window.close', getWindowId())
 }
