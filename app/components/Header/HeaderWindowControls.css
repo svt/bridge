@@ -1,12 +1,16 @@
 .HeaderWindowControls {
+  display: flex;
   margin-left: 20px;
   -webkit-app-region: no-drag;
 
   --icon-color: var(--base-color);
+
+  white-space: nowrap;
 }
 
 .HeaderWindowControls-button {
-  width: 56px;
+  display: flex;
+  width: 46px;
   height: 36px;
 
   background: none;
@@ -14,6 +18,9 @@
   
   appearance: none;
   -webkit-appearance: none;
+
+  align-items: center;
+  justify-content: center;
 
   transition: 0.2s;
 }
@@ -25,4 +32,8 @@
 .HeaderWindowControls-button--close:hover {
   background: #DE061A;
   --icon-color: white;
+}
+
+.HeaderWindowControls-button .Icon {
+  transform: scale(0.8);
 }

@@ -9,7 +9,7 @@ export function isMacOS () {
 }
 
 export function isWindows () {
-  return window.APP.platform === 'windows'
+  return window.APP.platform === 'win32'
 }
 
 export async function toggleMaximize () {
