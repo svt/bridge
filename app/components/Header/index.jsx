@@ -123,7 +123,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         <div className='Header-title'>
           { featureShown('title') && title }
           {
-            shared?._hasUnsavedChanges &&
+            featureShown('title') && shared?._hasUnsavedChanges &&
             <span className='Header-edited'> — edited</span>
           }
         </div>
