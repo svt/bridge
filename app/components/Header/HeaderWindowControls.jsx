@@ -43,20 +43,15 @@ export function HeaderWindowControls () {
     }
   }, [])
 
-  function handleToggleMaximize () {
-    setIsMaximized(current => !current)
-    windowUtils.toggleMaximize()
-  }
-
   return (
     <div className='HeaderWindowControls'>
-      <button className='HeaderWindowControls-button' onClick={() => windowUtils.minimize()}>
+      <button className='HeaderWindowControls-button'>
         <Icon name='windowMinimize' color='var(--icon-color)' />
       </button>
-      <button className='HeaderWindowControls-button' onClick={() => handleToggleMaximize()}>
+      <button className='HeaderWindowControls-button'>
         <Icon name={isMaximized ? 'windowRestore' : 'windowMaximize'} color='var(--icon-color)' />
       </button>
-      <button className='HeaderWindowControls-button HeaderWindowControls-button--close' onClick={() => windowUtils.close()}>
+      <button className='HeaderWindowControls-button HeaderWindowControls-button--close'>
         <Icon name='windowClose' color='var(--icon-color)' />
       </button>
     </div>
