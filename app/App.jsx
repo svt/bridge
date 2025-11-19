@@ -68,6 +68,7 @@ root html tag for platform-specific styling e.t.c.
 */
 ;(function () {
   window.document.documentElement.dataset.platform = browser.platform()
+  window.document.documentElement.dataset.agent = browser.isElectron() ? 'electron' : 'web'
 })()
 
 const websocketQuery = {
