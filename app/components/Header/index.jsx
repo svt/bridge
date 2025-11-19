@@ -171,7 +171,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
             )
           }
           {
-            windowUtils.isWindows() && windowUtils.isElectron() &&
+            (true || windowUtils.isWindows()) && windowUtils.isElectron() &&
             <HeaderWindowControls />
           }
         </div>
