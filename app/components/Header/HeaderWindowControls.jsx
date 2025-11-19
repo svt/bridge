@@ -20,7 +20,7 @@ export function HeaderWindowControls () {
       setIsMaximized(true)
     }
 
-    function onUnMaximize () {
+    function onUnMaximize (id) {
       if (id !== windowUtils.getWindowId()) {
         return
       }
