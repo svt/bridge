@@ -5,6 +5,7 @@ import { LocalContext } from '../../localContext'
 
 import { Role } from '../Role'
 import { Modal } from '../Modal'
+import { AppMenu } from '../AppMenu'
 import { Palette } from '../Palette'
 import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
@@ -112,14 +113,35 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         `}
         onDoubleClick={() => windowUtils.toggleMaximize()}
       >
-        <div className='Header-title'>
-          { featureShown('title') && title }
-          {
-            featureShown('title') && shared?._hasUnsavedChanges &&
-            <span className='Header-edited'> — edited</span>
-          }
-        </div>
-        <div className='Header-center'></div>
+        {
+          (windowUtils.isWindows() && windowUtils.isElectron())
+          ? (
+            <>
+              <div className='Header-title'>
+                <AppMenu />
+              </div>
+              <div className='Header-center'>
+                { featureShown('title') && title }
+                {
+                  featureShown('title') && shared?._hasUnsavedChanges &&
+                  <span className='Header-edited'> — edited</span>
+                }
+              </div>
+            </>
+          )
+          : (
+            <>
+              <div className='Header-title'>
+                { featureShown('title') && title }
+                {
+                  featureShown('title') && shared?._hasUnsavedChanges &&
+                  <span className='Header-edited'> — edited</span>
+                }
+              </div>
+              <div className='Header-center' />
+            </>
+          )
+        }
         <div className='Header-block'>
           {
             featureShown('role') &&
