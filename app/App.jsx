@@ -202,6 +202,27 @@ export default function App () {
     applyLocal({ theme })
   }, [])
 
+  /*
+  Listen to changes to localstorage to update
+  the current window if the theme changes in another window
+
+  Note that the event won't fire in the same
+  window that set the local storage item
+  */
+  React.useEffect(() => {
+    function onStorageChange (e) {
+      if (e.key === 'bridge.theme') {
+        applyLocal({
+          theme: e.newValue
+        })
+      }
+    }
+    window.addEventListener('storage', onStorageChange)
+    return () => {
+      window.removeEventListener('storage', onStorageChange)
+    }
+  }, [])
+
   return (
     <SocketContext.Provider value={[send, data]}>
       <LocalContext.Provider value={[local, applyLocal]}>

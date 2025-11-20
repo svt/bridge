@@ -18,17 +18,20 @@
   z-index: 2;
 }
 
-html[data-platform="windows"][data-agent="electron"] .Header {
-  padding: 0 0 0 20px;
-}
-
 /*
 Add an extra margin when running
 on macOS in order to leave space
 for the traffic light
 */
-.Header.hasLeftMargin {
+.Header.has-leftMargin {
   padding-left: 85px;
+}
+
+/*
+Do the same for Windows
+*/
+.Header.has-rightMargin {
+  padding-right: 180px;
 }
 
 .Header-title {

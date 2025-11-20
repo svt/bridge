@@ -8,7 +8,6 @@ import { Modal } from '../Modal'
 import { Palette } from '../Palette'
 import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
-import { HeaderWindowControls } from './HeaderWindowControls'
 
 import { Icon } from '../Icon'
 
@@ -105,7 +104,14 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
-      <header className={`Header ${windowUtils.isMacOS() && windowUtils.isElectron() ? 'hasLeftMargin' : ''}`} onDoubleClick={() => windowUtils.toggleMaximize()}>
+      <header
+        className={`
+          Header
+          ${windowUtils.isMacOS() && windowUtils.isElectron() ? 'has-leftMargin' : ''}
+          ${windowUtils.isWindows() && windowUtils.isElectron() ? 'has-rightMargin' : ''}
+        `}
+        onDoubleClick={() => windowUtils.toggleMaximize()}
+      >
         <div className='Header-title'>
           { featureShown('title') && title }
           {
@@ -169,10 +175,6 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
                 <Icon name='preferences' />
               </button>
             )
-          }
-          {
-            windowUtils.isWindows() && windowUtils.isElectron() &&
-            <HeaderWindowControls />
           }
         </div>
       </header>
