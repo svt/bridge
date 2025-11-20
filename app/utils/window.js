@@ -1,4 +1,4 @@
-import * as api from '../../api'
+import * as api from '../api'
 
 export function isElectron () {
   return window.navigator.userAgent.includes('Bridge')
@@ -38,4 +38,12 @@ export async function close () {
   }
   const bridge = await api.load()
   bridge.commands.executeRawCommand('window.close', getWindowId())
+}
+
+export async function setControlColors (colors) {
+  if (!isElectron()) {
+    return
+  }
+  const bridge = await api.load()
+  bridge.commands.executeRawCommand('window.setControlColors', getWindowId(), colors)
 }

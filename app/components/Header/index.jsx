@@ -12,7 +12,7 @@ import { Preferences } from '../Preferences'
 import { Icon } from '../Icon'
 
 import * as api from '../../api'
-import * as windowUtils from './utils'
+import * as windowUtils from '../../utils/window'
 
 import './style.css'
 

@@ -14,6 +14,7 @@ import { SocketContext } from './socketContext'
 import { useWebsocket } from './hooks/useWebsocket'
 
 
+import * as windowUtils from './utils/window'
 import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
 import * as auth from './auth'
@@ -71,6 +72,26 @@ root html tag for platform-specific styling e.t.c.
   window.document.documentElement.dataset.agent = browser.isElectron() ? 'electron' : 'web'
 })()
 
+;(async function () {
+  const token = await auth.getToken()
+  const bridge = await api.load()
+  bridge.commands.setHeader('authentication', token)
+})()
+
+async function updateControlsColors () {
+  /*
+  Wait for authentication
+  as the setControlColors
+  would be blocked without it
+  */
+  await auth.getToken()
+
+  const style = getComputedStyle(document.body)
+  windowUtils.setControlColors({
+    symbolColor: style.getPropertyValue('--base-color')
+  })
+}
+
 const websocketQuery = {
   workspace
 }
@@ -123,16 +144,6 @@ export default function App () {
 
       const initialState = await bridge.state.get()
       setShared(initialState)
-    }
-    if (readyState !== 1) return
-    setup()
-  }, [readyState])
-
-  React.useEffect(() => {
-    async function setup () {
-      const token = await auth.getToken()
-      const bridge = await api.load()
-      bridge.commands.setHeader('authentication', token)
     }
     if (readyState !== 1) return
     setup()
@@ -192,6 +203,14 @@ export default function App () {
     window.localStorage.setItem('bridge.theme', local.theme)
     applyLocal({ appliedTheme: local.theme })
   }, [local.theme])
+
+  /*
+  Also notify the main thread to
+  update the window controls
+  */
+  React.useEffect(() => {
+    updateControlsColors()
+  }, [local.appliedTheme])
 
   /*
   Load the theme from localstorage
