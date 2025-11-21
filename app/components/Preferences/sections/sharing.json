@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Named url",
+    "description": "This workspace will become available as /named/<custom name> and persistent across restarts",
+    "inputs": [
+      { "type": "string", "bind": "shared.url", "label": "Named url" }
+    ]
+  }
+]
