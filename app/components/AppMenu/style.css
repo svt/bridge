@@ -1,0 +1,6 @@
+.AppMenu {
+  display: flex;
+  font-size: 0.9em;
+
+  -webkit-app-region: no-drag;
+}

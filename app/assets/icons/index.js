@@ -19,6 +19,11 @@ import editDetail from './edit-detail.svg'
 import placeholder from './placeholder.svg'
 import preferences from './preferences.svg'
 
+import windowClose from './window-close.svg'
+import windowRestore from './window-restore.svg'
+import windowMaximize from './window-maximize.svg'
+import windowMinimize from './window-minimize.svg'
+
 import colorSuccess from './color-success.svg'
 import colorWarning from './color-warning.svg'
 
@@ -40,5 +45,9 @@ export default {
   placeholder,
   preferences,
   colorSuccess,
-  colorWarning
+  colorWarning,
+  windowClose,
+  windowRestore,
+  windowMaximize,
+  windowMinimize
 }

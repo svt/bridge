@@ -1,0 +1,9 @@
+.AppMenuRootItem {
+  padding: 0.3em 0.8em;
+  border-radius: 7px;
+}
+
+.AppMenuRootItem:hover,
+.AppMenuRootItem:focus {
+  background: var(--base-color--shade);
+}

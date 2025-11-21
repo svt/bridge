@@ -5,6 +5,7 @@ import { LocalContext } from '../../localContext'
 
 import { Role } from '../Role'
 import { Modal } from '../Modal'
+import { AppMenu } from '../AppMenu'
 import { Palette } from '../Palette'
 import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
@@ -12,29 +13,14 @@ import { Preferences } from '../Preferences'
 import { Icon } from '../Icon'
 
 import * as api from '../../api'
+import * as windowUtils from '../../utils/window'
 
 import './style.css'
 
 const DEFAULT_TITLE = 'Unnamed'
 
-function isMacOS () {
-  return window.APP.platform === 'darwin'
-}
-
-function isElectron () {
-  return window.navigator.userAgent.includes('Bridge')
-}
-
 function handleReload () {
   window.location.reload()
-}
-
-async function handleMaximize () {
-  if (!isElectron()) {
-    return
-  }
-  const bridge = await api.load()
-  bridge.commands.executeCommand('window.toggleMaximize')
 }
 
 export function Header ({ title = DEFAULT_TITLE, features }) {
@@ -119,15 +105,43 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
       <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
-      <header className={`Header ${isMacOS() && isElectron() ? 'hasLeftMargin' : ''}`} onDoubleClick={() => handleMaximize()}>
-        <div className='Header-title'>
-          { featureShown('title') && title }
-          {
-            shared?._hasUnsavedChanges &&
-            <span className='Header-edited'> — edited</span>
-          }
-        </div>
-        <div className='Header-center'></div>
+      <header
+        className={`
+          Header
+          ${windowUtils.isMacOS() && windowUtils.isElectron() ? 'has-leftMargin' : ''}
+          ${windowUtils.isWindows() && windowUtils.isElectron() ? 'has-rightMargin' : ''}
+        `}
+        onDoubleClick={() => windowUtils.toggleMaximize()}
+      >
+        {
+          (windowUtils.isWindows() && windowUtils.isElectron())
+          ? (
+            <>
+              <div className='Header-title'>
+                <AppMenu />
+              </div>
+              <div className='Header-center'>
+                { featureShown('title') && title }
+                {
+                  featureShown('title') && shared?._hasUnsavedChanges &&
+                  <span className='Header-edited'> — edited</span>
+                }
+              </div>
+            </>
+          )
+          : (
+            <>
+              <div className='Header-title'>
+                { featureShown('title') && title }
+                {
+                  featureShown('title') && shared?._hasUnsavedChanges &&
+                  <span className='Header-edited'> — edited</span>
+                }
+              </div>
+              <div className='Header-center' />
+            </>
+          )
+        }
         <div className='Header-block'>
           {
             featureShown('role') &&

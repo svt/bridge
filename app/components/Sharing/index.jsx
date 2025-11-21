@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { SharedContext } from '../../sharedContext'
+
 import { Notification } from '../Notification'
 import { Popover } from '../Popover'
 
@@ -11,12 +13,23 @@ import './style.css'
 
 const HOST = window.APP.address || window.location.hostname
 const PORT = window.APP.port
-const WORKSPACE = window.APP.workspace
+const WORKSPACE_ID = window.APP.workspace
 
 export function Sharing ({ open, onClose = () => {} }) {
+  const [shared] = React.useContext(SharedContext)
   const [copied, setCopied] = React.useState(false)
 
-  const url = `http://${HOST}:${PORT}/workspaces/${WORKSPACE}`
+  /*
+  Construct a path using the workspace id by default
+  but use a more readable name if specified in the
+  project settings
+  */
+  let urlPath = `/workspaces/${WORKSPACE_ID}`
+  if (shared?.url) {
+    urlPath = `/named/${encodeURIComponent(shared.url)}`
+  }
+
+  const url = `http://${HOST}:${PORT}${urlPath}`
 
   async function handleCopy () {
     await clipboard.copyText(url)

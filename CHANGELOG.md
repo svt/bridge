@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.9 - [UNRELEASED]
+### Added
+- Support for named urls when sharing links to workspaces
+
 ## 1.0.0-beta.8
 ### Fixed
 - The space key can now be used for keyboard shortcuts

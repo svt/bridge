@@ -27,8 +27,23 @@ function getClosestAncestorWithSelector (el, selector) {
   return el
 }
 
-function isMultipleItemsSelected () {
-  return bridge.client.selection.getSelection.length > 1
+async function isMultipleItemsSelected () {
+  const selection = await bridge.client.selection.getSelection()
+  return selection.length > 1
+}
+
+async function playSelectedItems () {
+  const selection = await bridge.client.selection.getSelection()
+  for (const item of selection) {
+    bridge.items.playItem(item)
+  }
+}
+
+async function stopSelectedItems () {
+  const selection = await bridge.client.selection.getSelection()
+  for (const item of selection) {
+    bridge.items.stopItem(item)
+  }
 }
 
 export function RundownListItem ({
@@ -70,6 +85,7 @@ export function RundownListItem ({
   }
 
   async function handleContextMenu (e) {
+    e.stopPropagation()
     e.preventDefault()
 
     /*
@@ -84,6 +100,8 @@ export function RundownListItem ({
       return
     }
 
+    const multipleItemsSelected = await isMultipleItemsSelected()
+
     const types = await bridge.state.get('_types')
 
     const spec = [
@@ -93,7 +111,7 @@ export function RundownListItem ({
         onClick: () => handleCopy()
       },
       {
-        ...(isMultipleItemsSelected ? {} : {
+        ...(multipleItemsSelected ? {} : {
           type: 'item',
           label: 'Copy id',
           onClick: () => handleCopyId()
@@ -123,11 +141,22 @@ export function RundownListItem ({
       { type: 'divider' },
       {
         type: 'item',
+        label: 'Play',
+        onClick: () => playSelectedItems()
+      },
+      {
+        type: 'item',
+        label: 'Stop',
+        onClick: () => stopSelectedItems()
+      },
+      { type: 'divider' },
+      {
+        type: 'item',
         label: 'Remove',
         onClick: () => handleDelete()
       },
       ...(
-        !isMultipleItemsSelected() && extraContextMenuItems
+        !multipleItemsSelected && extraContextMenuItems
         ? [
           { type: 'divider' },
           ...extraContextMenuItems

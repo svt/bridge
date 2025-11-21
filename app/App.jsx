@@ -14,6 +14,7 @@ import { SocketContext } from './socketContext'
 import { useWebsocket } from './hooks/useWebsocket'
 
 
+import * as windowUtils from './utils/window'
 import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
 import * as auth from './auth'
@@ -68,7 +69,28 @@ root html tag for platform-specific styling e.t.c.
 */
 ;(function () {
   window.document.documentElement.dataset.platform = browser.platform()
+  window.document.documentElement.dataset.agent = browser.isElectron() ? 'electron' : 'web'
 })()
+
+;(async function () {
+  const token = await auth.getToken()
+  const bridge = await api.load()
+  bridge.commands.setHeader('authentication', token)
+})()
+
+async function updateControlsColors () {
+  /*
+  Wait for authentication
+  as the setControlColors
+  would be blocked without it
+  */
+  await auth.getToken()
+
+  const style = getComputedStyle(document.body)
+  windowUtils.setControlColors({
+    symbolColor: style.getPropertyValue('--base-color')
+  })
+}
 
 const websocketQuery = {
   workspace
@@ -122,16 +144,6 @@ export default function App () {
 
       const initialState = await bridge.state.get()
       setShared(initialState)
-    }
-    if (readyState !== 1) return
-    setup()
-  }, [readyState])
-
-  React.useEffect(() => {
-    async function setup () {
-      const token = await auth.getToken()
-      const bridge = await api.load()
-      bridge.commands.setHeader('authentication', token)
     }
     if (readyState !== 1) return
     setup()
@@ -193,12 +205,41 @@ export default function App () {
   }, [local.theme])
 
   /*
+  Also notify the main thread to
+  update the window controls
+  */
+  React.useEffect(() => {
+    updateControlsColors()
+  }, [local.appliedTheme])
+
+  /*
   Load the theme from localstorage
   into the local context
   */
   React.useEffect(() => {
     const theme = window.localStorage.getItem('bridge.theme') || 'dark'
     applyLocal({ theme })
+  }, [])
+
+  /*
+  Listen to changes to localstorage to update
+  the current window if the theme changes in another window
+
+  Note that the event won't fire in the same
+  window that set the local storage item
+  */
+  React.useEffect(() => {
+    function onStorageChange (e) {
+      if (e.key === 'bridge.theme') {
+        applyLocal({
+          theme: e.newValue
+        })
+      }
+    }
+    window.addEventListener('storage', onStorageChange)
+    return () => {
+      window.removeEventListener('storage', onStorageChange)
+    }
   }, [])
 
   return (
