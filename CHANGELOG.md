@@ -3,6 +3,8 @@
 ## 1.0.0-beta.9 - [UNRELEASED]
 ### Added
 - Support for named urls when sharing links to workspaces
+### Fixed
+- An issue where the inspector started to scroll horisontally on overflow
 
 ## 1.0.0-beta.8
 ### Fixed
