@@ -281,9 +281,7 @@ export function RundownList ({
           console.warn('Dropped spec is missing type')
           return
         }
-        const itemId = await bridge.items.createItem(spec.type)
-
-        bridge.items.applyItem(itemId, spec)
+        const itemId = await bridge.items.createItem(spec.type, spec?.data)
         bridge.commands.executeCommand('rundown.moveItem', rundownId, newIndex, itemId)
       } catch (_) {
         console.warn('Tried to drop an invalid spec')
