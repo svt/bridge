@@ -25,15 +25,15 @@ export function Role ({ currentRole = 0, open, onClose = () => {} }) {
         <div className='u-heading--2'>Become main</div>
         This will turn the current<br />main client into satellite mode
       </PopupConfirm>
-      <Popover open={open} onClose={onClose}>
+      <Popover open={open} onClose={onClose} direction='up' alignment='left'>
         <div className='Role u-theme--light'>
           <div className='Role-content'>
             Only the main client's selections can be triggered by the api
             {
-              currentRole === 1
+              currentRole === 0
                 ? <div className='Role-status'>This is the main client</div>
                 : (
-                  <button className='Button Button--secondary u-width--100pct Sharing-copyBtn' onClick={() => setPopupIsOpen(true)}>
+                  <button className='Button Button--secondary u-width--100pct' onClick={() => setPopupIsOpen(true)}>
                     Become main
                   </button>
                 )

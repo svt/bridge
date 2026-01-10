@@ -2,7 +2,18 @@ import React from 'react'
 
 import './style.css'
 
-export function Popover ({ children, open = false, onClose = () => {} }) {
+const ALIGNMENT = {
+  center: '-50%',
+  left: '0',
+  right: '-100%'
+}
+
+const DIRECTION = {
+  up: 'calc(-100% - 10px)',
+  down: '0'
+}
+
+export function Popover ({ children, open = false, direction = 'down', alignment = 'center', onClose = () => {} }) {
   const elRef = React.useRef()
 
   React.useEffect(() => {
@@ -31,11 +42,13 @@ export function Popover ({ children, open = false, onClose = () => {} }) {
   }, [onClose])
 
   return (
-    <div ref={elRef} className='Popover'>
+    <div ref={elRef} className={`Popover Popover--${direction} Popover--${alignment}`}>
       {
         open &&
         (
-          <div className='Popover-content u-theme--light'>
+          <div className='Popover-content u-theme--light' style={{
+            transform: `translate(${ALIGNMENT[alignment]}, ${DIRECTION[direction]})`
+          }}>
             {children}
           </div>
         )

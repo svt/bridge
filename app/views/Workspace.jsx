@@ -12,6 +12,7 @@ import React from 'react'
 import { SharedContext } from '../sharedContext'
 
 import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 import { Onboarding } from '../components/Onboarding'
 
 import { MessageContainer } from '../components/MessageContainer'
@@ -94,6 +95,7 @@ export const Workspace = () => {
             </div>
           ))
       }
+      <Footer />
     </>
   )
 }

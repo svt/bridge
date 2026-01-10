@@ -82,6 +82,15 @@
   --color-text: black;
 }
 
+.Notification--info {
+  background-color: var(--base-color--background1);
+}
+
+.Notification--info *,
+.Notification--info .Notification-hideBtn {
+  --color-text: var(--base-color);
+}
+
 .Notification-hideBtn {
   color: var(--color-text);
 }

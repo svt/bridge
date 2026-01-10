@@ -3,11 +3,9 @@ import React from 'react'
 import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
-import { Role } from '../Role'
 import { Modal } from '../Modal'
 import { AppMenu } from '../AppMenu'
 import { Palette } from '../Palette'
-import { Sharing } from '../Sharing'
 import { Preferences } from '../Preferences'
 
 import { Icon } from '../Icon'
@@ -28,13 +26,9 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
   const [local] = React.useContext(LocalContext)
 
   const [paletteIsOpen, setPaletteIsOpen] = React.useState(false)
-  const [sharingOpen, setSharingOpen] = React.useState(false)
   const [prefsOpen, setPrefsOpen] = React.useState(false)
-  const [roleOpen, setRoleOpen] = React.useState(false)
 
-  const connectionCount = Object.keys(shared?._connections || {}).length
   const isEditingLayout = shared?._connections?.[local?.id]?.isEditingLayout
-  const role = shared?._connections?.[local.id]?.role
 
   /*
   Listen for shortcuts
@@ -143,29 +137,6 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
           )
         }
         <div className='Header-block'>
-          {
-            featureShown('role') &&
-            (
-              <div className='Header-actionSection'>
-                <button className={`Header-button Header-roleBtn ${role === 1 ? 'is-main' : ''}`} onClick={() => setRoleOpen(true)}>
-                  {role === 1 ? 'Main' : 'Satellite'}
-                </button>
-                <Role currentRole={role} open={roleOpen} onClose={() => setRoleOpen(false)} />
-              </div>
-            )
-          }
-          {
-            featureShown('sharing') &&
-            (
-              <div className='Header-actionSection'>
-                <button className='Header-button Header-sharingBtn' onClick={() => setSharingOpen(true)}>
-                  <Icon name='person' />
-                  {connectionCount || 0}
-                </button>
-                <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
-              </div>
-            )
-          }
           {
             featureShown('palette') &&
             (

@@ -10,6 +10,7 @@
 import React from 'react'
 
 import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 import { SharedContext } from '../sharedContext'
 import { MissingComponent } from '../components/MissingComponent'
 
@@ -83,6 +84,7 @@ export const WorkspaceWidget = () => {
             : <MissingComponent data={widget} />
         }
       </div>
+      <Footer features={['role']} />
     </>
   )
 }

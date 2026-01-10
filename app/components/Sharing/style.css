@@ -11,8 +11,14 @@
   box-sizing: border-box;
 }
 
+.Sharing-text {
+  padding: 0 5px;
+  box-sizing: border-box;
+}
+
 .Sharing-copyBtn {
   margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .Sharing-icon {
@@ -20,5 +26,5 @@
 }
 
 .Sharing-notification {
-  padding: 5px;
+  margin-top: 15px;
 }
