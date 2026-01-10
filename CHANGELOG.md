@@ -3,6 +3,8 @@
 ## 1.0.0-beta.9 - [UNRELEASED]
 ### Added
 - Support for named urls when sharing links to workspaces
+- Ability to convert items to other types by right-clicking
+- Ancestor items in context menus now stay tinted when their child menus are opened
 ### Fixed
 - An issue where the inspector started to scroll horisontally on overflow
 - Closing electron windows may cause a loop preventing user defaults from being saved

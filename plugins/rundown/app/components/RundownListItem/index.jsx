@@ -130,6 +130,11 @@ export function RundownListItem ({
       },
       {
         type: 'item',
+        label: 'Convert to',
+        children: contextMenu.generateAddContextMenuItems(types, typeId => handleConvertTo(typeId))
+      },
+      {
+        type: 'item',
         label: 'Create reference',
         onClick: () => handleCreateReference()
       },
@@ -187,6 +192,16 @@ export function RundownListItem ({
   async function handleAdd (typeId) {
     const itemId = await bridge.items.createItem(typeId)
     bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, itemId)
+  }
+
+  async function handleConvertTo (typeId) {
+    if (!item?.id) {
+      return
+    }
+
+    await bridge.items.applyItem(item?.id, {
+      type: typeId
+    })
   }
 
   async function handleCreateReference () {
