@@ -29,7 +29,8 @@
   --base-color: black;
 }
 
-.ContextMenuItem:hover > .ContextMenuItem-text {
+.ContextMenuItem:hover > .ContextMenuItem-text,
+.ContextMenuItem.is-hovered > .ContextMenuItem-text {
   background: rgb(228, 228, 228);
 }
 
