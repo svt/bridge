@@ -55,6 +55,12 @@
         "action": "openPalette",
         "description": "Open the palette",
         "trigger": ["CommandOrControl", "P"]
+      },
+      {
+        "id": "openSettings",
+        "action": "openSettings",
+        "description": "Open settings",
+        "trigger": ["CommandOrControl", ","]
       }
     ]
   },

@@ -39,6 +39,10 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
       switch (shortcut) {
         case 'openPalette':
           setPaletteIsOpen(true)
+          break
+        case 'openSettings':
+          setPrefsOpen(true)
+          break
       }
     }
 

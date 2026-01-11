@@ -82,7 +82,9 @@
           "CommandOrControl",
           "Backspace",
           "Delete",
-          "Space"
+          "Space",
+          ",",
+          "."
         ]
       }
     }
