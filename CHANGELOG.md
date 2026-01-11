@@ -10,6 +10,7 @@
 ### Fixed
 - An issue where the inspector started to scroll horisontally on overflow
 - Closing electron windows may cause a loop preventing user defaults from being saved
+- Some plugin settings doesn't appear until the state has been refetched
 
 ## 1.0.0-beta.8
 ### Fixed

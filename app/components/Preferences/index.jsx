@@ -17,6 +17,8 @@ import state from './sections/state.json'
 
 import './style.css'
 
+import * as api from '../../api'
+
 /**
  * Internal settings defined
  * by json files
@@ -43,10 +45,7 @@ export function Preferences ({ onClose = () => {} }) {
   const [shared, applyShared] = React.useContext(SharedContext)
   const [, applyLocal] = React.useContext(LocalContext)
 
-  const pluginSettings = React.useRef({
-    title: 'Plugins',
-    items: []
-  })
+  const [pluginSections, setPluginSections] = React.useState([])
 
   /**
    * All plugin sections
@@ -54,34 +53,59 @@ export function Preferences ({ onClose = () => {} }) {
    */
   const sections = [
     ...INTERNAL_SETTINGS,
-    pluginSettings.current
+    {
+      title: 'Plugins',
+      items: pluginSections
+    }
   ]
 
   const [section, setSection] = React.useState(sections[0]?.items[0])
 
   /*
-  Append settings from the state
-  to the plugins section on component
-  load
+  List plugins from the
+  state whenever it's updated
   */
   React.useEffect(() => {
-    Object.entries(shared?._settings || {})
-      /*
-      Sort the groups alphabetically to
-      always keep the same order
-      */
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .forEach(([groupName, settings]) => {
-        pluginSettings.current.items.push({
-          title: groupName,
-          items: settings
+    function updatePluginSettings (state) {
+      const pluginSections = Object.entries(state?._settings || {})
+        /*
+        Sort the groups alphabetically to
+        always keep the same order
+        */
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([groupName, settings]) => {
+          return {
+            title: groupName,
+            items: settings
+          }
         })
-      })
+
+      setPluginSections([...pluginSections])
+    }
+
+    function onStateChange (newState, set) {
+      if (!set.hasOwnProperty('_settings')) {
+        return
+      }
+      updatePluginSettings(newState)
+    }
+
+    let bridge
+    async function setup () {
+      bridge = await api.load()
+      bridge.events.on('state.change', onStateChange)
+    }
+    setup()
 
     return () => {
-      pluginSettings.current.items = []
+      setPluginSections([])
+
+      if (!bridge?.events) {
+        return
+      }
+      bridge.events.off('state.change', onStateChange)
     }
-  }, [shared._settings])
+  }, [])
 
   function handleSidebarClick (path) {
     const pane = sections[path[0]]?.items[path[1]]
