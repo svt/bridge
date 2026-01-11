@@ -1,0 +1,23 @@
+{
+  "name": "bridge-plugin-timecode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron:rebuild": "electron-rebuild -f"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "author": "Axel Boberg (axel.boberg@svt.se)",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "libltc-wrapper": "^1.1.2",
+    "node-web-audio-api": "^1.0.7"
+  }
+}
