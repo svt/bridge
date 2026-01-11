@@ -97,7 +97,7 @@ Remove a listener for an event
 ## State
 The state is a shared object representing the workspace, this is used to render the UI as well as keeping track of settings
 
-### `bridge.state.apply(set|sets)`
+### `bridge.state.apply(set|sets)`  `bridge.state.apply(path, set)`
 Apply an object to the state using a deep apply algorithm. Listeners for the event `state.change` will be immediately called.
 
 **Note**  
