@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "electron:rebuild": "electron-rebuild -f"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "bridge": "^0.0.1"
