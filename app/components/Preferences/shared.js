@@ -8,6 +8,7 @@ import { PreferencesNumberInput } from '../PreferencesNumberInput'
 import { PreferencesSelectInput } from '../PreferencesSelectInput'
 import { PreferencesThemeInput } from '../PreferencesThemeInput'
 import { PreferencesFrameInput } from '../PreferencesFrameInput'
+import { PreferencesListInput } from '../PreferencesListInput'
 
 /**
  * Map typenames to components
@@ -24,5 +25,6 @@ export const inputComponents = {
   select: PreferencesSelectInput,
   theme: PreferencesThemeInput,
   frame: PreferencesFrameInput,
-  clear: PreferencesClearStateInput
+  clear: PreferencesClearStateInput,
+  list: PreferencesListInput
 }

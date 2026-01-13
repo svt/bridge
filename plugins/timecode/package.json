@@ -18,5 +18,38 @@
   "dependencies": {
     "libltc-wrapper": "^1.1.2",
     "node-web-audio-api": "^1.0.7"
+  },
+  "contributes": {
+    "settings": [
+      {
+        "group": "Timecode",
+        "title": "Input list test title",
+        "inputs": [
+          {
+            "type": "list",
+            "label": "List label",
+            "bind": "shared.plugins.bridge-plugin-timecode.settings.ltc_inputs",
+            "settings": [
+              {
+                "title": "Test setting",
+                "inputs": [
+                  {
+                    "type": "select",
+                    "label": "Test select",
+                    "bind": "select",
+                    "options": ["Do nothing", "Play next sibling", "Select next sibling (main client)"]
+                  },
+                  {
+                    "type": "string",
+                    "label": "Test string",
+                    "bind": "myString"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

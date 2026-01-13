@@ -88,20 +88,6 @@ exports.activate = async () => {
   })
 
   /*
-  Register the targets setting as
-  soon as the widget is setup
-  */
-  logger.debug('Registering setting')
-  bridge.settings.registerSetting({
-    title: 'LTC inputs',
-    group: 'Timecode',
-    description: 'Configure LTC inputs',
-    inputs: [
-      { type: 'frame', uri: `${htmlPath}?path=settings/ltc-inputs` }
-    ]
-  })
-
-  /*
   1. Find device
   */
   const devices = await audio.enumerateInputDevices()

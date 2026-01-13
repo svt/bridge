@@ -6,6 +6,7 @@
 - Ability to convert items to other types by right-clicking
 - Ancestor items in context menus now stay tinted when their child menus are opened
 - A shortcut to open preferences (CMD/CTRL+,)
+- Support for lists in settings
 ### Changed
 - Some features have moved to the footer of the app window
 ### Fixed
