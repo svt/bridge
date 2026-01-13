@@ -11,7 +11,20 @@ export function PreferencesSelectInput ({ label, value, options = [], onChange =
       <select id={id} value={value} onChange={e => onChange(e.target.value)}>
         {
           options.map((option, i) => {
-            return <option key={i} value={i}>{option}</option>
+            let label = option
+            let id = i
+
+            /*
+            Allow for using a custom id
+            if the option is an object
+            containing the keys 'id' and 'label'
+            */
+            if (typeof option === 'object' && option?.id) {
+              label = option.label
+              id = option.id
+            }
+
+            return <option key={i} value={id}>{label}</option>
           })
         }
       </select>

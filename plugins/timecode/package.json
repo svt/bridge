@@ -31,18 +31,30 @@
             "bind": "shared.plugins.bridge-plugin-timecode.settings.ltc_inputs",
             "settings": [
               {
-                "title": "Test setting",
                 "inputs": [
                   {
-                    "type": "select",
-                    "label": "Test select",
-                    "bind": "select",
-                    "options": ["Do nothing", "Play next sibling", "Select next sibling (main client)"]
+                    "type": "string",
+                    "label": "Name",
+                    "bind": "name"
                   },
                   {
-                    "type": "string",
-                    "label": "Test string",
-                    "bind": "myString"
+                    "type": "select",
+                    "label": "Audio device",
+                    "bind": "device",
+                    "options": [
+                      {
+                        "id": "none",
+                        "label": "None"
+                      },
+                      {
+                        "id": "device1",
+                        "label": "Microphone"
+                      },
+                      {
+                        "id": "device2",
+                        "label": "LTC"
+                      }
+                    ]
                   }
                 ]
               }
