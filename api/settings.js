@@ -12,6 +12,9 @@
 
 const DIController = require('../shared/DIController')
 
+const MissingArgumentError = require('./error/MissingArgumentError')
+const InvalidArgumentError = require('./error/InvalidArgumentError')
+
 class Settings {
   #props
 
@@ -23,10 +26,30 @@ class Settings {
    * Register a setting
    * by its specification
    * @param { SettingSpecification } specification A setting specification
-   * @returns { Promise.<Boolean> }
+   * @returns { Promise.<string> }
    */
   registerSetting (specification) {
     return this.#props.Commands.executeCommand('settings.registerSetting', specification)
+  }
+
+  /**
+   * Apply changes to a registered
+   * setting in the state
+   *
+   * @param { String } id The id of a setting to update
+   * @param { SettingSpecification } set A setting object to apply
+   * @returns { Promise.<boolean> }
+   */
+  async applySetting (id, set = {}) {
+    if (typeof id !== 'string') {
+      throw new MissingArgumentError('Invalid value for item id, must be a string')
+    }
+
+    if (typeof set !== 'object' || Array.isArray(set)) {
+      throw new InvalidArgumentError('Argument \'set\' must be a valid object that\'s not an array')
+    }
+
+    return this.#props.Commands.executeCommand('settings.applySetting', id, set)
   }
 }
 

@@ -3,33 +3,28 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * @typedef {{
- *  host: String,
- *  port: Number
- * }} ConnectionDescription
- *
- * @typedef {{
- *  id: String?,
- *  name: String,
- *  host: String,
- *  port: Number
- * }} ServerDescription
- */
-
-/**
  * @type { import('../../api').Api }
  */
 const bridge = require('bridge')
-const assets = require('../../assets.json')
+
 const manifest = require('./package.json')
+const assets = require('../../assets.json')
+const audio = require('./lib/audio')
+
+const DIController = require('./lib/DIController')
+
+// eslint-disable-next-line
+const LTCDevice = require('./lib/ltc/LTCDevice')
 
 const Logger = require('../../lib/Logger')
 const logger = new Logger({ name: 'TimecodePlugin' })
 
-const audio = require('./lib/audio')
-const ltc = require('./lib/ltc')
-
-require('./lib/commands')
+/**
+ * Keep an index of all currently
+ * running LTC devices
+ * @type { Object.<string, LTCDevice> }
+ */
+const LTC_DEVICES = {}
 
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
@@ -60,15 +55,105 @@ async function initWidget () {
   return await bridge.server.serveString(html)
 }
 
-function zeroPad (n) {
-  if (n < 10) {
-    return `0${n}`
+async function makeInputSetting (inputs = []) {
+  return {
+    group: 'Timecode',
+    title: 'Input list test title',
+    inputs: [
+      {
+        type: 'list',
+        label: 'List label',
+        bind: 'shared.plugins.bridge-plugin-timecode.settings.ltc_inputs',
+        settings: [
+          {
+            inputs: [
+              {
+                type: 'string',
+                label: 'Name',
+                bind: 'name'
+              },
+              {
+                type: 'select',
+                label: 'Audio device',
+                bind: 'deviceId',
+                options: {
+                  $replace: [
+                    {
+                      id: 'none',
+                      label: 'None'
+                    },
+                    ...inputs
+                  ]
+                }
+              },
+              {
+                type: 'boolean',
+                label: 'Active',
+                bind: 'active',
+                default: true
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
-  return `${n}`
 }
 
-function formatTimecodeFrame (frame) {
-  return `${zeroPad(frame.hours)}:${zeroPad(frame.minutes)}:${zeroPad(frame.seconds)}.${zeroPad(frame.frames)}`
+async function getAllAudioInputs () {
+  return (await audio.enumerateInputDevices())
+    .map(device => ({
+      id: device?.deviceId,
+      label: device?.label || 'Unnamed device'
+    }))
+}
+
+function ltcDeviceFactory (deviceId) {
+  const device = DIController.instantiate('LTCDevice', {}, {
+    deviceId
+  })
+  device.start()
+  return device
+}
+
+function syncDevicesWithSpecifiedInputs (inputs = []) {
+  for (const input of inputs) {
+    /*
+    Handle newly added devices
+    */
+    if (!LTC_DEVICES[input.id] && input?.deviceId) {
+      LTC_DEVICES[input.id] = ltcDeviceFactory(input?.deviceId)
+      logger.debug('Created LTC device', input.id)
+      continue
+    }
+
+    const device = LTC_DEVICES[input.id]
+
+    /*
+    Handle updated devices
+    */
+    if (device && !device?.compareTo(input)) {
+      device.close()
+      if (input?.deviceId) {
+        LTC_DEVICES[input.id] = ltcDeviceFactory(input?.deviceId)
+        logger.debug('Updated LTC device', input.id)
+      }
+      continue
+    }
+  }
+
+  /*
+  Close and remove devices that are no
+  longer specified in settings
+  */
+  for (const deviceInputId of Object.keys(LTC_DEVICES)) {
+    const inputExists = inputs.find(input => input?.id === deviceInputId)
+    if (!inputExists) {
+      LTC_DEVICES[deviceInputId].close()
+      delete LTC_DEVICES[deviceInputId]
+      logger.debug('Removed LTC device', deviceInputId)
+    }
+  }
 }
 
 /*
@@ -88,58 +173,40 @@ exports.activate = async () => {
   })
 
   /*
-  1. Find device
+  Update the list of available audio devices
+  that's visible in settings
   */
-  const devices = await audio.enumerateInputDevices()
-  logger.debug('Devices', devices)
-  const device = devices.find(device => device.label.includes('LTC'))
-  if (!device) {
-    logger.warn('No audio device found')
-    return
+  {
+    const inputSetting = await makeInputSetting()
+    const settingId = await bridge.settings.registerSetting(inputSetting)
+
+    setInterval(async () => {
+      const inputs = await getAllAudioInputs()
+      const inputSetting = await makeInputSetting(inputs)
+      bridge.settings.applySetting(settingId, inputSetting)
+    }, 2000)
   }
 
-  logger.debug('Using device', device.label)
-
-  const SAMPLE_RATE = 48000
-  const FRAME_RATE = 25
+  /*
+  Update LTC devices whenever
+  the settings change
+  */
+  bridge.events.on('state.change', (state, set) => {
+    if (!set?.plugins?.[manifest?.name]?.settings?.ltc_inputs) {
+      return
+    }
+    const inputs = state?.plugins?.[manifest?.name]?.settings?.ltc_inputs || []
+    syncDevicesWithSpecifiedInputs(inputs)
+  })
 
   /*
-  2. Setup context and read buffers
+  Update LTC devices
+  on startup
   */
-  const ctx = await audio.createContext({
-    sampleRate: SAMPLE_RATE,
-    latencyHint: 'interactive'
-  })
-
-  const source = await audio.createDeviceStreamSource(ctx, device.deviceId)
-
-  const decoder = ltc.createDecoder(SAMPLE_RATE, FRAME_RATE, 'float')
-
-  const proc = await audio.createLTCDecoder(ctx, decoder.apv)
-  proc.port.on('message', e => {
-    const buf = Buffer.from(e?.buffer.buffer)
-    decoder.write(buf)
-
-    let frame = decoder.read()
-    while (frame) {
-      logger.debug('Frame', frame)
-
-      bridge.events.emit('timecode.ltc', [{
-        days: frame.days,
-        hours: frame.hours,
-        minutes: frame.minutes,
-        seconds: frame.seconds,
-        frames: frame.frames,
-        smpte: formatTimecodeFrame(frame)
-      }])
-
-      frame = decoder.read()
+  {
+    const initialInputs = await bridge.state.get(`plugins.${manifest?.name}.settings.ltc_inputs`)
+    if (initialInputs) {
+      syncDevicesWithSpecifiedInputs(initialInputs)
     }
-  })
-
-  source.connect(proc)
-  proc.connect(ctx.destination)
-
-  logger.debug(`Audio running at ${ctx.sampleRate}Hz`)
-  logger.debug(`Base Latency: ${ctx.baseLatency}s`)
+  }
 }

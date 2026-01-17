@@ -3,7 +3,15 @@ const path = require('node:path')
 
 function sign (path, label) {
   const opts = {
-    app: path
+    app: path,
+    binaries: [
+      `${path}/Contents/Frameworks/libltc.11.dylib`
+    ],
+    optionsForFile: () => {
+      return {
+        hardenedRuntime: true
+      }
+    }
   }
   signAsync(opts)
     .then(() => {

@@ -1,4 +1,4 @@
-class LTCDecoder extends AudioWorkletProcessor {
+class DataWorkletProcessor extends AudioWorkletProcessor {
   constructor (opts) {
     super()
     this._apv = opts?.processorOptions?.apv
@@ -21,4 +21,4 @@ class LTCDecoder extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor('LTCDecoder', LTCDecoder)
+registerProcessor('DataWorkletProcessor', DataWorkletProcessor)
