@@ -111,6 +111,13 @@ async function getAllAudioInputs () {
 function ltcDeviceFactory (deviceId) {
   const device = DIController.instantiate('LTCDevice', {}, {
     deviceId
+  }, frame => {
+    /**
+     * @todo
+     * Submit the frame
+     * to the time api
+     */
+    logger.debug('Got frame', frame)
   })
   device.start()
   return device

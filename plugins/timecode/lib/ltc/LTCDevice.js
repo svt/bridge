@@ -55,6 +55,17 @@ class LTCDevice extends TimecodeDevice {
     this.#onFrame = onFrame
   }
 
+  /**
+   * Compare this device
+   * to a device spec obtained
+   * from Bridge settings
+   *
+   * Returning true indicates that
+   * the device matches the spec
+   *
+   * @param { any } spec
+   * @returns { boolean }
+   */
   compareTo (spec) {
     return this.#opts?.deviceId === spec?.deviceId
   }
@@ -70,7 +81,17 @@ class LTCDevice extends TimecodeDevice {
     }
   }
 
-  #handleAudioData (buffer) {
+  /**
+   * Decode audio data frame
+   * buffers into LTC timecode,
+   *
+   * this.#onFrame will be called
+   * for every timecode frame that's
+   * successfully decoded
+   *
+   * @param { Buffer } buffer
+   */
+  #decodeAudioData (buffer) {
     this.props.LTCDecoder.write(buffer)
 
     let frame = this.props.LTCDecoder.read()
@@ -109,12 +130,17 @@ class LTCDevice extends TimecodeDevice {
       }
     })
 
+    /*
+    Listen for incoming audio data
+    buffers from the processor and
+    decode them accordingly
+    */
     processor.port.onmessage = e => {
-      /*
-      HANDLE MESSAGE
-      */
-      /*       const buf = Buffer.from(e?.buffer?.buffer)
-      this.#handleAudioData(buf) */
+      if (!e?.data?.buffer?.buffer) {
+        return
+      }
+      const buf = Buffer.from(e?.data?.buffer?.buffer)
+      this.#decodeAudioData(buf)
     }
 
     source.connect(processor)
