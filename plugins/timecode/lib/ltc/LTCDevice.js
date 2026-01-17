@@ -124,11 +124,7 @@ class LTCDevice extends TimecodeDevice {
     const source = ctx.createMediaStreamSource(mediaStream)
 
     await ctx.audioWorklet.addModule('DataWorkletProcessor.js')
-    const processor = new AudioWorkletNode(ctx, 'DataWorkletProcessor', {
-      processorOptions: {
-        apv: this.props.LTCDecoder.apv
-      }
-    })
+    const processor = new AudioWorkletNode(ctx, 'DataWorkletProcessor')
 
     /*
     Listen for incoming audio data

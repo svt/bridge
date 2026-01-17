@@ -9,10 +9,6 @@ const DEFAULT_AUDIO_FORMAT = 'float'
 class LTCDecoder extends DIBase {
   #nativeDecoder
 
-  get apv () {
-    return this.#nativeDecoder.apv
-  }
-
   constructor (props, sampleRate = DEFAULT_SAMPLE_RATE_HZ, frameRate = DEFAULT_FRAME_RATE_HZ, format = DEFAULT_AUDIO_FORMAT) {
     super(props)
     this.#nativeDecoder = new NativeLTCDecoder(sampleRate, frameRate, format)
