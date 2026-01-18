@@ -68,13 +68,17 @@ export function widgetExists (component, widgets = {}) {
  * @param { (arg1: any) => {} } onUpdate
  * @returns { React.ReactElement }
  */
-export const WidgetRenderer = ({ widgetId, widgets = {}, data, onUpdate = () => {}, forwardProps = {} }) => {
+export const WidgetRenderer = ({ widgetId, widgets, data, onUpdate = () => {}, forwardProps = {} }) => {
   if (INTERNAL_COMPONENTS[data?.component]) {
     return INTERNAL_COMPONENTS[data.component](widgetId, data, onUpdate, widgets)
   }
-
+  
+  if (!widgets || typeof widgets != 'object') {
+    return <></>
+  }
+  
   const uri = widgets?.[data?.component]?.uri
-  if (typeof widgets != 'object' || !uri) {
+  if (!uri) {
     return <MissingComponent widgetId={widgetId} data={data} />
   }
 
