@@ -28,7 +28,19 @@ const NO_AUDIO_DEVICE_ID = 'none'
  */
 const LTC_DEVICES = {}
 
-async function makeInputSetting (inputs = []) {
+async function makeInputSetting (inputs = [], replaceInputs) {
+  const noInput = {
+    id: NO_AUDIO_DEVICE_ID,
+    label: 'None'
+  }
+
+  let _inputs = [noInput, ...inputs]
+  if (replaceInputs) {
+    _inputs = {
+      $replace: _inputs
+    }
+  }
+
   return {
     group: 'Timecode',
     title: 'LTC devices',
@@ -43,7 +55,8 @@ async function makeInputSetting (inputs = []) {
             inputs: [
               {
                 type: 'string',
-                bind: 'name'
+                bind: 'name',
+                placeholder: 'Name'
               }
             ]
           },
@@ -53,15 +66,7 @@ async function makeInputSetting (inputs = []) {
               {
                 type: 'select',
                 bind: 'deviceId',
-                options: {
-                  $replace: [
-                    {
-                      id: NO_AUDIO_DEVICE_ID,
-                      label: 'None'
-                    },
-                    ...inputs
-                  ]
-                }
+                options: _inputs
               }
             ]
           },
@@ -276,12 +281,13 @@ exports.activate = async () => {
   that's visible in settings
   */
   {
-    const inputSetting = await makeInputSetting()
+    const inputs = await getAllAudioInputs()
+    const inputSetting = await makeInputSetting(inputs)
     const settingId = await bridge.settings.registerSetting(inputSetting)
 
     setInterval(async () => {
       const inputs = await getAllAudioInputs()
-      const inputSetting = await makeInputSetting(inputs)
+      const inputSetting = await makeInputSetting(inputs, true)
       bridge.settings.applySetting(settingId, inputSetting)
     }, 2000)
   }
