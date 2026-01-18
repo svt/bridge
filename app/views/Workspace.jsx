@@ -87,11 +87,7 @@ export const Workspace = () => {
         (shared.children ? Object.entries(shared.children) : [])
           .map(([id, component]) => (
             <div key={id} className='View-component'>
-              {
-                widgetExists(component.component, sharedRef.current?._widgets)
-                  ? <WidgetRenderer data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
-                  : <MissingComponent data={component} />
-              }
+              <WidgetRenderer widgetId={id} widgets={sharedRef.current?._widgets} data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
             </div>
           ))
       }

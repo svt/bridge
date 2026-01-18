@@ -16,7 +16,7 @@ import { WidgetRenderer } from '../WidgetRenderer'
  * @param { params } param0
  * @returns { React.Component }
  */
-export function TabsComponent ({ data, onUpdate = () => {} }) {
+export function TabsComponent ({ data, widgets, onUpdate = () => {} }) {
   const [activeTab, setActiveTab] = React.useState()
   const [tabToRemove, setTabToRemove] = React.useState()
 
@@ -169,7 +169,7 @@ export function TabsComponent ({ data, onUpdate = () => {} }) {
     if (!data?.children[id]) {
       return <></>
     }
-    return <WidgetRenderer data={data?.children[activeTab]} onUpdate={data => handleChildUpdate(activeTab, data)} />
+    return <WidgetRenderer widgets={widgets} data={data?.children[activeTab]} onUpdate={data => handleChildUpdate(activeTab, data)} />
   }
 
   const tabs = (data?.order || [])
