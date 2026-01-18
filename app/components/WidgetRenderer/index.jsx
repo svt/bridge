@@ -19,20 +19,22 @@ const INTERNAL_COMPONENTS = {
       <Grid widgetId={widgetId} data={data} onChange={onUpdate}>
         {
           (data.children ? Object.entries(data.children) : [])
-            .map(([id, component]) => (
-              <GridItem key={id}>
-                <WidgetRenderer
-                  widgetId={id}
-                  data={component}
-                  widgets={widgets}
-                  onUpdate={data => onUpdate({
-                    children: {
-                      [id]: data
-                    }
-                  })}
-                />
-              </GridItem>
-            ))
+            .map(([id, component]) => {
+              return (
+                <GridItem key={id}>
+                  <WidgetRenderer
+                    widgetId={id}
+                    data={component}
+                    widgets={widgets}
+                    onUpdate={data => onUpdate({
+                      children: {
+                        [id]: data
+                      }
+                    })}
+                  />
+                </GridItem>
+              )
+            })
         }
       </Grid>
     )

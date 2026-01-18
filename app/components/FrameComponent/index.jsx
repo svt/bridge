@@ -100,6 +100,11 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
 
+  const onUpdateRef = React.useRef()
+  React.useEffect(() => {
+    onUpdateRef.current = onUpdate
+  }, [onUpdate])
+
   React.useEffect(() => {
     async function setup () {
       const bridge = await api.load()
@@ -136,7 +141,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       removal
       */
       frameRef.current.contentWindow.WIDGET_UPDATE = set => {
-        onUpdate(set)
+        onUpdateRef.current(set)
       }
 
       /*
@@ -160,14 +165,19 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       }
     }
 
-    console.log('Preparing re-render', data, uri)
+    /*
+    Prevent re-mounting the iframe
+    unless absolutely necessary
 
+    Without this check, the iframe would reload
+    every time the user changes the layout
+    */
     const snapshot = JSON.stringify([data, uri])
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
     setup()
-  }, [uri, data, onUpdate])
+  }, [uri, data])
 
   /*
   Clean up all event listeners 

@@ -15,10 +15,8 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { Onboarding } from '../components/Onboarding'
 
+import { WidgetRenderer } from '../components/WidgetRenderer'
 import { MessageContainer } from '../components/MessageContainer'
-import { MissingComponent } from '../components/MissingComponent'
-
-import { WidgetRenderer, widgetExists } from '../components/WidgetRenderer'
 
 /**
  * Get the file name without extension
@@ -53,6 +51,13 @@ export const Workspace = () => {
     sharedRef.current = shared
   }, [shared])
 
+  const children = React.useMemo(() => {
+    if (!shared?.children) {
+      return []
+    }
+    return Object.entries(shared.children)
+  }, [JSON.stringify(shared.children)])
+
   /**
    * Handle updates of component data
    * by applying the data to the shared
@@ -84,7 +89,7 @@ export const Workspace = () => {
         Loop through the components from the store
         and render them all in the interface
         */
-        (shared.children ? Object.entries(shared.children) : [])
+        children
           .map(([id, component]) => (
             <div key={id} className='View-component'>
               <WidgetRenderer widgetId={id} widgets={sharedRef.current?._widgets} data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
