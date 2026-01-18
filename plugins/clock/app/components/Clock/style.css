@@ -1,0 +1,7 @@
+.Clock {
+  font-variant-numeric: tabular-nums;
+}
+
+.Clock-faded {
+  opacity: 0.4;
+}

@@ -1,0 +1,8 @@
+.Clock-char {
+  display: inline-block;
+  width: 0.6em;
+}
+
+.Clock-faded {
+  opacity: 0.4;
+}

@@ -134,7 +134,7 @@ async function getAudioDeviceWithId (deviceId) {
   return devices.find(device => device.id === deviceId)
 }
 
-function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ) {
+function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, onFrame = () => {}) {
   const device = DIController.instantiate('LTCDevice', {
     LTCDecoder: DIController.instantiate('LTCDecoder', {},
       LTCDecoder.DEFAULT_SAMPLE_RATE_HZ,
@@ -143,14 +143,7 @@ function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_H
     )
   }, {
     deviceId
-  }, frame => {
-    /**
-     * @todo
-     * Submit the frame
-     * to the time api
-     */
-    logger.debug('Got frame', frame)
-  })
+  }, onFrame)
   device.start()
   return device
 }
@@ -182,7 +175,9 @@ async function onLTCDeviceCreated (newSpec) {
 
     if (deviceExists) {
       logger.debug('Setting upp new LTC device')
-      device = ltcDeviceFactory(newSpec?.deviceId, frameRate)
+      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, frame => {
+        bridge.time.submitFrame(clockId, frame)
+      })
     }
   }
 
@@ -216,10 +211,13 @@ async function onLTCDeviceChanged (newSpec) {
   if (
     !LTC_DEVICES[newSpec?.id]?.device &&
     newSpec?.deviceId &&
-    newSpec?.deviceId !== NO_AUDIO_DEVICE_ID
+    newSpec?.deviceId !== NO_AUDIO_DEVICE_ID &&
+    newSpec?.clockId
   ) {
     logger.debug('Setting up new LTC device')
-    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate)
+    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, frame => {
+      bridge.time.submitFrame(newSpec.clockId, frame)
+    })
   }
 
   /*
