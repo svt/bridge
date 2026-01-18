@@ -26,6 +26,28 @@ export default function App () {
   const [latency, setLatency] = React.useState(0)
   const [time, setTime] = React.useState(Date.now())
 
+  const [clocks, setClocks] = React.useState([])
+
+  React.useEffect(() => {
+    function handleClocksChange (newClocks) {
+      console.log('Clocks changed', newClocks)
+      setClocks(newClocks)
+    }
+    bridge.events.on('time.clocks.change', handleClocksChange)
+    return () => {
+      bridge.events.off('time.clocks.change', handleClocksChange)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    async function initiallyUpdateClocks () {
+      const clocks = await bridge.time.getAllClocks()
+      console.log('All clocks', clocks)
+      setClocks(clocks)
+    }
+    initiallyUpdateClocks()
+  }, [])
+
   const [view, setView] = React.useState()
 
   React.useEffect(() => {
@@ -48,21 +70,29 @@ export default function App () {
     }, CHECK_INTERVAL_MS)
   }, [])
 
-  /*
-
-  */
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setView(params.get('view'))
   }, [])
 
   return (
-    <div className='Clock-wrapper'>
-      {
-        view === 'latency'
-          ? <span className='Clock-digits'>{Math.floor(latency * 10) / 10}ms</span>
-          : <CurrentTime className='Clock-digits' base={time} offset={latency} />
-      }
+    <div className='Clock-widget'>
+      <header className='Clock-header'>
+        <select>
+          {
+            clocks.map(clock => {
+              return <option key={clock.id}>{clock.label || 'Unnamed clock'}</option>
+            })
+          }
+        </select>
+      </header>
+      <div className='Clock-wrapper'>
+        {
+          view === 'latency'
+            ? <span className='Clock-digits'>{Math.floor(latency * 10) / 10}ms</span>
+            : <CurrentTime className='Clock-digits' base={time} offset={latency} />
+        }
+      </div>
     </div>
   )
 }

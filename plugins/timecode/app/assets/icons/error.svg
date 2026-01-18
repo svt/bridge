@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>icons/caspar/error</title>
-    <g id="icons/caspar/error" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle" fill="#E13241" x="0" y="0" width="16" height="16" rx="8"></rect>
-        <path d="M8.02396103,12.5116533 L8.02395978,3.53630243 L8.02395978,3.53630243 M3.53626872,8.02396103 L12.5116533,8.02396103 L12.5116533,8.02396103" id="Combined-Shape" stroke="#FFFFFF" stroke-width="1.5" transform="translate(8.023961, 8.023961) rotate(45.000000) translate(-8.023961, -8.023961) "></path>
-    </g>
-</svg>

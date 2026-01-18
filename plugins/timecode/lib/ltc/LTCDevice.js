@@ -67,7 +67,8 @@ class LTCDevice extends TimecodeDevice {
    * @returns { boolean }
    */
   compareTo (spec) {
-    return this.#opts?.deviceId === spec?.deviceId
+    return this.#opts?.deviceId === spec?.deviceId &&
+           this.props.LTCDecoder.frameRate === spec?.frameRate
   }
 
   #formatFrame (rawFrameData) {

@@ -8,16 +8,18 @@
 const bridge = require('bridge')
 
 const manifest = require('./package.json')
-const assets = require('../../assets.json')
 const audio = require('./lib/audio')
 
 const DIController = require('./lib/DIController')
 
+const LTCDecoder = require('./lib/ltc/LTCDecoder')
 // eslint-disable-next-line
 const LTCDevice = require('./lib/ltc/LTCDevice')
 
 const Logger = require('../../lib/Logger')
 const logger = new Logger({ name: 'TimecodePlugin' })
+
+const NO_AUDIO_DEVICE_ID = 'none'
 
 /**
  * Keep an index of all currently
@@ -26,71 +28,50 @@ const logger = new Logger({ name: 'TimecodePlugin' })
  */
 const LTC_DEVICES = {}
 
-async function initWidget () {
-  const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
-  const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
-
-  const html = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Caspar</title>
-        <base href="/" />
-        <link rel="stylesheet" href="${bridge.server.uris.STYLE_RESET}" />
-        <link rel="stylesheet" href="${cssPath}" />
-        <script src="${jsPath}" defer></script>
-        <script>
-          window.PLUGIN = ${JSON.stringify(
-            {
-              name: manifest.name
-            }
-          )}
-        </script>
-      </head>
-      <body>
-        <div id="root"></div>
-      </body>
-    </html>
-  `
-  return await bridge.server.serveString(html)
-}
-
 async function makeInputSetting (inputs = []) {
   return {
     group: 'Timecode',
-    title: 'Input list test title',
+    title: 'LTC devices',
     inputs: [
       {
         type: 'list',
-        label: 'List label',
-        bind: 'shared.plugins.bridge-plugin-timecode.settings.ltc_inputs',
+        label: '',
+        bind: 'shared.plugins.bridge-plugin-timecode.settings.ltc_devices',
         settings: [
           {
+            title: 'Name',
             inputs: [
               {
                 type: 'string',
-                label: 'Name',
                 bind: 'name'
-              },
+              }
+            ]
+          },
+          {
+            title: 'Audio device',
+            inputs: [
               {
                 type: 'select',
-                label: 'Audio device',
                 bind: 'deviceId',
                 options: {
                   $replace: [
                     {
-                      id: 'none',
+                      id: NO_AUDIO_DEVICE_ID,
                       label: 'None'
                     },
                     ...inputs
                   ]
                 }
-              },
+              }
+            ]
+          },
+          {
+            title: 'Frame rate',
+            inputs: [
               {
-                type: 'boolean',
-                label: 'Active',
-                bind: 'active',
-                default: true
+                type: 'segmented',
+                bind: 'frameRateIndex',
+                segments: LTCDecoder.SUPPORTED_FRAME_RATES
               }
             ]
           }
@@ -98,6 +79,41 @@ async function makeInputSetting (inputs = []) {
       }
     ]
   }
+}
+
+async function registerClockForInput (inputId, label) {
+  if (typeof inputId !== 'string') {
+    throw new Error('Missing or invalid input id, must be a string')
+  }
+
+  const clockAlreadyExistsForInput = await getClockIdForInput(inputId)
+  if (clockAlreadyExistsForInput) {
+    return
+  }
+
+  const clockId = await bridge.time.registerClock({
+    label
+  })
+
+  bridge.state.apply(`plugins.${manifest.name}.clocks`, {
+    [inputId]: clockId
+  })
+
+  return clockId
+}
+
+function getClockIdForInput (inputId) {
+  return bridge.state.get(`plugins.${manifest.name}.clocks.${inputId}`)
+}
+
+async function removeClock (inputId, clockId) {
+  if (!clockId) {
+    return
+  }
+  await bridge.time.removeClock(clockId)
+  await bridge.state.apply(`plugins.${manifest.name}.clocks`, {
+    [inputId]: { $delete: true }
+  })
 }
 
 async function getAllAudioInputs () {
@@ -108,8 +124,19 @@ async function getAllAudioInputs () {
     }))
 }
 
-function ltcDeviceFactory (deviceId) {
-  const device = DIController.instantiate('LTCDevice', {}, {
+async function getAudioDeviceWithId (deviceId) {
+  const devices = await getAllAudioInputs()
+  return devices.find(device => device.id === deviceId)
+}
+
+function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ) {
+  const device = DIController.instantiate('LTCDevice', {
+    LTCDecoder: DIController.instantiate('LTCDecoder', {},
+      LTCDecoder.DEFAULT_SAMPLE_RATE_HZ,
+      frameRate,
+      LTCDecoder.DEFAULT_AUDIO_FORMAT
+    )
+  }, {
     deviceId
   }, frame => {
     /**
@@ -123,29 +150,105 @@ function ltcDeviceFactory (deviceId) {
   return device
 }
 
-function syncDevicesWithSpecifiedInputs (inputs = []) {
-  for (const input of inputs) {
+async function onLTCDeviceCreated (newSpec) {
+  /*
+  Make sure the input has registered
+  a clock in the Bridge API
+  */
+  let clockId = await getClockIdForInput(newSpec?.id)
+  if (!clockId) {
+    clockId = await registerClockForInput(newSpec?.id, newSpec?.name)
+  }
+
+  /*
+  Set up a new LTC device if there is already a specified device id,
+  this will be triggered if the workspace is loaded from disk and the
+  device has already been specified
+  */
+  let device
+  if (newSpec?.deviceId) {
     /*
-    Handle newly added devices
+    Check if the device exists on this host as the project
+    file might have been loaded from another host
     */
-    if (!LTC_DEVICES[input.id] && input?.deviceId) {
-      LTC_DEVICES[input.id] = ltcDeviceFactory(input?.deviceId)
-      logger.debug('Created LTC device', input.id)
-      continue
+    const deviceExists = await getAudioDeviceWithId(newSpec.deviceId)
+
+    const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
+
+    if (deviceExists) {
+      logger.debug('Setting upp new LTC device')
+      device = ltcDeviceFactory(newSpec?.deviceId, frameRate)
     }
+  }
 
-    const device = LTC_DEVICES[input.id]
+  LTC_DEVICES[newSpec?.id] = {
+    clockId,
+    device
+  }
+}
 
-    /*
-    Handle updated devices
-    */
-    if (device && !device?.compareTo(input)) {
-      device.close()
-      if (input?.deviceId) {
-        LTC_DEVICES[input.id] = ltcDeviceFactory(input?.deviceId)
-        logger.debug('Updated LTC device', input.id)
-      }
-      continue
+async function onLTCDeviceChanged (newSpec) {
+  if (!LTC_DEVICES[newSpec?.id]) {
+    return
+  }
+
+  const device = LTC_DEVICES[newSpec?.id]?.device
+  const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
+
+  /*
+  Close and remove the current ltc
+  device if it is to be replaced
+  */
+  if (device && !device?.compareTo({ ...newSpec, frameRate })) {
+    await device.close()
+    LTC_DEVICES[newSpec?.id].device = undefined
+  }
+
+  /*
+  Create a new ltc device if none exists
+  and the spec isn't set to "no device"
+  */
+  if (
+    !LTC_DEVICES[newSpec?.id]?.device &&
+    newSpec?.deviceId &&
+    newSpec?.deviceId !== NO_AUDIO_DEVICE_ID
+  ) {
+    logger.debug('Setting up new LTC device')
+    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate)
+  }
+
+  /*
+  Update the label of the clock feed
+  */
+  const clockId = LTC_DEVICES[newSpec?.id]?.clockId
+  if (clockId) {
+    await bridge.time.applyClock(clockId, {
+      label: newSpec?.name
+    })
+  }
+}
+
+async function onLTCDeviceRemoved (deviceId) {
+  const spec = LTC_DEVICES[deviceId]
+
+  if (spec?.device) {
+    spec.device?.close()
+  }
+
+  if (spec?.clockId) {
+    await removeClock(spec?.id, spec?.clockId)
+  }
+
+  delete LTC_DEVICES[deviceId]
+  logger.debug('Removed LTC device', deviceId)
+}
+
+async function updateDevicesFromSettings (inputs = []) {
+  for (const input of inputs) {
+    if (!LTC_DEVICES[input.id]) {
+      await onLTCDeviceCreated(input)
+    } else {
+      await onLTCDeviceChanged(input)
     }
   }
 
@@ -156,9 +259,7 @@ function syncDevicesWithSpecifiedInputs (inputs = []) {
   for (const deviceInputId of Object.keys(LTC_DEVICES)) {
     const inputExists = inputs.find(input => input?.id === deviceInputId)
     if (!inputExists) {
-      LTC_DEVICES[deviceInputId].close()
-      delete LTC_DEVICES[deviceInputId]
-      logger.debug('Removed LTC device', deviceInputId)
+      await onLTCDeviceRemoved(deviceInputId)
     }
   }
 }
@@ -169,15 +270,6 @@ bootstrap its contributions
 */
 exports.activate = async () => {
   logger.debug('Activating timecode plugin')
-  const htmlPath = await initWidget()
-
-  bridge.widgets.registerWidget({
-    id: 'bridge.plugins.timecode.smpte',
-    name: 'SMPTE display',
-    uri: `${htmlPath}?path=widget/smpte`,
-    description: 'Display incoming SMPTE timecode',
-    supportsFloat: true
-  })
 
   /*
   Update the list of available audio devices
@@ -199,11 +291,11 @@ exports.activate = async () => {
   the settings change
   */
   bridge.events.on('state.change', (state, set) => {
-    if (!set?.plugins?.[manifest?.name]?.settings?.ltc_inputs) {
+    if (!set?.plugins?.[manifest?.name]?.settings?.ltc_devices) {
       return
     }
-    const inputs = state?.plugins?.[manifest?.name]?.settings?.ltc_inputs || []
-    syncDevicesWithSpecifiedInputs(inputs)
+    const inputs = state?.plugins?.[manifest?.name]?.settings?.ltc_devices || []
+    updateDevicesFromSettings(inputs)
   })
 
   /*
@@ -211,9 +303,9 @@ exports.activate = async () => {
   on startup
   */
   {
-    const initialInputs = await bridge.state.get(`plugins.${manifest?.name}.settings.ltc_inputs`)
+    const initialInputs = await bridge.state.get(`plugins.${manifest?.name}.settings.ltc_devices`)
     if (initialInputs) {
-      syncDevicesWithSpecifiedInputs(initialInputs)
+      updateDevicesFromSettings(initialInputs)
     }
   }
 }

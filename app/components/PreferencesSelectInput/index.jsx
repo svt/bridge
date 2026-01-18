@@ -8,7 +8,12 @@ export function PreferencesSelectInput ({ label, value, options = [], onChange =
 
   return (
     <div className='PreferencesSelectInput'>
-      <label htmlFor={id}>{label}</label><br/>
+      {
+        label &&
+        <>
+          <label className='PreferencesSelectInput-label' htmlFor={id}>{label}</label>
+        </>
+      }
       <select id={id} value={value} onChange={e => onChange(e.target.value)}>
         {
           Array.isArray(options)
