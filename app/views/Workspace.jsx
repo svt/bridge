@@ -45,17 +45,18 @@ function getFileNameFromPath (filePath) {
 
 export const Workspace = () => {
   const [shared, applyShared] = React.useContext(SharedContext)
+  const [children, setChildren] = React.useState(shared?.children)
   const sharedRef = React.useRef(shared)
 
   React.useEffect(() => {
     sharedRef.current = shared
   }, [shared])
 
-  const children = React.useMemo(() => {
+  React.useEffect(() => {
     if (!shared?.children) {
-      return []
+      return setChildren({})
     }
-    return Object.entries(shared.children)
+    setChildren(shared?.children)
   }, [JSON.stringify(shared.children)])
 
   /**
@@ -89,7 +90,7 @@ export const Workspace = () => {
         Loop through the components from the store
         and render them all in the interface
         */
-        children
+        children && Object.entries(children)
           .map(([id, component]) => (
             <div key={id} className='View-component'>
               <WidgetRenderer widgetId={id} widgets={sharedRef.current?._widgets} data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
