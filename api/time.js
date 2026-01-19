@@ -27,8 +27,8 @@ class Time {
     return this.#props.Commands.executeCommand('time.applyClock', id, set)
   }
 
-  tickClock (id, values) {
-    return this.#props.Commands.executeCommand('time.tickClock', id, values)
+  submitFrame (id, frame) {
+    return this.#props.Commands.executeRawCommand('time.submitFrame', id, frame)
   }
 }
 

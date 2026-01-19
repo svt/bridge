@@ -24,14 +24,16 @@ export const Clock = ({ frame }) => {
   }, [frame])
 
   return (
-    <span className='Clock'>
-      {
-        (components || [])
-          .map(component => {
-            return zeroPad(component)
-          })
-          .join(':')
-      }
-    </span>
+    <div className='Clock'>
+      <div className='Clock-components'>
+        {
+          (components || [])
+            .map(component => {
+              return zeroPad(component)
+            })
+            .join(':')
+        }
+      </div>
+    </div>
   )
 }

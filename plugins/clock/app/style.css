@@ -7,8 +7,6 @@ html, body, #root {
 
   padding: 0;
   margin: 0;
-
-  font-size: min(8vw, 30vh);
 }
 
 .Clock-wrapper {
@@ -18,8 +16,4 @@ html, body, #root {
 
   align-items: center;
   justify-content: center;
-}
-
-.Clock-digits {
-  font-size: 2em;
 }

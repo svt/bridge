@@ -7,16 +7,14 @@ import { Clock } from '../Clock'
 
 const DEFAULT_CLOCK_ID = 'main'
 
-export const SelectableClock = ({ clockId = window.WIDGET_DATA?.['clockId'] || DEFAULT_CLOCK_ID }) => {
+export const SelectableClock = ({ clockId: _clockId = window.WIDGET_DATA?.['clockId'] || DEFAULT_CLOCK_ID }) => {
   const [clocks, setClocks] = React.useState([])
+  const [clockId, setClockId] = React.useState(_clockId)
   const [lastFrame, setLastFrame] = React.useState()
 
   React.useEffect(() => {
-    () => console.log('Detaching')
-  }, [])
-
-  React.useEffect(() => {
     function onClocksChange (newClocks) {
+      console.log('Setting clocks')
       setClocks(newClocks)
     }
 
@@ -27,6 +25,7 @@ export const SelectableClock = ({ clockId = window.WIDGET_DATA?.['clockId'] || D
   }, [])
 
   React.useEffect(() => {
+    console.log('Mount')
     async function initiallyUpdateClocks () {
       const clocks = await bridge.time.getAllClocks()
       setClocks(clocks)
@@ -43,14 +42,22 @@ export const SelectableClock = ({ clockId = window.WIDGET_DATA?.['clockId'] || D
       setLastFrame(newFrame)
     }
 
-    bridge.events.on(`time.frame.${clockId}`, onFrame)
-    return () => {
-      console.log('Detaching listener')
+    function unload () {
+      console.log('Unloading')
       bridge.events.off(`time.frame.${clockId}`, onFrame)
+    }
+
+    setLastFrame(undefined)
+    bridge.events.on(`time.frame.${clockId}`, onFrame)
+    window.addEventListener('beforeunload', unload)
+    return () => {
+      window.removeEventListener('beforeunload', unload)
+      unload()
     }
   }, [clockId])
 
   function handleClockSelectChange (e) {
+    setClockId(e.target.value)
     window.WIDGET_UPDATE({
       'clockId': e.target.value
     })
@@ -59,7 +66,7 @@ export const SelectableClock = ({ clockId = window.WIDGET_DATA?.['clockId'] || D
   return (
     <div className='SelectableClock'>
       <header className='SelectableClock-header'>
-        <select value={clockId || ''} onChange={e => handleClockSelectChange(e)}>
+        <select className='Select--small' value={clockId || ''} onChange={e => handleClockSelectChange(e)}>
           {
             clocks.map(clock => {
               return <option key={clock.id} value={clock.id}>{clock.label || 'Unnamed clock'}</option>

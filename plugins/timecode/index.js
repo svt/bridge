@@ -144,6 +144,7 @@ function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_H
   }, {
     deviceId
   }, onFrame)
+
   device.start()
   return device
 }
@@ -170,11 +171,9 @@ async function onLTCDeviceCreated (newSpec) {
     file might have been loaded from another host
     */
     const deviceExists = await getAudioDeviceWithId(newSpec.deviceId)
-
     const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
 
     if (deviceExists) {
-      logger.debug('Setting upp new LTC device')
       device = ltcDeviceFactory(newSpec?.deviceId, frameRate, frame => {
         bridge.time.submitFrame(clockId, frame)
       })
@@ -193,6 +192,7 @@ async function onLTCDeviceChanged (newSpec) {
   }
 
   const device = LTC_DEVICES[newSpec?.id]?.device
+  const clockId = LTC_DEVICES[newSpec?.id]?.clockId
   const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
 
   /*
@@ -212,18 +212,16 @@ async function onLTCDeviceChanged (newSpec) {
     !LTC_DEVICES[newSpec?.id]?.device &&
     newSpec?.deviceId &&
     newSpec?.deviceId !== NO_AUDIO_DEVICE_ID &&
-    newSpec?.clockId
+    clockId
   ) {
-    logger.debug('Setting up new LTC device')
     LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, frame => {
-      bridge.time.submitFrame(newSpec.clockId, frame)
+      bridge.time.submitFrame(clockId, frame)
     })
   }
 
   /*
   Update the label of the clock feed
   */
-  const clockId = LTC_DEVICES[newSpec?.id]?.clockId
   if (clockId) {
     await bridge.time.applyClock(clockId, {
       label: newSpec?.name
