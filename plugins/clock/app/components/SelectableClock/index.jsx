@@ -14,7 +14,6 @@ export const SelectableClock = ({ clockId: _clockId = window.WIDGET_DATA?.['cloc
 
   React.useEffect(() => {
     function onClocksChange (newClocks) {
-      console.log('Setting clocks')
       setClocks(newClocks)
     }
 
@@ -25,7 +24,6 @@ export const SelectableClock = ({ clockId: _clockId = window.WIDGET_DATA?.['cloc
   }, [])
 
   React.useEffect(() => {
-    console.log('Mount')
     async function initiallyUpdateClocks () {
       const clocks = await bridge.time.getAllClocks()
       setClocks(clocks)
@@ -43,7 +41,6 @@ export const SelectableClock = ({ clockId: _clockId = window.WIDGET_DATA?.['cloc
     }
 
     function unload () {
-      console.log('Unloading')
       bridge.events.off(`time.frame.${clockId}`, onFrame)
     }
 
