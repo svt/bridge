@@ -44,6 +44,7 @@ class Types {
     if (!typesDict[id]) return undefined
 
     const type = deepClone(typesDict[id])
+    type.ancestors = []
 
     /*
     Render the ancestor if this
@@ -52,9 +53,11 @@ class Types {
     if (type.inherits) {
       const ancestor = this.renderType(type.inherits, typesDict)
 
+      type.ancestors = [...(ancestor?.ancestors || []), type.inherits]
+      type.category = type.category || ancestor?.category
       type.properties = {
         ...ancestor?.properties || {},
-        ...type.properties || {}
+        ...type.properties || {},
       }
     }
 
