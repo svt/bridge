@@ -57,7 +57,7 @@ class Types {
       type.category = type.category || ancestor?.category
       type.properties = {
         ...ancestor?.properties || {},
-        ...type.properties || {},
+        ...type.properties || {}
       }
     }
 
