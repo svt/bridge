@@ -158,12 +158,13 @@ export function Preferences ({ onClose = () => {} }) {
         <Layout.Master sidebar={sidebar}>
           {
             (section?.items || [])
+              .filter(setting => setting)
               .map(setting => {
                 /*
                 Compose a key that's somewhat unique but still static
                 in order to prevent unnecessary re-rendering
                 */
-                const key = `${setting.title}${setting.description}${JSON.stringify(setting.inputs)}`
+                const key = `${setting?.title}${setting?.description}${JSON.stringify(setting?.inputs)}`
                 return (
                   <Preference
                     key={key}
