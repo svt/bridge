@@ -3,9 +3,10 @@ import { PreferencesSegmentedInput } from '../PreferencesSegmentedInput'
 import { PreferencesShortcutsInput } from '../PreferencesShortcutsInput'
 import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
-import { PreferencesStringInput } from '../PreferencesStringInput'
+import { PreferencesButtonInput } from '../PreferencesButtonInput'
 import { PreferencesNumberInput } from '../PreferencesNumberInput'
 import { PreferencesSelectInput } from '../PreferencesSelectInput'
+import { PreferencesStringInput } from '../PreferencesStringInput'
 import { PreferencesThemeInput } from '../PreferencesThemeInput'
 import { PreferencesFrameInput } from '../PreferencesFrameInput'
 import { PreferencesListInput } from '../PreferencesListInput'
@@ -20,9 +21,10 @@ export const inputComponents = {
   segmented: PreferencesSegmentedInput,
   boolean: PreferencesBooleanInput,
   version: PreferencesVersionInput,
-  string: PreferencesStringInput,
+  button: PreferencesButtonInput,
   number: PreferencesNumberInput,
   select: PreferencesSelectInput,
+  string: PreferencesStringInput,
   theme: PreferencesThemeInput,
   frame: PreferencesFrameInput,
   clear: PreferencesClearStateInput,
