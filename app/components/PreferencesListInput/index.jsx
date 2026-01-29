@@ -79,6 +79,7 @@ export function PreferencesListInput ({ label, value = [], settings = [], onChan
 
   return (
     <div className='PreferencesListInput'>
+      <label className='PreferencesListInput-label'>{label}</label>
       <div className='PreferencesListInput-header'>
         <button className='Button Button--ghost' onClick={() => handleCreate()}>
           { buttonTextCreate }

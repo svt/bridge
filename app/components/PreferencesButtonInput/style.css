@@ -1,3 +1,25 @@
 .PreferencesButtonInput {
   margin-top: 10px;
 }
+
+.PreferencesButtonInput label {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.PreferencesButtonInput-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.PreferencesButtonInput-loader {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
+
+.PreferencesButtonInput-loader svg {
+  width: 100%;
+  height: 100%;
+}

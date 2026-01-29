@@ -56,20 +56,6 @@
           }
         }
       }
-    ],
-    "settings": [
-      {
-        "group": "Timecode",
-        "title": "Audio devices",
-        "inputs": [
-          {
-            "type": "button",
-            "label": "Rescan for audio devices",
-            "buttonText": "Rescan",
-            "command": "timecode.rescanAudioDevices"
-          }
-        ]
-      }
     ]
   }
 }

@@ -55,7 +55,7 @@ async function makeInputSetting (inputs = [], replaceInputs) {
     inputs: [
       {
         type: 'list',
-        label: '',
+        label: 'Manage LTC devices used for parsing incoming SMPTE timecode',
         bind: 'shared.plugins.bridge-plugin-timecode.settings.ltc_devices',
         settings: [
           {
@@ -89,6 +89,22 @@ async function makeInputSetting (inputs = [], replaceInputs) {
             ]
           }
         ]
+      }
+    ]
+  }
+}
+
+function makeRescanSetting (isLoading) {
+  return {
+    group: 'Timecode',
+    title: 'Audio devices',
+    inputs: [
+      {
+        type: 'button',
+        label: 'Rescan for audio devices connected to the Bridge host',
+        buttonText: 'Rescan',
+        buttonIsLoading: isLoading,
+        command: 'timecode.rescanAudioDevices'
       }
     ]
   }
@@ -349,12 +365,27 @@ exports.activate = async () => {
   {
     const inputs = await getAllAudioInputs()
     const inputSetting = await makeInputSetting(inputs)
-    const settingId = await bridge.settings.registerSetting(inputSetting)
+    const rescanSetting = makeRescanSetting(false)
+    const rescanSettingId = await bridge.settings.registerSetting(rescanSetting)
+    const inputsSettingId = await bridge.settings.registerSetting(inputSetting)
 
     async function rescanAudioDevices () {
+      /*
+      Show a loading indicator
+      next to the rescan button
+      */
+      const loadingRescanSetting = makeRescanSetting(true)
+      bridge.settings.applySetting(rescanSettingId, loadingRescanSetting)
+
       const inputs = await getAllAudioInputs()
       const inputSetting = await makeInputSetting(inputs, true)
-      bridge.settings.applySetting(settingId, inputSetting)
+
+      /*
+      Hide the loading indicator for the rescan
+      setting and update the inputs setting
+      */
+      bridge.settings.applySetting(rescanSettingId, rescanSetting)
+      bridge.settings.applySetting(inputsSettingId, inputSetting)
     }
 
     bridge.commands.registerCommand('timecode.rescanAudioDevices', rescanAudioDevices)

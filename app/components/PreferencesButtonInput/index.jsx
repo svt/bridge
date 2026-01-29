@@ -1,9 +1,11 @@
 import React from 'react'
 import './style.css'
 
+import { Icon } from '../Icon'
+
 import * as api from '../../api'
 
-export function PreferencesButtonInput ({ label, buttonText, command }) {
+export function PreferencesButtonInput ({ label, buttonText, buttonIsLoading, command }) {
   async function handleButtonClick () {
     if (!command || typeof command !== 'string') {
       return
@@ -15,7 +17,17 @@ export function PreferencesButtonInput ({ label, buttonText, command }) {
   return (
     <div className='PreferencesButtonInput'>
       <label>{label}</label><br />
-      <button className='Button' onClick={() => handleButtonClick()}>{buttonText}</button>
+      <div className='PreferencesButtonInput-wrapper'>
+        <button className='Button' onClick={() => handleButtonClick()}>{buttonText}</button>
+        {
+          buttonIsLoading &&
+          (
+            <div className='PreferencesButtonInput-loader'>
+              <Icon name='spinner' />
+            </div>
+          )
+        }
+      </div>
     </div>
   )
 }

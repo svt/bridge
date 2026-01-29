@@ -10,6 +10,7 @@ import person from './person.svg'
 import reload from './reload.svg'
 import search from './search.svg'
 import widget from './widget.svg'
+import spinner from './spinner.svg'
 import rundown from './rundown.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
@@ -36,6 +37,7 @@ export default {
   reload,
   search,
   widget,
+  spinner,
   rundown,
   warning,
   selector,

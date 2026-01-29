@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>icons/spinner</title>
-    <g id="icons/spinner" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <style>
+        #icons_spinner {
+            animation-name: Loader-spinner;
+            animation-duration: 750ms;
+            animation-fill-mode: forwards;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+
+            transform-origin: center;
+        }
+
+        @keyframes Loader-spinner {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <g id="icons_spinner" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <path d="M32,12 C20.954305,12 12,20.954305 12,32 C12,43.045695 20.954305,52 32,52 C43.045695,52 52,43.045695 52,32" id="Path" stroke="#FFFFFF" stroke-width="3"></path>
     </g>
 </svg>
