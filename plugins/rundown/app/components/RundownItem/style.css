@@ -52,6 +52,14 @@
   opacity: 0.5;
 }
 
+.RundownItem-icon {
+  display: flex;
+  height: 0px;
+  margin-right: 8px;
+  margin-left: -10px;
+  align-items: center;
+}
+
 .RundownItem-name {
   margin-right: 10px;
 }

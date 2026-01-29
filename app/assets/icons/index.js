@@ -11,9 +11,11 @@ import reload from './reload.svg'
 import search from './search.svg'
 import widget from './widget.svg'
 import spinner from './spinner.svg'
+import trigger from './trigger.svg'
 import rundown from './rundown.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
+import varbiable from './variable.svg'
 import inspector from './inspector.svg'
 import arrowRight from './arrow-right.svg'
 import editDetail from './edit-detail.svg'
@@ -38,9 +40,11 @@ export default {
   search,
   widget,
   spinner,
+  trigger,
   rundown,
   warning,
   selector,
+  varbiable,
   inspector,
   arrowRight,
   editDetail,

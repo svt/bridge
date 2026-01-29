@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/variable</title>
+    <g id="icons/variable" stroke="none" fill="none" stroke-width="1.5">
+        <path d="M6,18 L7.36528707,18 C7.99387201,18 8.58588555,17.7044818 8.96370047,17.2021126 L16.0362995,7.79788744 C16.4141144,7.29551815 17.006128,7 17.6347129,7 L19,7 L19,7" id="Path-30" stroke="#FFFFFF"></path>
+        <path d="M6,18 L7.36528707,18 C7.99387201,18 8.58588555,17.7044818 8.96370047,17.2021126 L16.0362995,7.79788744 C16.4141144,7.29551815 17.006128,7 17.6347129,7 L19,7 L19,7" id="Path-30" stroke="#FFFFFF" transform="translate(12.5, 12.5) scale(-1, 1) translate(-12.5, -12.5)"></path>
+    </g>
+</svg>

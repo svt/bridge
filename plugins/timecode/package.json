@@ -52,7 +52,8 @@
             "type": "string",
             "default": "10:00:00:00",
             "allowsVariables": false,
-            "ui.group": "Timecode"
+            "ui.group": "Timecode",
+            "ui.readable": true
           }
         }
       }
