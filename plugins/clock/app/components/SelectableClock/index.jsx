@@ -64,6 +64,7 @@ export const SelectableClock = ({ clockId: _clockId = window.WIDGET_DATA?.['cloc
     <div className='SelectableClock'>
       <header className='SelectableClock-header'>
         <select className='Select--small' value={clockId || ''} onChange={e => handleClockSelectChange(e)}>
+          <option value='none'>None</option>
           {
             clocks.map(clock => {
               return <option key={clock.id} value={clock.id}>{clock.label || 'Unnamed clock'}</option>
