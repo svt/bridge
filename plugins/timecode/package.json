@@ -18,5 +18,58 @@
   "dependencies": {
     "libltc-wrapper": "^1.1.2",
     "node-web-audio-api": "^1.0.7"
+  },
+  "contributes": {
+    "types": [
+      {
+        "id": "bridge.timecode.trigger",
+        "name": "Timecode trigger",
+        "inherits": "bridge.types.trigger",
+        "properties": {
+          "timecode.input": {
+            "name": "Clock",
+            "type": "enum",
+            "enum": {
+              "$eval": {
+                "op": "concatArrays",
+                "a": [{ "label": "None", "value": 0 }],
+                "b": {
+                  "$eval": {
+                    "op": "arrayFromObject",
+                    "path": "plugins.bridge-plugin-timecode.settings.ltc_devices",
+                    "map": {
+                      "label": "name",
+                      "value": "id"
+                    }
+                  }
+                }
+              }
+            },
+            "ui.group": "Timecode"
+          },
+          "timecode.smpte": {
+            "name": "Timecode",
+            "type": "string",
+            "default": "10:00:00:00",
+            "allowsVariables": false,
+            "ui.group": "Timecode"
+          }
+        }
+      }
+    ],
+    "settings": [
+      {
+        "group": "Timecode",
+        "title": "Audio devices",
+        "inputs": [
+          {
+            "type": "button",
+            "label": "Rescan for audio devices",
+            "buttonText": "Rescan",
+            "command": "timecode.rescanAudioDevices"
+          }
+        ]
+      }
+    ]
   }
 }

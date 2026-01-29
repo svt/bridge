@@ -5,20 +5,9 @@
 const Cache = require('./classes/Cache')
 const DIController = require('../shared/DIController')
 
-const CACHE_MAX_ENTRIES = 100
+const utils = require('./utils')
 
-/**
- * Perform a deep clone
- * of an object
- * @param { any } obj An object to clone
- * @returns { any }
- */
-function deepClone (obj) {
-  if (typeof window !== 'undefined' && window.structuredClone) {
-    return window.structuredClone(obj)
-  }
-  return JSON.parse(JSON.stringify(obj))
-}
+const CACHE_MAX_ENTRIES = 100
 
 class Types {
   #props
@@ -43,7 +32,7 @@ class Types {
   renderType (id, typesDict = {}) {
     if (!typesDict[id]) return undefined
 
-    const type = deepClone(typesDict[id])
+    const type = utils.deepClone(typesDict[id])
     type.ancestors = []
 
     /*

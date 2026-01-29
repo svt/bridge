@@ -86,6 +86,11 @@
         "id": "bridge.types.divider",
         "name": "Divider",
         "inherits": "bridge.types.root"
+      },
+      {
+        "id": "bridge.types.trigger",
+        "inherits": "bridge.types.reference",
+        "category": "Triggers"
       }
     ],
     "settings": [

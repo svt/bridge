@@ -16,10 +16,18 @@ const LTCDecoder = require('./lib/ltc/LTCDecoder')
 // eslint-disable-next-line
 const LTCDevice = require('./lib/ltc/LTCDevice')
 
+const TimecodeFrame = require('./lib/TimecodeFrame')
+
 const Logger = require('../../lib/Logger')
 const logger = new Logger({ name: 'TimecodePlugin' })
 
+const Cache = require('./lib/Cache')
+const cache = new Cache()
+
 const NO_AUDIO_DEVICE_ID = 'none'
+const TIMECODE_TRIGGER_TYPE = 'bridge.timecode.trigger'
+
+const TRIGGER_CUES_CACHE_TTL_MS = 100
 
 /**
  * Keep an index of all currently
@@ -111,6 +119,11 @@ function getClockIdForInput (inputId) {
   return bridge.state.get(`plugins.${manifest.name}.clocks.${inputId}`)
 }
 
+function getClockIdForInputLocal (inputId) {
+  const localState = bridge.state.getLocalState()
+  return localState?.plugins?.[manifest.name]?.clocks?.[inputId]
+}
+
 async function removeClock (inputId, clockId) {
   if (!clockId) {
     return
@@ -132,6 +145,63 @@ async function getAllAudioInputs () {
 async function getAudioDeviceWithId (deviceId) {
   const devices = await getAllAudioInputs()
   return devices.find(device => device.id === deviceId)
+}
+
+function findTriggerCues (clockId) {
+  const items = bridge.state.getLocalState()?.items
+  const types = bridge.state.getLocalState()?._types
+  const typeIsTimecodeTriggerDict = {}
+
+  if (typeof items !== 'object' || typeof types !== 'object') {
+    return
+  }
+
+  return Object.entries(items)
+    .map(([id, item]) => {
+      if (Object.prototype.hasOwnProperty.call(typeIsTimecodeTriggerDict, item.type)) {
+        return [id, item, typeIsTimecodeTriggerDict[item.type]]
+      }
+
+      const renderedType = bridge.types.renderType(item.type, types)
+      typeIsTimecodeTriggerDict[item.type] = item.type === TIMECODE_TRIGGER_TYPE || renderedType?.ancestors?.includes(TIMECODE_TRIGGER_TYPE)
+      return [id, item, typeIsTimecodeTriggerDict[item.type]]
+    })
+    .filter(([,, typeIsTimecodeTrigger]) => {
+      return typeIsTimecodeTrigger
+    })
+    /*
+    Filter to return only the
+    cues for the selected input
+    */
+    .filter(([, item]) => {
+      const _clockId = getClockIdForInputLocal(item?.data?.timecode?.input)
+      return _clockId === clockId
+    })
+    .map(([, item]) => item)
+}
+
+function triggerCues (clockId, frame) {
+  const cues = cache.cache(`triggers:${clockId}`, () => findTriggerCues(clockId), TRIGGER_CUES_CACHE_TTL_MS)
+  if (!Array.isArray(cues)) {
+    return
+  }
+
+  for (const cue of cues) {
+    const cueFrame = TimecodeFrame.fromSMPTE(cue?.data?.timecode?.smpte)
+    if (!cueFrame) {
+      continue
+    }
+
+    if (TimecodeFrame.compare(frame, cueFrame)) {
+      bridge.items.playItem(cue.id)
+    }
+  }
+}
+
+function submitFrameForClock (clockId, ltcFrame) {
+  const frame = TimecodeFrame.fromSMPTE(ltcFrame?.smpte)
+  triggerCues(clockId, frame)
+  bridge.time.submitFrame(clockId, frame)
 }
 
 function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, onFrame = () => {}) {
@@ -175,7 +245,7 @@ async function onLTCDeviceCreated (newSpec) {
 
     if (deviceExists) {
       device = ltcDeviceFactory(newSpec?.deviceId, frameRate, frame => {
-        bridge.time.submitFrame(clockId, frame)
+        submitFrameForClock(clockId, frame)
       })
     }
   }
@@ -215,7 +285,7 @@ async function onLTCDeviceChanged (newSpec) {
     clockId
   ) {
     LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, frame => {
-      bridge.time.submitFrame(clockId, frame)
+      submitFrameForClock(clockId, frame)
     })
   }
 
@@ -281,16 +351,23 @@ exports.activate = async () => {
     const inputSetting = await makeInputSetting(inputs)
     const settingId = await bridge.settings.registerSetting(inputSetting)
 
-    setInterval(async () => {
+    async function rescanAudioDevices () {
       const inputs = await getAllAudioInputs()
       const inputSetting = await makeInputSetting(inputs, true)
       bridge.settings.applySetting(settingId, inputSetting)
-    }, 2000)
+    }
+
+    bridge.commands.registerCommand('timecode.rescanAudioDevices', rescanAudioDevices)
   }
 
   /*
   Update LTC devices whenever
   the settings change
+
+  This listener is also important for
+  the local state to stay updated,
+  removing this will prevent findTriggerCues
+  to work properly
   */
   bridge.events.on('state.change', (state, set) => {
     if (!set?.plugins?.[manifest?.name]?.settings?.ltc_devices) {
