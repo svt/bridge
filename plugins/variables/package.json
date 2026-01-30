@@ -20,15 +20,22 @@
         "name": "Variable",
         "inherits": "bridge.types.playable",
         "properties": {
+          "color": {
+            "name": "Color",
+            "type": "color",
+            "default": "#0F418C"
+          },
           "variable.key": {
-            "name": "Variable name",
+            "name": "Key",
             "type": "string",
-            "ui.group": "Variable"
+            "ui.group": "Variable",
+            "ui.readable": true
           },
           "variable.value": {
-            "name": "Variable value",
+            "name": "Value",
             "type": "string",
-            "ui.group": "Variable"
+            "ui.group": "Variable",
+            "ui.readable": true
           }
         }
       }
