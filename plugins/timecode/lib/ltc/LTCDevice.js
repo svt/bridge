@@ -9,6 +9,7 @@ const {
 
 const DIController = require('../DIController')
 const TimecodeDevice = require('../TimecodeDevice')
+const TimecodeFrame = require('../TimecodeFrame')
 
 const Logger = require('../../../../lib/Logger')
 const logger = new Logger({ name: 'LTCDevice' })
@@ -16,17 +17,6 @@ const logger = new Logger({ name: 'LTCDevice' })
 require('./LTCDecoder')
 
 const DEFAULT_SAMPLE_RATE_HZ = 48000
-
-function zeroPad (n) {
-  if (n < 10) {
-    return `0${n}`
-  }
-  return `${n}`
-}
-
-function formatTimecodeFrame (frame) {
-  return `${zeroPad(frame.hours)}:${zeroPad(frame.minutes)}:${zeroPad(frame.seconds)}.${zeroPad(frame.frames)}`
-}
 
 /**
  * @typedef {{
@@ -72,14 +62,7 @@ class LTCDevice extends TimecodeDevice {
   }
 
   #formatFrame (rawFrameData) {
-    return {
-      days: rawFrameData.days,
-      hours: rawFrameData.hours,
-      minutes: rawFrameData.minutes,
-      seconds: rawFrameData.seconds,
-      frames: rawFrameData.frames,
-      smpte: formatTimecodeFrame(rawFrameData)
-    }
+    return TimecodeFrame.fromPartial(rawFrameData)
   }
 
   /**

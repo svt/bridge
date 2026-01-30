@@ -214,8 +214,7 @@ function triggerCues (clockId, frame) {
   }
 }
 
-function submitFrameForClock (clockId, ltcFrame) {
-  const frame = TimecodeFrame.fromSMPTE(ltcFrame?.smpte)
+function submitFrameForClock (clockId, frame) {
   triggerCues(clockId, frame)
   bridge.time.submitFrame(clockId, frame)
 }
