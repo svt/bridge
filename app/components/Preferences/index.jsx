@@ -42,7 +42,7 @@ const INTERNAL_SETTINGS = [
 ]
 
 export function Preferences ({ onClose = () => {} }) {
-  const [shared, applyShared] = React.useContext(SharedContext)
+  const [, applyShared] = React.useContext(SharedContext)
   const [, applyLocal] = React.useContext(LocalContext)
 
   const [pluginSections, setPluginSections] = React.useState([])
@@ -94,6 +94,9 @@ export function Preferences ({ onClose = () => {} }) {
     async function setup () {
       bridge = await api.load()
       bridge.events.on('state.change', onStateChange)
+
+      const initialSettings = await bridge.state.get('_settings')
+      updatePluginSettings({ _settings: initialSettings })
     }
     setup()
 
