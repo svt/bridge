@@ -16,7 +16,7 @@
     "electron:rebuild": "electron-rebuild -f",
     "electron:prebuild:arm64": "node scripts/electron-prebuild arm64",
     "electron:prebuild:x64": "node scripts/electron-prebuild x64",
-    "electron:build:mac:arm": "npm run build && npm run electron:prebuild:arm64 && electron-packager . \"Bridge\" --platform=darwin --arch=arm64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --asar --ignore=\"webpack.*\\.js\" --out ./bin && node scripts/electron-postbuild-macos.js bin/Bridge-darwin-arm64/Bridge.app",
+    "electron:build:mac:arm": "npm run build && npm run electron:prebuild:arm64 && electron-packager . \"Bridge\" --platform=darwin --arch=arm64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --ignore=\"webpack.*\\.js\" --ignore=\"docs/*\" --ignore=\"./README.md\" --ignore=\"./Dockerfile\" --ignore=\"./docker-compose.yml\" --out ./bin && node scripts/electron-postbuild-macos.js bin/Bridge-darwin-arm64/Bridge.app",
     "electron:build:mac:intel": "npm run build && npm run electron:prebuild:x64 && electron-packager . \"Bridge\" --platform=darwin --arch=x64 --extend-info extra.plist --icon=media/appicon.icns --overwrite --asar --ignore=\"webpack.*\\.js\" --out ./bin && node scripts/electron-postbuild-macos.js bin/Bridge-darwin-x64/Bridge.app",
     "electron:build:win": "npm run build && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --extend-info extra.plist --icon=media/appicon.ico --overwrite --asar --ignore=\"webpack.*\\.js\" --out ./bin",
     "electron:sign:mac": "node scripts/sign-macos.js",
