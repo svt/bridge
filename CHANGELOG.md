@@ -9,6 +9,9 @@
 - Support for lists in settings
 - Support for custom ids in select inputs in settings
 - Support for LTC timecode and triggers
+- A state evaluation API
+- Granular type inheritance
+- Default names to types
 ### Changed
 - Some features have moved to the footer of the app window
 ### Fixed
