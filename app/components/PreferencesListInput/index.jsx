@@ -23,9 +23,9 @@ function PreferencesListInputItem ({ value = {}, settings = [], onChange = () =>
         <div>
           {
             (Array.isArray(settings) ? settings : [])
-              .map((setting, i) => {
+              .map(setting => {
                 return (
-                  <div key={i} className='PreferencesListInputItem-input'>
+                  <div key={JSON.stringify(setting)} className='PreferencesListInputItem-input'>
                     <Preference
                       values={value}
                       setting={setting}

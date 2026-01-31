@@ -45,21 +45,8 @@ export function Preferences ({ onClose = () => {} }) {
   const [, applyShared] = React.useContext(SharedContext)
   const [, applyLocal] = React.useContext(LocalContext)
 
-  const [pluginSections, setPluginSections] = React.useState([])
-
-  /**
-   * All plugin sections
-   * aggregated together
-   */
-  const sections = [
-    ...INTERNAL_SETTINGS,
-    {
-      title: 'Plugins',
-      items: pluginSections
-    }
-  ]
-
-  const [section, setSection] = React.useState(sections[0]?.items[0])
+  const [sections, setSections] = React.useState([])
+  const [curPath, setCurPath] = React.useState([0, 0])
 
   /*
   List plugins from the
@@ -67,7 +54,8 @@ export function Preferences ({ onClose = () => {} }) {
   */
   React.useEffect(() => {
     function updatePluginSettings (state) {
-      const pluginSections = Object.entries(state?._settings || {})
+      const _state = { ...state }
+      const pluginSections = Object.entries(_state?._settings || {})
         /*
         Sort the groups alphabetically to
         always keep the same order
@@ -80,7 +68,13 @@ export function Preferences ({ onClose = () => {} }) {
           }
         })
 
-      setPluginSections([...pluginSections])
+      setSections([
+        ...INTERNAL_SETTINGS,
+        {
+          title: 'Plugins',
+          items: pluginSections
+        }
+      ])
     }
 
     function onStateChange (newState, set) {
@@ -96,7 +90,7 @@ export function Preferences ({ onClose = () => {} }) {
       bridge.events.on('state.change', onStateChange)
 
       const initialSettings = await bridge.state.get('_settings')
-      updatePluginSettings({ _settings: initialSettings })
+      updatePluginSettings(initialSettings)
     }
     setup()
 
@@ -111,8 +105,7 @@ export function Preferences ({ onClose = () => {} }) {
   }, [])
 
   function handleSidebarClick (path) {
-    const pane = sections[path[0]]?.items[path[1]]
-    setSection(pane)
+    setCurPath([path[0], path[1]])
   }
 
   function handleCloseClick () {
@@ -160,7 +153,7 @@ export function Preferences ({ onClose = () => {} }) {
       <div className='Preferences-content'>
         <Layout.Master sidebar={sidebar}>
           {
-            (section?.items || [])
+            (sections[curPath[0]]?.items[curPath[1]]?.items || [])
               .filter(setting => setting)
               .map(setting => {
                 /*
