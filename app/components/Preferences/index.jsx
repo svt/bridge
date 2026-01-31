@@ -53,18 +53,17 @@ export function Preferences ({ onClose = () => {} }) {
   state whenever it's updated
   */
   React.useEffect(() => {
-    function updatePluginSettings (state) {
-      const _state = { ...state }
-      const pluginSections = Object.entries(_state?._settings || {})
+    function updatePluginSettings (settings) {
+      const pluginSections = Object.entries(settings || {})
         /*
         Sort the groups alphabetically to
         always keep the same order
         */
         .sort((a, b) => a[0].localeCompare(b[0]))
-        .map(([groupName, settings]) => {
+        .map(([groupName, groupSettings]) => {
           return {
             title: groupName,
-            items: settings
+            items: groupSettings
           }
         })
 
@@ -81,7 +80,7 @@ export function Preferences ({ onClose = () => {} }) {
       if (!set.hasOwnProperty('_settings')) {
         return
       }
-      updatePluginSettings(newState)
+      updatePluginSettings(newState?._settings)
     }
 
     let bridge
