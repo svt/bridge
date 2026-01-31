@@ -2,7 +2,6 @@ import React from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import { SharedContext } from '../../sharedContext'
 import { LocalContext } from '../../localContext'
 
 import { Icon } from '../Icon'
@@ -91,10 +90,8 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
-export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
+export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enableFloat = true }) {
   const [caller] = React.useState(uuidv4())
-
-  const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
   const [hasFocus, setHasFocus] = React.useState(false)
@@ -102,6 +99,11 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
   const frameRef = React.useRef()
+
+  const onUpdateRef = React.useRef()
+  React.useEffect(() => {
+    onUpdateRef.current = onUpdate
+  }, [onUpdate])
 
   React.useEffect(() => {
     async function setup () {
@@ -139,7 +141,7 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
       removal
       */
       frameRef.current.contentWindow.WIDGET_UPDATE = set => {
-        onUpdate(set)
+        onUpdateRef.current(set)
       }
 
       /*
@@ -163,14 +165,19 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
       }
     }
 
-    const uri = shared?._widgets?.[data.component]?.uri
+    /*
+    Prevent re-mounting the iframe
+    unless absolutely necessary
 
+    Without this check, the iframe would reload
+    every time the user changes the layout
+    */
     const snapshot = JSON.stringify([data, uri])
     if (snapshot === snapshotRef.current) return
     snapshotRef.current = snapshot
 
     setup()
-  }, [data, shared, onUpdate])
+  }, [uri, data])
 
   /*
   Clean up all event listeners 
@@ -183,7 +190,7 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
       bridge.events.removeAllListeners(caller)
       bridge.events.removeAllIntercepts(caller)
     }
-  }, [caller, shared?._widgets?.[data.component]?.uri])
+  }, [caller, uri])
 
   /*
   Highligh the component
@@ -264,12 +271,12 @@ export function FrameComponent ({ data, onUpdate, enableFloat = true }) {
     <div className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`}>
       <header className='FrameComponent-header'>
         <div>
-          {shared?._widgets?.[data.component]?.name}
+          {widgets?.[data.component]?.name}
         </div>
         <div className='FrameComponent-headerButtons'>
           {
-            enableFloat && shared?._widgets?.[data.component]?.supportsFloat &&
-            <button className='FrameComponent-headerButton' onClick={() => handleOpenAsWindow(data?.id)}>
+            enableFloat && widgets?.[data.component]?.supportsFloat &&
+            <button className='FrameComponent-headerButton' onClick={() => handleOpenAsWindow(widgetId)}>
               <Icon name='float' />
             </button>
           }

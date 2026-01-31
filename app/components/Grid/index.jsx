@@ -214,7 +214,7 @@ export function Grid ({ children, data = {}, onChange }) {
   }
 
   /**
-   * Render the correnct context menu
+   * Render the correct context menu
    * based on data from the event
    */
   function renderContextMenu (x, y, data) {

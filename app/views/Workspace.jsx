@@ -15,10 +15,8 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { Onboarding } from '../components/Onboarding'
 
+import { WidgetRenderer } from '../components/WidgetRenderer'
 import { MessageContainer } from '../components/MessageContainer'
-import { MissingComponent } from '../components/MissingComponent'
-
-import { WidgetRenderer, widgetExists } from '../components/WidgetRenderer'
 
 /**
  * Get the file name without extension
@@ -47,11 +45,19 @@ function getFileNameFromPath (filePath) {
 
 export const Workspace = () => {
   const [shared, applyShared] = React.useContext(SharedContext)
+  const [children, setChildren] = React.useState(shared?.children)
   const sharedRef = React.useRef(shared)
 
   React.useEffect(() => {
     sharedRef.current = shared
   }, [shared])
+
+  React.useEffect(() => {
+    if (!shared?.children) {
+      return setChildren({})
+    }
+    setChildren(shared?.children)
+  }, [JSON.stringify(shared.children)])
 
   /**
    * Handle updates of component data
@@ -84,14 +90,10 @@ export const Workspace = () => {
         Loop through the components from the store
         and render them all in the interface
         */
-        (shared.children ? Object.entries(shared.children) : [])
+        children && Object.entries(children)
           .map(([id, component]) => (
             <div key={id} className='View-component'>
-              {
-                widgetExists(component.component, sharedRef.current?._widgets)
-                  ? <WidgetRenderer data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
-                  : <MissingComponent data={component} />
-              }
+              <WidgetRenderer widgetId={id} widgets={sharedRef.current?._widgets} data={component} onUpdate={data => handleComponentUpdate({ [id]: data })} />
             </div>
           ))
       }

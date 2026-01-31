@@ -18,12 +18,25 @@ export function SelectInput ({
       value={value}
       onChange={e => onChange(e.target.value)}
       >
-      {
-        (data?.enum || [])
-          .map((value, i) => {
-            return <option key={i} value={i}>{value}</option>
-          })
-      }
+        {
+          (data?.enum || [])
+            .map((value, i) => {
+              let label = value
+              let key = i
+
+              /*
+              Allow for using a custom id
+              if the option is an object
+              containing the keys 'id' and 'label'
+              */
+              if (typeof value === 'object' && value.hasOwnProperty('value')) {
+                label = value.label
+                key = value.value
+              }
+
+              return <option key={key} value={key}>{label}</option>
+            })
+        }
     </select>
   )
 }

@@ -202,7 +202,9 @@ class Events {
    * @param { EventHandler } handler A handler to remove
    */
   off (event, handler) {
-    if (!this.localHandlers.has(event)) return
+    if (!this.localHandlers.has(event)) {
+      return
+    }
 
     const handlers = this.localHandlers.get(event)
     const index = handlers.findIndex(({ handler: _handler }) => _handler === handler)
