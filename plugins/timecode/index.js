@@ -141,13 +141,23 @@ function getClockIdForInputLocal (inputId) {
 }
 
 async function removeClock (inputId, clockId) {
-  if (!clockId) {
-    return
+  /*
+  Remove the reference to the
+  clock stored by this plugin
+  */
+  if (inputId) {
+    await bridge.state.apply(`plugins.${manifest.name}.clocks`, {
+      [inputId]: { $delete: true }
+    })
   }
-  await bridge.time.removeClock(clockId)
-  await bridge.state.apply(`plugins.${manifest.name}.clocks`, {
-    [inputId]: { $delete: true }
-  })
+
+  /*
+  Remove the actual clock
+  from the time api
+  */
+  if (clockId) {
+    await bridge.time.removeClock(clockId)
+  }
 }
 
 async function getAllAudioInputs () {
@@ -314,19 +324,17 @@ async function onLTCDeviceChanged (newSpec) {
   }
 }
 
-async function onLTCDeviceRemoved (deviceId) {
-  const spec = LTC_DEVICES[deviceId]
+async function onLTCDeviceRemoved (inputId) {
+  const spec = LTC_DEVICES[inputId]
 
   if (spec?.device) {
     spec.device?.close()
   }
 
-  if (spec?.clockId) {
-    await removeClock(spec?.id, spec?.clockId)
-  }
+  await removeClock(inputId, spec?.clockId)
 
-  delete LTC_DEVICES[deviceId]
-  logger.debug('Removed LTC device', deviceId)
+  delete LTC_DEVICES[inputId]
+  logger.debug('Removed LTC device', inputId)
 }
 
 async function updateDevicesFromSettings (inputs = []) {
