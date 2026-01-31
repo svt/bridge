@@ -8,12 +8,13 @@
 - A shortcut to open preferences (CMD/CTRL+,)
 - Support for lists in settings
 - Support for custom ids in select inputs in settings
+- Support for LTC timecode and triggers
 ### Changed
 - Some features have moved to the footer of the app window
 ### Fixed
 - An issue where the inspector started to scroll horisontally on overflow
 - Closing electron windows may cause a loop preventing user defaults from being saved
-- Some plugin settings doesn't appear until the state has been refetched
+- An issue where settings didn't render after reload
 
 ## 1.0.0-beta.8
 ### Fixed
