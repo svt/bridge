@@ -56,12 +56,12 @@ export function Preference ({ setting, values, onChange = () => {} }) {
       {
         (setting.inputs || [])
           .filter(input => inputComponents[input.type])
-          .map((input, i) => {
+          .map(input => {
             const InputComponent = inputComponents[input.type]
             const bind = `${setting.bind ? `${setting.bind}.` : ''}${input.bind ?? ''}`
             return (
               <InputComponent
-                key={i}
+                key={JSON.stringify(input)}
                 {...input}
                 value={bind ? valueFromPath(bind) : undefined}
                 onChange={value => onChange(bind, value)}
