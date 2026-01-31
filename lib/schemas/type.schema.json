@@ -50,8 +50,7 @@
             "group": {
               "type": "string"
             }
-          },
-          "required": [ "type", "name" ]
+          }
         }
       }
     }

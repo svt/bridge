@@ -20,9 +20,10 @@
         "name": "Variable",
         "inherits": "bridge.types.playable",
         "properties": {
+          "name": {
+            "default": "Variable"
+          },
           "color": {
-            "name": "Color",
-            "type": "color",
             "default": "#0F418C"
           },
           "variable.key": {

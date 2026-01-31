@@ -33,7 +33,11 @@
         "name": "GET",
         "category": "HTTP",
         "inherits": "bridge.http.request",
-        "properties": {}
+        "properties": {
+          "name": {
+            "default": "GET: $(this.data.http.url)"
+          }
+        }
       }
     ]
   },

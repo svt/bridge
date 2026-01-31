@@ -26,6 +26,9 @@
         "name": "Timecode trigger",
         "inherits": "bridge.types.trigger",
         "properties": {
+          "name": {
+            "default": "Timecode trigger"
+          },
           "timecode.input": {
             "name": "Clock",
             "type": "enum",

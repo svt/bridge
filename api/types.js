@@ -9,6 +9,46 @@ const utils = require('./utils')
 
 const CACHE_MAX_ENTRIES = 100
 
+function shallowMergeObjects (a, b) {
+  if (typeof a !== 'object' || typeof b !== 'object') {
+    return b
+  }
+
+  return {
+    ...a,
+    ...b
+  }
+}
+
+/*
+Export for testing only
+*/
+exports.shallowMergeObjects = shallowMergeObjects
+
+/**
+ * Merge all properties two level deep
+ * from two types
+ * @param { any } a
+ * @param { any } b
+ * @returns { any }
+ */
+function mergeProperties (a, b) {
+  const out = { ...a }
+  for (const key of Object.keys(b)) {
+    if (Object.prototype.hasOwnProperty.call(out, key)) {
+      out[key] = shallowMergeObjects(a[key], b[key])
+    } else {
+      out[key] = b[key]
+    }
+  }
+  return out
+}
+
+/*
+Export for testing only
+*/
+exports.mergeProperties = mergeProperties
+
 class Types {
   #props
 
@@ -44,10 +84,10 @@ class Types {
 
       type.ancestors = [...(ancestor?.ancestors || []), type.inherits]
       type.category = type.category || ancestor?.category
-      type.properties = {
-        ...ancestor?.properties || {},
-        ...type.properties || {}
-      }
+      type.properties = mergeProperties(
+        (ancestor?.properties || {}),
+        (type?.properties || {})
+      )
     }
 
     return type
