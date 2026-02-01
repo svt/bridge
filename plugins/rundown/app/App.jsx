@@ -1,5 +1,4 @@
 import React from 'react'
-import bridge from 'bridge'
 
 import { SharedContextProvider } from './sharedContext'
 

@@ -83,7 +83,7 @@ export function Header () {
       </div>
       <div className='Header-section'>
         <div className='Header-path'>
-          <span className='Header-pathPart' onClick={() => handleLoadMainRundown()}>Main rundown</span>
+          <span className='Header-pathPart is-clickable' onClick={() => handleLoadMainRundown()}>Main rundown</span>
           {
             rundownInfo?.name &&
             <span className='Header-pathPart'> / {rundownInfo?.name}</span>

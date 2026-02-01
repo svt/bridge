@@ -28,7 +28,7 @@ const TYPE_COMPONENTS = {
   'bridge.types.divider': { item: RundownDividerItem },
   'bridge.types.group': {
     item: RundownGroupItem,
-    getContextMenuItems: item => rundownGroupItemGetContextMenuItems(item)
+    getContextMenuItems: (ctx, item) => rundownGroupItemGetContextMenuItems(ctx, item)
   }
 }
 
@@ -83,7 +83,8 @@ export function RundownList ({
   rundownId = '',
   className = '',
   indexPrefix = '',
-  disableShortcuts = false
+  disableShortcuts = false,
+  onChangeRundownId = () => {}
 }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -445,7 +446,9 @@ export function RundownList ({
 
             let contextMenuItems
             if (typeof TYPE_COMPONENTS[item.type]?.getContextMenuItems === 'function') {
-              contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems(item)
+              contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems({
+                setRundownId: onChangeRundownId
+              }, item)
             }
 
             return (
