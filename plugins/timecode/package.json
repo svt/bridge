@@ -35,7 +35,12 @@
             "enum": {
               "$eval": {
                 "op": "concatArrays",
-                "a": [{ "label": "None", "value": 0 }],
+                "a": [
+                  {
+                    "label": "None",
+                    "value": 0
+                  }
+                ],
                 "b": {
                   "$eval": {
                     "op": "arrayFromObject",
@@ -61,5 +66,8 @@
         }
       }
     ]
+  },
+  "devDependencies": {
+    "node-gyp": "^12.2.0"
   }
 }
