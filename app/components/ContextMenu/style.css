@@ -1,13 +1,15 @@
 .ContextMenu {
   position: fixed;
 
-  background: white;
-  color: black;
+  background: var(--base-color--background1);
+  color: var(--base-color);
 
   border-radius: 5px;
   
   box-sizing: border-box;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid var(--base-color--shade);
   
   margin-top: -3px;
   
