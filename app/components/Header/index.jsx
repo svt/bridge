@@ -25,6 +25,8 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
   const [shared, applyShared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
+  const [stayOnTop, setStayOnTop] = React.useState()
+
   const [paletteIsOpen, setPaletteIsOpen] = React.useState(false)
   const [prefsOpen, setPrefsOpen] = React.useState(false)
 
@@ -97,6 +99,11 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
     })
   }
 
+  function handleStayOnTopChange (newValue) {
+    windowUtils.setStayOnTop(newValue)
+    setStayOnTop(newValue)
+  }
+
   return (
     <>
       <Modal open={prefsOpen} onClose={() => setPrefsOpen(false)}>
@@ -142,9 +149,17 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         }
         <div className='Header-block'>
           {
+            featureShown('stayOnTop') && windowUtils.isElectron() &&
+            (
+              <button className='Header-button' onClick={() => handleStayOnTopChange(!stayOnTop)} title='Toggle stay on top'>
+                <Icon name={stayOnTop ? 'stayOnTopOn' : 'stayOnTopOff'} />
+              </button>
+            )
+          }
+          {
             featureShown('palette') &&
             (
-              <button className='Header-button Header-editBtn' onClick={() => handlePaletteOpen()} title='Open palette'>
+              <button className='Header-button' onClick={() => handlePaletteOpen()} title='Open palette'>
                 <Icon name='search' />
               </button>
             )
@@ -152,7 +167,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
           {
             featureShown('reload') &&
             (
-              <button className='Header-button Header-editBtn' onClick={() => handleReload()} title='Reload'>
+              <button className='Header-button' onClick={() => handleReload()} title='Reload'>
                 <Icon name='reload' />
               </button>
             )
@@ -160,7 +175,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
           {
             featureShown('editLayout') &&
             (
-              <button className={`Header-button Header-editBtn ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)} title='Edit layout'>
+              <button className={`Header-button ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)} title='Edit layout'>
                 <Icon name='edit' color={isEditingLayout ? 'var(--base-color--accent1)' : 'var(--base-color)'} />
               </button>
             )

@@ -16,6 +16,14 @@ export function getWindowId () {
   return window.BRIDGE_WINDOW_ID
 }
 
+export async function setStayOnTop (newValue) {
+  if (!isElectron()) {
+    return
+  }
+  const bridge = await api.load()
+  bridge.commands.executeRawCommand('window.setStayOnTop', getWindowId(), !!newValue)
+}
+
 export async function toggleMaximize () {
   if (!isElectron()) {
     return

@@ -21,6 +21,8 @@ import arrowRight from './arrow-right.svg'
 import editDetail from './edit-detail.svg'
 import placeholder from './placeholder.svg'
 import preferences from './preferences.svg'
+import stayOnTopOn from './stay-on-top-on.svg'
+import stayOnTopOff from './stay-on-top-off.svg'
 
 import windowClose from './window-close.svg'
 import windowRestore from './window-restore.svg'
@@ -50,6 +52,8 @@ export default {
   editDetail,
   placeholder,
   preferences,
+  stayOnTopOn,
+  stayOnTopOff,
   colorSuccess,
   colorWarning,
   windowClose,
