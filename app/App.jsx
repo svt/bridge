@@ -76,6 +76,7 @@ root html tag for platform-specific styling e.t.c.
   const token = await auth.getToken()
   const bridge = await api.load()
   bridge.commands.setHeader('authentication', token)
+  bridge.events.emitLocally('didSetAuthenticationHeader')
 })()
 
 async function updateControlsColors () {

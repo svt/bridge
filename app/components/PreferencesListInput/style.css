@@ -37,6 +37,10 @@
   margin-right: 5px;
 }
 
+.PreferencesListInputItem-input select {
+  width: 240px;
+}
+
 .PreferencesListInputItem-flexInputs {
   display: flex;
 }
