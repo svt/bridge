@@ -14,6 +14,8 @@
 - Default names to types
 ### Changed
 - Some features have moved to the footer of the app window
+- Context menus now follow the color theme
+- Windows builds now use a custom window header
 ### Fixed
 - An issue where the inspector started to scroll horisontally on overflow
 - Closing electron windows may cause a loop preventing user defaults from being saved
