@@ -75,7 +75,7 @@ export const Workspace = () => {
   return (
     <>
       <Onboarding />
-      <Header title={getFileNameFromPath(shared._filePath)} features={['stayOnTop', 'reload', 'palette', 'editLayout', 'preferences']} />
+      <Header title={getFileNameFromPath(shared._filePath)} features={['title', 'stayOnTop', 'reload', 'palette', 'editLayout', 'preferences']} />
       {
         /*
         Render the message container unless
