@@ -25,13 +25,33 @@ export function AppMenu () {
   const [menu, setMenu] = React.useState()
 
   React.useEffect(() => {
-    async function getMenu () {
-      const bridge = await api.load()
+    let bridge
+
+    async function updateMenu () {
+      if (!bridge) {
+        return
+      }
       const menu = await bridge.commands.executeCommand('window.getAppMenu')
       recursivePopulateCommandsInPlace(menu)
       setMenu(menu)
     }
-    getMenu()
+
+    async function setup () {
+      bridge = await api.load()
+      bridge.events.on('didSetAuthenticationHeader', updateMenu)
+
+      if (bridge.commands.getHeader('authentication')) {
+        updateMenu()
+      }
+    }
+    setup()
+
+    return () => {
+      if (!bridge) {
+        return
+      }
+      bridge.events.off('didSetAuthenticationHeader', updateMenu)
+    }
   }, [])
 
   return (

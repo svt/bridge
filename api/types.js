@@ -5,20 +5,49 @@
 const Cache = require('./classes/Cache')
 const DIController = require('../shared/DIController')
 
+const utils = require('./utils')
+
 const CACHE_MAX_ENTRIES = 100
 
+function shallowMergeObjects (a, b) {
+  if (typeof a !== 'object' || typeof b !== 'object') {
+    return b
+  }
+
+  return {
+    ...a,
+    ...b
+  }
+}
+
+/*
+Export for testing only
+*/
+exports.shallowMergeObjects = shallowMergeObjects
+
 /**
- * Perform a deep clone
- * of an object
- * @param { any } obj An object to clone
+ * Merge all properties two level deep
+ * from two types
+ * @param { any } a
+ * @param { any } b
  * @returns { any }
  */
-function deepClone (obj) {
-  if (typeof window !== 'undefined' && window.structuredClone) {
-    return window.structuredClone(obj)
+function mergeProperties (a, b) {
+  const out = { ...a }
+  for (const key of Object.keys(b)) {
+    if (Object.prototype.hasOwnProperty.call(out, key)) {
+      out[key] = shallowMergeObjects(a[key], b[key])
+    } else {
+      out[key] = b[key]
+    }
   }
-  return JSON.parse(JSON.stringify(obj))
+  return out
 }
+
+/*
+Export for testing only
+*/
+exports.mergeProperties = mergeProperties
 
 class Types {
   #props
@@ -43,7 +72,8 @@ class Types {
   renderType (id, typesDict = {}) {
     if (!typesDict[id]) return undefined
 
-    const type = deepClone(typesDict[id])
+    const type = utils.deepClone(typesDict[id])
+    type.ancestors = []
 
     /*
     Render the ancestor if this
@@ -52,10 +82,12 @@ class Types {
     if (type.inherits) {
       const ancestor = this.renderType(type.inherits, typesDict)
 
-      type.properties = {
-        ...ancestor?.properties || {},
-        ...type.properties || {}
-      }
+      type.ancestors = [...(ancestor?.ancestors || []), type.inherits]
+      type.category = type.category || ancestor?.category
+      type.properties = mergeProperties(
+        (ancestor?.properties || {}),
+        (type?.properties || {})
+      )
     }
 
     return type

@@ -8,7 +8,7 @@ import { inputComponents } from './shared'
 
 import objectPath from 'object-path'
 
-export function Preference ({ setting, onChange = () => {} }) {
+export function Preference ({ setting, values, onChange = () => {} }) {
   const [shared] = React.useContext(SharedContext)
   const [local] = React.useContext(LocalContext)
 
@@ -22,10 +22,15 @@ export function Preference ({ setting, onChange = () => {} }) {
    */
   function valueFromPath (path) {
     const parts = path.split('.')
-    const sourceName = parts.shift()
+    const firstKey = parts.shift()
 
-    let source = local
-    if (sourceName === 'shared') {
+    let source = values || local
+
+    if (parts.length === 0) {
+      return source[firstKey]
+    }
+
+    if (firstKey === 'shared') {
       source = shared
     }
 
@@ -51,12 +56,12 @@ export function Preference ({ setting, onChange = () => {} }) {
       {
         (setting.inputs || [])
           .filter(input => inputComponents[input.type])
-          .map((input, i) => {
+          .map(input => {
             const InputComponent = inputComponents[input.type]
             const bind = `${setting.bind ? `${setting.bind}.` : ''}${input.bind ?? ''}`
             return (
               <InputComponent
-                key={i}
+                key={JSON.stringify(input)}
                 {...input}
                 value={bind ? valueFromPath(bind) : undefined}
                 onChange={value => onChange(bind, value)}

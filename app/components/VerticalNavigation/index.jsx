@@ -51,7 +51,7 @@ export function VerticalNavigation ({ sections = [], active = [0, 0], onClick = 
       {
         sections.map((section, i) => {
           return (
-            <ul key={i} className='VerticalNavigation-section'>
+            <ul key={`${section?.title}-${i}-${section?.items?.length}`} className='VerticalNavigation-section'>
               {
                 /*
                 Render the section's
@@ -74,12 +74,12 @@ export function VerticalNavigation ({ sections = [], active = [0, 0], onClick = 
                   const isActive = activePath?.[0] === i && activePath?.[1] === j
                   return (
                     <a
-                      key={j}
+                      key={`${section?.title}-${item?.title}-${j}`}
                       href='#'
                       className={`VerticalNavigation-item ${isActive ? 'is-active' : ''}`}
                       onClick={e => handleClick(e, i, j)}
                     >
-                      {item.title}
+                      {item?.title}
                     </a>
                   )
                 })

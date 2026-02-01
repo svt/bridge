@@ -169,30 +169,44 @@ export function Form () {
    */
   const variableContext = {this: firstItem, ...globalVariableContext}
 
+  async function conditionallyUpdateGroups () {
+    const types = store.items.map(item => item.type)
+
+    const typeObjectPromises = removeDuplicates(types)
+      .map(type => bridge.types.getType(type))
+    const typeObjects = await Promise.all(typeObjectPromises)
+
+    const properties = getCommonProperties(typeObjects)
+    const evaluated = await bridge.state.evaluate(properties)
+
+    const newGroups = orderByGroups(evaluated)
+
+    if (JSON.stringify(newGroups) !== JSON.stringify(groups)) {
+      setGroups(newGroups)
+    }
+  }
+
   /*
   Find out what the common properties
   are to sort them into groups and
   render the inputs
   */
   React.useEffect(() => {
-    async function getTypes () {
-      const types = store.items.map(item => item.type)
-      const typesPromises = removeDuplicates(types)
-        .map(type => bridge.types.getType(type))
-
-      const typeObjects = await Promise.all(typesPromises)
-      const properties = getCommonProperties(typeObjects)
-      const groups = orderByGroups(properties)
+    async function updateGroups () {
+      await conditionallyUpdateGroups()
 
       /*
       Reset the local data as
       the selection changes
       */
       setLocalData({})
-      setGroups(groups)
     }
-    getTypes()
+    updateGroups()
   }, [store.selection])
+
+  React.useEffect(() => {
+    conditionallyUpdateGroups()
+  }, [shared])
 
   /**
    * Update the state with new

@@ -37,7 +37,7 @@
   cursor: pointer;
 }
 
-.Header-pathPart:not(:last-child):active::before {
+.Header-pathPart::before {
   content: '';
   position: absolute;
 
@@ -46,8 +46,15 @@
   width: calc(100% + 14px);
   height: calc(100% + 10px);
 
-  background: var(--base-color--shade);
   border-radius: 6px;
+}
+
+.Header-pathPart.is-clickable:hover::before {
+  background: var(--base-color--shade);
+}
+
+.Header-pathPart:not(:last-child):active::before {
+  opacity: 0.7;
 }
 
 .Header-pathPart:last-child {

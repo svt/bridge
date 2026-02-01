@@ -19,6 +19,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.types.playable',
     properties: {
+      name: {
+        default: 'AMCP'
+      },
       'caspar.server': {
         name: 'Server',
         type: 'string',
@@ -146,6 +149,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.media',
     properties: {
+      name: {
+        default: 'Load'
+      },
       'caspar.auto': {
         name: 'Auto play',
         type: 'boolean',
@@ -161,15 +167,22 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      name: {
+        default: 'Template: $(this.data.caspar.data.f0)'
+      },
       'caspar.target': {
         name: 'Target',
         type: 'string',
         allowsVariables: true,
         'ui.group': 'Caspar'
       },
+      'caspar.data': {
+        default: { f0: 'Foo' }
+      },
       'caspar.templateDataSource': {
         name: 'Data',
         type: 'string',
+        default: '{\n  "f0": "Foo"\n}',
         allowsVariables: true,
         'ui.group': 'Caspar',
         'ui.uri': `${htmlPath}?path=inspector/template`
@@ -181,7 +194,12 @@ function init (htmlPath) {
     id: 'bridge.caspar.template.update',
     name: 'Template update',
     category: 'Caspar',
-    inherits: 'bridge.caspar.template'
+    inherits: 'bridge.caspar.template',
+    properties: {
+      name: {
+        default: 'Template update: $(this.data.caspar.data.f0)'
+      }
+    }
   })
 
   bridge.types.registerType({
@@ -189,7 +207,11 @@ function init (htmlPath) {
     name: 'Clear',
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
-    properties: {}
+    properties: {
+      name: {
+        default: 'Clear'
+      }
+    }
   })
 
   bridge.types.registerType({
@@ -198,6 +220,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.mixable',
     properties: {
+      name: {
+        default: 'Opacity'
+      },
       'caspar.opacity': {
         name: 'Opacity',
         type: 'string',
@@ -213,6 +238,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.mixable',
     properties: {
+      name: {
+        default: 'Transform'
+      },
       'caspar.x': {
         name: 'X',
         type: 'string',
@@ -250,6 +278,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.mixable',
     properties: {
+      name: {
+        default: 'Volume'
+      },
       'caspar.volume': {
         name: 'Volume',
         type: 'string',

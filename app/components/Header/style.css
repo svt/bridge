@@ -31,7 +31,7 @@ for the traffic light
 Do the same for Windows
 */
 .Header.has-rightMargin {
-  padding-right: 180px;
+  padding-right: 150px;
 }
 
 .Header-title {
@@ -53,41 +53,6 @@ Do the same for Windows
 .Header-block {
   display: flex;
   align-items: center;
-}
-
-.Header-actionSection {
-  margin-right: 55px;
-}
-
-.Header-button.Header-sharingBtn {
-  width: 40px;
-  padding: 0 1.3em 0 1em;
-  color: var(--base-color);
-  font-family: var(--base-fontFamily--primary);
-}
-
-.Header-button.Header-roleBtn {
-  width: auto;
-  padding: 0 7px 0 0;
-
-  border: 1px solid var(--base-color--shade);
-
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.Header-button.Header-roleBtn::before {
-  content: '';
-  height: 100%;
-  width: 6px;
-
-  margin-right: 7px;
-
-  background: var(--base-color--shade);
-}
-
-.Header-button.Header-roleBtn.is-main::before {
-  background: var(--base-color--accent1);
 }
 
 .Header-button {

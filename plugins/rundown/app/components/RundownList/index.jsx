@@ -6,6 +6,7 @@ import './style.css'
 import { SharedContext } from '../../sharedContext'
 
 import { RundownVariableItem } from '../RundownVariableItem'
+import { RundownTriggerItem } from '../RundownTriggerItem'
 import { RundownDividerItem } from '../RundownDividerItem'
 import { RundownGroupItem, getContextMenuItems as rundownGroupItemGetContextMenuItems } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
@@ -23,10 +24,11 @@ import * as keyboard from '../../utils/keyboard'
  */
 const TYPE_COMPONENTS = {
   'bridge.variables.variable': { item: RundownVariableItem },
+  'bridge.types.trigger': { item: RundownTriggerItem },
   'bridge.types.divider': { item: RundownDividerItem },
   'bridge.types.group': {
     item: RundownGroupItem,
-    getContextMenuItems: item => rundownGroupItemGetContextMenuItems(item)
+    getContextMenuItems: (ctx, item) => rundownGroupItemGetContextMenuItems(ctx, item)
   }
 }
 
@@ -81,11 +83,13 @@ export function RundownList ({
   rundownId = '',
   className = '',
   indexPrefix = '',
-  disableShortcuts = false
+  disableShortcuts = false,
+  onChangeRundownId = () => {}
 }) {
   const [shared] = React.useContext(SharedContext)
 
   const elRef = React.useRef()
+  const typeCacheRef = React.useRef({})
 
   const itemIds = shared?.items?.[rundownId]?.children || []
 
@@ -94,6 +98,14 @@ export function RundownList ({
   function getItemElementById (id) {
     return elRef.current.querySelector(`[data-item-id="${id}"]`)
   }
+
+  /*
+  Clear the type cache whenever
+  registered types change
+  */
+  React.useEffect(() => {
+    typeCacheRef.current = {}
+  }, [shared?._types])
 
   /**
    * Focus a list item based on the
@@ -369,6 +381,42 @@ export function RundownList ({
     }
   }
 
+  function getCachedType (typeId) {
+    return typeCacheRef?.current?.[typeId]
+  }
+
+  function setCachedType (typeId, typeData) {
+    if (!typeCacheRef.current) {
+      typeCacheRef.current = {}
+    }
+    typeCacheRef.current[typeId] = typeData
+  }
+
+  function getRenderedType (typeId) {
+    const cachedType = getCachedType(typeId)
+    if (cachedType) {
+      return cachedType
+    }
+
+    const rendered = bridge.types.renderType(typeId, shared?._types || {})
+    setCachedType(typeId, rendered)
+    return rendered
+  }
+
+  /*
+  Find a matching component based
+  on the ancestors of the type
+  */
+  function getTypeComponent (typeId) {
+    const type = getRenderedType(typeId)
+    for (const ancestor of [...type.ancestors, typeId].reverse()) {
+      if (TYPE_COMPONENTS[ancestor]?.item) {
+        return TYPE_COMPONENTS[ancestor]?.item
+      }
+    }
+    return RundownItem
+  }
+
   return (
     <div
       ref={elRef}
@@ -393,12 +441,14 @@ export function RundownList ({
           .map(id => bridge.items.getLocalItem(id))
           .filter(item => item)
           .map((item, i) => {
+            const ItemComponent = getTypeComponent(item.type)
             const isSelected = bridge.client.selection.isSelected(item.id)
-            const ItemComponent = TYPE_COMPONENTS[item.type]?.item || RundownItem
 
             let contextMenuItems
             if (typeof TYPE_COMPONENTS[item.type]?.getContextMenuItems === 'function') {
-              contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems(item)
+              contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems({
+                setRundownId: onChangeRundownId
+              }, item)
             }
 
             return (

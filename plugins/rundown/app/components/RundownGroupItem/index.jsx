@@ -11,8 +11,6 @@ import { RundownItemProgress } from '../RundownItemProgress'
 import { RundownList } from '../RundownList'
 import { Icon } from '../Icon'
 
-import { ContextMenuItem } from '../../../../../app/components/ContextMenuItem'
-
 export function RundownGroupItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
 
@@ -172,11 +170,9 @@ export function RundownGroupItem ({ index, item }) {
   )
 }
 
-export function getContextMenuItems (item) {
+export function getContextMenuItems (ctx, item) {
   function handleEnterGroup () {
-    window.WIDGET_UPDATE({
-      'rundown.id': item.id
-    })
+    ctx.setRundownId(item.id)
   }
 
   return [

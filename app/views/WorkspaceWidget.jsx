@@ -10,6 +10,7 @@
 import React from 'react'
 
 import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 import { SharedContext } from '../sharedContext'
 import { MissingComponent } from '../components/MissingComponent'
 
@@ -77,12 +78,9 @@ export const WorkspaceWidget = () => {
     <>
       <Header features={['reload', 'palette', 'role']} />
       <div className='View-component'>
-        {
-          widgetExists(widget?.component, repository)
-            ? <WidgetRenderer data={widget} onUpdate={data => handleComponentUpdate({ [id]: data })} forwardProps={{ enableFloat: false }} />
-            : <MissingComponent data={widget} />
-        }
+        <WidgetRenderer widgetId={widgetId} widgets={repository} data={widget} onUpdate={data => handleComponentUpdate({ [id]: data })} forwardProps={{ enableFloat: false }} />
       </div>
+      <Footer features={['role']} />
     </>
   )
 }

@@ -19,6 +19,9 @@ async function init (htmlPath) {
     name: 'Reference',
     inherits: 'bridge.types.delayable',
     properties: {
+      name: {
+        default: 'Reference'
+      },
       playAction: {
         name: 'Play action',
         type: 'enum',

@@ -90,7 +90,7 @@ export const ContextMenu = ({ x, y, width = DEFAULT_WIDTH_PX, children, onClose 
         createPortal(
           <div
             ref={elRef}
-            className={`ContextMenu u-theme--light ContextMenu--${direction}`}
+            className={`ContextMenu ContextMenu--${direction}`}
             style={{ top: y, left: x, width: width }}
           >
             {children}

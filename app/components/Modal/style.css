@@ -59,6 +59,11 @@ slight box shadow instead
   max-height: 500px;
 }
 
+.Modal--auto .Modal-wrapper {
+  width: auto;
+  height: auto;
+}
+
 .Modal-content {
   display: block;
   position: relative;

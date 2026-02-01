@@ -7,10 +7,13 @@ const bridge = require('bridge')
 function init (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.osc.trigger',
-    name: 'Trigger',
+    name: 'Send',
     category: 'OSC',
     inherits: 'bridge.types.delayable',
     properties: {
+      name: {
+        default: 'Send OSC'
+      },
       'osc.target': {
         name: 'Target',
         type: 'string',
@@ -48,6 +51,9 @@ function init (htmlPath) {
     category: 'OSC',
     inherits: 'bridge.types.delayable',
     properties: {
+      name: {
+        default: 'OSC: Activate UDP'
+      },
       'osc.active': {
         name: 'Activate server',
         type: 'boolean',
@@ -62,6 +68,9 @@ function init (htmlPath) {
     category: 'OSC',
     inherits: 'bridge.types.delayable',
     properties: {
+      name: {
+        default: 'OSC: Activate TCP'
+      },
       'osc.active': {
         name: 'Activate server',
         type: 'boolean',

@@ -5,6 +5,7 @@ import { useDraggable } from '../../hooks/useDraggable'
 import './style.css'
 
 import * as modalStack from '../../utils/modals'
+import { createPortal } from 'react-dom'
 
 export function Modal ({ children, open, size = 'large', onClose = () => {}, draggable = false, shade = true }) {
   const elRef = React.useRef()
@@ -31,15 +32,24 @@ export function Modal ({ children, open, size = 'large', onClose = () => {}, dra
   }, [open])
 
   return (
-    <div ref={elRef} className={`Modal Modal--${size} u-theme--light ${open ? 'is-open' : ''} ${draggable ? 'is-draggable' : ''} ${!shade ? 'has-noShade' : ''}`}>
-      <div className='Modal-wrapper' style={{ transform: `translate(${offset[0]}px, ${offset[1]}px)` }}>
-        <div className='Modal-content'>
-          {
-            draggable && <div ref={handleRef} className='Modal-handle'>•••</div>
-          }
-          {children}
-        </div>
-      </div>
-    </div>
+    <>
+      {
+        createPortal(
+          (
+            <div ref={elRef} className={`Modal Modal--${size} u-theme--light ${open ? 'is-open' : ''} ${draggable ? 'is-draggable' : ''} ${!shade ? 'has-noShade' : ''}`}>
+              <div className='Modal-wrapper' style={{ transform: `translate(${offset[0]}px, ${offset[1]}px)` }}>
+                <div className='Modal-content'>
+                  {
+                    draggable && <div ref={handleRef} className='Modal-handle'>•••</div>
+                  }
+                  {children}
+                </div>
+              </div>
+            </div>
+          ),
+          document.body
+        )
+      }
+    </>
   )
 }

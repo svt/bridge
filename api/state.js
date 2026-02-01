@@ -7,7 +7,52 @@ const merge = require('../shared/merge')
 const Cache = require('./classes/Cache')
 const DIController = require('../shared/DIController')
 
+const objectPath = require('object-path')
+
 const CACHE_MAX_ENTRIES = 10
+
+function mapObject (obj, map) {
+  if (typeof map !== 'object' || typeof obj !== 'object') {
+    return obj
+  }
+
+  const out = {}
+  for (const [key, path] of Object.entries(map)) {
+    if (typeof path !== 'string') {
+      continue
+    }
+    out[key] = obj[path]
+  }
+  return out
+}
+
+const EVALUATION_OPERATIONS = {
+  arrayFromObject: (opts, data) => {
+    if (typeof opts?.path !== 'string') {
+      return
+    }
+
+    const obj = objectPath.get(data, opts.path)
+    if (!obj) {
+      return
+    }
+
+    return Object.entries(obj)
+      .map(([, value]) => {
+        let _value = value
+        if (typeof value !== 'object') {
+          _value = { value }
+        }
+        return mapObject(_value, opts?.map)
+      })
+  },
+  concatArrays: (opts, data) => {
+    if (!Array.isArray(opts?.a) || !Array.isArray(opts?.b)) {
+      return opts?.a
+    }
+    return [...opts.a, ...opts.b]
+  }
+}
 
 class State {
   #props
@@ -118,21 +163,95 @@ class State {
   }
 
   /**
+   * Create a new object by expanding the path
+   * and set the provided value
+   * @param { string } path
+   * @param { any } value
+   * @param { string | undefined } delimiter
+   * @returns { any }
+   */
+  #expandObjectPath (path, value, delimiter = '.') {
+    const parts = path.split(delimiter)
+
+    const out = {}
+    let pointer = out
+
+    for (let i = 0; i < parts.length; i++) {
+      const key = parts[i]
+      if (i === parts.length - 1) {
+        pointer[key] = value
+      } else {
+        pointer[key] = {}
+        pointer = pointer[key]
+      }
+    }
+
+    return out
+  }
+
+  /**
    * Apply some data to the state,
    * most often this function shouldn't
    * be called directly - there's probably
    * a command for what you want to do
-   * @param { Object } set Data to apply to the state
+   * @param { object } set Data to apply to the state
    *//**
    * Apply some data to the state,
    * most often this function shouldn't
    * be called directly - there's probably
    * a command for what you want to do
-   * @param { Object[] } set An array of data objects to
+   * @param { object[] } set An array of data objects to
    *                         apply to the state in order
+   *//**
+   * Apply some data to the state,
+   * most often this function shouldn't
+   * be called directly - there's probably
+   * a command for what you want to do
+   * @param { string } path A dot-path to which the value will be applied
+   * @param { object } set A value to apply
    */
-  apply (set) {
+  apply (arg0, arg1) {
+    let set = arg0
+
+    /*
+    If the function received a path and a value,
+    expand create an object that can be set directly
+    */
+    if (typeof arg0 === 'string' && arg1) {
+      set = this.#expandObjectPath(arg0, arg1)
+    }
+
     this.#props.Commands.executeRawCommand('state.apply', set)
+  }
+
+  #evaluateProperty (propertyFieldEvaluation, dataDict = {}) {
+    const op = propertyFieldEvaluation?.op
+    if (!op || !EVALUATION_OPERATIONS[op]) {
+      return
+    }
+    return EVALUATION_OPERATIONS[op](propertyFieldEvaluation, dataDict)
+  }
+
+  async evaluate (obj, data) {
+    if (typeof obj !== 'object' || !obj) {
+      return obj
+    }
+
+    let _data = data
+    if (!_data) {
+      _data = this.getLocalState() || await this.get()
+    }
+
+    for (const key of Object.keys(obj)) {
+      obj[key] = await this.evaluate(obj[key], _data)
+    }
+
+    if (obj?.$eval) {
+      const newObj = this.#evaluateProperty(obj.$eval, _data)
+      return this.evaluate(newObj, _data)
+    }
+
+    return obj
   }
 
   /**

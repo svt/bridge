@@ -4,6 +4,7 @@ import { SharedContext } from '../../sharedContext'
 
 import { Notification } from '../Notification'
 import { Popover } from '../Popover'
+import { Modal } from '../Modal'
 
 import CollaborationIcon from '../../assets/icons/collaboration.svg'
 
@@ -53,24 +54,29 @@ export function Sharing ({ open, onClose = () => {} }) {
   }, [copied])
 
   return (
-    <Popover open={open} onClose={onClose}>
+    <Modal open={open} size='auto' onClose={onClose}>
       <div className='Sharing u-theme--light'>
-        {
-          HOST === 'localhost' &&
-          (
-            <div className='Sharing-notification'>
-              <Notification size='small' description='Bridge is only accessible on localhost, change this in settings' />
-            </div>
-          )
-        }
         <div className='Sharing-content'>
-          <div className='Sharing-icon' dangerouslySetInnerHTML={{ __html: CollaborationIcon }} />
-          Share a link to this workspace and collaborate in real time
-          <button className='Button Button--secondary u-width--100pct Sharing-copyBtn' onClick={() => handleCopy()}>
+          <div className='Sharing-text'>
+            <div className='Sharing-icon' dangerouslySetInnerHTML={{ __html: CollaborationIcon }} />
+            Share a link to this workspace and collaborate in real time
+          </div>
+          {
+            HOST === 'localhost' &&
+            (
+              <div className='Sharing-notification'>
+                <Notification size='small' type='info' description='Bridge is currently only accessible on localhost, change this in settings' />
+              </div>
+            )
+          }
+          <button className='Button Button--accent u-width--100pct Sharing-copyBtn' onClick={() => handleCopy()}>
             { copied ? 'Copied' : 'Copy link' }
+          </button>
+          <button className='Button Button--secondary u-width--100pct' onClick={() => onClose()}>
+            Close
           </button>
         </div>
       </div>
-    </Popover>
+    </Modal>
   )
 }

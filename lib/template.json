@@ -7,15 +7,16 @@
           "title": "Rundown",
           "component": "bridge.internals.grid",
           "layout": {
-            "liveSwitch": { "x": 0, "y": 0, "w": 6, "h": 2 },
-            "library": { "x": 0, "y": 2, "w": 6, "h": 10 },
+            "time": { "x": 0, "y": 0, "w": 6, "h": 3 },
+            "library": { "x": 0, "y": 3, "w": 6, "h": 9 },
             "rundown": { "x": 6, "y": 0, "w": 12, "h": 12 },
             "thumbnail": { "x": 18, "y": 0, "w": 6, "h": 3 },
             "inspector": { "x": 18, "y": 3, "w": 6, "h": 9 }
           },
           "children": {
-            "liveSwitch": {
-              "component": "bridge.plugins.caspar.liveSwitch"
+            "time": {
+              "component": "bridge.plugins.clock.display",
+              "clockId": "main"
             },
             "library": {
               "component": "bridge.plugins.caspar.library"
@@ -28,22 +29,6 @@
             },
             "inspector": {
               "component": "bridge.plugins.inspector"
-            }
-          }
-        },
-        "2": {
-          "title": "Time",
-          "component": "bridge.internals.grid",
-          "layout": {
-            "time": { "x": 0, "y": 0, "w": 8, "h": 4 },
-            "latency": { "x": 8, "y": 0, "w": 8, "h": 4 }
-          },
-          "children": {
-            "time": {
-              "component": "bridge.plugins.clock.time"
-            },
-            "latency": {
-              "component": "bridge.plugins.clock.latency"
             }
           }
         }

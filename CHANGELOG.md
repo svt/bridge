@@ -5,9 +5,21 @@
 - Support for named urls when sharing links to workspaces
 - Ability to convert items to other types by right-clicking
 - Ancestor items in context menus now stay tinted when their child menus are opened
+- A shortcut to open preferences (CMD/CTRL+,)
+- Support for lists in settings
+- Support for custom ids in select inputs in settings
+- Support for LTC timecode and triggers
+- A state evaluation API
+- Granular type inheritance
+- Default names to types
+### Changed
+- Some features have moved to the footer of the app window
+- Context menus now follow the color theme
+- Windows builds now use a custom window header
 ### Fixed
 - An issue where the inspector started to scroll horisontally on overflow
 - Closing electron windows may cause a loop preventing user defaults from being saved
+- An issue where settings didn't render after reload
 
 ## 1.0.0-beta.8
 ### Fixed

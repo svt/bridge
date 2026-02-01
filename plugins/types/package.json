@@ -53,6 +53,9 @@
         "id": "bridge.types.media",
         "inherits": "bridge.types.playable",
         "properties": {
+          "name": {
+            "default": "Media"
+          },
           "duration": {
             "name": "Duration",
             "type": "string",
@@ -73,6 +76,9 @@
         "name": "Group",
         "inherits": "bridge.types.media",
         "properties": {
+          "name": {
+            "default": "Group"
+          },
           "playMode": {
             "name": "Play mode",
             "type": "enum",
@@ -86,6 +92,20 @@
         "id": "bridge.types.divider",
         "name": "Divider",
         "inherits": "bridge.types.root"
+      },
+      {
+        "id": "bridge.types.trigger",
+        "inherits": "bridge.types.reference",
+        "category": "Triggers",
+        "ui.icon": "trigger",
+        "properties": {
+          "name": {
+            "default": "Trigger"
+          },
+          "color": {
+            "default": "#E543FF"
+          }
+        }
       }
     ],
     "settings": [

@@ -44,6 +44,7 @@ The roadmap is available on Notion
 - OSC API and triggers
 - HTTP triggers
 - CasparCG library, playout and templates
+- LTC timecode triggers
 
 ## Community plugins  
 - [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)

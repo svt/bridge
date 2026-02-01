@@ -1,0 +1,46 @@
+.PreferencesListInput-label {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.PreferencesListInputItem {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+
+  border: 1px solid var(--base-color--shade);
+  border-radius: 10px;
+}
+
+.PreferencesListInputItem > div,
+.PreferencesListInputItem-flexWrapper > div {
+  width: 100%;
+}
+
+.PreferencesListInputItem-flexWrapper {
+  display: flex;
+}
+
+.PreferencesListInputItem-flexWrapper > div:last-child {
+  text-align: right;
+}
+
+.PreferencesListInputItem-input {
+  margin-bottom: -10px;
+}
+
+.PreferencesListInputItem-input--small {
+  width: 100px;
+}
+
+.PreferencesListInputItem-input input {
+  margin-right: 5px;
+}
+
+.PreferencesListInputItem-input select {
+  width: 240px;
+}
+
+.PreferencesListInputItem-flexInputs {
+  display: flex;
+}

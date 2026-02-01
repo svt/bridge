@@ -17,6 +17,8 @@ import state from './sections/state.json'
 
 import './style.css'
 
+import * as api from '../../api'
+
 /**
  * Internal settings defined
  * by json files
@@ -40,52 +42,69 @@ const INTERNAL_SETTINGS = [
 ]
 
 export function Preferences ({ onClose = () => {} }) {
-  const [shared, applyShared] = React.useContext(SharedContext)
+  const [, applyShared] = React.useContext(SharedContext)
   const [, applyLocal] = React.useContext(LocalContext)
 
-  const pluginSettings = React.useRef({
-    title: 'Plugins',
-    items: []
-  })
-
-  /**
-   * All plugin sections
-   * aggregated together
-   */
-  const sections = [
-    ...INTERNAL_SETTINGS,
-    pluginSettings.current
-  ]
-
-  const [section, setSection] = React.useState(sections[0]?.items[0])
+  const [sections, setSections] = React.useState([])
+  const [curPath, setCurPath] = React.useState([0, 0])
 
   /*
-  Append settings from the state
-  to the plugins section on component
-  load
+  List plugins from the
+  state whenever it's updated
   */
   React.useEffect(() => {
-    Object.entries(shared?._settings || {})
-      /*
-      Sort the groups alphabetically to
-      always keep the same order
-      */
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .forEach(([groupName, settings]) => {
-        pluginSettings.current.items.push({
-          title: groupName,
-          items: settings
+    function updatePluginSettings (settings) {
+      const pluginSections = Object.entries(settings || {})
+        /*
+        Sort the groups alphabetically to
+        always keep the same order
+        */
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([groupName, groupSettings]) => {
+          return {
+            title: groupName,
+            items: groupSettings
+          }
         })
-      })
+
+      setSections([
+        ...INTERNAL_SETTINGS,
+        {
+          title: 'Plugins',
+          items: pluginSections
+        }
+      ])
+    }
+
+    function onStateChange (newState, set) {
+      if (!set.hasOwnProperty('_settings')) {
+        return
+      }
+      updatePluginSettings(newState?._settings)
+    }
+
+    let bridge
+    async function setup () {
+      bridge = await api.load()
+      bridge.events.on('state.change', onStateChange)
+
+      const initialSettings = await bridge.state.get('_settings')
+      updatePluginSettings(initialSettings)
+    }
+    setup()
 
     return () => {
-      pluginSettings.current.items = []
+      setPluginSections([])
+
+      if (!bridge?.events) {
+        return
+      }
+      bridge.events.off('state.change', onStateChange)
     }
-  }, [shared._settings])
+  }, [])
 
   function handleSidebarClick (path) {
-    const pane = sections[path[0]]?.items[path[1]]
-    setSection(pane)
+    setCurPath([path[0], path[1]])
   }
 
   function handleCloseClick () {
@@ -133,13 +152,14 @@ export function Preferences ({ onClose = () => {} }) {
       <div className='Preferences-content'>
         <Layout.Master sidebar={sidebar}>
           {
-            (section?.items || [])
+            (sections[curPath[0]]?.items[curPath[1]]?.items || [])
+              .filter(setting => setting)
               .map(setting => {
                 /*
                 Compose a key that's somewhat unique but still static
                 in order to prevent unnecessary re-rendering
                 */
-                const key = `${setting.title}${setting.description}${JSON.stringify(setting.inputs)}`
+                const key = `${setting?.title}${setting?.description}${JSON.stringify(setting?.inputs)}`
                 return (
                   <Preference
                     key={key}

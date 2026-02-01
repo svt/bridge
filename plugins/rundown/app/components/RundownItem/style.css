@@ -11,7 +11,7 @@
 }
 
 .RundownItem-margin {
-  margin: 1em;
+  margin: 0.9em 1em;
   width: 100%;
 }
 
@@ -50,6 +50,14 @@
 .RundownItem-index {
   margin-right: 1em;
   opacity: 0.5;
+}
+
+.RundownItem-icon {
+  display: flex;
+  height: 0px;
+  margin-right: 8px;
+  margin-left: -10px;
+  align-items: center;
 }
 
 .RundownItem-name {

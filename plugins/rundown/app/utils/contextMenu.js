@@ -1,4 +1,15 @@
+const bridge = require('bridge')
+
 const NO_CATEGORY_ID = '__none__'
+
+function renderAllTypes (types) {
+  const out = {}
+  Object.entries(types)
+    .forEach(([id]) => {
+      out[id] = bridge.types.renderType(id, types)
+    })
+  return out
+}
 
 function orderTypesByCategory (types) {
   const out = {}
@@ -19,7 +30,8 @@ function orderTypesByCategory (types) {
 }
 
 export function generateAddContextMenuItems (types, onItemClick) {
-  const categories = orderTypesByCategory(types)
+  const renderedTypes = renderAllTypes(types)
+  const categories = orderTypesByCategory(renderedTypes)
 
   return Object.entries(categories)
     /*

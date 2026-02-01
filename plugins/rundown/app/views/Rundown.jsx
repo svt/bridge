@@ -4,16 +4,23 @@ import bridge from 'bridge'
 import { SharedContext } from '../sharedContext'
 import { RundownList } from '../components/RundownList'
 
-import * as config from '../config'
 import * as contextMenu from '../utils/contextMenu'
+import * as config from '../config'
+
+const INITIAL_RUNDOWN_ID = window.WIDGET_DATA?.['rundown.id'] || config.DEFAULT_RUNDOWN_ID
 
 export function Rundown () {
+  const [rundownId, setRundownId] = React.useState(INITIAL_RUNDOWN_ID)
   const [shared] = React.useContext(SharedContext)
-  const [contextPos, setContextPos] = React.useState()
 
   const elRef = React.useRef()
 
-  const rundownId = window.WIDGET_DATA?.['rundown.id'] || config.DEFAULT_RUNDOWN_ID
+  function handleNewRundownId (newId) {
+    window.WIDGET_UPDATE({
+      'rundown.id': newId
+    })
+    setRundownId(newId)
+  }
 
   async function handleItemCreate (typeId) {
     const itemId = await bridge.items.createItem(typeId)
@@ -144,7 +151,10 @@ export function Rundown () {
 
   return (
     <div ref={elRef} className='View' onContextMenu={e => handleContextMenu(e)}>
-      <RundownList rundownId={rundownId} />
+      <RundownList
+        rundownId={rundownId}
+        onChangeRundownId={newId => handleNewRundownId(newId)}
+      />
     </div>
   )
 }

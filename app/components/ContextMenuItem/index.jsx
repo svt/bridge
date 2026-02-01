@@ -9,7 +9,7 @@ import { Icon } from '../Icon'
  * nested context menus
  * @type { Number }
  */
-const CTX_MENU_OFFSET_X_PX = 150
+const CTX_MENU_OFFSET_X_PX = 140
 
 /**
  * A delay applied to when the
@@ -77,7 +77,7 @@ export const ContextMenuItem = ({ text, children = [], onClick = () => {} }) => 
       </div>
       {
         childArr.length > 0 &&
-        <Icon name='arrowRight' color='black' />
+        <Icon name='arrowRight' />
       }
       {
         delayedHover && childArr.length > 0

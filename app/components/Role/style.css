@@ -11,6 +11,10 @@
   box-sizing: border-box;
 }
 
+.Role-content .Button {
+  margin-top: 10px;
+}
+
 .Role-info {
   margin: 5px;
 }
