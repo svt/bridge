@@ -45,6 +45,14 @@ class Shortcuts {
   }
 
   /**
+   * Remove a registered shortcut
+   * @param { string } id
+   */
+  removeShortcut (id) {
+    this.#props.Commands.executeCommand('shortcuts.removeShortcut', id)
+  }
+
+  /**
    * Get all shortcuts'
    * specifications
    * @returns { Promise.<ShortcutSpec[]> }
