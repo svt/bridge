@@ -76,7 +76,7 @@ export const WorkspaceWidget = () => {
 
   return (
     <>
-      <Header features={['reload', 'palette', 'role']} />
+      <Header features={['stayOnTop', 'reload', 'palette']} />
       <div className='View-component'>
         <WidgetRenderer widgetId={widgetId} widgets={repository} data={widget} onUpdate={data => handleComponentUpdate({ [id]: data })} forwardProps={{ enableFloat: false }} />
       </div>

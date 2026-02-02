@@ -178,7 +178,14 @@ exports.mixerVolume = (volume, opts) => `MIXER ${layerString(opts)} VOLUME ${vol
  * Get the thumbnail for a file
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#thumbnail-retrieve
  * @param { String } fileName
- * @param { AMCPOptions } opts
  * @returns { String }
  */
 exports.thumbnailRetrieve = fileName => `THUMBNAIL RETRIEVE "${fileName}"`
+
+/**
+ * Start the HTML producer
+ * @param { String } url
+ * @param { AMCPOptions } opts
+ * @returns { String }
+ */
+exports.html = (url, opts) => `PLAY ${layerString(opts)} [HTML] "${url}"${transitionString(opts)}`

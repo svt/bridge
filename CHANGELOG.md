@@ -12,6 +12,8 @@
 - A state evaluation API
 - Granular type inheritance
 - Default names to types
+- Functionality for making windows stay on top
+- Support for Caspar CGs HTML producer
 ### Changed
 - Some features have moved to the footer of the app window
 - Context menus now follow the color theme
