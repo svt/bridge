@@ -91,6 +91,46 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.mixableWithTransitions',
+    /*
+    Inherit from playable rather than mixable and
+    redefine the transition params to get them in
+    the correct order
+    */
+    inherits: 'bridge.caspar.playable',
+    properties: {
+      'caspar.transitionName': {
+        name: 'Transition',
+        type: 'enum',
+        enum: TRANSITION_NAME_ENUM,
+        default: '0',
+        'ui.group': 'Transition'
+      },
+      'caspar.transitionDirection': {
+        name: 'Direction',
+        type: 'enum',
+        enum: TRANSITION_DIRECTION_ENUM,
+        default: '0',
+        'ui.group': 'Transition'
+      },
+      'caspar.transitionDuration': {
+        name: 'Duration',
+        type: 'string',
+        default: '0',
+        allowsVariables: true,
+        'ui.group': 'Transition',
+        'ui.unit': 'frames'
+      },
+      'caspar.transitionEasing': {
+        name: 'Easing',
+        type: 'string',
+        'ui.group': 'Transition',
+        'ui.uri': `${htmlPath}?path=inspector/transition`
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.media',
     name: 'Media',
     category: 'Caspar',
@@ -198,6 +238,25 @@ function init (htmlPath) {
     properties: {
       name: {
         default: 'Template update: $(this.data.caspar.data.f0)'
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.html',
+    name: 'HTML page',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.mixableWithTransitions',
+    properties: {
+      name: {
+        default: 'HTML page: $(this.data.caspar.url)'
+      },
+      'caspar.url': {
+        name: 'URL',
+        type: 'string',
+        default: 'https://',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
       }
     }
   })
