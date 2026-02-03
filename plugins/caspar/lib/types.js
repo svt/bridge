@@ -10,6 +10,9 @@ exports.TRANSITION_NAME_ENUM = TRANSITION_NAME_ENUM
 const TRANSITION_DIRECTION_ENUM = ['Left', 'Right']
 exports.TRANSITION_DIRECTION_ENUM = TRANSITION_DIRECTION_ENUM
 
+const SCALE_MODE_ENUM = ['Stretch', 'Fit', 'Fill', 'Original', 'HFILL', 'VFILL']
+exports.SCALE_MODE_ENUM = SCALE_MODE_ENUM
+
 const DEFAULT_SERVER_ID = 'group:0'
 
 function init (htmlPath) {
@@ -147,6 +150,13 @@ function init (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Caspar'
       },
+      'caspar.scaleMode': {
+        name: 'Scale mode',
+        type: 'enum',
+        enum: SCALE_MODE_ENUM,
+        default: '0',
+        'ui.group': 'Caspar'
+      },
       'caspar.loop': {
         name: 'Loop',
         type: 'boolean',
@@ -197,6 +207,41 @@ function init (htmlPath) {
         type: 'boolean',
         default: false,
         'ui.group': 'Timing'
+      }
+    }
+  })
+
+  bridge.types.registerType({
+    id: 'bridge.caspar.image-scroller',
+    name: 'Image scroller',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {
+      'caspar.target': {
+        name: 'Target',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      },
+      'caspar.speed': {
+        name: 'Speed',
+        type: 'string',
+        default: '7',
+        allowsVariables: true,
+        'ui.group': 'Image scroller'
+      },
+      'caspar.blur': {
+        name: 'Blur',
+        type: 'string',
+        default: '0',
+        allowsVariables: true,
+        'ui.group': 'Image scroller'
+      },
+      'caspar.progressive': {
+        name: 'Progressive',
+        type: 'boolean',
+        default: false,
+        'ui.group': 'Image scroller'
       }
     }
   })
