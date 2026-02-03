@@ -15,6 +15,7 @@
 - Functionality for making windows stay on top
 - Support for Caspar CGs HTML producer
 - Support for SCALE_MODE for Caspar media for Caspar 2.5.x
+- Support for Caspar CGs image scroller
 ### Changed
 - Some features have moved to the footer of the app window
 - Context menus now follow the color theme

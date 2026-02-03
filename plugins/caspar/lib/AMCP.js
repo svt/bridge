@@ -131,6 +131,14 @@ exports.play = (file, loop, seek, length, filter, auto, opts) => `PLAY ${layerSt
 exports.playLoaded = opts => `PLAY ${layerString(opts)}`
 
 /**
+ * Play an image scroller
+ * @param { string } file The file to play
+ * @param { AMCPOptions } opts
+ * @returns { string }
+ */
+exports.playImageScroller = (file, opts) => `PLAY ${layerString(opts)}${file ? ` "${file}"` : ''} BLUR ${opts?.blur || 0} SPEED ${opts?.speed || 7}${opts?.progressive ? ' PROGRESSIVE' : ''}`
+
+/**
  * Stop an item running in the foreground
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#stop
  * @param { AMCPOptions } opts

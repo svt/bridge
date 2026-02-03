@@ -212,6 +212,41 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.image-scroller',
+    name: 'Image scroller',
+    category: 'Caspar',
+    inherits: 'bridge.caspar.playable',
+    properties: {
+      'caspar.target': {
+        name: 'Target',
+        type: 'string',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      },
+      'caspar.speed': {
+        name: 'Speed',
+        type: 'string',
+        default: '7',
+        allowsVariables: true,
+        'ui.group': 'Image scroller'
+      },
+      'caspar.blur': {
+        name: 'Blur',
+        type: 'string',
+        default: '0',
+        allowsVariables: true,
+        'ui.group': 'Image scroller'
+      },
+      'caspar.progressive': {
+        name: 'Progressive',
+        type: 'boolean',
+        default: false,
+        'ui.group': 'Image scroller'
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.template',
     name: 'Template',
     category: 'Caspar',
