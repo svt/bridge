@@ -16,7 +16,7 @@ const types = require('./types')
  * Construct a channel-layer string
  * for use in commands
  * @param { AMCPOptions | undefined } opts
- * @returns { String }
+ * @returns { string }
  */
 function layerString (opts = {}) {
   if (opts.channel == null) {
@@ -32,10 +32,20 @@ function layerString (opts = {}) {
  * Construct a transition-string
  * for use in commands
  * @param { AMCPOptions | undefined } opts
- * @returns { String }
+ * @returns { string }
  */
 function transitionString (opts = {}) {
   return ` ${types.TRANSITION_NAME_ENUM[opts.transitionName] || ''} ${opts.transitionDuration || '0'} ${(opts.transitionEasing || 'LINEAR')} ${(types.TRANSITION_DIRECTION_ENUM[opts.transitionDirection] || 'LEFT')}`.toUpperCase()
+}
+
+/**
+ * Construct a scale mode string
+ * for use in commands
+ * @param { AMCPOptions | undefined } opts
+ * @returns { string }
+ */
+function scaleModeString (opts = {}) {
+  return ` SCALE_MODE ${(types.SCALE_MODE_ENUM[opts.scaleMode] || 'STRETCH').toUpperCase()}`
 }
 
 /**
@@ -86,37 +96,37 @@ exports.clear = opts => `CLEAR ${layerString(opts)}`
 /**
  * Load a media item in the background
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#loadbg
- * @param { String } file The file to play
- * @param { Boolean } loop
- * @param { Number } seek
- * @param { Number } length
- * @param { String } filter
- * @param { Boolean } auto
+ * @param { string } file The file to play
+ * @param { boolean } loop
+ * @param { number } seek
+ * @param { number } length
+ * @param { string } filter
+ * @param { boolean } auto
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
-exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)}${file ? ` "${file}"` : ''}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? 'AUTO' : ''}`
+exports.loadbg = (file, loop, seek, length, filter, auto, opts) => `LOADBG ${layerString(opts)}${file ? ` "${file}"` : ''}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)}${scaleModeString(opts)} ${auto ? 'AUTO' : ''}`
 
 /**
  * Play a media item in the foreground
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
- * @param { String } file The file to play
- * @param { Boolean } loop
- * @param { Number } seek
- * @param { Number } length
- * @param { String } filter
- * @param { Boolean } auto
+ * @param { string } file The file to play
+ * @param { boolean } loop
+ * @param { number } seek
+ * @param { number } length
+ * @param { string } filter
+ * @param { boolean } auto
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
-exports.play = (file, loop, seek, length, filter, auto, opts) => `PLAY ${layerString(opts)}${file ? ` "${file}"` : ''}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)} ${auto ? ' AUTO' : ''}`
+exports.play = (file, loop, seek, length, filter, auto, opts) => `PLAY ${layerString(opts)}${file ? ` "${file}"` : ''}${loop ? ' LOOP' : ''}${seek ? ` SEEK ${seek}` : ''}${length ? ` LENGTH ${length}` : ''}${filter ? ` FILTER ${filter}` : ''}${transitionString(opts)}${scaleModeString(opts)} ${auto ? ' AUTO' : ''}`
 
 /**
  * Play a media item in the foreground that
  * has already been loaded in the background
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#play
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.playLoaded = opts => `PLAY ${layerString(opts)}`
 
@@ -124,18 +134,18 @@ exports.playLoaded = opts => `PLAY ${layerString(opts)}`
  * Stop an item running in the foreground
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#stop
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.stop = opts => `STOP ${layerString(opts)}`
 
 /**
  * Add a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-add
- * @param { String } template
+ * @param { string } template
  * @param { Any } data
- * @param { Boolean } playOnLoad
+ * @param { boolean } playOnLoad
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(opts)} ADD ${opts.cgLayer ?? 1} "${template}" ${playOnLoad ? 1 : 0} ${JSON.stringify(data || '')}`
 
@@ -143,49 +153,49 @@ exports.cgAdd = (template, data, playOnLoad = true, opts) => `CG ${layerString(o
  * Stop a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-stop
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.cgStop = opts => `CG ${layerString(opts)} STOP ${opts.cgLayer ?? 1}`
 
 /**
  * Update a template
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#cg-update
- * @param { String } data
+ * @param { string } data
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.cgUpdate = (data, opts) => `CG ${layerString(opts)} UPDATE ${opts.cgLayer ?? 1} ${JSON.stringify(data || '')}`
 
 /**
  * Change the opacity of a layer
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#mixer-opacity
- * @param { String } opacity
+ * @param { string } opacity
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${opacity}${transitionString(opts)}`
 
 /**
  * Change the volume of a layer
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#mixer-volume
- * @param { String } volume
+ * @param { string } volume
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.mixerVolume = (volume, opts) => `MIXER ${layerString(opts)} VOLUME ${volume}${transitionString(opts)}`
 
 /**
  * Get the thumbnail for a file
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#thumbnail-retrieve
- * @param { String } fileName
- * @returns { String }
+ * @param { string } fileName
+ * @returns { string }
  */
 exports.thumbnailRetrieve = fileName => `THUMBNAIL RETRIEVE "${fileName}"`
 
 /**
  * Start the HTML producer
- * @param { String } url
+ * @param { string } url
  * @param { AMCPOptions } opts
- * @returns { String }
+ * @returns { string }
  */
 exports.html = (url, opts) => `PLAY ${layerString(opts)} [HTML] "${url}"${transitionString(opts)}`
