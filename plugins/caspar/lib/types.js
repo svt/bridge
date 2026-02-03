@@ -217,6 +217,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      name: {
+        default: 'Image scroller'
+      },
       'caspar.target': {
         name: 'Target',
         type: 'string',
