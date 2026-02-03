@@ -240,6 +240,12 @@ function init (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Image scroller'
       },
+      'caspar.premultiply': {
+        name: 'Premultiply',
+        type: 'boolean',
+        default: false,
+        'ui.group': 'Image scroller'
+      },
       'caspar.progressive': {
         name: 'Progressive',
         type: 'boolean',

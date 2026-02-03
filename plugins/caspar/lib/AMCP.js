@@ -136,7 +136,7 @@ exports.playLoaded = opts => `PLAY ${layerString(opts)}`
  * @param { AMCPOptions } opts
  * @returns { string }
  */
-exports.playImageScroller = (file, opts) => `PLAY ${layerString(opts)}${file ? ` "${file}"` : ''} BLUR ${opts?.blur || 0} SPEED ${opts?.speed || 7}${opts?.progressive ? ' PROGRESSIVE' : ''}`
+exports.playImageScroller = (file, opts) => `PLAY ${layerString(opts)}${file ? ` "${file}"` : ''} BLUR ${opts?.blur || 0} SPEED ${opts?.speed || 7}${opts?.premultiply ? ' PREMULTIPLY' : ''}${opts?.progressive ? ' PROGRESSIVE' : ''}`
 
 /**
  * Stop an item running in the foreground
