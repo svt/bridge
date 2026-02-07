@@ -217,6 +217,9 @@ function init (htmlPath) {
     category: 'Caspar',
     inherits: 'bridge.caspar.playable',
     properties: {
+      name: {
+        default: 'Image scroller'
+      },
       'caspar.target': {
         name: 'Target',
         type: 'string',
@@ -235,6 +238,12 @@ function init (htmlPath) {
         type: 'string',
         default: '0',
         allowsVariables: true,
+        'ui.group': 'Image scroller'
+      },
+      'caspar.premultiply': {
+        name: 'Premultiply',
+        type: 'boolean',
+        default: false,
         'ui.group': 'Image scroller'
       },
       'caspar.progressive': {

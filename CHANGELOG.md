@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.9 - [UNRELEASED]
+## 1.0.0-beta.9
 ### Added
 - Support for named urls when sharing links to workspaces
 - Ability to convert items to other types by right-clicking
