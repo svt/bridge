@@ -13,7 +13,7 @@
     "bridge",
     "plugin"
   ],
-  "author": "Axel Boberg (axel.boberg@svt.se)",
+  "author": "Axel Boberg (git@axelboberg.se)",
   "license": "UNLICENSED",
   "dependencies": {
     "libltc-wrapper": "^1.1.2",
