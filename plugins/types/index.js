@@ -120,7 +120,7 @@ const ITEM_CHANGE_HANDLERS = [
         bridge.items.removeIssue(item?.id, 'types.reference-missing-target')
       } else {
         bridge.items.applyIssue(item?.id, 'types.reference-missing-target', {
-          description: 'This item has no valid target'
+          description: 'This item requires a valid target'
         })
       }
 
