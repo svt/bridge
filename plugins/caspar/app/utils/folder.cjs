@@ -50,57 +50,50 @@ const FOLDER_END_DELIMITER = /[\/\\]$/
  *   }
  * ]
  */
-function buildFolderTree (items) {
-  if (!items) return []
+function buildFolderTree (paths) {
+  if (!paths) return []
 
   const root = []
+  const delimiters = /[\/\\]+/ // eslint-disable-line 
 
-  for (const item of items) {
-    const parts = item.name.split(FILE_PATH_DELIMITER).filter(Boolean) // Split the path into parts by '/' or '\' and remove any empty segments
-    const isFolderPath = FOLDER_END_DELIMITER.test(item.name) // 
+  for (const path of paths) {
+    // Split the path into parts by '/' or '\' and remove any empty segments
+    const parts = path.name.split(delimiters).filter(Boolean)
+
+    // If path ends with a delimiter, it's a folder path
+    const isFolderPath = /[\/\\]$/.test(path.name) // eslint-disable-line
+
     let currentLevel = root
 
     parts.forEach((part, index) => {
-      const isLast = index === parts.length - 1 // Only the last part can be a file
-      const isFile = isLast && !isFolderPath // It can be a file if the last part and not a folderpath
-      const fullPath = parts.slice(0, index + 1).join('/') // Join parts to get the full path
+      const isLast = index === parts.length - 1
+      const isFile = !isFolderPath && isLast
+      const pwd = parts.slice(0, index + 1).join('/')
 
-      // If it is a file then add it to level and return.
-      if (isFile) {
-        // Do not add if a file of the same type and location exists
-        if (currentLevel.find((entry) => entry.name === fullPath && entry.type === item.type && entry.file === true))
-          return
-        currentLevel.push({
-          ...item,
-          file: true,
-          name: fullPath,
-          id: uuid.v4()
-        })
-        return
-      }
+      let existing = currentLevel.find((item) => item.name === part && item.file === false)
 
-      // Check if a folder exists on current level of the same type
-      let existing = currentLevel.find((entry) => entry.name === part && entry.type === item.type && entry.file === false)
-    
-      // Create a new folder if it does not exist
       if (!existing) {
-        existing = {
-          file: false,
-          name: part,
-          id: uuid.v4(),
-          type: item.type,
-          files: []
+        if (isFile) {
+          existing = {
+            ...path,
+            file: true,
+            name: pwd,
+            id: uuid.v4()
+          }
+        } else {
+          existing = {
+            file: false,
+            name: part,
+            id: uuid.v4(),
+            files: []
+          }
         }
-        currentLevel.push(existing)
+        currentLevel.push(existing) 
       }
 
-      //Make sure the existing folder has a file entry
-      if (!Array.isArray(existing.files)) {
-        existing.files = []
+      if (!isFile) {
+        currentLevel = existing.files
       }
-
-      // Go deeper into new or existing folder
-      currentLevel = existing.files
     })
   }
   return root
@@ -110,17 +103,28 @@ exports.buildFolderTree = buildFolderTree
 /**
  * Extracts the file name from a given path. Delimited by '/'.
  *
- * @param {string} filePath The full file path.
+ * @param {string} path The full file path.
  * @returns {string} The file name from the path.
  */
-function getFileName(filePath) {
-  // If path does not exist or path ends with a delimiter then return empty string.
-  if (!filePath || FOLDER_END_DELIMITER.test(filePath)) {
+function getFileName (path) {
+  if (!path) {
     return ''
   }
 
-  //Split string and return the last part.
-  const parts = filePath.split(FILE_PATH_DELIMITER)
+  // Normalize the path by removing leading/trailing slashes
+  path = path.replace(/^\/+|\/+$/g, '') // Unix-style paths
+  path = path.replace(/^\\+|\\+$/g, '') // Windows-style paths
+
+  // Handle edge case where the path is just a slash
+  if (!path) {
+    return ''
+  }
+
+  // Split the path using both slashes and backslashes
+  /* eslint-disable-next-line no-useless-escape */
+  const parts = path.split(/[\/\\]+/)
+
+  // Return the last part of the path, which should be the file name
   return parts[parts.length - 1] || ''
 }
 exports.getFileName = getFileName
