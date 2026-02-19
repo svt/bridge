@@ -154,6 +154,14 @@ class Items {
    * @param { Item } set An item object to apply
    */
   async applyExistingItem (id, set = {}) {
+    const itemExists = await this.itemExists(id)
+    if (!itemExists) {
+      return
+    }
+    await this.applyItem(id, set)
+  }
+
+  async itemExists (id) {
     if (typeof id !== 'string') {
       throw new MissingArgumentError('Invalid value for item id, must be a string')
     }
@@ -162,8 +170,7 @@ class Items {
     if (!item) {
       throw new InvalidArgumentError('Invalid item id, item does not exist')
     }
-
-    await this.applyItem(id, set)
+    return true
   }
 
   /**
