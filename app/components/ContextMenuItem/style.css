@@ -4,7 +4,7 @@
 }
 
 .ContextMenuItem:focus .ContextMenuItem-text {
-  box-shadow: inset 0 0 0 2px var(--base-color--shade);
+  box-shadow: inset 0 0 0 2px var(--base-color--shade1);
 }
 
 .ContextMenuItem-text {
@@ -29,9 +29,9 @@
 
 .ContextMenuItem:hover > .ContextMenuItem-text,
 .ContextMenuItem.is-hovered > .ContextMenuItem-text {
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }
 
 .ContextMenuItem:active > .ContextMenuItem-text {
-  box-shadow: 2px solid var(--base-color--shade3);
+  box-shadow: 2px solid var(--base-color--shade4);
 }

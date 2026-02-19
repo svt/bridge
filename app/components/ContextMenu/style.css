@@ -9,7 +9,7 @@
   box-sizing: border-box;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 
-  border: 1px solid var(--base-color--shade);
+  border: 1px solid var(--base-color--shade1);
   
   margin-top: -3px;
   

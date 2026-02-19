@@ -26,5 +26,5 @@
 }
 
 .LogItem:nth-child(odd) {
-  background: var(--base-color--shade1);
+  background: var(--base-color--shade2);
 }

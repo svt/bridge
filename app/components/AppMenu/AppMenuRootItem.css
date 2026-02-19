@@ -6,5 +6,5 @@
 
 .AppMenuRootItem:hover,
 .AppMenuRootItem:focus {
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }

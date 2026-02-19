@@ -316,7 +316,7 @@ export function Form () {
     <div className='Form'>
       <div className='Form-header'>
         <div className='Form-headerBackground' style={{
-          borderBottom: `1px solid ${getValue('color') || 'var(--base-color--shade)'}`,
+          borderBottom: `1px solid ${getValue('color') || 'var(--base-color--shade1)'}`,
           backgroundImage: `linear-gradient(transparent, ${getValue('color') || 'var(--base-color)'} 300%)`
         }} />
         <div className='Form-headerSection'>

@@ -16,10 +16,10 @@
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.1);
-  --base-color--shade1: rgba(255, 255, 255, 0.07);
-  --base-color--shade2: rgba(57, 58, 61, 0.5);
-  --base-color--shade3: rgba(255, 255, 255, 0.5);
+  --base-color--shade1: rgba(255, 255, 255, 0.1);
+  --base-color--shade2: rgba(255, 255, 255, 0.07);
+  --base-color--shade3: rgba(57, 58, 61, 0.5);
+  --base-color--shade4: rgba(255, 255, 255, 0.5);
 
   --base-color--shade-3pct: rgba(255, 255, 255, 0.03);
 
@@ -50,10 +50,10 @@
   --base-color--grey2: #dedede;
   --base-color--grey3: #cccccc;
 
-  --base-color--shade: rgba(0, 0, 0, 0.15);
-  --base-color--shade1: rgba(0, 0, 0, 0.07);
-  --base-color--shade2: rgba(221, 221, 221, 0.5);
-  --base-color--shade3: rgba(0, 0, 0, 0.5);
+  --base-color--shade1: rgba(0, 0, 0, 0.15);
+  --base-color--shade2: rgba(0, 0, 0, 0.07);
+  --base-color--shade3: rgba(221, 221, 221, 0.5);
+  --base-color--shade4: rgba(0, 0, 0, 0.5);
 
   --base-color--shade-3pct: rgba(0, 0, 0, 0.03);
 
@@ -82,10 +82,10 @@
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.2);
-  --base-color--shade1: rgba(255, 255, 255, 0.07);
-  --base-color--shade2: rgba(39, 16, 51, 0.5);
-  --base-color--shade3: rgba(255, 255, 255, 0.5);
+  --base-color--shade1: rgba(255, 255, 255, 0.2);
+  --base-color--shade2: rgba(255, 255, 255, 0.07);
+  --base-color--shade3: rgba(39, 16, 51, 0.5);
+  --base-color--shade4: rgba(255, 255, 255, 0.5);
 
   --base-color--background: #271033;
   --base-color--background1: #3c204a;

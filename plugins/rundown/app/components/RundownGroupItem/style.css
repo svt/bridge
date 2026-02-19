@@ -42,7 +42,7 @@
 }
 
 .RundownGroupItem-arrow:hover {
-  background: var(--base-color--shade1);
+  background: var(--base-color--shade2);
   border-radius: 6px;
 }
 

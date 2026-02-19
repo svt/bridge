@@ -9,8 +9,8 @@
   width: 100%;
   height: 100%;
 
-  background: var(--base-color--shade1);
-  border: 2px solid var(--base-color--shade2);
+  background: var(--base-color--shade2);
+  border: 2px solid var(--base-color--shade3);
 
   border-radius: 6px;
 

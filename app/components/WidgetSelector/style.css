@@ -9,7 +9,7 @@
 
 .WidgetSelector-header {
   padding: 0.75em;
-  border-bottom: 1px solid var(--base-color--shade);
+  border-bottom: 1px solid var(--base-color--shade1);
 }
 
 .WidgetSelector-search {
@@ -22,7 +22,7 @@
 
   padding: 10px;
 
-  border-top: 1px solid var(--base-color--shade);
+  border-top: 1px solid var(--base-color--shade1);
 
   align-items: center;
   justify-content: center;

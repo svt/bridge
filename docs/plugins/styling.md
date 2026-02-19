@@ -16,9 +16,10 @@ The following CSS variables will be available in all widgets running locally wit
 --base-color--grey1
 --base-color--grey2
 --base-color--grey3
---base-color--shade
 --base-color--shade1
 --base-color--shade2
+--base-color--shade3
+--base-color--shade4
 --base-color--alert
 --base-color--background
 --base-fontFamily--primary

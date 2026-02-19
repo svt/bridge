@@ -9,7 +9,7 @@
   width: 100%;
   padding: 5px;
 
-  border-bottom: 1px solid var(--base-color--shade);
+  border-bottom: 1px solid var(--base-color--shade1);
 
   justify-content: space-between;
   box-sizing: border-box;
@@ -50,7 +50,7 @@
 }
 
 .Header-pathPart.is-clickable:hover::before {
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }
 
 .Header-pathPart:not(:last-child):active::before {
