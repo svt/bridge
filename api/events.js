@@ -88,11 +88,22 @@ class Events {
 
   /**
    * Emit an event
-   * @param { String } event The name of the event to emit
+   * @param { string } event The name of the event to emit
    * @param  { ...any } args Any data to pass along with the event
    */
   emit (event, ...args) {
     this.props.Commands.executeRawCommand('events.emit', event, ...args)
+  }
+
+  /**
+   * Emit an event for all listeners
+   * registered by a single owner
+   * @param { string } event The name of the event to emit
+   * @param { string } owner The id of the owner to target
+   * @param  { ...any } args Any data to pass along with the event
+   */
+  emitForOwner (event, owner, ...args) {
+    this.props.Commands.executeRawCommand('events.emitForOwner', event, owner, ...args)
   }
 
   /**
