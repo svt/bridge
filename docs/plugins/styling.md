@@ -12,8 +12,7 @@ The following CSS variables will be available in all widgets running locally wit
 --base-color
 --base-color--accent1
 --base-color--accent2
---base-color--accent4
---base-color--accent5
+--base-color--accent3
 --base-color--grey1
 --base-color--grey2
 --base-color--grey3
