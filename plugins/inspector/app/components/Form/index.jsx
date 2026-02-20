@@ -337,7 +337,7 @@ export function Form () {
             {
               Object.values(store.items?.[0]?.issues ?? {})
                 .map((issue, i) => {
-                  return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' />
+                  return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' transparent />
                 })
             }
           </div>

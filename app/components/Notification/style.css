@@ -6,16 +6,19 @@
   box-sizing: border-box;
   justify-content: space-between;
 
-  background-color: var(--base-color--accent1);
+  border-radius: 10px;
+  
+  --color-text: var(--base-color);
+  --color-background: var(--base-color--notificationBackground);
 
-  border-radius: 12px;
-  
-  --color-warning: #FFDC8C;
-  --color-text: var(--base-color--accent2);
-  
+  background-color: var(--color-background);
   color: var(--color-text);
 
   -webkit-app-region: no-drag;
+}
+
+.Notification.is-transparent {
+  background-color: color-mix(in srgb, var(--color-background) 25%, #00000000 100%);
 }
 
 .Notification--inline {
@@ -74,21 +77,11 @@
 }
 
 .Notification--warning {
-  background-color: var(--color-warning);
-}
-
-.Notification--warning *,
-.Notification--warning .Notification-hideBtn {
-  --color-text: black;
+  --color-background: #ffd418;
 }
 
 .Notification--info {
-  background-color: var(--base-color--background2);
-}
-
-.Notification--info *,
-.Notification--info .Notification-hideBtn {
-  --color-text: var(--base-color);
+  --color-background: var(--base-color--background2);
 }
 
 .Notification-hideBtn {
