@@ -290,7 +290,7 @@ select {
 }
 
 select:focus {
-  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--background);
+  background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--background1);
 }
 
 /* Labels */

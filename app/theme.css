@@ -23,9 +23,9 @@
 
   --base-color--shade-3pct: rgba(255, 255, 255, 0.03);
 
-  --base-color--background: #121212;
-  --base-color--background1: #292a2c;
-  --base-color--background2: rgba(18, 18, 18, 0.75);
+  --base-color--background1: #121212;
+  --base-color--background2: #292a2c;
+  --base-color--background3: rgba(18, 18, 18, 0.75);
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
@@ -57,9 +57,9 @@
 
   --base-color--shade-3pct: rgba(0, 0, 0, 0.03);
 
-  --base-color--background: white;
-  --base-color--background1: #f0f0f0;
-  --base-color--background2: rgba(255, 255, 255, 0.9);
+  --base-color--background1: white;
+  --base-color--background2: #f0f0f0;
+  --base-color--background3: rgba(255, 255, 255, 0.9);
 
   --base-color--alert: #FF5E6C;
 
@@ -87,9 +87,9 @@
   --base-color--shade3: rgba(39, 16, 51, 0.5);
   --base-color--shade4: rgba(255, 255, 255, 0.5);
 
-  --base-color--background: #271033;
-  --base-color--background1: #3c204a;
-  --base-color--background2: rgba(39, 16, 51, 0.75);
+  --base-color--background1: #271033;
+  --base-color--background2: #3c204a;
+  --base-color--background3: rgba(39, 16, 51, 0.75);
 
   --base-color--alert: #87289B;
 

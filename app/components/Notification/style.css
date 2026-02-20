@@ -83,7 +83,7 @@
 }
 
 .Notification--info {
-  background-color: var(--base-color--background1);
+  background-color: var(--base-color--background2);
 }
 
 .Notification--info *,
