@@ -18,6 +18,7 @@ const LTCDecoder = require('./lib/ltc/LTCDecoder')
 // eslint-disable-next-line
 const LTCDevice = require('./lib/ltc/LTCDevice')
 
+const TimecodeDevice = require('./lib/TimecodeDevice')
 const TimecodeFrame = require('./lib/TimecodeFrame')
 
 const Logger = require('../../lib/Logger')
@@ -258,7 +259,7 @@ function submitFrameForClock (clockId, frame) {
   bridge.time.submitFrame(clockId, frame)
 }
 
-function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, freeRunFrames = LTCDevice.DEFAULT_FREE_RUN_FRAME_COUNT, onFrame = () => {}) {
+function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, freeRunFrames = TimecodeDevice.DEFAULT_FREE_RUN_FRAME_COUNT, onFrame = () => {}) {
   const device = DIController.instantiate('LTCDevice', {
     LTCDecoder: DIController.instantiate('LTCDecoder', {},
       LTCDecoder.DEFAULT_SAMPLE_RATE_HZ,
