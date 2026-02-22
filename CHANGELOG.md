@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.10
+## 1.0.0-beta.10 [UNRELEASED]
 ### Added
 - Human/AI readable descriptors for types
 - Free run for LTC inputs
