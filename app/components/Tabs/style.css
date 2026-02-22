@@ -28,7 +28,7 @@
 
 .Tabs-tab.is-draggedOver,
 .Tabs-filler.is-draggedOver {
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }
 
 .Tabs-tab {
@@ -40,7 +40,7 @@
   text-align: center;
   box-sizing: border-box;
 
-  background: var(--base-color--shade1);
+  background: var(--base-color--shade2);
 
   border-radius: 5px;
   overflow: hidden;
@@ -65,7 +65,7 @@
 }
 
 .Tabs-tab:active {
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
   opacity: 0.5;
 }
 
@@ -106,7 +106,7 @@
   height: 2em;
 
   border-radius: 5px;
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }
 
 .Tabs-content {

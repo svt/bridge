@@ -409,7 +409,7 @@ export function RundownList ({
   */
   function getTypeComponent (typeId) {
     const type = getRenderedType(typeId)
-    for (const ancestor of [...type.ancestors, typeId].reverse()) {
+    for (const ancestor of [...(type?.ancestors || []), typeId].reverse()) {
       if (TYPE_COMPONENTS[ancestor]?.item) {
         return TYPE_COMPONENTS[ancestor]?.item
       }

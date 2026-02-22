@@ -115,16 +115,23 @@ const ITEM_CHANGE_HANDLERS = [
   {
     predicate: (item, type) => item.type === 'bridge.types.reference' || type.ancestors.includes('bridge.types.reference'),
     fn: async item => {
-      const isAncestor = await utils.isAncestor(item?.data?.targetId, item?.id)
-
-      if (!isAncestor) {
-        bridge.items.removeIssue(item?.id, 'types.rta')
-        return
+      const hasTarget = item?.data?.targetId && String(item.data.targetId).length === 4
+      if (hasTarget) {
+        bridge.items.removeIssue(item?.id, 'types.reference-missing-target')
+      } else {
+        bridge.items.applyIssue(item?.id, 'types.reference-missing-target', {
+          description: 'This item requires a valid target'
+        })
       }
 
-      bridge.items.applyIssue(item?.id, 'types.rta', {
-        description: 'Reference is targeting an ancestor, loops may occur'
-      })
+      const isAncestor = await utils.isAncestor(item?.data?.targetId, item?.id)
+      if (!isAncestor) {
+        bridge.items.removeIssue(item?.id, 'types.reference-targeting-ancestor')
+      } else {
+        bridge.items.applyIssue(item?.id, 'types.reference-targeting-ancestor', {
+          description: 'Reference is targeting an ancestor, loops may occur'
+        })
+      }
     }
   }
 ]

@@ -3,7 +3,7 @@
   padding: 4px;
 
   border-radius: 8px;
-  background: var(--base-color--shade1);
+  background: var(--base-color--shade2);
   white-space: nowrap;
 }
 
@@ -16,6 +16,6 @@
 }
 
 .SegmentedControl-segment.is-active {
-  background: var(--base-color--background);
+  background: var(--base-color--background1);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }

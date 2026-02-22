@@ -12,7 +12,7 @@
 }
 
 .LibraryListItem:nth-child(odd) {
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }
 
 .LibraryListItem > div:last-child {

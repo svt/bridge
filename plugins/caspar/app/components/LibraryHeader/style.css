@@ -1,5 +1,5 @@
 .LibraryHeader {
-  border-bottom: 1px solid var(--base-color--shade);
+  border-bottom: 1px solid var(--base-color--shade1);
 }
 
 .LibraryHeader-serverSelector {

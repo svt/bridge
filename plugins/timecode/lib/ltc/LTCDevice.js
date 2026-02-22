@@ -18,31 +18,16 @@ require('./LTCDecoder')
 
 const DEFAULT_SAMPLE_RATE_HZ = 48000
 
-/**
- * @typedef {{
- *  sampleRate: number,
- *  frameRate: number,
- *  deviceId: string
- * }} LTCDeviceOptions
- */
 class LTCDevice extends TimecodeDevice {
   #audioContext
-  #onFrame
-  #opts
+
+  #lastFrameRecvTc
 
   #processor
   #source
 
-  /**
-   * Create a new ltc device
-   * @param { any[] } props
-   * @param { LTCDeviceOptions } opts
-   * @param { Function } onFrame
-   */
-  constructor (props, opts = {}, onFrame = () => {}) {
-    super(props)
-    this.#opts = opts
-    this.#onFrame = onFrame
+  get frameRate () {
+    return this.props.LTCDecoder.frameRate
   }
 
   /**
@@ -57,7 +42,8 @@ class LTCDevice extends TimecodeDevice {
    * @returns { boolean }
    */
   compareTo (spec) {
-    return this.#opts?.deviceId === spec?.deviceId &&
+    return this.opts?.deviceId === spec?.deviceId &&
+           this.opts?.freeRunFrames === spec?.freeRunFrames &&
            this.props.LTCDecoder.frameRate === spec?.frameRate
   }
 
@@ -80,25 +66,25 @@ class LTCDevice extends TimecodeDevice {
 
     let frame = this.props.LTCDecoder.read()
     while (frame) {
-      this.#onFrame(this.#formatFrame(frame))
+      this.pushFrame(this.#formatFrame(frame))
       frame = this.props.LTCDecoder.read()
     }
   }
 
   async #setup () {
-    if (!this.#opts.deviceId) {
+    if (!this.opts.deviceId) {
       throw new Error('Missing device id as part of the required options object')
     }
 
     this.#audioContext = new AudioContext({
-      sampleRate: this.#opts?.sampleRate || DEFAULT_SAMPLE_RATE_HZ,
+      sampleRate: this.opts?.sampleRate || DEFAULT_SAMPLE_RATE_HZ,
       latencyHint: 'interactive'
     })
     const ctx = this.#audioContext
 
     const mediaStream = await mediaDevices.getUserMedia({
       audio: {
-        deviceId: this.#opts?.deviceId,
+        deviceId: this.opts?.deviceId,
         echoCancellation: false,
         autoGainControl: false,
         noiseSuppression: false
@@ -119,6 +105,18 @@ class LTCDevice extends TimecodeDevice {
       if (!e?.data?.buffer?.buffer) {
         return
       }
+
+      /*
+      Throw away frames that arrive
+      late due to async processing
+      */
+      if (this.#lastFrameRecvTc && this.#lastFrameRecvTc > e?.data?.tc) {
+        logger.debug('Received outdated frame')
+        return
+      }
+
+      this.#lastFrameRecvTc = e?.data?.tc
+
       const buf = Buffer.from(e?.data?.buffer?.buffer)
       this.#decodeAudioData(buf)
     }
@@ -135,6 +133,8 @@ class LTCDevice extends TimecodeDevice {
   }
 
   close () {
+    super.close()
+
     if (this.#audioContext) {
       this.#audioContext.close()
       this.#audioContext = undefined
@@ -158,5 +158,6 @@ class LTCDevice extends TimecodeDevice {
 }
 
 DIController.register('LTCDevice', LTCDevice, [
-  'LTCDecoder'
+  'LTCDecoder',
+  'Interval'
 ])

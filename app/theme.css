@@ -9,23 +9,23 @@
   */
   --base-color--accent2: white;
 
-  --base-color--accent4: #b9b9b9;
+  --base-color--accent3: #b9b9b9;
   --base-color--accent5: #0F418C;
 
   --base-color--grey1: #101012;
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.1);
-  --base-color--shade1: rgba(255, 255, 255, 0.07);
-  --base-color--shade2: rgba(57, 58, 61, 0.5);
-  --base-color--shade3: rgba(255, 255, 255, 0.5);
+  --base-color--shade1: rgba(255, 255, 255, 0.1);
+  --base-color--shade2: rgba(255, 255, 255, 0.07);
+  --base-color--shade3: rgba(57, 58, 61, 0.5);
+  --base-color--shade4: rgba(255, 255, 255, 0.5);
 
   --base-color--shade-3pct: rgba(255, 255, 255, 0.03);
 
-  --base-color--background: #121212;
-  --base-color--background1: #292a2c;
-  --base-color--background2: rgba(18, 18, 18, 0.75);
+  --base-color--background1: #121212;
+  --base-color--background2: #292a2c;
+  --base-color--background3: rgba(18, 18, 18, 0.75);
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;
@@ -43,23 +43,23 @@
   --base-color--accent1: #E543FF;
   --base-color--accent2: white;
 
-  --base-color--accent4: #b9b9b9;
+  --base-color--accent3: #b9b9b9;
   --base-color--accent5: #0F418C;
 
   --base-color--grey1: #ebebeb;
   --base-color--grey2: #dedede;
   --base-color--grey3: #cccccc;
 
-  --base-color--shade: rgba(0, 0, 0, 0.15);
-  --base-color--shade1: rgba(0, 0, 0, 0.07);
-  --base-color--shade2: rgba(221, 221, 221, 0.5);
-  --base-color--shade3: rgba(0, 0, 0, 0.5);
+  --base-color--shade1: rgba(0, 0, 0, 0.15);
+  --base-color--shade2: rgba(0, 0, 0, 0.07);
+  --base-color--shade3: rgba(221, 221, 221, 0.5);
+  --base-color--shade4: rgba(0, 0, 0, 0.5);
 
   --base-color--shade-3pct: rgba(0, 0, 0, 0.03);
 
-  --base-color--background: white;
-  --base-color--background1: #f0f0f0;
-  --base-color--background2: rgba(255, 255, 255, 0.9);
+  --base-color--background1: white;
+  --base-color--background2: #f0f0f0;
+  --base-color--background3: rgba(255, 255, 255, 0.9);
 
   --base-color--alert: #FF5E6C;
 
@@ -75,21 +75,21 @@
   --base-color--accent1: #87289B;
   --base-color--accent2: white;
 
-  --base-color--accent4: #641E78;
+  --base-color--accent3: #641E78;
   --base-color--accent5: #0F418C;
 
   --base-color--grey1: #101012;
   --base-color--grey2: #404144;
   --base-color--grey3: #232427;
 
-  --base-color--shade: rgba(255, 255, 255, 0.2);
-  --base-color--shade1: rgba(255, 255, 255, 0.07);
-  --base-color--shade2: rgba(39, 16, 51, 0.5);
-  --base-color--shade3: rgba(255, 255, 255, 0.5);
+  --base-color--shade1: rgba(255, 255, 255, 0.2);
+  --base-color--shade2: rgba(255, 255, 255, 0.07);
+  --base-color--shade3: rgba(39, 16, 51, 0.5);
+  --base-color--shade4: rgba(255, 255, 255, 0.5);
 
-  --base-color--background: #271033;
-  --base-color--background1: #3c204a;
-  --base-color--background2: rgba(39, 16, 51, 0.75);
+  --base-color--background1: #271033;
+  --base-color--background2: #3c204a;
+  --base-color--background3: rgba(39, 16, 51, 0.75);
 
   --base-color--alert: #87289B;
 

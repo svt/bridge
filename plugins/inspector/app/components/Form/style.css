@@ -125,7 +125,7 @@
   margin-bottom: 10px;
   padding-top: 10px;
 
-  border-top: 1px solid var(--base-color--shade);
+  border-top: 1px solid var(--base-color--shade1);
 }
 
 .Form-notifications .Notification {

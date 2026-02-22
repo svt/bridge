@@ -26,7 +26,7 @@ export function PreferencesSelectInput ({ label, value, options = [], onChange =
               if the option is an object
               containing the keys 'id' and 'label'
               */
-              if (typeof option === 'object' && option?.id) {
+              if (typeof option === 'object' && Object.prototype.hasOwnProperty.call(option, 'id')) {
                 label = option.label
                 id = option.id
               }

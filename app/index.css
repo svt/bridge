@@ -10,11 +10,11 @@ html, body, #root {
 }
 
 body {
-  background: var(--base-color--background);
+  background: var(--base-color--background1);
 }
 
 body.is-transparent {
-  background: var(--base-color--background2);
+  background: var(--base-color--background3);
 }
 
 #root {

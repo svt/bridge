@@ -22,7 +22,7 @@
 }
 
 .ItemButton:hover {
-  box-shadow: inset 0 0 0 2px var(--base-color--shade1);
+  box-shadow: inset 0 0 0 2px var(--base-color--shade2);
 }
 
 .ItemButton:active {

@@ -2,7 +2,7 @@
   margin-bottom: 10px;
   padding: 10px 12px;
 
-  border: 1px solid var(--base-color--shade);
+  border: 1px solid var(--base-color--shade1);
   border-radius: 10px;
 }
 
@@ -50,7 +50,7 @@
 .ServerInput-status {
   padding-top: 10px;
   margin-top: 10px;
-  border-top: 1px solid var(--base-color--shade1);
+  border-top: 1px solid var(--base-color--shade2);
 }
 
 .ServerInput-actions .Button {

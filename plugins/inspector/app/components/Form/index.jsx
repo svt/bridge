@@ -316,7 +316,7 @@ export function Form () {
     <div className='Form'>
       <div className='Form-header'>
         <div className='Form-headerBackground' style={{
-          borderBottom: `1px solid ${getValue('color') || 'var(--base-color--shade)'}`,
+          borderBottom: `1px solid ${getValue('color') || 'var(--base-color--shade1)'}`,
           backgroundImage: `linear-gradient(transparent, ${getValue('color') || 'var(--base-color)'} 300%)`
         }} />
         <div className='Form-headerSection'>
@@ -337,7 +337,7 @@ export function Form () {
             {
               Object.values(store.items?.[0]?.issues ?? {})
                 .map((issue, i) => {
-                  return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' />
+                  return <Notification key={i} description={issue?.description} type='warning' icon='warning' size='small' transparent />
                 })
             }
           </div>

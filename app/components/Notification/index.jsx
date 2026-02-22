@@ -4,7 +4,7 @@ import './style.css'
 
 import { Icon } from '../Icon'
 
-export function Notification ({ type, size = 'normal', icon, title, description, controls = <></>, closable }) {
+export function Notification ({ type, size = 'normal', icon, title, description, controls = <></>, closable, transparent }) {
   const [isHidden, setIsHidden] = React.useState(false)
 
   function handleHideBtnClick () {
@@ -20,7 +20,7 @@ export function Notification ({ type, size = 'normal', icon, title, description,
   }
 
   return (
-    <div className={`Notification Notification--${type} Notification-size--${size}`}>
+    <div className={`Notification Notification--${type} Notification-size--${size} ${transparent ? 'is-transparent' : ''}`}>
       <div className='Notification-content'>
         {
           icon && <span className='Notification-contentSection Notification-icon'><Icon name={icon} color='var(--color-text)' /></span>

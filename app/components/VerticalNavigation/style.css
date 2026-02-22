@@ -23,10 +23,10 @@
 }
 
 .VerticalNavigation-item:hover {
-  background: var(--base-color--shade1);
+  background: var(--base-color--shade2);
 }
 
 .VerticalNavigation-item.is-active {
   font-weight: 500;
-  background: var(--base-color--shade);
+  background: var(--base-color--shade1);
 }

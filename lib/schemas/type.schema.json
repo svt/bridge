@@ -46,6 +46,9 @@
             "name": {
               "type": "string"
             },
+            "description": {
+              "type": "string"
+            },
             "default": {},
             "group": {
               "type": "string"
