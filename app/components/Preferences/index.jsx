@@ -94,7 +94,7 @@ export function Preferences ({ onClose = () => {} }) {
     setup()
 
     return () => {
-      setPluginSections([])
+      setSections([...INTERNAL_SETTINGS])
 
       if (!bridge?.events) {
         return
