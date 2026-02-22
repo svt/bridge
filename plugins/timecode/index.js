@@ -12,6 +12,8 @@ const audio = require('./lib/audio')
 
 const DIController = require('./lib/DIController')
 
+require('./lib/Interval')
+
 const LTCDecoder = require('./lib/ltc/LTCDecoder')
 // eslint-disable-next-line
 const LTCDevice = require('./lib/ltc/LTCDevice')
@@ -85,6 +87,33 @@ async function makeInputSetting (inputs = [], replaceInputs) {
                 type: 'segmented',
                 bind: 'frameRateIndex',
                 segments: LTCDecoder.SUPPORTED_FRAME_RATES
+              }
+            ]
+          },
+          {
+            title: 'Free run',
+            inputs: [
+              {
+                type: 'select',
+                bind: 'freeRunFrames',
+                options: [
+                  {
+                    id: 0,
+                    label: 'None'
+                  },
+                  {
+                    id: 2,
+                    label: '2 frames'
+                  },
+                  {
+                    id: 5,
+                    label: '5 frames'
+                  },
+                  {
+                    id: 10,
+                    label: '10 frames'
+                  }
+                ]
               }
             ]
           }
@@ -229,7 +258,7 @@ function submitFrameForClock (clockId, frame) {
   bridge.time.submitFrame(clockId, frame)
 }
 
-function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, onFrame = () => {}) {
+function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, freeRunFrames = LTCDevice.DEFAULT_FREE_RUN_FRAME_COUNT, onFrame = () => {}) {
   const device = DIController.instantiate('LTCDevice', {
     LTCDecoder: DIController.instantiate('LTCDecoder', {},
       LTCDecoder.DEFAULT_SAMPLE_RATE_HZ,
@@ -237,7 +266,8 @@ function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_H
       LTCDecoder.DEFAULT_AUDIO_FORMAT
     )
   }, {
-    deviceId
+    deviceId,
+    freeRunFrames
   }, onFrame)
 
   device.start()
@@ -269,7 +299,7 @@ async function onLTCDeviceCreated (newSpec) {
     const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
 
     if (deviceExists) {
-      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, frame => {
+      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.frameRateIndex, newSpec?.freeRunFrames, frame => {
         submitFrameForClock(clockId, frame)
       })
     }
@@ -309,7 +339,7 @@ async function onLTCDeviceChanged (newSpec) {
     newSpec?.deviceId !== NO_AUDIO_DEVICE_ID &&
     clockId
   ) {
-    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, frame => {
+    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, newSpec?.freeRunFrames, frame => {
       submitFrameForClock(clockId, frame)
     })
   }

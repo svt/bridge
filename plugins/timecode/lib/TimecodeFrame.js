@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+const TimecodeFrameValidationError = require('./error/TimecodeFrameValidationError')
+
 /**
  * @typedef {{
  *  days: number,
@@ -17,6 +19,48 @@ function zeroPad (n) {
   if (n < 10) return `0${n}`
   return `${n}`
 }
+
+const FRAME_VALIDATION_RULES = [
+  {
+    key: 'frames',
+    type: 'number',
+    min: 0,
+    required: true
+  },
+  {
+    key: 'seconds',
+    type: 'number',
+    min: 0,
+    max: 59,
+    required: true
+  },
+  {
+    key: 'minutes',
+    type: 'number',
+    min: 0,
+    max: 59,
+    required: true
+  },
+  {
+    key: 'hours',
+    type: 'number',
+    min: 0,
+    max: 23,
+    required: true
+  },
+  {
+    key: 'days',
+    type: 'number',
+    min: 0,
+    required: true
+  },
+  {
+    key: 'smpte',
+    type: 'string',
+    fn: val => /^\d{2}:\d{2}:\d{2}:\d{2}$/.test(val),
+    required: true
+  }
+]
 
 class TimecodeFrame {
   /**
@@ -108,6 +152,106 @@ class TimecodeFrame {
       frameA?.seconds === frameB?.seconds &&
       frameA?.frames === frameB?.frames
     )
+  }
+
+  static toMs (frame, frameRate) {
+    if (!this.validate(frame, frameRate)) {
+      return false
+    }
+
+    if (typeof frameRate !== 'number') {
+      return false
+    }
+
+    return (
+      frame?.days * 86_400_000 +
+      frame?.hours * 3_600_000 +
+      frame?.minutes * 60_000 +
+      frame?.seconds * 1000 +
+      frame?.frames * (1000 / frameRate)
+    )
+  }
+
+  /**
+   * @throws
+   * Validate a timecode
+   * frame object
+   *
+   * Will throw a relevant error if
+   * invalid or return true if valid
+   *
+   * @param { TimecodeFrame } frame
+   * @param { number } frameRate
+   * @returns { boolean }
+   */
+  static validate (frame, frameRate) {
+    if (typeof frame !== 'object') {
+      return false
+    }
+
+    if (typeof frameRate !== 'number') {
+      return false
+    }
+
+    for (const rule of FRAME_VALIDATION_RULES) {
+      if (rule.required && !Object.prototype.hasOwnProperty.call(frame, rule.key)) {
+        throw new TimecodeFrameValidationError(`Missing required key "${rule.key}"`)
+      }
+
+      if (rule.type) {
+        // eslint-disable-next-line
+        if (typeof frame[rule.key] !== rule.type) {
+          throw new TimecodeFrameValidationError(`Expected key "${rule.key}" to have a value of type ${rule.type}`)
+        }
+      }
+
+      if (rule.min != null) {
+        if (frame[rule.key] < rule.min) {
+          throw new TimecodeFrameValidationError(`Value for key "${rule.key}" must be more than ${rule.min}`)
+        }
+      }
+
+      if (rule.max != null) {
+        if (frame[rule.key] > rule.max) {
+          throw new TimecodeFrameValidationError(`Value for key "${rule.key}" must be less than ${rule.max}`)
+        }
+      }
+
+      if (rule.fn != null) {
+        if (!rule.fn(frame[rule.key])) {
+          throw new TimecodeFrameValidationError(`Value for key "${rule.key}" failed custom validation rule`)
+        }
+      }
+    }
+
+    /*
+    Invalid frame number
+    */
+    if (frame.frames >= frameRate) {
+      throw new TimecodeFrameValidationError('Frame value cannot be greater or equal to the frame rate')
+    }
+
+    return true
+  }
+
+  static next (frame, frameRate) {
+    if (!this.validate(frame, frameRate)) {
+      return false
+    }
+
+    if (typeof frameRate !== 'number') {
+      return false
+    }
+
+    const out = {}
+    out.frames = ((frame.frames + 1) % frameRate)
+    out.seconds = (frame.seconds + (out.frames < frame.frames ? 1 : 0)) % 60
+    out.minutes = (frame.minutes + (out.seconds < frame.seconds ? 1 : 0)) % 60
+    out.hours = (frame.hours + (out.minutes < frame.minutes ? 1 : 0)) % 24
+    out.days = frame.days + (out.hours < frame.hours ? 1 : 0)
+    out.smpte = this.#makeSMPTEString(out.hours, out.minutes, out.seconds, out.frames)
+
+    return out
   }
 }
 module.exports = TimecodeFrame

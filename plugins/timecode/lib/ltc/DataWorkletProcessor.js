@@ -7,7 +7,8 @@ class DataWorkletProcessor extends AudioWorkletProcessor {
 
     const channelData = input[0]
     this.port.postMessage({
-      buffer: channelData.slice()
+      buffer: channelData.slice(),
+      ts: Date.now()
     })
 
     return true
