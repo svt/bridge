@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0-beta.10
+### Added
+- Human/AI readable descriptors for types
+- Free run for LTC inputs
+- Reference items now show a warning if they're missing a target id
+### Fixed
+- An issue where invalid types could crash the rundown widget
+- An issue where 0 (or falsy values) could not be used as ids for options in preferences of the select type
+
 ## 1.0.0-beta.9
 ### Added
 - Support for named urls when sharing links to workspaces
