@@ -8,11 +8,11 @@ const logger = new Logger({ name: 'TimecodeDevice' })
 /**
  * @typedef {{
  *  frameRate: number,
- *  freeRunFrames: number
+ *  freeWheelFrames: number
  * }} TimecodeDeviceOptions
  */
 
-const DEFAULT_FREE_RUN_FRAME_COUNT = 0
+const DEFAULT_FREE_WHEEL_FRAME_COUNT = 0
 
 class TimecodeDevice extends DIBase {
   #opts
@@ -22,12 +22,12 @@ class TimecodeDevice extends DIBase {
   #lastFrame
   #nextFrame
 
-  static get DEFAULT_FREE_RUN_FRAME_COUNT () {
-    return DEFAULT_FREE_RUN_FRAME_COUNT
+  static get DEFAULT_FREE_WHEEL_FRAME_COUNT () {
+    return DEFAULT_FREE_WHEEL_FRAME_COUNT
   }
 
-  get freeRunFrames () {
-    return this.#opts?.freeRunFrames ?? DEFAULT_FREE_RUN_FRAME_COUNT
+  get freeWheelFrames () {
+    return this.#opts?.freeWheelFrames ?? DEFAULT_FREE_WHEEL_FRAME_COUNT
   }
 
   get frameRate () {
@@ -113,7 +113,7 @@ class TimecodeDevice extends DIBase {
       this.#missedFrames = 0
       outFrame = this.#nextFrame
     } else {
-      if (this.#missedFrames >= this.freeRunFrames) {
+      if (this.#missedFrames >= this.freeWheelFrames) {
         /*
         Reset
         */
