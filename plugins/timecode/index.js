@@ -300,7 +300,7 @@ async function onLTCDeviceCreated (newSpec) {
     const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
 
     if (deviceExists) {
-      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.frameRateIndex, newSpec?.freeWheelFrames, frame => {
+      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.freeWheelFrames, frame => {
         submitFrameForClock(clockId, frame)
       })
     }
@@ -340,7 +340,7 @@ async function onLTCDeviceChanged (newSpec) {
     newSpec?.deviceId !== NO_AUDIO_DEVICE_ID &&
     clockId
   ) {
-    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, newSpec?.freeWheelFrames, frame => {
+    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.freeWheelFrames, frame => {
       submitFrameForClock(clockId, frame)
     })
   }

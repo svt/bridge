@@ -27,7 +27,7 @@ class TimecodeDevice extends DIBase {
   }
 
   get freeWheelFrames () {
-    return this.#opts?.freeWheelFrames ?? DEFAULT_FREE_WHEEL_FRAME_COUNT
+    return parseInt(this.#opts?.freeWheelFrames ?? DEFAULT_FREE_WHEEL_FRAME_COUNT)
   }
 
   get frameRate () {
