@@ -22,8 +22,10 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
       onChange(undefined)
     }
 
+    shortcuts.disable()
     const id = modalStack.addToStack(onClose)
     return () => {
+      shortcuts.enable()
       modalStack.removeFromStack(id)
     }
   }, [open])
