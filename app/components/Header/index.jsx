@@ -11,6 +11,7 @@ import { Preferences } from '../Preferences'
 import { Icon } from '../Icon'
 
 import * as api from '../../api'
+import * as modalUtils from '../../utils/modals'
 import * as windowUtils from '../../utils/window'
 
 import './style.css'
@@ -52,6 +53,9 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
           }
           break
         case 'openPreferences':
+          if (modalUtils.hasOpenModal()) {
+            return
+          }
           if (hasFeature('preferences')) {
             setPrefsOpen(true)
           }
