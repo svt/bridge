@@ -37,9 +37,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
   to open the palette
   */
   React.useEffect(() => {
-    console.log('[Header] Registering')
     function onShortcut (shortcut) {
-      console.log('[Header] Got shortcut', shortcut)
       switch (shortcut) {
         case 'openPalette':
           setPaletteIsOpen(true)

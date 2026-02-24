@@ -150,6 +150,10 @@ class Events {
     }
 
     const index = handlers.findIndex(({ fn }) => fn === handler)
+    if (index < 0) {
+      return
+    }
+
     handlers.splice(index, 1)
 
     if (handlers.length === 0) {
@@ -219,6 +223,17 @@ class Events {
 
     const handlers = this.localHandlers.get(event)
     const index = handlers.findIndex(({ handler: _handler }) => _handler === handler)
+
+    /*
+    Return if there's
+    no matching handler,
+    otherwise the last inserted
+    handler will be removed
+    */
+    if (index < 0) {
+      return
+    }
+
     handlers.splice(index, 1)
 
     if (handlers.length === 0) {

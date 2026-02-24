@@ -11,6 +11,8 @@ const TRANSLATIONS = {
   '⌘': () => 'CommandOrControl',
   '⌥': () => 'Alt',
   ' ': () => 'Space',
+  '⇧': () => 'Shift',
+  '⌃': () => 'CommandOrControl',
   up: () => 'ArrowUp',
   down: () => 'ArrowDown',
   left: () => 'ArrowLeft',
@@ -18,15 +20,7 @@ const TRANSLATIONS = {
 }
 
 hotkeys('*', async e => {
-  const pressed = hotkeys.getPressedKeyString()
-    .map(key => normalize(key))
-    .map(key => {
-      if (TRANSLATIONS[key]) {
-        return TRANSLATIONS[key]()
-      }
-      return key
-    })
-
+  const pressed = getPressed()
   const matches = await findMatches(pressed)
   if (matches.length === 0) {
     return
@@ -131,4 +125,15 @@ function dispatchSimulatedEvent (type, e) {
   })
 
   document.dispatchEvent(simulatedEvent)
+}
+
+export function getPressed () {
+  return hotkeys.getPressedKeyString()
+    .map(key => normalize(key))
+    .map(key => {
+      if (TRANSLATIONS[key]) {
+        return TRANSLATIONS[key]()
+      }
+      return key
+    })
 }

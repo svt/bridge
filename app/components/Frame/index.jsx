@@ -175,11 +175,19 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
       return
     }
 
-    contentWindow.addEventListener('keydown', shortcuts.registerKeyDown)
-    contentWindow.addEventListener('keyup', shortcuts.registerKeyUp)
+    function onKeyDown (e) {
+      shortcuts.registerKeyDown(e)
+    }
+
+    function onKeyUp (e) {
+      shortcuts.registerKeyUp(e)
+    }
+
+    contentWindow.addEventListener('keydown', onKeyDown)
+    contentWindow.addEventListener('keyup', onKeyUp)
     return () => {
-      contentWindow.removeEventListener('keydown', shortcuts.registerKeyDown)
-      contentWindow.removeEventListener('keyup', shortcuts.registerKeyUp)
+      contentWindow.removeEventListener('keydown', onKeyDown)
+      contentWindow.removeEventListener('keyup', onKeyUp)
     }
   }, [frameRef.current?.contentWindow])
 
