@@ -8,6 +8,8 @@
 ### Fixed
 - An issue where invalid types could crash the rundown widget
 - An issue where 0 (or falsy values) could not be used as ids for options in preferences of the select type
+### Changed
+- Keyboard shortcuts now use hotkeys-js for better stability
 
 ## 1.0.0-beta.9
 ### Added
