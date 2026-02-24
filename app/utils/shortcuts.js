@@ -23,7 +23,35 @@ const TRANSLATIONS = {
   Right: () => 'ArrowRight'
 }
 
+/**
+ * Internal state for enabling
+ * and disabling shortcuts
+ *
+ * @type { boolean }
+ */
+let isEnabled = true
+
+/**
+ * Disable all
+ * keyboard shortcuts
+ */
+export function enable () {
+  isEnabled = true
+}
+
+/**
+ * Enable all
+ * keyboard shortcuts
+ */
+export function disable () {
+  isEnabled = false
+}
+
 hotkeys('*', async e => {
+  if (!isEnabled) {
+    return
+  }
+
   const pressed = getPressed()
 
   const matches = await findMatches(pressed)

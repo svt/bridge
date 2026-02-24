@@ -1,6 +1,7 @@
 import { PreferencesClearStateInput } from '../PreferencesClearStateInput'
 import { PreferencesSegmentedInput } from '../PreferencesSegmentedInput'
 import { PreferencesShortcutsInput } from '../PreferencesShortcutsInput'
+import { PreferencesWarningInput } from '../PreferencesWarningInput'
 import { PreferencesVersionInput } from '../PreferencesVersionInput'
 import { PreferencesBooleanInput } from '../PreferencesBooleanInput'
 import { PreferencesButtonInput } from '../PreferencesButtonInput'
@@ -21,6 +22,7 @@ export const inputComponents = {
   segmented: PreferencesSegmentedInput,
   boolean: PreferencesBooleanInput,
   version: PreferencesVersionInput,
+  warning: PreferencesWarningInput,
   button: PreferencesButtonInput,
   number: PreferencesNumberInput,
   select: PreferencesSelectInput,
