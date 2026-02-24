@@ -37,13 +37,24 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
   to open the palette
   */
   React.useEffect(() => {
+    function hasFeature (feature) {
+      if (!Array.isArray(features)) {
+        return false
+      }
+      return features.includes(feature)
+    }
+
     function onShortcut (shortcut) {
       switch (shortcut) {
         case 'openPalette':
-          setPaletteIsOpen(true)
+          if (hasFeature('palette')) {
+            setPaletteIsOpen(true)
+          }
           break
-        case 'openSettings':
-          setPrefsOpen(true)
+        case 'openPreferences':
+          if (hasFeature('preferences')) {
+            setPrefsOpen(true)
+          }
           break
       }
     }
@@ -61,7 +72,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
       }
       teardown()
     }
-  }, [])
+  }, [features])
 
   /**
    * Close the palette
