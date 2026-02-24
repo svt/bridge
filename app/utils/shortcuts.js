@@ -1,43 +1,63 @@
-// SPDX-FileCopyrightText: 2022 Sveriges Television AB
+// SPDX-FileCopyrightText: 2026 Axel Boberg
 //
 // SPDX-License-Identifier: MIT
 
+import hotkeys from 'hotkeys-js'
 import * as api from '../api'
 
 const TRANSLATIONS = {
   Meta: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
   Control: () => 'CommandOrControl',
-  ' ': () => 'Space'
+  '⌘': () => 'CommandOrControl',
+  '⌥': () => 'Alt',
+  ' ': () => 'Space',
+  up: () => 'ArrowUp',
+  down: () => 'ArrowDown',
+  left: () => 'ArrowLeft',
+  right: () => 'ArrowRight'
 }
 
-/**
- * A set for keeping track of the
- * currently pressed keys
- * @type { Set.<String> }
- */
-const keys = new Set()
+hotkeys('*', async e => {
+  const pressed = hotkeys.getPressedKeyString()
+    .map(key => normalize(key))
+    .map(key => {
+      if (TRANSLATIONS[key]) {
+        return TRANSLATIONS[key]()
+      }
+      return key
+    })
 
-/**
- * Call the callback after a delay
- * from the last call to timeoutOnIdle
- *
- * Every direct call to timeoutOnIdle
- * will invalidate the timeout and
- * set a new one
- *
- * @type { Function.<void> }
- * @param { Function.<void> } callback
- * @param { Number } delay The delay in ms
- */
-const timeoutOnIdle = (function () {
-  let timeout
-  return (callback, delay) => {
-    if (timeout) {
-      clearTimeout(timeout)
-    }
-    timeout = setTimeout(callback, delay)
+  const matches = await findMatches(pressed)
+  if (matches.length === 0) {
+    return
   }
-})()
+
+  e.preventDefault()
+
+  for (const match of matches) {
+    dispatchShortcutEvent(match.action)
+  }
+})
+
+async function findMatches (trigger) {
+  const bridge = await api.load()
+  const shortcuts = await bridge.shortcuts.getShortcuts()
+
+  const matches = shortcuts
+    .filter(shortcut => {
+      return shortcut.trigger.length === trigger.length
+    })
+    .filter(shortcut => {
+      for (const key of shortcut.trigger) {
+        if (!trigger.includes(key)) {
+          return false
+        }
+      }
+      return true
+    })
+
+  return matches
+}
 
 /**
  * Normalize a key name in order
@@ -57,13 +77,16 @@ function normalize (key) {
   Transform all lowercase single letters to their uppercase counterparts
   as we don't want to require setting both 'a' and 'A' as a target
   */
-  if (/^[a-z]$/.test(key)) {
+  if (/^([a-z]|f\d+)$/.test(key)) {
     return key.toUpperCase()
   }
   return key
 }
 
 async function dispatchShortcutEvent (action) {
+  if (!action) {
+    return
+  }
   const bridge = await api.load()
   bridge.events.emitLocally('shortcut', action)
 }
@@ -79,38 +102,7 @@ async function dispatchShortcutEvent (action) {
  * @param { KeyboardEvent } e
  */
 export async function registerKeyDown (e) {
-  const bridge = await api.load()
-  const shortcuts = await bridge.shortcuts.getShortcuts()
-
-  const normalized = normalize(e.key)
-  const translated = TRANSLATIONS[normalized]
-    ? TRANSLATIONS[normalized]()
-    : normalized
-
-  keys.add(translated)
-
-  const matchedShortcuts = shortcuts.filter(shortcut => {
-    for (const trigger of shortcut.trigger) {
-      if (!keys.has(trigger)) {
-        return false
-      }
-    }
-    return true
-  })
-
-  if (matchedShortcuts.length === 0) {
-    return
-  }
-
-  for (const shortcut of matchedShortcuts) {
-    dispatchShortcutEvent(shortcut.action)
-  }
-
-  /*
-  Clear the set when input has ended as
-  we want to get rid of dangling keys
-  */
-  timeoutOnIdle(() => keys.clear(), 1000)
+  dispatchSimulatedEvent('keydown', e)
 }
 
 /**
@@ -121,14 +113,22 @@ export async function registerKeyDown (e) {
  * @param { KeyboardEvent } e
  */
 export function registerKeyUp (e) {
-  keys.clear()
+  dispatchSimulatedEvent('keyup', e)
 }
 
-/**
- * Get the currently pressed
- * keys as an array
- * @returns { String[] }
- */
-export function getPressed () {
-  return Array.from(keys.values())
+function dispatchSimulatedEvent (type, e) {
+  const simulatedEvent = new KeyboardEvent(type, {
+    key: e.key,
+    code: e.code,
+    ctrlKey: e.ctrlKey,
+    metaKey: e.metaKey,
+    shiftKey: e.shiftKey,
+    keyCode: e.keyCode,
+    which: e.which,
+    altKey: e.altKey,
+    bubbles: true,
+    cancelable: true
+  })
+
+  document.dispatchEvent(simulatedEvent)
 }

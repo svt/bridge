@@ -13,12 +13,12 @@ import { SocketContext } from './socketContext'
 
 import { useWebsocket } from './hooks/useWebsocket'
 
-
 import * as windowUtils from './utils/window'
-import * as shortcuts from './utils/shortcuts'
 import * as browser from './utils/browser'
 import * as auth from './auth'
 import * as api from './api'
+
+import './utils/shortcuts'
 
 /**
   * The protocol (wss or ws)
@@ -50,18 +50,6 @@ const socketHost = window.APP.socketHost || `${socketProtocol}://${window.locati
  * @type { String }
  */
 const workspace = window.APP.workspace
-
-/*
-Register keydown and keyup event listeners
-in order to parse shortcuts
-
-this must be done both in the application scope [here]
-and in any iframes
-*/
-;(function () {
-  window.addEventListener('keydown', e => shortcuts.registerKeyDown(e))
-  window.addEventListener('keyup', e => shortcuts.registerKeyUp(e))
-})()
 
 /*
 Add a data attribute with the platform to the
