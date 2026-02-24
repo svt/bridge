@@ -39,6 +39,7 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
       if (e.key === 'Escape') {
         return
       }
+      e.preventDefault()
       setTrigger(shortcuts.getPressed())
     }
 
