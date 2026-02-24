@@ -10,7 +10,7 @@
 - An issue where 0 (or falsy values) could not be used as ids for options in preferences of the select type
 - Preferences can no longer be opened in floating widget windows
 - Confirm dialogs now abort on escape
-- The shortcut for opening settings
+- The shortcut for opening settings now works as intented
 - Settings no longer collide with other modals
 ### Changed
 - Keyboard shortcuts now use hotkeys-js for better stability
