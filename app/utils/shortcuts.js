@@ -7,20 +7,25 @@ import * as api from '../api'
 
 const TRANSLATIONS = {
   Meta: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
+  MetaLeft: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
+  MetaRight: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
   Control: () => 'CommandOrControl',
+  ControlLeft: () => 'CommandOrControl',
+  ControlRight: () => 'CommandOrControl',
   '⌘': () => 'CommandOrControl',
   '⌥': () => 'Alt',
   ' ': () => 'Space',
   '⇧': () => 'Shift',
   '⌃': () => 'CommandOrControl',
-  up: () => 'ArrowUp',
-  down: () => 'ArrowDown',
-  left: () => 'ArrowLeft',
-  right: () => 'ArrowRight'
+  Up: () => 'ArrowUp',
+  Down: () => 'ArrowDown',
+  Left: () => 'ArrowLeft',
+  Right: () => 'ArrowRight'
 }
 
 hotkeys('*', async e => {
   const pressed = getPressed()
+
   const matches = await findMatches(pressed)
   if (matches.length === 0) {
     return
@@ -63,20 +68,27 @@ async function findMatches (trigger) {
  * 'a' -> 'A'
  * 'Meta' -> 'Meta'
  *
- * @param { String } key The key to normalize
- * @returns { String }
+ * @param { string } key The key to normalize
+ * @returns { string }
  */
 function normalize (key) {
-  /*
-  Transform all lowercase single letters to their uppercase counterparts
-  as we don't want to require setting both 'a' and 'A' as a target
-  */
-  if (/^([a-z]|f\d+)$/.test(key)) {
-    return key.toUpperCase()
+  if (typeof key !== 'string') {
+    return
   }
-  return key
+
+  /*
+  Make sure that the first letter is always capitalized
+  to treat a as A and backspace as Backspace
+  */
+  return `${key}`.charAt(0).toUpperCase() + `${key}`.slice(1)
 }
 
+/**
+ * Dispatch the shortcut event through the Bridge API,
+ * this is called when a shortcut with an action is recognized
+ * @param { string } action
+ * @returns
+ */
 async function dispatchShortcutEvent (action) {
   if (!action) {
     return
@@ -96,7 +108,7 @@ async function dispatchShortcutEvent (action) {
  * @param { KeyboardEvent } e
  */
 export async function registerKeyDown (e) {
-  dispatchSimulatedEvent('keydown', e)
+  dispatchSimulatedEvent(e)
 }
 
 /**
@@ -107,11 +119,25 @@ export async function registerKeyDown (e) {
  * @param { KeyboardEvent } e
  */
 export function registerKeyUp (e) {
-  dispatchSimulatedEvent('keyup', e)
+  dispatchSimulatedEvent(e)
 }
 
-function dispatchSimulatedEvent (type, e) {
-  const simulatedEvent = new KeyboardEvent(type, {
+/**
+ * Dispatch a simulated keyboard event
+ * for hotkeys to recognize
+ *
+ * This is used to forward key events
+ * from iFrames
+ *
+ * @param { KeyboardEvent } e
+ */
+function dispatchSimulatedEvent (e) {
+  if (e?.type !== 'keyup' && e?.type !== 'keydown') {
+    console.warn('[Shortcuts] Can only simulate keyup and keydown events')
+    return
+  }
+
+  const simulatedEvent = new KeyboardEvent(e.type, {
     key: e.key,
     code: e.code,
     ctrlKey: e.ctrlKey,
@@ -127,6 +153,12 @@ function dispatchSimulatedEvent (type, e) {
   document.dispatchEvent(simulatedEvent)
 }
 
+/**
+ * Get all currently
+ * pressed keys
+ *
+ * @returns { string[] }
+ */
 export function getPressed () {
   return hotkeys.getPressedKeyString()
     .map(key => normalize(key))
