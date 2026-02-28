@@ -10,6 +10,15 @@ export function RundownTriggerItem ({ index, item }) {
     if (typeof itemId !== 'string') {
       return
     }
+
+    /*
+    Do not allow references to
+    be dropped on themselves
+    */
+    if (itemId === item?.id) {
+      return
+    }
+
     bridge.items.applyItem(item.id, {
       data: {
         targetId: itemId

@@ -37,7 +37,7 @@ async function init (htmlPath) {
         'ui.group': 'Reference'
       },
       targetId: {
-        name: 'Target id',
+        name: 'Target',
         type: 'string',
         'ui.group': 'Reference',
         'ui.readable': true

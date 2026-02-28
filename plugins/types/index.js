@@ -122,6 +122,17 @@ const ITEM_CHANGE_HANDLERS = [
         bridge.items.applyIssue(item?.id, 'types.reference-missing-target', {
           description: 'This item requires a valid target'
         })
+        return
+      }
+
+      const isTargetingItself = item?.data?.targetId === item?.id
+      if (!isTargetingItself) {
+        bridge.items.removeIssue(item?.id, 'types.reference-targeting-itself')
+      } else {
+        bridge.items.applyIssue(item?.id, 'types.reference-targeting-itself', {
+          description: 'Item is targeting itself'
+        })
+        return
       }
 
       const isAncestor = await utils.isAncestor(item?.data?.targetId, item?.id)
@@ -129,7 +140,7 @@ const ITEM_CHANGE_HANDLERS = [
         bridge.items.removeIssue(item?.id, 'types.reference-targeting-ancestor')
       } else {
         bridge.items.applyIssue(item?.id, 'types.reference-targeting-ancestor', {
-          description: 'Reference is targeting an ancestor, loops may occur'
+          description: 'Item is targeting an ancestor, loops may occur'
         })
       }
     }
