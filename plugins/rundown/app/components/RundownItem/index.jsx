@@ -78,9 +78,19 @@ async function getReadablePropertiesForType (typeName) {
   }
 }
 
-export function RundownItem ({ index, icon, item }) {
+export function RundownItem ({ index, icon, item, dropzone, onDrop = () => {} }) {
   const [shared] = React.useContext(SharedContext)
   const [typeProperties, setTypeProperties] = React.useState([])
+
+  const [isDraggedOver, setIsDraggedOver] = React.useState(false)
+
+  React.useEffect(() => {
+    function onDragEnd () {
+      setIsDraggedOver(false)
+    }
+    window.addEventListener('dragend', onDragEnd)
+    return () => window.removeEventListener('dragend', onDragEnd)
+  }, [])
 
   const [name] = useAsyncValue(() => {
     /*
@@ -119,8 +129,34 @@ export function RundownItem ({ index, icon, item }) {
     loadProperties()
   }, [item?.type])
 
+  /**
+   * Prevent the event from propagating
+   * so that we don't trigger the parent
+   * rundown's listeners
+   */
+  function handleDragOver (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggedOver(true)
+  }
+
+  function handleDragLeave (e) {
+    setIsDraggedOver(false)
+  }
+
+  async function handleDrop (e) {
+    e.stopPropagation()
+    setIsDraggedOver(false)
+  
+    const itemId = e.dataTransfer.getData('text/plain')
+    
+    if (itemId) {
+      onDrop(itemId)
+    }
+  }
+
   return (
-    <div className={`RundownItem ${isCompact ? 'is-compact' : ''}`}>
+    <div className={`RundownItem ${isCompact ? 'is-compact' : ''} ${isDraggedOver ? 'is-draggedOver' : ''}`}>
       <div className='RundownItem-margin'>
         <Layout.Spread>
           <div className='RundownItem-section'>
@@ -180,6 +216,17 @@ export function RundownItem ({ index, icon, item }) {
           <RundownItemTimeSection item={item} />
         </Layout.Spread>
       </div>
+      {
+        dropzone &&
+        (
+        <div  
+          className='RundownItem-dropZone'
+          onDragOver={e => handleDragOver(e)}
+          onDragLeave={e => handleDragLeave(e)}
+          onDrop={e => handleDrop(e)}
+        />
+        )
+      }
       <RundownItemProgress item={item} />
     </div>
   )

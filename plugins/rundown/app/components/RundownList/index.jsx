@@ -5,6 +5,7 @@ import './style.css'
 
 import { SharedContext } from '../../sharedContext'
 
+import { RundownReferenceItem } from '../RundownReferenceItem'
 import { RundownVariableItem } from '../RundownVariableItem'
 import { RundownTriggerItem } from '../RundownTriggerItem'
 import { RundownDividerItem } from '../RundownDividerItem'
@@ -24,6 +25,7 @@ import * as keyboard from '../../utils/keyboard'
  */
 const TYPE_COMPONENTS = {
   'bridge.variables.variable': { item: RundownVariableItem },
+  'bridge.types.reference': { item: RundownReferenceItem },
   'bridge.types.trigger': { item: RundownTriggerItem },
   'bridge.types.divider': { item: RundownDividerItem },
   'bridge.types.group': {
