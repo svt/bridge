@@ -9,7 +9,7 @@ import * as api from '../api'
  * @typedef {{
  *  id: string
  * }} Shortcut
- * 
+ *
  * @typedef { string[] } KeyboardTrigger
  */
 
@@ -92,8 +92,8 @@ hotkeys('*', async e => {
  * returns true if equivalent
  * regardless of the order
  * of the keys
- * @param { KeyboardTrigger } triggerA 
- * @param { KeyboardTrigger } triggerB 
+ * @param { KeyboardTrigger } triggerA
+ * @param { KeyboardTrigger } triggerB
  * @returns { boolean }
  */
 function compareTriggers (triggerA, triggerB) {
@@ -111,7 +111,7 @@ function compareTriggers (triggerA, triggerB) {
 /**
  * Find all shortcuts
  * matching a trigger
- * @param { KeyboardTrigger } trigger 
+ * @param { KeyboardTrigger } trigger
  * @returns { Promise.<Shortcut[] | undefined> }
  */
 async function findShortcuts (trigger) {
@@ -129,7 +129,7 @@ async function findShortcuts (trigger) {
 /**
  * Find all keyboard trigger
  * items matching a trigger
- * @param { KeyboardTrigger } trigger 
+ * @param { KeyboardTrigger } trigger
  * @returns { Promise.<Item[] | undefined> }
  */
 async function findItemTriggers (trigger) {
