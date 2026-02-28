@@ -45,6 +45,7 @@ The roadmap is available on Notion
 - HTTP triggers
 - CasparCG library, playout and templates
 - LTC timecode triggers
+- Keyboard triggers
 
 ## Community plugins  
 - [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)

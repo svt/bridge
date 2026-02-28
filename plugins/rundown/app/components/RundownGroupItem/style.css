@@ -9,6 +9,18 @@
   width: 100%;
 }
 
+.RundownGroupItem.is-draggedOver::before {
+  position: absolute;
+  content: '';
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  border: 2px dashed var(--base-color); 
+}
+
 .RundownGroupItem-header {
   position: relative;
   display: flex;

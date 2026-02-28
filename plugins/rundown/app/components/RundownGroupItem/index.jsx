@@ -13,8 +13,17 @@ import { Icon } from '../Icon'
 
 export function RundownGroupItem ({ index, item }) {
   const [shared] = React.useContext(SharedContext)
+  const [isDraggedOver, setIsDraggedOver] = React.useState(false)
 
   const elRef = React.useRef()
+
+  React.useEffect(() => {
+    function onDragEnd () {
+      setIsDraggedOver(false)
+    }
+    window.addEventListener('dragend', onDragEnd)
+    return () => window.removeEventListener('dragend', onDragEnd)
+  }, [])
 
   /**
    * Set this group to be
@@ -69,6 +78,7 @@ export function RundownGroupItem ({ index, item }) {
 
   async function handleDrop (e) {
     e.stopPropagation()
+    setIsDraggedOver(false)
     let itemId = e.dataTransfer.getData('text/plain')
     const itemSpec = e.dataTransfer.getData('bridge/item')
 
@@ -104,6 +114,11 @@ export function RundownGroupItem ({ index, item }) {
   function handleDragOver (e) {
     e.preventDefault()
     e.stopPropagation()
+    setIsDraggedOver(true)
+  }
+
+  function handleDragLeave (e) {
+    setIsDraggedOver(false)
   }
 
   function handleToggleCollapsed (e) {
@@ -121,7 +136,7 @@ export function RundownGroupItem ({ index, item }) {
   const isCollapsed = item?.['rundown.ui.collapsed']
 
   return (
-    <div ref={elRef} className={`RundownGroupItem ${isCollapsed ? 'is-collapsed' : ''}`} data-item-type={item.type}>
+    <div ref={elRef} className={`RundownGroupItem ${isCollapsed ? 'is-collapsed' : ''} ${isDraggedOver ? 'is-draggedOver' : ''}`} data-item-type={item.type}>
       <div className='RundownGroupItem-color' style={{ backgroundColor: item?.data?.color }} />
       <div className='RundownGroupItem-background' style={{ backgroundColor: item?.data?.color }} />
       <div className='RundownGroupItem-header is-scrollTarget' onDoubleClick={e => handleToggleCollapsed(e)}>
@@ -153,6 +168,7 @@ export function RundownGroupItem ({ index, item }) {
       <div
         className='RundownGroupItem-dropGuard'
         onDragOver={e => handleDragOver(e)}
+        onDragLeave={e => handleDragLeave(e)}
       >
         {
            (itemIds || []).length === 0 || isCollapsed

@@ -5,7 +5,7 @@ import bridge from 'bridge'
 
 import { RundownItem } from '../RundownItem'
 
-export function RundownTriggerItem ({ index, item }) {
+export function RundownReferenceItem ({ index, item }) {
   function handleDrop (itemId) {
     if (typeof itemId !== 'string') {
       return
@@ -17,5 +17,5 @@ export function RundownTriggerItem ({ index, item }) {
     }, true)
   }
 
-  return <RundownItem index={index} item={item} icon='trigger' onDrop={itemId => handleDrop(itemId)} dropzone />
+  return <RundownItem index={index} item={item} onDrop={itemId => handleDrop(itemId)} dropzone />
 }

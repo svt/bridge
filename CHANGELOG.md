@@ -6,6 +6,7 @@
 - Free wheel for LTC inputs
 - Reference items now show a warning if they're missing a target id
 - Keyboard triggers
+- Drag and drop on references and triggers to automatically set target id
 ### Fixed
 - An issue where invalid types could crash the rundown widget
 - An issue where 0 (or falsy values) could not be used as ids for options in preferences of the select type
@@ -14,9 +15,11 @@
 - The shortcut for opening settings now works as intented
 - Settings no longer collide with other modals
 - An issue where children weren't removed when their parent group was removed
+- Updated dependencies
 ### Changed
 - Keyboard shortcuts now use hotkeys-js for better stability
 - The item.apply event has been changed to item.change
+- Improved ux when dropping items on references, triggers and groups
 
 ## 1.0.0-beta.9
 ### Added
