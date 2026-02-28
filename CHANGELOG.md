@@ -14,6 +14,7 @@
 - The shortcut for opening settings now works as intented
 - Settings no longer collide with other modals
 - An issue where children weren't removed when their parent group was removed
+- Updated dependencies
 ### Changed
 - Keyboard shortcuts now use hotkeys-js for better stability
 - The item.apply event has been changed to item.change
