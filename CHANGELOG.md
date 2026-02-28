@@ -7,6 +7,7 @@
 - Reference items now show a warning if they're missing a target id
 - Keyboard triggers
 - Drag and drop on references and triggers to automatically set target id
+- Ability to create a new workspace from an existing file
 ### Fixed
 - An issue where invalid types could crash the rundown widget
 - An issue where 0 (or falsy values) could not be used as ids for options in preferences of the select type
