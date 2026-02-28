@@ -238,6 +238,14 @@ function dispatchSimulatedEvent (e) {
     return
   }
 
+  /*
+  Don't listen to keyboard events
+  if the target is an input
+  */
+  if (['INPUT', 'TEXTAREA'].includes(e?.target?.nodeName)) {
+    return
+  }
+
   const simulatedEvent = new KeyboardEvent(e.type, {
     key: e.key,
     code: e.code,
