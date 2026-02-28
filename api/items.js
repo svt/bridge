@@ -53,8 +53,8 @@ class Items {
     Intercept the item.change event
     to always include the full item
     */
-    this.#props.Events.intercept('item.change', async itemId => {
-      return await this.getItem(itemId)
+    this.#props.Events.intercept('item.change', async (itemId, set) => {
+      return [itemId, await this.getItem(itemId), set]
     })
   }
 
@@ -112,7 +112,7 @@ class Items {
      */
     Object.assign(item.data, _data)
 
-    this.applyItem(item.id, item)
+    this.applyItem(item.id, item, true)
     return item.id
   }
 
@@ -120,10 +120,11 @@ class Items {
    * Apply changes to an
    * item in the this.#props.State
    *
-   * @param { String } id The id of an item to update
+   * @param { string } id The id of an item to update
    * @param { Item } set An item object to apply
+   * @param { boolean } emitEvent Whether or not to emit the item.change event
    */
-  async applyItem (id, set = {}) {
+  async applyItem (id, set = {}, emitEvent = false) {
     if (typeof id !== 'string') {
       throw new MissingArgumentError('Invalid value for item id, must be a string')
     }
@@ -138,7 +139,9 @@ class Items {
       }
     })
 
-    this.#props.Events.emit('item.apply', id, set)
+    if (emitEvent) {
+      this.#props.Events.emit('item.change', id, set)
+    }
   }
 
   /**
@@ -150,15 +153,16 @@ class Items {
    * item exists before applying
    * the data
    *
-   * @param { String } id The id of an item to update
+   * @param { string } id The id of an item to update
    * @param { Item } set An item object to apply
+   * @param { boolean } emitEvent Whether or not to emit the item.change event
    */
-  async applyExistingItem (id, set = {}) {
+  async applyExistingItem (id, set = {}, emitEvent = false) {
     const itemExists = await this.itemExists(id)
     if (!itemExists) {
       return
     }
-    await this.applyItem(id, set)
+    await this.applyItem(id, set, emitEvent)
   }
 
   async itemExists (id) {
@@ -352,7 +356,7 @@ class Items {
           ...issueSpec
         }
       }
-    })
+    }, false)
   }
 
   /**
@@ -375,7 +379,7 @@ class Items {
       issues: {
         [issueId]: { $delete: true }
       }
-    })
+    }, false)
   }
 
   /**

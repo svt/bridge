@@ -49,7 +49,7 @@ export const InspectorTemplate = () => {
 
   function handleNewValue (set) {
     for (const id of selectionRef.current) {
-      bridge.items.applyItem(id, set)
+      bridge.items.applyItem(id, set, true)
     }
   }
 

@@ -1,0 +1,41 @@
+.ShortcutInput {
+  display: flex;
+  height: 3em;
+
+  padding: 0 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: var(--base-color--shade3);
+
+  animation-name: ShortcutInput-fade;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+
+  box-sizing: border-box;
+}
+
+.ShortcutInput--disabled {
+  animation: none;
+}
+
+@keyframes ShortcutInput-fade {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.ShortcutInput-placeholder {
+  opacity: 0.5;
+}

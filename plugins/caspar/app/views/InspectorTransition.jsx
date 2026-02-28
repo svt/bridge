@@ -20,7 +20,7 @@ export const InspectorTransition = () => {
 
   function handleNewValue (set) {
     for (const id of selection) {
-      bridge.items.applyItem(id, set)
+      bridge.items.applyItem(id, set, true)
     }
   }
 

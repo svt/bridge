@@ -51,7 +51,7 @@ export default function App () {
   }, [itemId])
 
   React.useEffect(() => {
-    function handleItemChange (newItem) {
+    function handleItemChange (_, newItem) {
       if (newItem?.id !== item?.id) {
         return
       }

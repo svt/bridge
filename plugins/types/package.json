@@ -106,6 +106,23 @@
             "default": "#E543FF"
           }
         }
+      },
+      {
+        "id": "bridge.types.keyboardTrigger",
+        "name": "Keyboard trigger",
+        "inherits": "bridge.types.trigger",
+        "category": "Triggers",
+        "properties": {
+          "name": {
+            "default": "Keyboard trigger"
+          },
+          "keybinding": {
+            "name": "Keybinding",
+            "type": "keybinding",
+            "ui.group": "Shortcut",
+            "ui.readable": true
+          }
+        }
       }
     ],
     "settings": [

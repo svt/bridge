@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { Popup } from '.'
+import { ShortcutInput } from '../ShortcutInput'
 
 import './shortcut.css'
 
@@ -30,35 +32,16 @@ export function PopupShortcut ({ open, shortcut, onChange = () => {} }) {
     }
   }, [open])
 
-  React.useEffect(() => {
-    if (!open) {
-      return
-    }
-
-    function onKeyDown (e) {
-      if (e.key === 'Escape') {
-        return
-      }
-      e.preventDefault()
-      setTrigger(shortcuts.getPressed())
-    }
-
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [open])
-
   return (
     <Popup open={open}>
       <div className='PopupShortcut-description'>
         Press a key combination
       </div>
-      <div className='PopupShortcut-preview'>
-        {
-          (trigger || []).join(' + ')
-        }
-      </div>
+      <ShortcutInput
+        trigger={trigger}
+        onChange={newTrigger => setTrigger(newTrigger)}
+        disabled={!open}
+      />
       <div className='PopupShortcut-actions'>
         <button className='Button' onClick={() => onChange(undefined)}>Cancel</button>
         <button className='Button' onClick={() => onChange(-1)}>Reset</button>

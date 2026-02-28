@@ -72,7 +72,7 @@ bridge.events.on('item.stop', item => {
 | `item.play` | Emitted when an item is played, after an optional delay | Everywhere |
 | `item.stop` | Emitted when an item is stopped | Everywhere |
 | `item.end` | Emitted when an item ends, this will not trigger when an item is stopped | Everywhere |
-| `item.apply` | Emitted when an item data is applied to an item using the item.apply api, this can be used to react to item changes | Everywhere |
+| `item.change` | Emitted when an item data is applied to an item using the item.apply api, this can be used to react to item changes | Everywhere |
 | `shortcut` | Emitted when a shortcut is triggered | Browser |
 | `selection` | Emitted when the selection of the current client changes | Browser |
 | `ui.contextMenu.open` | A context menu was opened | Browser |

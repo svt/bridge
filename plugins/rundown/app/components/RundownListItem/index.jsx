@@ -201,7 +201,7 @@ export function RundownListItem ({
 
     await bridge.items.applyItem(item?.id, {
       type: typeId
-    })
+    }, true)
   }
 
   async function handleCreateReference () {
@@ -212,7 +212,7 @@ export function RundownListItem ({
         name: `Reference to ${item?.data?.name}`,
         targetId: item.id
       }
-    })
+    }, true)
 
     bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
   }

@@ -76,7 +76,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
       }
       teardown()
     }
-  }, [features])
+  }, [features.join(',')])
 
   /**
    * Close the palette

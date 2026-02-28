@@ -5,6 +5,14 @@
 import hotkeys from 'hotkeys-js'
 import * as api from '../api'
 
+/**
+ * @typedef {{
+ *  id: string
+ * }} Shortcut
+ * 
+ * @typedef { string[] } KeyboardTrigger
+ */
+
 const TRANSLATIONS = {
   Meta: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
   MetaLeft: () => window.APP.platform === 'darwin' ? 'CommandOrControl' : 'Meta',
@@ -22,6 +30,8 @@ const TRANSLATIONS = {
   Left: () => 'ArrowLeft',
   Right: () => 'ArrowRight'
 }
+
+const DELIMITER = '+'
 
 /**
  * Internal state for enabling
@@ -54,36 +64,87 @@ hotkeys('*', async e => {
 
   const pressed = getPressed()
 
-  const matches = await findMatches(pressed)
-  if (matches.length === 0) {
-    return
-  }
-
+  const shortcuts = await findShortcuts(pressed)
+  const items = await findItemTriggers(pressed)
   e.preventDefault()
 
-  for (const match of matches) {
-    dispatchShortcutEvent(match.action)
+  /*
+  Execute registered shortcuts
+  */
+  if (Array.isArray(shortcuts) && shortcuts.length > 0) {
+    for (const match of shortcuts) {
+      dispatchShortcutEvent(match.action)
+    }
+  }
+
+  /*
+  Execute keyboard triggers
+  */
+  if (Array.isArray(items) && items.length > 0) {
+    for (const item of items) {
+      playItem(item?.id)
+    }
   }
 })
 
-async function findMatches (trigger) {
+/**
+ * Compare two triggers,
+ * returns true if equivalent
+ * regardless of the order
+ * of the keys
+ * @param { KeyboardTrigger } triggerA 
+ * @param { KeyboardTrigger } triggerB 
+ * @returns { boolean }
+ */
+function compareTriggers (triggerA, triggerB) {
+  if (triggerA.length !== triggerB.length) {
+    return false
+  }
+  for (const key of triggerA) {
+    if (!triggerB.includes(key)) {
+      return false
+    }
+  }
+  return true
+}
+
+/**
+ * Find all shortcuts
+ * matching a trigger
+ * @param { KeyboardTrigger } trigger 
+ * @returns { Promise.<Shortcut[] | undefined> }
+ */
+async function findShortcuts (trigger) {
   const bridge = await api.load()
   const shortcuts = await bridge.shortcuts.getShortcuts()
 
-  const matches = shortcuts
-    .filter(shortcut => {
-      return shortcut.trigger.length === trigger.length
-    })
-    .filter(shortcut => {
-      for (const key of shortcut.trigger) {
-        if (!trigger.includes(key)) {
-          return false
-        }
-      }
-      return true
-    })
+  if (!shortcuts || !Array.isArray(shortcuts)) {
+    return
+  }
 
-  return matches
+  return shortcuts
+    .filter(shortcut => compareTriggers(shortcut.trigger, trigger))
+}
+
+/**
+ * Find all keyboard trigger
+ * items matching a trigger
+ * @param { KeyboardTrigger } trigger 
+ * @returns { Promise.<Item[] | undefined> }
+ */
+async function findItemTriggers (trigger) {
+  const bridge = await api.load()
+  const items = await bridge.state.get('items')
+
+  if (!items || typeof items !== 'object') {
+    return
+  }
+
+  return Object.values(items)
+    .filter(item => item.type === 'bridge.types.keyboardTrigger')
+    .map(item => [item, String(item?.data?.keybinding).split(DELIMITER)])
+    .filter(([, itemTrigger]) => compareTriggers(itemTrigger, trigger))
+    .map(([item]) => item)
 }
 
 /**
@@ -118,11 +179,23 @@ function normalize (key) {
  * @returns
  */
 async function dispatchShortcutEvent (action) {
-  if (!action) {
+  if (typeof action !== 'string') {
     return
   }
   const bridge = await api.load()
-  bridge.events.emitLocally('shortcut', action)
+  bridge.shortcuts.dispatchShortcut(action)
+}
+
+/**
+ * Play an item
+ * @param { string } id
+ */
+async function playItem (id) {
+  if (typeof id !== 'string') {
+    return
+  }
+  const bridge = await api.load()
+  bridge.items.playItem(id)
 }
 
 /**

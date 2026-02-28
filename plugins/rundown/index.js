@@ -338,7 +338,7 @@ exports.activate = async () => {
         item.parent = undefined
       }
 
-      await bridge.items.applyItem(item.id, item)
+      await bridge.items.applyItem(item.id, item, true)
 
       /*
       If this is a top level item,

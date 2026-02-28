@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+const environment = require('./shared/environment')
+
 ;(function () {
   /*
   Use a dummy transport
@@ -11,12 +13,12 @@
     require('./dummy/transport')
     return
   }
-  if (module.parent) {
+  if (environment.isNode()) {
     console.log('[API] Using node transport')
     require('./node/transport')
     return
   }
-  if (typeof window !== 'undefined') {
+  if (environment.isBrowser()) {
     console.log('[API] Using browser transport')
     require('./browser/transport')
   }

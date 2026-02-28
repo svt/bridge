@@ -203,7 +203,7 @@ bridge.events.on('item.end', async coldItem => {
  * with a parsed value of the same data in order for
  * variables to be able to utilize it
  */
-bridge.events.on('item.apply', (itemId, set) => {
+bridge.events.on('item.change', (itemId, _, set) => {
   /*
    * Make sure that the apply operation actually
    * modifies the templateDataSource value
@@ -224,7 +224,7 @@ bridge.events.on('item.apply', (itemId, set) => {
           data: { $replace: structuredData }
         }
       }
-    })
+    }, false)
   } catch (e) {
     logger.warn('Failed to apply structured data to item with error: ', e)
   }

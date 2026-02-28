@@ -38,7 +38,7 @@ export function RundownGroupItem ({ index, item }) {
 
     bridge.items.applyItem(item.id, {
       'rundown.ui.collapsed': newState
-    })
+    }, false)
   }
 
   React.useEffect(() => {
@@ -86,7 +86,7 @@ export function RundownGroupItem ({ index, item }) {
           return
         }
         itemId = await bridge.items.createItem(spec.type)
-        bridge.items.applyItem(itemId, spec)
+        bridge.items.applyItem(itemId, spec, true)
       } catch (_) {
         console.warn('Tried to drop an invalid spec')
         return

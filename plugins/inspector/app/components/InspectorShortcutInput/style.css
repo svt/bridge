@@ -1,0 +1,18 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Axel Boberg
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.InspectorShortcutInput {
+  width: 100%;
+}
+
+.InspectorShortcutInput > *,
+.InspectorShortcutInput-button .Button {
+  width: 100%;
+}
+
+.InspectorShortcutInput-button {
+  margin-top: 5px;
+}
