@@ -1,5 +1,14 @@
 [
   {
+    "title": "",
+    "inputs": [
+      {
+        "type": "warning",
+        "description": "Keybindings are currently limited to english language keyboards"
+      }
+    ]
+  },
+  {
     "title": "Shortcuts",
     "description": "Customize registered keyboard shortcuts",
     "inputs": [

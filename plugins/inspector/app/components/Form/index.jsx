@@ -43,10 +43,12 @@ import { SelectInput } from '../SelectInput'
 import { BooleanInput } from '../BooleanInput'
 import { VariableHint } from '../VariableHint'
 import { VariableStringInput } from '../VariableStringInput'
+import { InspectorShortcutInput } from '../InspectorShortcutInput'
 
 const PLUGIN_NAME = pkg.name
 
 const INPUT_COMPONENTS = {
+  keybinding: InspectorShortcutInput,
   boolean: BooleanInput,
   string: VariableStringInput,
   color: ColorInput,
@@ -221,8 +223,7 @@ export function Form () {
     setLocalData(data)
 
     for (const id of store.selection) {
-      await bridge.items.applyItem(id, { data })
-      bridge.events.emit('item.change', id)
+      await bridge.items.applyItem(id, { data }, true)
     }
   }
 

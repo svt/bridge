@@ -136,6 +136,23 @@ const ITEM_CHANGE_HANDLERS = [
   }
 ]
 
+const ITEM_DELETE_HANDLERS = [
+  /*
+  Delete all children
+  if a group is deleted
+  */
+  {
+    predicate: (item, type) => item.type === 'bridge.types.group' || type.ancestors.includes('bridge.types.group'),
+    fn: item => {
+      const childIds = item?.children || []
+      if (!Array.isArray(childIds)) {
+        return
+      }
+      bridge.items.deleteItems(childIds)
+    }
+  }
+]
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -188,8 +205,15 @@ exports.activate = async () => {
     callHandlers(STOP_HANDLERS, item, type)
   })
 
-  bridge.events.on('item.change', async item => {
+  bridge.events.on('item.change', async (_, item) => {
     const type = await bridge.types.getType(item.type)
     callHandlers(ITEM_CHANGE_HANDLERS, item, type)
+  })
+
+  bridge.events.on('items.delete', async items => {
+    for (const item of items) {
+      const type = await bridge.types.getType(item.type)
+      callHandlers(ITEM_DELETE_HANDLERS, item, type)
+    }
   })
 }

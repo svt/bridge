@@ -18,6 +18,7 @@ const LTCDecoder = require('./lib/ltc/LTCDecoder')
 // eslint-disable-next-line
 const LTCDevice = require('./lib/ltc/LTCDevice')
 
+const TimecodeDevice = require('./lib/TimecodeDevice')
 const TimecodeFrame = require('./lib/TimecodeFrame')
 
 const Logger = require('../../lib/Logger')
@@ -91,11 +92,11 @@ async function makeInputSetting (inputs = [], replaceInputs) {
             ]
           },
           {
-            title: 'Free run',
+            title: 'Free wheel',
             inputs: [
               {
                 type: 'select',
-                bind: 'freeRunFrames',
+                bind: 'freeWheelFrames',
                 options: [
                   {
                     id: 0,
@@ -258,7 +259,7 @@ function submitFrameForClock (clockId, frame) {
   bridge.time.submitFrame(clockId, frame)
 }
 
-function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, freeRunFrames = LTCDevice.DEFAULT_FREE_RUN_FRAME_COUNT, onFrame = () => {}) {
+function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_HZ, freeWheelFrames = TimecodeDevice.DEFAULT_FREE_WHEEL_FRAME_COUNT, onFrame = () => {}) {
   const device = DIController.instantiate('LTCDevice', {
     LTCDecoder: DIController.instantiate('LTCDecoder', {},
       LTCDecoder.DEFAULT_SAMPLE_RATE_HZ,
@@ -267,7 +268,7 @@ function ltcDeviceFactory (deviceId, frameRate = LTCDecoder.DEFAULT_FRAME_RATE_H
     )
   }, {
     deviceId,
-    freeRunFrames
+    freeWheelFrames
   }, onFrame)
 
   device.start()
@@ -299,7 +300,7 @@ async function onLTCDeviceCreated (newSpec) {
     const frameRate = LTCDecoder.SUPPORTED_FRAME_RATES[newSpec?.frameRateIndex || 0]
 
     if (deviceExists) {
-      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.frameRateIndex, newSpec?.freeRunFrames, frame => {
+      device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.freeWheelFrames, frame => {
         submitFrameForClock(clockId, frame)
       })
     }
@@ -339,7 +340,7 @@ async function onLTCDeviceChanged (newSpec) {
     newSpec?.deviceId !== NO_AUDIO_DEVICE_ID &&
     clockId
   ) {
-    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, newSpec?.frameRate, newSpec?.freeRunFrames, frame => {
+    LTC_DEVICES[newSpec?.id].device = ltcDeviceFactory(newSpec?.deviceId, frameRate, newSpec?.freeWheelFrames, frame => {
       submitFrameForClock(clockId, frame)
     })
   }

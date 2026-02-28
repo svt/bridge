@@ -24,7 +24,7 @@ export const InspectorServer = () => {
             server: newServer
           }
         }
-      })
+      }, true)
     }
   }
 

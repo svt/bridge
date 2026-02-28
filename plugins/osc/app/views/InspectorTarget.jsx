@@ -24,7 +24,7 @@ export const InspectorTarget = () => {
             target: newTarget
           }
         }
-      })
+      }, true)
     }
   }
 

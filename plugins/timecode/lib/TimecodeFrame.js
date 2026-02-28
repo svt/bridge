@@ -207,7 +207,7 @@ class TimecodeFrame {
 
       if (rule.min != null) {
         if (frame[rule.key] < rule.min) {
-          throw new TimecodeFrameValidationError(`Value for key "${rule.key}" must be more than ${rule.min}`)
+          throw new TimecodeFrameValidationError(`Value for key "${rule.key}" must be greater than ${rule.min}`)
         }
       }
 
@@ -228,7 +228,7 @@ class TimecodeFrame {
     Invalid frame number
     */
     if (frame.frames >= frameRate) {
-      throw new TimecodeFrameValidationError('Frame value cannot be greater or equal to the frame rate')
+      throw new TimecodeFrameValidationError('Frame value cannot be greater than or equal to the frame rate')
     }
 
     return true

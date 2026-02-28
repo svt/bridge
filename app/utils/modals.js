@@ -65,3 +65,21 @@ export function removeFromStack (id) {
   modalStack.splice(index, 1)
   return true
 }
+
+/**
+ * Get the current size
+ * of the modal stack
+ * @returns { number }
+ */
+export function stackSize () {
+  return modalStack.length
+}
+
+/**
+ * Check if there are
+ * any open modals
+ * @returns { boolean }
+ */
+export function hasOpenModal () {
+  return stackSize() > 0
+}
