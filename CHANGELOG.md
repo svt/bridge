@@ -9,6 +9,7 @@
 - Drag and drop on references and triggers to automatically set target id
 - Ability to create a new workspace from an existing file
 - Ability to close the window with CommandOrControl+W
+- Checks if a reference is targeting itself
 ### Fixed
 - An issue where invalid types could crash the rundown widget
 - An issue where 0 (or falsy values) could not be used as ids for options in preferences of the select type
