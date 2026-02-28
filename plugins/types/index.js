@@ -137,6 +137,20 @@ const ITEM_CHANGE_HANDLERS = [
 ]
 
 const ITEM_DELETE_HANDLERS = [
+  /*
+  Delete all children
+  if a group is deleted
+  */
+  {
+    predicate: (item, type) => item.type === 'bridge.types.group' || type.ancestors.includes('bridge.types.group'),
+    fn: item => {
+      const childIds = item?.children || []
+      if (!Array.isArray(childIds)) {
+        return
+      }
+      bridge.items.deleteItems(childIds)
+    }
+  }
 ]
 
 async function initWidget () {
