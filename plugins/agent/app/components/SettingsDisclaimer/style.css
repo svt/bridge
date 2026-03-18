@@ -1,0 +1,9 @@
+.SettingsDisclaimer {
+  border-top: 1px solid var(--base-color--shade1);
+  margin-top: 20px;
+  padding-top: 10px;
+}
+
+.SettingsDisclaimer-section {
+  margin-top: 20px;
+}

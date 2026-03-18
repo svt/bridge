@@ -1,0 +1,15 @@
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  --icon-color: var(--base-color);
+}
+
+.Icon:not(.Icon--preserveColors) svg [stroke]:not([stroke='none']) {
+  stroke: var(--icon-color);
+}
+
+.Icon:not(.Icon--preserveColors) svg [fill]:not([fill='none']) {
+  fill: var(--icon-color);
+}

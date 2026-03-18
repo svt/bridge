@@ -2,6 +2,7 @@
 
 ## 1.0.0-beta.11 [UNRELEASED]
 ### Added
+- An AI agent
 - A `bridge.time.now()` api for getting the current server time
 ### Fixed
 - An issue where context menues wouldn't be properly placed when running in a web browser

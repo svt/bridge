@@ -1,0 +1,17 @@
+.Settings-section {
+  margin-bottom: 20px;
+}
+
+.Settings-description {
+  margin-bottom: 10px;
+}
+
+.Settings-section > input,
+.Settings-section > select {
+  width: 100%;
+}
+
+.Settings-loader {
+  width: 2em;
+  height: 2em;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/message/error</title>
+    <g id="icons/message/error" stroke="none" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#D82F3F" x="0" y="0" width="25" height="25" rx="12.5"></rect>
+        <g id="Group" stroke-width="1" transform="translate(12.5, 12.75) rotate(45) translate(-12.5, -12.75)translate(5, 5.25)" stroke="#FFFFFF">
+            <line x1="7.5" y1="14.75" x2="7.5" y2="0.25" id="Path-22" stroke-width="2.34375"></line>
+            <line x1="7.5" y1="14.5" x2="7.5" y2="0" id="Path-22" stroke-width="2.34375" transform="translate(7.5, 7.25) rotate(90) translate(-7.5, -7.25)"></line>
+        </g>
+    </g>
+</svg>
