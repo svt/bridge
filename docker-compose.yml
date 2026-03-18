@@ -11,7 +11,8 @@ services:
       - .:/app
     environment:
       - NODE_ENV=development
-      - PORT=3000
+      - HTTP_PORT=3000
+      - HTTP_ADDR=0.0.0.0
       - APP_DATA_BASE_PATH=../data
     ports:
       - 3000:3000
