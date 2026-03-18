@@ -1,0 +1,9 @@
+.ChatMessageToolUse {
+  padding: 10px;
+  font-size: 0.9em;
+
+  white-space: pre-wrap;
+  overflow: hidden;
+
+  opacity: 0.5;
+}

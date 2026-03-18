@@ -1,0 +1,44 @@
+.ChatInteractionConfirm {
+  margin: 5px;
+  padding: 10px;
+
+  border: 1px solid var(--base-color--shade1);
+  border-radius: 10px;
+  background: var(--base-color--shade1);
+
+  font-size: 0.95em;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.ChatInteractionConfirm--done {
+  background: none;
+  border: none;
+}
+
+.ChatInteractionConfirm-content {
+  display: flex;
+  align-items: center;
+}
+
+.ChatInteractionConfirm-actions {
+  display: flex;
+  align-items: center;
+
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-bottom: -5px;
+  margin-top: 10px;
+
+  gap: 5px;
+}
+
+.ChatInteractionConfirm-button {
+  width: 100%;
+}
+
+.ChatInteractionConfirm-icon {
+  margin-right: 5px;
+  margin-left: -5px;
+  transform: scale(0.66);
+}

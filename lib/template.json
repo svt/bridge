@@ -31,6 +31,26 @@
               "component": "bridge.plugins.inspector"
             }
           }
+        },
+        "2": {
+          "title": "Agent",
+          "component": "bridge.internals.grid",
+          "layout": {
+            "agent": { "x": 0, "y": 0, "w": 6, "h": 12 },
+            "rundown": { "x": 6, "y": 0, "w": 12, "h": 12 },
+            "inspector": { "x": 18, "y": 0, "w": 6, "h": 12 }
+          },
+          "children": {
+            "agent": {
+              "component": "bridge.plugins.agent"
+            },
+            "rundown": {
+              "component": "bridge.plugins.rundown"
+            },
+            "inspector": {
+              "component": "bridge.plugins.inspector"
+            }
+          }
         }
       }
     }

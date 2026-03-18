@@ -1,4 +1,5 @@
 import React from 'react'
+import bridge from 'bridge'
 
 import './style.css'
 
@@ -13,29 +14,34 @@ export function RundownItemProgress ({ item }) {
 
     let shouldLoop = true
 
-    function loop () {
+    async function loop () {
       if (!shouldLoop) {
         return
       }
 
       let progress = 0
+      const now = await bridge.time.now()
 
       switch (item?.state) {
         case 'playing':
-          progress = (Date.now() - item?.didStartPlayingAt) / item?.data?.duration
+          progress = (now - item?.didStartPlayingAt) / item?.data?.duration
           break
         case 'scheduled':
-          progress = (item?.willStartPlayingAt - Date.now()) / (item?.willStartPlayingAt - item?.wasScheduledAt)
+          progress = (item?.willStartPlayingAt - now) / (item?.willStartPlayingAt - item?.wasScheduledAt)
           break
       }
 
-      if (Number.isNaN(progress) || (progress >= 1 && item?.state === 'playing')) {
+      /*
+      Reset and stop the loop if the
+      progress is undefined or more than 1
+      */
+      if (Number.isNaN(progress) || progress >= 1) {
         setProgress(0)
+        shouldLoop = false
         return
       }
 
       setProgress(Math.max(Math.min(progress, 1), 0))
-
       window.requestAnimationFrame(loop)
     }
     loop()

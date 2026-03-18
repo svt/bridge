@@ -22,20 +22,6 @@ function isNumber (x) {
   return typeof x === 'number' && !Number.isNaN(x)
 }
 
-function getScreenCoordinates () {
-  return {
-    x: window.screenLeft,
-    y: window.screenTop
-  }
-}
-
-function convertToPageCoordinates (ctxX, ctxY, screenX, screenY) {
-  return {
-    x: ctxX - screenX,
-    y: ctxY - screenY
-  }
-}
-
 function sanitizeItemSpec (spec) {
   const out = {}
   for (const property of ALLOWED_SPEC_PROPERTIES) {
@@ -90,12 +76,9 @@ export function ContextMenuBoundary ({ children }) {
         return
       }
 
-      const screenCoords = getScreenCoordinates()
-      const pageCoords = convertToPageCoordinates(opts.x, opts.y, screenCoords.x, screenCoords.y)
-
       setContextPos({
-        x: Math.max(pageCoords.x, 0),
-        y: Math.max(pageCoords.y, 0)
+        x: Math.max(opts.x, 0),
+        y: Math.max(opts.y, 0)
       })
 
       setOpts(opts)

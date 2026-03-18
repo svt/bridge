@@ -1,0 +1,13 @@
+.ChatLoading {
+  display: flex;
+  padding: 10px;
+  font-size: 0.95em;
+
+  align-items: center;
+}
+
+.ChatLoading-spinner {
+  width: 1.6em;
+  height: 1em;
+  margin-right: 5px;
+}

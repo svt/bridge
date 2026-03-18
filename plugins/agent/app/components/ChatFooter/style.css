@@ -1,0 +1,72 @@
+.ChatFooter {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid var(--base-color--shade1);
+}
+
+.ChatFooter:active,
+.ChatFooter:focus {
+  border: 1px solid var(--base-color);
+}
+
+.ChatFooter-input,
+.ChatFooter-input:active,
+.ChatFooter-input:focus {
+  width: 100%;
+  height: 50px;
+  padding: 5px;
+
+  font-size: 0.9em;
+
+  border: transparent;
+  border-radius: 0;
+  background: none;
+
+  box-shadow: none;
+  resize: none;
+}
+
+.ChatFooter-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ChatFooter-actionSection {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.ChatFooter-actionSection:last-child {
+  margin-right: 0;
+  justify-content: flex-end;
+}
+
+.ChatFooter-contextUsage {
+  margin-right: 8px;
+}
+
+.ChatFooter-contextPie {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--base-color) var(--usage),
+    var(--base-color--shade1) var(--usage)
+  );
+}
+
+.ChatFooter-actionLabel {
+  font-size: 0.9em;
+  opacity: 0.5;
+}
+
+.ChatFooter-button {
+  background: none;
+  border: none;
+}
+
+.ChatFooter-button:active {
+  opacity: 0.5;
+}

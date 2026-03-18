@@ -17,7 +17,10 @@ export function Header () {
     const types = await bridge.state.get('_types')
     const spec = contextMenu.generateAddContextMenuItems(types, typeId => handleAdd(typeId))
 
-    bridge.ui.contextMenu.open(spec, { x: e.screenX, y: e.screenY, searchable: true })
+    bridge.ui.contextMenu.open(spec, {
+      searchable: true,
+      ...bridge.ui.contextMenu.getPositionFromEvent(e)
+    })
   }
 
   /**

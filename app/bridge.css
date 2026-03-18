@@ -145,6 +145,7 @@ h3, .u-heading--3 {
 }
 
 h4, .u-heading--4 {
+  font-size: 1em;
   margin: 0.2em 0;
 }
 

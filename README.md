@@ -5,7 +5,7 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![REUSE status](https://api.reuse.software/badge/github.com/svt/bridge)](https://api.reuse.software/info/github.com/svt/bridge)  
 
-Playout control software that can be customized to fit your needs.  
+AI-powered playout control software that can be customized to fit your needs.  
 Developed for CasparCG but can control anything that supports OSC.
 
 ![Screenshot](/media/screenshot.png)
@@ -46,6 +46,7 @@ The roadmap is available on Notion
 - CasparCG library, playout and templates
 - LTC timecode triggers
 - Keyboard triggers
+- Built in AI-agent
 
 ## Community plugins  
 - [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)

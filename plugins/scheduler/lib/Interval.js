@@ -60,7 +60,14 @@ class Interval {
   _loop () {
     const now = Date.now()
     const drift = Math.max((now - this._lastTrigger) - this._delay, 0)
-    const delay = this._delay - drift
+
+    let delay = this._delay - drift
+    if (isNaN(delay)) {
+      delay = 0
+    }
+    if (delay < 0) {
+      delay = 0
+    }
 
     this._lastTrigger = now
 
