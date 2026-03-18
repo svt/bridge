@@ -13,6 +13,21 @@
     "bridge",
     "plugin"
   ],
+  "contributes": {
+    "types": [
+      {
+        "id": "bridge.types.timeline",
+        "name": "Timeline",
+        "inherits": "bridge.types.collection",
+        "properties": {
+          "name": {
+            "default": "Timeline"
+          },
+          "playMode": {}
+        }
+      }
+    ]
+  },
   "author": "Axel Boberg (hello@axelboberg.se)",
   "license": "UNLICENSED"
 }

@@ -31,7 +31,12 @@ const TYPE_COMPONENTS = {
   'bridge.types.group': {
     item: RundownGroupItem,
     getContextMenuItems: (ctx, item) => rundownGroupItemGetContextMenuItems(ctx, item)
-  }
+  },
+  /*
+  The collection type acts as a group but
+  without group specific context menu items
+  */
+  'bridge.types.collection': { item: RundownGroupItem }
 }
 
 /**
