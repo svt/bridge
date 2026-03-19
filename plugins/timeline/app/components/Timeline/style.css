@@ -12,6 +12,12 @@
   overflow-y: scroll;
 }
 
-.Timeline-tracks {
-  position: relative;
+.Timeline-outOfBounds {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  background: var(--Timeline-color--outOfBounds);
+  pointer-events: none;
+  z-index: 1;
 }

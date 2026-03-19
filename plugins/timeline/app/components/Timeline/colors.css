@@ -3,4 +3,5 @@
   --Timeline-color--border: var(--base-color--shade);
   --Timeline-color--text: var(--base-color);
   --Timeline-color--playhead: #ffffff;
+  --Timeline-color--outOfBounds: var(--base-color--background3);
 }

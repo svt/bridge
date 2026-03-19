@@ -10,11 +10,22 @@ import * as utils from './utils'
 import './style.css'
 import './colors.css'
 
-const MIN_SCALE = 0.05
+
 const MAX_SCALE = 20
 
-function clampScale (scale) {
-  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale))
+function computeMinScale (durationMs, viewportWidth) {
+  if (!durationMs || !viewportWidth) return 0.01
+  /*
+  Find the scale where the full content (duration + 100px overshoot)
+  just fits inside the viewport so the out-of-bounds area never
+  takes over the whole visible area.
+  */
+  const durationPx = (durationMs / 1000) * 100  /* at scale 1 */
+  return Math.max(0.001, (viewportWidth - 100) / durationPx)
+}
+
+function clampScale (scale, minScale) {
+  return Math.min(MAX_SCALE, Math.max(minScale, scale))
 }
 
 const DUMMY_DATA = [
@@ -51,6 +62,27 @@ const DUMMY_DATA = [
 export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }) {
   const contentRef = React.useRef(null)
   const [spec, setSpec] = React.useState(() => utils.getTimelineSpec([]))
+  const [minScale, setMinScale] = React.useState(0.001)
+
+  /* Recompute minScale when the viewport or duration changes */
+  React.useLayoutEffect(() => {
+    if (!contentRef.current) return
+    const update = () => {
+      setMinScale(s => {
+        const next = computeMinScale(spec.duration, contentRef.current?.clientWidth)
+        /* Also clamp the current scale up if it's now below the new minimum */
+        setSpec(current => {
+          if (current.scale < next) return { ...current, scale: next }
+          return current
+        })
+        return next
+      })
+    }
+    const ro = new ResizeObserver(update)
+    ro.observe(contentRef.current)
+    update()
+    return () => ro.disconnect()
+  }, [spec.duration])
 
   /*
   Playhead is stored in ms so it represents a fixed point in time.
@@ -109,7 +141,7 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }
   }
 
   function applyScale (newScale) {
-    const clamped = clampScale(newScale)
+    const clamped = clampScale(newScale, minScale)
     setSpec(current => {
       pendingScrollRef.current = computeScrollAfterScale(current.scale, clamped)
       return { ...current, scale: clamped }
@@ -118,7 +150,7 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }
 
   function applyScaleDelta (delta) {
     setSpec(current => {
-      const clamped = clampScale(current.scale + delta)
+      const clamped = clampScale(current.scale + delta, minScale)
       pendingScrollRef.current = computeScrollAfterScale(current.scale, clamped)
       return { ...current, scale: clamped }
     })
@@ -162,6 +194,7 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }
     applyScaleDelta(delta)
   }
 
+  const durationPx = utils.getPixelWidth(spec.duration ?? 0, spec.scale)
   const playheadX = playheadMs != null ? utils.getPixelWidth(playheadMs, spec.scale) : null
 
   return (
@@ -174,20 +207,26 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }
         onMouseLeave={handleTracksMouseLeave}
         onClick={handleTracksClick}
       >
-        <TimelineHeader spec={spec} />
-        <div className='Timeline-tracks'>
-          {
-            items.map((item, i) => {
-              return (
-                <TimelineTrack key={item.id || i} spec={spec} item={item} onChange={onItemChange} />
-              )
-            })
-          }
+        <div className='Timeline-body' style={{ width: `${durationPx + 100}px` }}>
+          <TimelineHeader spec={spec} />
+          <div className='Timeline-tracks'>
+            {
+              items.map((item, i) => {
+                return (
+                  <TimelineTrack key={item.id || i} spec={spec} item={item} onChange={onItemChange} />
+                )
+              })
+            }
+          </div>
+          <div
+            className='Timeline-outOfBounds'
+            style={{ left: `${durationPx}px` }}
+          />
+          <Playhead x={playheadX} />
+          <Playhead x={ghostX} ghost />
         </div>
-        <Playhead x={playheadX} />
-        <Playhead x={ghostX} ghost />
       </div>
-      <TimelineFooter scale={spec.scale ?? 1} min={MIN_SCALE} max={MAX_SCALE} frameRate={frameRate} onScale={applyScale} />
+      <TimelineFooter scale={spec.scale ?? 1} min={minScale} max={MAX_SCALE} frameRate={frameRate} onScale={applyScale} />
     </div>
   )
 }
