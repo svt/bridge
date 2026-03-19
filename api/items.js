@@ -276,9 +276,12 @@ class Items {
   /**
    * Play the item and emit
    * the 'playing' event`
-   * @param { String } id
+   *
+   * @param { string } id
+   * @param {{ immediate?: boolean }} opts
+   *   immediate - skip any delay on the item and play right away
    */
-  async playItem (id) {
+  async playItem (id, opts = {}) {
     const item = await this.getItem(id)
 
     if (!item) {
@@ -295,11 +298,31 @@ class Items {
 
     const delay = parseInt(clone?.data?.delay)
 
-    if (delay && !Number.isNaN(delay)) {
+    if (!opts.immediate && delay && !Number.isNaN(delay)) {
       this.#props.Commands.executeCommand('items.scheduleItem', clone, delay)
     } else {
-      this.#props.Commands.executeCommand('items.playItem', clone)
+      this.#props.Commands.executeCommand('items.playItem', clone, opts)
     }
+  }
+
+  /**
+   * Seek an already-playing item to a position
+   * without re-emitting item.play
+   *
+   * Updates willStartPlayingAt / didStartPlayingAt and
+   * reschedules items.endItem at the correct remaining time
+   *
+   * @param { String } id
+   * @param { Number } positionMs  How far into the item's duration to seek
+   */
+  async seekItem (id, positionMs) {
+    const item = await this.getItem(id)
+
+    if (!item) {
+      return
+    }
+
+    this.#props.Commands.executeCommand('items.seekItem', item, positionMs)
   }
 
   /**
