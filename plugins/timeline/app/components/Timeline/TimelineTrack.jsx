@@ -6,8 +6,9 @@ import * as utils from './utils'
 
 const MIN_DURATION_MS = 100
 const MIN_DELAY_MS = 0
+const SNAP_THRESHOLD_PX = 8
 
-export function TimelineTrack ({ spec, item, onChange }) {
+export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
   const [localItem, setLocalItem] = React.useState(item)
   const isDragging = React.useRef(false)
   const dragValuesRef = React.useRef({ delay: 0, duration: 0 })
@@ -18,19 +19,44 @@ export function TimelineTrack ({ spec, item, onChange }) {
     }
   }, [item])
 
+  function getSnapped (ms, snapPoints) {
+    const thresholdMs = utils.pixelsToMs(SNAP_THRESHOLD_PX, spec.scale)
+    return utils.snapMs(ms, snapPoints, thresholdMs, spec.frameRate)
+  }
+
   function handleBodyMouseDown (e) {
     if (e.button !== 0) return
     e.preventDefault()
     isDragging.current = true
     const startX = e.clientX
     const startDelay = localItem.delay || 0
-    dragValuesRef.current = { delay: startDelay, duration: localItem.duration || 0 }
+    const duration = localItem.duration || 0
+    dragValuesRef.current = { delay: startDelay, duration }
 
     function onMouseMove (e) {
       const dMs = utils.pixelsToMs(e.clientX - startX, spec.scale)
-      const newDelay = Math.max(MIN_DELAY_MS, Math.round(startDelay + dMs))
-      dragValuesRef.current.delay = newDelay
-      setLocalItem(cur => ({ ...cur, delay: newDelay }))
+      const rawDelay = Math.max(MIN_DELAY_MS, startDelay + dMs)
+      const snapPoints = utils.getSnapPoints(allItems, item.id)
+
+      /* Check snap on leading edge, then trailing edge; pick tighter snap */
+      const thresholdMs = utils.pixelsToMs(SNAP_THRESHOLD_PX, spec.scale)
+      let snappedDelay = rawDelay
+
+      const leadSnap = utils.snapMs(rawDelay, snapPoints, thresholdMs, spec.frameRate)
+      const trailRaw = rawDelay + duration
+      const trailSnap = utils.snapMs(trailRaw, snapPoints, thresholdMs, spec.frameRate)
+
+      const leadDelta = Math.abs(leadSnap - rawDelay)
+      const trailDelta = Math.abs(trailSnap - trailRaw)
+
+      if (leadDelta <= trailDelta) {
+        snappedDelay = Math.max(MIN_DELAY_MS, leadSnap)
+      } else {
+        snappedDelay = Math.max(MIN_DELAY_MS, trailSnap - duration)
+      }
+
+      dragValuesRef.current.delay = snappedDelay
+      setLocalItem(cur => ({ ...cur, delay: snappedDelay }))
     }
 
     function onMouseUp () {
@@ -51,11 +77,17 @@ export function TimelineTrack ({ spec, item, onChange }) {
     isDragging.current = true
     const startX = e.clientX
     const startDuration = localItem.duration || 0
-    dragValuesRef.current = { delay: localItem.delay || 0, duration: startDuration }
+    const delay = localItem.delay || 0
+    dragValuesRef.current = { delay, duration: startDuration }
 
     function onMouseMove (e) {
       const dMs = utils.pixelsToMs(e.clientX - startX, spec.scale)
-      const newDuration = Math.max(MIN_DURATION_MS, Math.round(startDuration + dMs))
+      const rawDuration = Math.max(MIN_DURATION_MS, startDuration + dMs)
+      const snapPoints = utils.getSnapPoints(allItems, item.id)
+      const trailRaw = delay + rawDuration
+      const snappedTrail = getSnapped(trailRaw, snapPoints)
+      const newDuration = Math.max(MIN_DURATION_MS, snappedTrail - delay)
+
       dragValuesRef.current.duration = newDuration
       setLocalItem(cur => ({ ...cur, duration: newDuration }))
     }

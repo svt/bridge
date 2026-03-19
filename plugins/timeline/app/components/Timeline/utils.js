@@ -35,6 +35,47 @@ export function pixelsToMs (pixels, scale) {
   return (pixels / DEFAULT_SECOND_WIDTH_PX / scale) * 1000
 }
 
+/**
+ * Collect all start and end times from items, excluding
+ * the item currently being dragged.
+ */
+export function getSnapPoints (items, excludeId) {
+  const points = []
+  for (const item of items) {
+    if (item.id === excludeId) continue
+    points.push(item.delay || 0)
+    points.push((item.delay || 0) + (item.duration || 0))
+  }
+  return points
+}
+
+/**
+ * Round ms to the nearest frame boundary.
+ */
+export function quantizeToFrame (ms, frameRate) {
+  if (!frameRate) return ms
+  const frameDuration = 1000 / frameRate
+  return Math.round(ms / frameDuration) * frameDuration
+}
+
+/**
+ * Snap ms to the closest value in snapPoints if within thresholdMs,
+ * otherwise return the frame-quantized value.
+ */
+export function snapMs (ms, snapPoints, thresholdMs, frameRate) {
+  let best = null
+  let bestDist = thresholdMs
+  for (const point of snapPoints) {
+    const dist = Math.abs(ms - point)
+    if (dist < bestDist) {
+      bestDist = dist
+      best = point
+    }
+  }
+  if (best !== null) return best
+  return quantizeToFrame(ms, frameRate)
+}
+
 export function getDisplayUnitDurationMS (scale, frameRate) {
   const SCALE_BREAKPOINTS = [
     {

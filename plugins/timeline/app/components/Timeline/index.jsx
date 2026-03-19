@@ -213,7 +213,7 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }
             {
               items.map((item, i) => {
                 return (
-                  <TimelineTrack key={item.id || i} spec={spec} item={item} onChange={onItemChange} />
+                  <TimelineTrack key={item.id || i} spec={spec} item={item} allItems={items} onChange={onItemChange} />
                 )
               })
             }
