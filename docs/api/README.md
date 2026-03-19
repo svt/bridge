@@ -347,11 +347,18 @@ Get an item from the local state representation by its id. This is useful when r
 ### `bridge.items.deleteItem(id)`  
 Delete an item by its id.
 
-### `bridge.items.playItem(id): Promise<Void>`
-Play an item and set its state to 'playing'.
+### `bridge.items.playItem(id[, opts]): Promise<Void>`
+Play an item and set its state to `playing`.
+
+| Option | Type | Description |
+| ------ | ---- | ----------- |
+| `immediate` | `boolean` | Skip any `delay` set on the item and play it immediately |
+
+### `bridge.items.seekItem(id, positionMs): Promise<Void>`
+Seek an already-playing item to `positionMs` milliseconds into its duration without re-emitting `item.play` and reschedules the `item.end` event at the correct remaining time.
 
 ### `bridge.items.stopItem(id): Promise<Void>`
-Stop an item and set its state to 'stopped'.
+Stop an item and set its state to `stopped`.
 
 ### `bridge.items.applyIssue(itemId, issueId, issueSpec): Promise<Void>`  
 Add an issue to an item.
