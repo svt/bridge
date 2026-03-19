@@ -59,7 +59,7 @@ const DUMMY_DATA = [
   }
 ]
 
-export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }) {
+export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, onLockChange, onItemChange }) {
   const contentRef = React.useRef(null)
   const [spec, setSpec] = React.useState(() => utils.getTimelineSpec([]))
   const [minScale, setMinScale] = React.useState(0.001)
@@ -226,7 +226,16 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, onItemChange }
           <Playhead x={ghostX} ghost />
         </div>
       </div>
-      <TimelineFooter scale={spec.scale ?? 1} min={minScale} max={MAX_SCALE} frameRate={frameRate} onScale={applyScale} />
+      <TimelineFooter
+        scale={spec.scale ?? 1}
+        min={minScale}
+        max={MAX_SCALE}
+        frameRate={frameRate}
+        timelineOptions={timelineOptions}
+        lockedId={lockedId}
+        onLockChange={onLockChange}
+        onScale={applyScale}
+      />
     </div>
   )
 }

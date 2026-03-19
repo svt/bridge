@@ -14,6 +14,12 @@
   user-select: none;
 }
 
+.TimelineFooter-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .TimelineFooter-zoom {
   display: flex;
   align-items: center;
