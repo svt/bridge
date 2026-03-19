@@ -1,4 +1,5 @@
 import React from 'react'
+import bridge from 'bridge'
 
 import './TimelineTrack.css'
 
@@ -10,6 +11,7 @@ const SNAP_THRESHOLD_PX = 8
 
 export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
   const [localItem, setLocalItem] = React.useState(item)
+  const [isSelected, setIsSelected] = React.useState(false)
   const isDragging = React.useRef(false)
   const dragValuesRef = React.useRef({ delay: 0, duration: 0 })
 
@@ -19,6 +21,18 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
     }
   }, [item])
 
+  React.useEffect(() => {
+    function handleSelection (selection) {
+      setIsSelected(Array.isArray(selection)
+        ? selection.includes(item.id)
+        : selection === item.id
+      )
+    }
+    bridge.client.selection.getSelection().then(handleSelection)
+    bridge.events.on('selection', handleSelection)
+    return () => bridge.events.off('selection', handleSelection)
+  }, [item.id])
+
   function getSnapped (ms, snapPoints) {
     const thresholdMs = utils.pixelsToMs(SNAP_THRESHOLD_PX, spec.scale)
     return utils.snapMs(ms, snapPoints, thresholdMs, spec.frameRate)
@@ -27,6 +41,9 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
   function handleBodyMouseDown (e) {
     if (e.button !== 0) return
     e.preventDefault()
+    
+    bridge.client.selection.setSelection(item.id)
+
     isDragging.current = true
     const startX = e.clientX
     const startDelay = localItem.delay || 0
@@ -111,6 +128,7 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
           backgroundColor: localItem?.color,
           width: `${utils.getPixelWidth(localItem.duration || 0, spec.scale)}px`,
           marginLeft: `${utils.getPixelWidth(localItem.delay || 0, spec.scale)}px`,
+          boxShadow: isSelected ? 'inset 0 0 0 1px var(--Timeline-color--text)' : undefined,
         }}
         onMouseDown={handleBodyMouseDown}
       >
