@@ -4,6 +4,7 @@
 }
 
 .TimelineTrack-item {
+  position: relative;
   display: flex;
   height: inherit;
   padding: 7px 5px;
@@ -13,4 +14,34 @@
   align-items: center;
 
   box-sizing: border-box;
+  overflow: hidden;
+
+  cursor: grab;
+  user-select: none;
+}
+
+.TimelineTrack-item:active {
+  cursor: grabbing;
+}
+
+.TimelineTrack-item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.TimelineTrack-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.TimelineTrack-resize-handle:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

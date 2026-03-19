@@ -51,6 +51,26 @@
               "component": "bridge.plugins.inspector"
             }
           }
+        },
+        "3": {
+          "title": "Timeline",
+          "component": "bridge.internals.grid",
+          "layout": {
+            "timeline": { "x": 0, "y": 6, "w": 18, "h": 6 },
+            "rundown": { "x": 0, "y": 0, "w": 18, "h": 6 },
+            "inspector": { "x": 18, "y": 0, "w": 6, "h": 12 }
+          },
+          "children": {
+            "timeline": {
+              "component": "bridge.plugins.timeline"
+            },
+            "rundown": {
+              "component": "bridge.plugins.rundown"
+            },
+            "inspector": {
+              "component": "bridge.plugins.inspector"
+            }
+          }
         }
       }
     }

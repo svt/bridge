@@ -1,0 +1,14 @@
+.Playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--Timeline-color--playhead);
+  pointer-events: none;
+  z-index: 10;
+  transform: translateX(-0.5px);
+}
+
+.Playhead--ghost {
+  opacity: 0.3;
+}

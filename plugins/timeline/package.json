@@ -23,7 +23,13 @@
           "name": {
             "default": "Timeline"
           },
-          "playMode": {}
+          "frameRate": {
+            "name": "Frame rate",
+            "type": "enum",
+            "default": 2,
+            "enum": ["23.97", "24", "25", "30", "50", "60"],
+            "ui.group": "Timing"
+          }
         }
       }
     ]

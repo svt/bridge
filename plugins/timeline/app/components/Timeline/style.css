@@ -1,5 +1,17 @@
 .Timeline {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  overflow: hidden;
+}
+
+.Timeline-content {
+  position: relative;
+  flex: 1;
   overflow-x: scroll;
   overflow-y: scroll;
+}
+
+.Timeline-tracks {
+  position: relative;
 }

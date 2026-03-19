@@ -1,0 +1,35 @@
+.TimelineFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-top: 1px solid var(--Timeline-color--border);
+  background: var(--Timeline-color--background);
+  flex-shrink: 0;
+}
+
+.TimelineFooter-frameRate {
+  font-size: 0.7em;
+  opacity: 0.6;
+  user-select: none;
+}
+
+.TimelineFooter-zoom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.TimelineFooter-zoom-label {
+  font-size: 0.7em;
+  opacity: 0.6;
+  min-width: 3.5em;
+  text-align: right;
+  user-select: none;
+}
+
+.TimelineFooter-zoom-slider {
+  width: 100px;
+  accent-color: var(--Timeline-color--text);
+  cursor: pointer;
+}

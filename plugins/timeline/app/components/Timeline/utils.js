@@ -14,10 +14,14 @@ export const UNIT_MS_DURATION = {
   hour: () => 60000 * 60
 }
 
-export function getTimelineSpec (items) {
+export function getTimelineSpec (items = []) {
+  const totalDuration = items.reduce((max, item) => {
+    return Math.max(max, (item.delay || 0) + (item.duration || 0))
+  }, 10000)
+
   return {
     frameRate: 50,
-    duration: 10000,
+    duration: totalDuration,
     scale: 1,
     position: 0
   }
@@ -25,6 +29,10 @@ export function getTimelineSpec (items) {
 
 export function getPixelWidth (time, scale) {
   return (time / 1000) * DEFAULT_SECOND_WIDTH_PX * scale
+}
+
+export function pixelsToMs (pixels, scale) {
+  return (pixels / DEFAULT_SECOND_WIDTH_PX / scale) * 1000
 }
 
 export function getDisplayUnitDurationMS (scale, frameRate) {
