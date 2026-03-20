@@ -66,7 +66,6 @@ const MediaSelectionBar = ({
           type="in"
           timestamp={millisecondsToTime(handlePositions.in)}     
         />
-
         <MediaHandle                
           style={{
             left: `${rightHandlePos}%`,
