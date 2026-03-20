@@ -3,6 +3,7 @@ import React from 'react'
 import * as SharedContext from './sharedContext'
 import * as Settings from './views/Settings'
 
+import { InspectorRange } from './views/InspectorRange'
 import { InspectorServer } from './views/InspectorServer'
 import { InspectorTemplate } from './views/InspectorTemplate'
 import { InspectorTransition } from './views/InspectorTransition'
@@ -31,6 +32,8 @@ export default function App () {
               return <InspectorTransition />
             case 'inspector/template':
               return <InspectorTemplate />
+            case 'inspector/range':
+              return <InspectorRange />
             case 'settings/servers':
               return <Settings.Servers />
             case 'liveSwitch':

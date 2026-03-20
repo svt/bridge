@@ -114,3 +114,32 @@ function frameRateFractionToDecimal (fraction) {
 
   return dividend / divisor
 }
+exports.frameRateFractionToDecimal = frameRateFractionToDecimal
+
+/**
+ * Build a string in hours:minutes:seconds format from milliseconds
+ * @example
+ * 1000 -> '00:01'
+ * 61000 -> '01:01'
+ * 3600000 -> '01:00:00'
+ * @param {number} ms
+ * @returns {string}
+ */
+function millisecondsToTime(ms) {
+  if (ms < 0) return "00:00"
+  if (!ms) return "00:00"
+  if (isNaN(ms)) return "00:00"
+
+  const totalSeconds = Math.floor(ms / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  const pad = (n) => n.toString().padStart(2, "0")
+
+  if (hours > 0) {
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  } else {
+    return `${pad(minutes)}:${pad(seconds)}`
+  }
+}
+exports.millisecondsToTime = millisecondsToTime
