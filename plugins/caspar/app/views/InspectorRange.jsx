@@ -30,12 +30,15 @@ export const InspectorRange = () => {
     )
   }
 
-  // Get the seek and length and total frames from the first selected item
-  const seek = Number.parseInt(item?.data?.caspar?.seek) || 0
+  // Get parameters from the first selected item
   const medialength = item?.data?.medialength
+  // Don't show seek bar if length is 0
+  if (medialength === 0) return null
+
+  const seek = Number.parseInt(item?.data?.caspar?.seek) || 0
   const length = item?.data?.caspar?.length === undefined
     ? (medialength - seek) 
-    : item?.data?.caspar?.length
+    : item?.data?.caspar?.length  
 
   const framerate = item?.data?.framerate || 25
 
