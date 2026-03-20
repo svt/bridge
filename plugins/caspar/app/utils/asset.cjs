@@ -62,16 +62,15 @@ function calculateDurationMs (item) {
   if (!item) {
     return DEFAULT_DURATION_MS
   }
-  // If the item is a still image, return 0
+
   if (item.type === 'STILL') {
     return 0
   }
-  // If the item has no duration, return the default duration
+
   if (isNaN(Number(item?.duration))) {
     return DEFAULT_DURATION_MS
   }
 
-  // If the item has no framerate, return the default duration
   if (!item?.framerate) {
     return DEFAULT_DURATION_MS
   }
