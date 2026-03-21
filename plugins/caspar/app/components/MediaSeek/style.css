@@ -72,6 +72,8 @@
   border-radius: 4px;
   white-space: nowrap;
   z-index: 1;
+  font-family: var(--base-fontFamily--primary);
+  color: var(--base-color);
 }
 
 .MediaHandle::after {
@@ -83,5 +85,5 @@
   transform: translateX(-50%);
   width: 20%;
   border-radius: inherit;
-  background-color: black;
+  background-color: invert(var(--base-color));
 }
