@@ -15,6 +15,7 @@ import trigger from './trigger.svg'
 import rundown from './rundown.svg'
 import warning from './warning.svg'
 import selector from './selector.svg'
+import timeline from './timeline.svg'
 import variable from './variable.svg'
 import inspector from './inspector.svg'
 import arrowRight from './arrow-right.svg'
@@ -46,6 +47,7 @@ export default {
   rundown,
   warning,
   selector,
+  timeline,
   variable,
   inspector,
   arrowRight,

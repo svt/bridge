@@ -20,6 +20,9 @@
         "name": "Timeline",
         "inherits": "bridge.types.collection",
         "properties": {
+          "color": {
+            "default": "#0F7B8C"
+          },
           "name": {
             "default": "Timeline"
           },
@@ -29,6 +32,31 @@
             "default": 2,
             "enum": ["23.97", "24", "25", "30", "50", "60"],
             "ui.group": "Timing"
+          },
+          "timecode.input": {
+            "name": "Timecode source",
+            "type": "enum",
+            "enum": {
+              "$eval": {
+                "op": "concatArrays",
+                "a": [{"label": "None", "value": 0}],
+                "b": {
+                  "$eval": {
+                    "op": "arrayFromObject",
+                    "path": "plugins.bridge-plugin-timecode.settings.ltc_devices",
+                    "map": {"label": "name", "value": "id"}
+                  }
+                }
+              }
+            },
+            "ui.group": "Timecode"
+          },
+          "timecode.startTime": {
+            "name": "Start time",
+            "description": "The SMPTE timecode value at which this timeline's t=0 falls",
+            "type": "string",
+            "default": "00:00:00:00",
+            "ui.group": "Timecode"
           }
         }
       }

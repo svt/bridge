@@ -1,8 +1,11 @@
 import React from 'react'
+import bridge from 'bridge'
 
 import { TimelineTrack } from './TimelineTrack'
 import { TimelineHeader } from './TimelineHeader'
 import { TimelineFooter } from './TimelineFooter'
+import { NoTimelineSelected } from '../NoTimelineSelected'
+
 import { Playhead } from './Playhead'
 
 import * as utils from './utils'
@@ -18,7 +21,7 @@ function computeMinScale (durationMs, viewportWidth) {
   /*
   Find the scale where the full content (duration + 100px overshoot)
   just fits inside the viewport so the out-of-bounds area never
-  takes over the whole visible area.
+  takes over the whole visible area
   */
   const durationPx = (durationMs / 1000) * 100  /* at scale 1 */
   return Math.max(0.001, (viewportWidth - 100) / durationPx)
@@ -59,7 +62,7 @@ const DUMMY_DATA = [
   }
 ]
 
-export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, onLockChange, onItemChange }) {
+export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, onLockChange, onItemChange }) {
   const contentRef = React.useRef(null)
   const [spec, setSpec] = React.useState(() => utils.getTimelineSpec([]))
   const [minScale, setMinScale] = React.useState(0.001)
@@ -85,15 +88,15 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   }, [spec.duration])
 
   /*
-  Playhead is stored in ms so it represents a fixed point in time.
-  Its pixel position is derived at render time from the current scale.
+  Playhead is stored in ms so it represents a fixed point in time
+  Its pixel position is derived at render time from the current scale
   */
   const [playheadMs, setPlayheadMs] = React.useState(null)
   const [ghostX, setGhostX] = React.useState(null)
 
   /*
   Keep a ref so scale handlers always read the latest
-  playheadMs without stale closures.
+  playheadMs without stale closures
   */
   const playheadMsRef = React.useRef(null)
   React.useEffect(() => {
@@ -101,9 +104,9 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   }, [playheadMs])
 
   /*
-  Store the desired scrollLeft after a scale change.
+  Store the desired scrollLeft after a scale change
   Applied in useLayoutEffect so React has already committed
-  the new scale (and therefore the new content width) by then.
+  the new scale (and therefore the new content width) by then
   */
   const pendingScrollRef = React.useRef(null)
 
@@ -113,6 +116,61 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
       pendingScrollRef.current = null
     }
   }, [spec])
+
+  /*
+  Keep a ref to the latest spec.duration so the rAF tick
+  can read it without stale closures
+  */
+  const specDurationRef = React.useRef(spec.duration)
+  React.useEffect(() => {
+    specDurationRef.current = spec.duration
+  }, [spec.duration])
+
+  /*
+  Offset between server time and local Date.now()
+  Fetched once on mount (bridge.time.now() caches the server time
+  with a 10 s TTL so subsequent calls are synchronous)
+  Falls back to 0 (local time) until the first response arrives
+  */
+  const timeOffsetRef = React.useRef(0)
+  React.useEffect(() => {
+    bridge.time.now().then(serverNow => {
+      timeOffsetRef.current = serverNow - Date.now()
+    })
+  }, [])
+
+  /*
+  When the timeline is playing, run a rAF loop that derives playheadMs
+  from willStartPlayingAt in local state. This works for both free play
+  (willStartPlayingAt is fixed at play time) and TC-latched play
+  (willStartPlayingAt is continuously updated by TimelineSequencer)
+  */
+  React.useEffect(() => {
+    if (!isPlaying || !timelineId) {
+      setPlayheadMs(null)
+      return
+    }
+
+    let rafId
+    function tick () {
+      const item = bridge.state.getLocalState()?.items?.[timelineId]
+      if (item?.willStartPlayingAt) {
+        const positionMs = (Date.now() + timeOffsetRef.current) - item.willStartPlayingAt
+        const duration = specDurationRef.current
+
+        if (duration > 0 && positionMs >= duration) {
+          /* Clamp to end and stop the loop — item.end will set isPlaying=false */
+          setPlayheadMs(duration)
+          return
+        }
+
+        setPlayheadMs(positionMs)
+      }
+      rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+  }, [isPlaying, timelineId])
 
   React.useEffect(() => {
     setSpec(current => ({
@@ -130,7 +188,7 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   function computeScrollAfterScale (currentScale, newScale) {
     /*
     Convert the playhead time to pixels at both scales so the
-    anchor pixel position scales correctly with the content.
+    anchor pixel position scales correctly with the content
     */
     const ms = playheadMsRef.current ?? 0
     const anchorXBefore = utils.getPixelWidth(ms, currentScale)
@@ -207,24 +265,30 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
         onMouseLeave={handleTracksMouseLeave}
         onClick={handleTracksClick}
       >
-        <div className='Timeline-body' style={{ width: `${durationPx + 100}px` }}>
-          <TimelineHeader spec={spec} />
-          <div className='Timeline-tracks'>
-            {
-              items.map((item, i) => {
-                return (
-                  <TimelineTrack key={item.id || i} spec={spec} item={item} allItems={items} onChange={onItemChange} />
-                )
-              })
-            }
-          </div>
-          <div
-            className='Timeline-outOfBounds'
-            style={{ left: `${durationPx}px` }}
-          />
-          <Playhead x={playheadX} />
-          <Playhead x={ghostX} ghost />
-        </div>
+        {
+          (!timelineId && !lockedId)
+            ? <NoTimelineSelected />
+            : (
+              <div className='Timeline-body' style={{ width: `${durationPx + 100}px` }}>
+                <TimelineHeader spec={spec} />
+                <div className='Timeline-tracks'>
+                  {
+                    items.map((item, i) => {
+                      return (
+                        <TimelineTrack key={item.id || i} spec={spec} item={item} allItems={items} onChange={onItemChange} />
+                      )
+                    })
+                  }
+                </div>
+                <div
+                  className='Timeline-outOfBounds'
+                  style={{ left: `${durationPx}px` }}
+                />
+                <Playhead x={playheadX} />
+                <Playhead x={ghostX} ghost />
+              </div>
+            )
+        }
       </div>
       <TimelineFooter
         scale={spec.scale ?? 1}

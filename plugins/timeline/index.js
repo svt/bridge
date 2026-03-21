@@ -10,6 +10,15 @@ const bridge = require('bridge')
 const assets = require('../../assets.json')
 const manifest = require('./package.json')
 
+/*
+Register all DI classes with the local controller
+Order matters: dependencies must be required before dependents
+*/
+const DIController = require('./lib/DIController')
+require('./lib/SequencerRegistry')
+require('./lib/ClockSubscriber')
+require('./lib/TimelinePlayback')
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -42,4 +51,5 @@ async function initWidget () {
 
 exports.activate = async () => {
   initWidget()
+  DIController.instantiate('TimelinePlayback').activate()
 }
