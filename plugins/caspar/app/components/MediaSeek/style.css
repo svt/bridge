@@ -1,0 +1,89 @@
+.MediaSeekBar {
+  width: 100%;
+  margin: 0;
+  user-select: none;
+  font-family: sans-serif;
+  border-radius: 0.6rem;
+}
+
+.MediaSeekBar-track {
+  position: relative;
+  height: 34px;
+  background-color: var(--base-color--shade2);
+  border-radius: inherit;
+  cursor: initial;
+  box-shadow: inset 0 0 0 1px var(--base-color--shade2);
+  overflow: visible;
+}
+
+.MediaSelectionBar {
+  position: relative;
+  height: inherit;
+  border-radius: inherit;
+  overflow: hidden;
+  cursor: initial;
+}
+
+.MediaSelectionBar-highlighted {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: var(--base-color--shade4);
+  opacity: 0.5;
+  border-radius: 0.25rem;
+}
+
+.MediaSelectionBar-highlightedBar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: 100%;
+  color: var(--base-color--shade3);
+  user-select: none;
+  cursor: grab;
+  padding: 0.1rem 0.5rem;
+}
+
+.MediaSelectionBar-highlightedBar:active {
+  cursor: grabbing;
+}
+
+.MediaHandle {
+  position: absolute;
+  top: 15%;
+  width: 10px;
+  height: 70%;
+  background-color: var(--base-color);
+  border-radius: 0.25rem;
+  cursor: ew-resize;
+  transform: translateX(-50%);
+}
+
+.MediaHandle--Value {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 1;
+  font-family: var(--base-fontFamily--primary);
+  color: var(--base-color);
+}
+
+.MediaHandle::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  height: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
+  border-radius: inherit;
+  background-color: invert(var(--base-color));
+}

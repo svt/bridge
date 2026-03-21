@@ -62,16 +62,15 @@ function calculateDurationMs (item) {
   if (!item) {
     return DEFAULT_DURATION_MS
   }
-  // If the item is a still image, return 0
+
   if (item.type === 'STILL') {
     return 0
   }
-  // If the item has no duration, return the default duration
+
   if (isNaN(Number(item?.duration))) {
     return DEFAULT_DURATION_MS
   }
 
-  // If the item has no framerate, return the default duration
   if (!item?.framerate) {
     return DEFAULT_DURATION_MS
   }
@@ -114,3 +113,69 @@ function frameRateFractionToDecimal (fraction) {
 
   return dividend / divisor
 }
+exports.frameRateFractionToDecimal = frameRateFractionToDecimal
+
+/**
+ * Build a string in hours:minutes:seconds format from milliseconds
+ * @example
+ * 1000 -> '00:01'
+ * 61000 -> '01:01'
+ * 3600000 -> '01:00:00'
+ * @param {number} ms
+ * @returns {string}
+ */
+function millisecondsToTime(ms) {
+  if (ms < 0) return "00:00"
+  if (!ms) return "00:00"
+  if (isNaN(ms)) return "00:00"
+
+  const totalSeconds = Math.floor(ms / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  const pad = (n) => n.toString().padStart(2, "0")
+
+  if (hours > 0) {
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  } else {
+    return `${pad(minutes)}:${pad(seconds)}`
+  }
+}
+exports.millisecondsToTime = millisecondsToTime
+
+/**
+ * Frames to milliseconds
+ * @param {number} frames
+ * @param {number} framerate
+ * @returns {number}
+ */
+function framesToMilliseconds(frames, framerate) {
+  if (frames < 0) return 0
+  if (!frames) return 0
+  if (isNaN(frames)) return 0
+  if (framerate <= 0) return 0
+  if (!framerate) return 0
+  if (isNaN(framerate)) return 0
+
+  // Round to 1 decimal place
+  return Math.round((frames / framerate) * 1000 * 10) / 10
+}
+exports.framesToMilliseconds = framesToMilliseconds
+
+/**
+ * Milliseconds to frames
+ * @param {number} ms
+ * @param {number} framerate
+ * @returns {number}
+ */
+function millisecondsToFrames(ms, framerate) {
+  if (ms < 0) return 0
+  if (!ms) return 0
+  if (isNaN(ms)) return 0
+  if (framerate <= 0) return 0
+  if (!framerate) return 0
+  if (isNaN(framerate)) return 0
+
+  return Math.round((ms / 1000) * framerate)
+}
+exports.millisecondsToFrames = millisecondsToFrames
