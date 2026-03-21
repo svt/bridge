@@ -90,7 +90,16 @@ function mergeDeep (targetObj = {}, sourceObj = {}) {
         keep expanding the source object to avoid adding
         objects with keywords to the target object
         */
-        targetObj[key] = mergeDeep({}, sourceObj[key])
+        const merged = mergeDeep({}, sourceObj[key])
+
+        /*
+        Never write a bare keyword object to the state —
+        mergeDeep consumes all known keywords so the result
+        should always be empty if only keywords were present
+        */
+        if (Object.keys(merged).length > 0) {
+          targetObj[key] = merged
+        }
       } else {
         /*
         Otherwise apply the target directly
