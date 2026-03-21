@@ -1,4 +1,4 @@
-const { calculateDurationMs, millisecondsToTime } = require('./asset.cjs')
+const { calculateDurationMs, millisecondsToTime, framesToMilliseconds, millisecondsToFrames} = require('./asset.cjs')
 
 test('calculateDurationMs should return 0 for 0 duration (string or number)', () => {
   // Test for both string and number '0'
@@ -91,4 +91,42 @@ test('handles non-numeric input gracefully', () => {
 
 test('handles large durations', () => {
   expect(millisecondsToTime(100 * 3600000)).toEqual('100:00:00')
+})
+
+test('framesToMilliseconds converts frames to milliseconds correctly', () => {
+  expect(framesToMilliseconds(25, 25)).toEqual(1000)
+  expect(framesToMilliseconds(50, 25)).toEqual(2000)
+  expect(framesToMilliseconds(30, 29.97)).toEqual(1001.0)
+})
+
+test('framesToMilliseconds returns 0 for non-numeric frames', () => {
+  expect(framesToMilliseconds('not-a-number', 25)).toEqual(0)
+})
+
+test('framesToMilliseconds returns 0 for invalid framerate', () => {
+  expect(framesToMilliseconds(25, 'invalid')).toEqual(0)
+})
+
+test('framesToMilliseconds returns 0 for zero or negative framerate', () => {
+  expect(framesToMilliseconds(25, 0)).toEqual(0)
+  expect(framesToMilliseconds(25, -25)).toEqual(0)
+})
+
+test('millisecondsToFrames converts milliseconds to frames correctly', () => {
+  expect(millisecondsToFrames(1000, 25)).toEqual(25)
+  expect(millisecondsToFrames(2000, 25)).toEqual(50)
+  expect(millisecondsToFrames(1001, 29.97)).toBeCloseTo(30)
+})
+
+test('millisecondsToFrames returns 0 for non-numeric milliseconds', () => {
+  expect(millisecondsToFrames('not-a-number', 25)).toEqual(0)
+})
+
+test('millisecondsToFrames returns 0 for invalid framerate', () => {
+  expect(millisecondsToFrames(1000, 'invalid')).toEqual(0)
+})
+
+test('millisecondsToFrames returns 0 for zero or negative framerate', () => {
+  expect(millisecondsToFrames(1000, 0)).toEqual(0)
+  expect(millisecondsToFrames(1000, -25)).toEqual(0)
 })

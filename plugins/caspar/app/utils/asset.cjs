@@ -142,3 +142,40 @@ function millisecondsToTime(ms) {
   }
 }
 exports.millisecondsToTime = millisecondsToTime
+
+/**
+ * Frames to milliseconds
+ * @param {number} frames
+ * @param {number} framerate
+ * @returns {number}
+ */
+function framesToMilliseconds(frames, framerate) {
+  if (frames < 0) return 0
+  if (!frames) return 0
+  if (isNaN(frames)) return 0
+  if (framerate <= 0) return 0
+  if (!framerate) return 0
+  if (isNaN(framerate)) return 0
+
+  // Round to 1 decimal place
+  return Math.round((frames / framerate) * 1000 * 10) / 10
+}
+exports.framesToMilliseconds = framesToMilliseconds
+
+/**
+ * Milliseconds to frames
+ * @param {number} ms
+ * @param {number} framerate
+ * @returns {number}
+ */
+function millisecondsToFrames(ms, framerate) {
+  if (ms < 0) return 0
+  if (!ms) return 0
+  if (isNaN(ms)) return 0
+  if (framerate <= 0) return 0
+  if (!framerate) return 0
+  if (isNaN(framerate)) return 0
+
+  return Math.round((ms / 1000) * framerate)
+}
+exports.millisecondsToFrames = millisecondsToFrames
