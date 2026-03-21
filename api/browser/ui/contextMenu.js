@@ -103,6 +103,35 @@ class UIContextMenu {
     this.#openedAt = Date.now()
     this.#props.Events.emitLocally('ui.contextMenu.open', spec, opts)
   }
+
+  /**
+   * Get the event position for use
+   * when opening a context menu
+   * @param { PointerEvent } e
+   * @returns
+   */
+  getPositionFromEvent (e) {
+    if (Object.prototype.hasOwnProperty.call(e.nativeEvent, 'pointerType')) {
+      throw new InvalidArgumentError('Provided event is not of type PointerEvent')
+    }
+
+    /*
+    Find the root element, either an encapsulating
+    iframe or the body and use its position
+    as offset for the event
+    */
+    let rootEl = e?.target?.ownerDocument?.defaultView?.frameElement
+    if (!rootEl) {
+      rootEl = document.body
+    }
+
+    const bounds = rootEl.getBoundingClientRect()
+
+    return {
+      x: e.clientX + bounds.x,
+      y: e.clientY + bounds.y
+    }
+  }
 }
 
 DIController.main.register('UIContextMenu', UIContextMenu, [

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0-beta.11 [UNRELEASED]
+### Added
+- An AI agent
+- A `bridge.time.now()` api for getting the current server time
+### Fixed
+- An issue where context menues wouldn't be properly placed when running in a web browser
+- An issue where time displays in the rundown didn't sync with the server time
+- The clipboard isn't available in insecure contexts
+- Updated dependencies
+
 ## 1.0.0-beta.10
 ### Added
 - Human/AI readable descriptors for types

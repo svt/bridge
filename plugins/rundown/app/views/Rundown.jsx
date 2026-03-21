@@ -43,7 +43,10 @@ export function Rundown () {
         label: 'Add',
         children: contextMenu.generateAddContextMenuItems(types, typeId => handleItemCreate(typeId))
       }
-    ], { x: e.screenX, y: e.screenY, searchable: true })
+    ], {
+      searchable: true,
+      ...bridge.ui.contextMenu.getPositionFromEvent(e)
+    })
   }
 
   /**

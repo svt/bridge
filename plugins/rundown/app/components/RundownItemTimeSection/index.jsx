@@ -1,4 +1,5 @@
 import React from 'react'
+import bridge from 'bridge'
 
 import './style.css'
 
@@ -45,19 +46,21 @@ export function RundownItemTimeSection ({ item }) {
 
     let shouldLoop = true
 
-    function loop () {
+    async function loop () {
       if (!shouldLoop) {
         return
       }
 
       let remaining = 0
 
+      const now = await bridge.time.now()
+
       switch (item?.state) {
         case 'playing':
-          remaining = Math.min(item?.data?.duration - (Date.now() - item?.didStartPlayingAt), item?.data?.duration)
+          remaining = Math.min(item?.data?.duration - (now - item?.didStartPlayingAt), item?.data?.duration)
           break
         case 'scheduled':
-          remaining = item?.willStartPlayingAt - Date.now()
+          remaining = item?.willStartPlayingAt - now
           break
         default:
           setRemaining(undefined)
@@ -68,8 +71,17 @@ export function RundownItemTimeSection ({ item }) {
         setRemaining(undefined)
         return
       }
-
+      
       setRemaining(Math.max(remaining, 0))
+
+      /*
+      Prevent the loop from continuing
+      if there is no remaining time
+      */
+      if (remaining < 0) {
+        shouldLoop = false
+        return
+      }
       window.requestAnimationFrame(loop)
     }
     loop()

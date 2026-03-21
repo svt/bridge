@@ -21,6 +21,7 @@ Bridge provides a JavaScript api for use in plugins and their widgets.
 - [Messages](#messages)
 - [UI](#ui)
   - [Context menus](#context-menus)
+- [Time](#time)
 
 ## Getting started  
 The api is available for plugins and widgets running in either the main process or browser processes of Bridge and can be included as follows. The module will be provided by Bridge at runtime.
@@ -634,9 +635,15 @@ const spec = [
 
 window.addEventListener('contextmenu', e => {
   bridge.ui.contextMenu.open(spec, {
-    x: e.screenX, // Required
-    y: e.screenY, // Required
-    searchable: true // Optional, defaults to false, whether or not to show a search field and allow the user to search for any items in the menu
+    searchable: true // Optional, defaults to false, whether or not to show a search field and allow the user to search for any items in the menu,
+
+    // Coordinates must be required either by
+    // 1. Auto populating coordinates (recommended)
+    ...bridge.ui.contextMenu.getPositionFromEvent(e),
+
+    // 2. Manually defining coordinates
+    y: 10, 
+    x: 10
   })
 })
 ```
@@ -662,4 +669,15 @@ Close any opened context menus, this does not need to be called as a response to
 ```javascript
 import bridge from 'bridge'
 bridge.ui.contextMenu.close()
+```
+
+## Time  
+
+### `bridge.time.now(): Promise.<number>`
+Get the current server time, consider this a replacement for Date.now().
+This function compensates for roundtrip latency and local clock drift.
+
+```javascript
+import bridge from 'bridge'
+const now = await bridge.time.now()
 ```

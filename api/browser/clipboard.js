@@ -7,6 +7,8 @@ const DIController = require('../../shared/DIController')
 const InvalidArgumentError = require('../error/InvalidArgumentError')
 
 class Clipboard {
+  #copiedContent
+
   /**
    * Write a string into the clipboard
    * @param { String } str A string to write
@@ -17,7 +19,17 @@ class Clipboard {
       throw new InvalidArgumentError('Provided text is not a string and cannot be written to the clipboard')
     }
 
-    return navigator.clipboard.writeText(str)
+    if (navigator.clipboard) {
+      return navigator.clipboard.writeText(str)
+    }
+
+    /*
+    Fall back to using an internal
+    property as store if navigator.clipboard
+    is not available (it isn't in insecure contexts)
+    */
+    this.#copiedContent = str
+    return Promise.resolve(true)
   }
 
   /**
@@ -27,7 +39,10 @@ class Clipboard {
    * @returns { Promise.<string> }
    */
   readText () {
-    return navigator.clipboard.readText()
+    if (navigator.clipboard) {
+      return navigator.clipboard.readText()
+    }
+    return Promise.resolve(this.#copiedContent)
   }
 
   /**

@@ -170,7 +170,9 @@ export function RundownListItem ({
       )
     ]
 
-    bridge.ui.contextMenu.open(spec, { x: e.screenX, y: e.screenY })
+    bridge.ui.contextMenu.open(spec, {
+      ...bridge.ui.contextMenu.getPositionFromEvent(e)
+    })
   }
 
   async function handleDelete () {

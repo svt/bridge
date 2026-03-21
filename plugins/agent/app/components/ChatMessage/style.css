@@ -1,0 +1,71 @@
+.ChatMessage {
+  padding: 10px;
+  font-size: 0.95em;
+
+  border-radius: 10px;
+
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.ChatMessage--user {
+  margin: 5px;
+  border: 1px solid var(--base-color--shade1);
+  background: var(--base-color--shade1);
+}
+
+.ChatMessage--error {
+  margin: 5px;
+  background: color-mix(in srgb, var(--base-color--alert) 30%, white 0%);
+  overflow: hidden;
+}
+
+.ChatMessage p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.ChatMessage p:only-child {
+  display: contents;
+}
+
+.ChatMessage ul, 
+.ChatMessage ol {
+  display: flex;
+  margin-top: 0;
+  margin-bottom: 0;
+  flex-direction: column;
+}
+
+.ChatMessage pre {
+  padding: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: -5px;
+  margin-right: -5px;
+ 
+  background: var(--base-color--shade2);
+  border-radius: 5px;
+ 
+  box-sizing: border-box;
+  overflow-x: scroll;
+}
+
+.ChatMessage-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-bottom: -5px;
+}
+
+.ChatMessage-actionButton {
+  border: none;
+  background: none;
+  appearance: none;
+}
+
+.ChatMessage-actionButton:active {
+  opacity: 0.5;
+}
