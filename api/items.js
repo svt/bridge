@@ -22,6 +22,7 @@ const InvalidArgumentError = require('./error/InvalidArgumentError')
 
 const Cache = require('./classes/Cache')
 const DIController = require('../shared/DIController')
+const { getEffectiveDuration } = require('../shared/items')
 
 const CACHE_MAX_ENTRIES = 10
 
@@ -165,6 +166,11 @@ class Items {
     await this.applyItem(id, set, emitEvent)
   }
 
+  /**
+   * Check if an item exists
+   * @param { string } id
+   * @returns { Promise.<boolean> }
+   */
   async itemExists (id) {
     if (typeof id !== 'string') {
       throw new MissingArgumentError('Invalid value for item id, must be a string')
@@ -271,6 +277,20 @@ class Items {
     }
 
     return item
+  }
+
+  /**
+   * Get the effective playback duration for an item,
+   * taking inPoint and outPoint into account
+   *
+   * Falls back to data.duration when inPoint/outPoint are not set,
+   * so items without trim points behave exactly as before
+   *
+   * @param { Item } item
+   * @returns { number }
+   */
+  getEffectiveDuration (item) {
+    return getEffectiveDuration(item)
   }
 
   /**

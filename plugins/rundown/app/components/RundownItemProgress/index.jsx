@@ -24,7 +24,7 @@ export function RundownItemProgress ({ item }) {
 
       switch (item?.state) {
         case 'playing':
-          progress = (now - item?.didStartPlayingAt) / item?.data?.duration
+          progress = (now - item?.didStartPlayingAt) / bridge.items.getEffectiveDuration(item)
           break
         case 'scheduled':
           progress = (item?.willStartPlayingAt - now) / (item?.willStartPlayingAt - item?.wasScheduledAt)

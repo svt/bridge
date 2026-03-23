@@ -45,3 +45,17 @@
 .TimelineTrack-resize-handle:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+.TimelineTrack-trim-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.TimelineTrack-trim-handle:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

@@ -56,9 +56,11 @@ export function RundownItemTimeSection ({ item }) {
       const now = await bridge.time.now()
 
       switch (item?.state) {
-        case 'playing':
-          remaining = Math.min(item?.data?.duration - (now - item?.didStartPlayingAt), item?.data?.duration)
+        case 'playing': {
+          const effectiveDuration = bridge.items.getEffectiveDuration(item)
+          remaining = Math.min(effectiveDuration - (now - item?.didStartPlayingAt), effectiveDuration)
           break
+        }
         case 'scheduled':
           remaining = item?.willStartPlayingAt - now
           break
@@ -101,7 +103,7 @@ export function RundownItemTimeSection ({ item }) {
     <div className='RundownItemTimeSection'>
       <div className='RundownItemProgress-value'>-
         {
-          item?.data?.duration >= MS.hour
+          bridge.items.getEffectiveDuration(item) >= MS.hour
             ? formatTime(remaining + MS.second, 'h:m:s')
             : formatTime(remaining + MS.second, 'm:s')
         }

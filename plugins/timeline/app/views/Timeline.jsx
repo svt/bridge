@@ -2,12 +2,24 @@ import React from 'react'
 import bridge from 'bridge'
 
 import { Timeline as TimelineComponent } from '../components/Timeline'
+import { useEffectWhileLoaded } from '../hooks/useEffectWhileLoaded'
 
 const FRAME_RATE_OPTIONS = ['23.97', '24', '25', '30', '50', '60']
 
+/**
+ * Get all timeline items
+ * in the current project
+ * 
+ * @typedef {{
+ *  data: any
+ * }} TimelineItem
+ * 
+ * @returns { Promise.<TimelineItem[]> } 
+ */
 function getAllTimelineItems () {
   const allItems = bridge.state.getLocalState()?.items || {}
-  return Object.values(allItems).filter(item => item.type === 'bridge.types.timeline')
+  return Object.values(allItems)
+    .filter(item => item.type === 'bridge.types.timeline')
 }
 
 export function Timeline () {
@@ -44,15 +56,21 @@ export function Timeline () {
       item.children.map(id => bridge.items.getItem(id))
     )
 
-    const mapped = children
-      .filter(Boolean)
-      .map(child => ({
-        id: child.id,
-        label: child.data?.name,
-        color: child.data?.color,
-        duration: Number(child.data?.duration) || 0,
-        delay: Number(child.data?.delay) || 0
-      }))
+    const mapped = await Promise.all(
+      children
+        .filter(Boolean)
+        .map(async child => {
+          const type = await bridge.types.getType(child.type)
+          const trimmable = type?.id === 'bridge.types.trimmable' ||
+                            (type?.ancestors?.includes('bridge.types.trimmable') ?? false)
+          return {
+            id: child.id,
+            type: child.type,
+            data: child.data,
+            trimmable
+          }
+        })
+    )
 
     currentChildIdsRef.current = mapped.map(child => child.id)
     setItems(mapped)
@@ -102,10 +120,10 @@ export function Timeline () {
     }
 
     const updatedItems = items.map(child =>
-      child.id === id ? { ...child, ...changes } : child
+      child.id === id ? { ...child, data: { ...child.data, ...changes } } : child
     )
     const totalDuration = updatedItems.reduce((max, child) => {
-      return Math.max(max, (child.delay || 0) + (child.duration || 0))
+      return Math.max(max, (child.data?.delay || 0) + bridge.items.getEffectiveDuration(child))
     }, 0)
     await bridge.items.applyItem(timelineIdRef.current, { data: { duration: totalDuration } }, true)
   }
@@ -139,7 +157,7 @@ export function Timeline () {
     }
   }
 
-  React.useEffect(() => {
+  useEffectWhileLoaded(() => {
     refreshTimelineOptions()
 
     /* Restore persisted lock from widget data */
@@ -158,18 +176,12 @@ export function Timeline () {
     bridge.events.on('item.stop', handleItemStop)
     bridge.events.on('item.end', handleItemEnd)
 
-    function cleanup () {
+    return () => {
       bridge.events.off('selection', handleSelection)
       bridge.events.off('item.change', handleItemChange)
       bridge.events.off('item.play', handleItemPlay)
       bridge.events.off('item.stop', handleItemStop)
       bridge.events.off('item.end', handleItemEnd)
-      window.removeEventListener('beforeunload', cleanup)
-    }
-
-    window.addEventListener('beforeunload', cleanup)
-    return () => {
-      cleanup()
     }
   }, [])
 

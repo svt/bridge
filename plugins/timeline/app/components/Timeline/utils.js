@@ -1,3 +1,5 @@
+import bridge from 'bridge'
+
 const DEFAULT_SECOND_WIDTH_PX = 100
 
 const TIME_UNIT = {
@@ -16,7 +18,7 @@ export const UNIT_MS_DURATION = {
 
 export function getTimelineSpec (items = []) {
   const totalDuration = items.reduce((max, item) => {
-    return Math.max(max, (item.delay || 0) + (item.duration || 0))
+    return Math.max(max, (item.data?.delay || 0) + bridge.items.getEffectiveDuration(item))
   }, 10000)
 
   return {
@@ -43,8 +45,8 @@ export function getSnapPoints (items, excludeId) {
   const points = []
   for (const item of items) {
     if (item.id === excludeId) continue
-    points.push(item.delay || 0)
-    points.push((item.delay || 0) + (item.duration || 0))
+    points.push(item.data?.delay || 0)
+    points.push((item.data?.delay || 0) + bridge.items.getEffectiveDuration(item))
   }
   return points
 }

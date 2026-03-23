@@ -79,7 +79,7 @@
             "ui.unit": "ms"
           },
           "outPoint": {
-            "name": "In point",
+            "name": "Out point",
             "type": "string",
             "allowsVariables": true,
             "ui.group": "Timing",
