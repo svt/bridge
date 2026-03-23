@@ -1,6 +1,17 @@
 .TimelineTrack {
+  position: relative;
   margin: 3px 0;
   height: 35px;
+  overflow: hidden;
+}
+
+.TimelineTrack-ghost {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 5px;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 .TimelineTrack-item {
@@ -8,16 +19,17 @@
   display: flex;
   height: inherit;
   padding: 7px 5px;
-
+  
   border-radius: 5px;
-
+  
   align-items: center;
-
+  
   box-sizing: border-box;
   overflow: hidden;
-
+  
   cursor: grab;
   user-select: none;
+  z-index: 1;
 }
 
 .TimelineTrack-item:active {
