@@ -76,14 +76,16 @@
             "type": "string",
             "allowsVariables": true,
             "ui.group": "Timing",
-            "ui.unit": "ms"
+            "ui.unit": "ms",
+            "ui.dependsOn": ["duration"]
           },
           "outPoint": {
             "name": "Out point",
             "type": "string",
             "allowsVariables": true,
             "ui.group": "Timing",
-            "ui.unit": "ms"
+            "ui.unit": "ms",
+            "ui.dependsOn": ["duration"]
           }
         }
       },

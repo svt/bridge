@@ -270,6 +270,12 @@ export function Form () {
    * @returns { import('react').ReactElement }
    */
   function renderProperty (property, id) {
+    if (
+      (property['ui.dependsOn'] ?? []).some(key => !getValue(key))
+    ) {
+      return null
+    }
+
     const Component = INPUT_COMPONENTS[property.type]
 
     function handleVariableHintClick () {
