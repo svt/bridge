@@ -6,6 +6,7 @@
 - A `bridge.time.now()` api for getting the current server time
 - The new API function `bridge.items.seekItem` used to seek an item to a specific point in time
 - The ability to bypass delay and play an item immediately through the api
+- A new on end action to force stop
 ### Fixed
 - An issue where context menues wouldn't be properly placed when running in a web browser
 - An issue where time displays in the rundown didn't sync with the server time

@@ -72,7 +72,7 @@ async function init (htmlPath) {
         name: 'On end',
         type: 'enum',
         default: defaults?.onEnd || 0,
-        enum: ['Do nothing', 'Play next sibling', 'Select next sibling (main client)'],
+        enum: ['Do nothing', 'Play next sibling', 'Select next sibling (main client)', 'Stop'],
         'ui.group': 'Timing'
       }
     }
