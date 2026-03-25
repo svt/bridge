@@ -13,6 +13,7 @@
 - An issue where time displays in the rundown didn't sync with the server time
 - The clipboard isn't available in insecure contexts
 - Updated dependencies
+- An issue where variable autocomplete wouldn't sync with the input field horisontal scroll
 
 ## 1.0.0-beta.10
 ### Added
