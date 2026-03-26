@@ -12,6 +12,21 @@
   overflow-y: scroll;
 }
 
+.Timeline-content.is-draggedOver::before {
+  content: '';
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  outline: 1px dashed var(--base-color);
+  outline-offset: -2px;
+
+  border-radius: 5px;
+
+  z-index: 2;
+}
+
 .Timeline-outOfBounds {
   position: absolute;
   top: 0;

@@ -62,10 +62,11 @@ const DUMMY_DATA = [
   }
 ]
 
-export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, onLockChange, onItemChange }) {
+export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, onLockChange, onItemChange, onDrop = () => {} }) {
   const contentRef = React.useRef(null)
   const [spec, setSpec] = React.useState(() => utils.getTimelineSpec([]))
   const [minScale, setMinScale] = React.useState(0.001)
+  const [isDraggedOver, setIsDraggedOver] = React.useState(false)
 
   /* Recompute minScale when the viewport or duration changes */
   React.useLayoutEffect(() => {
@@ -229,6 +230,27 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
     setGhostX(null)
   }
 
+  function handleDragOver (e) {
+    e.preventDefault()
+    setIsDraggedOver(true)
+  }
+
+  function handleDragLeave (e) {
+    /*
+    Only clear the state when the drag truly leaves the content area,
+    not when moving between child elements
+    */
+    if (e.currentTarget.contains(e.relatedTarget)) {
+      return
+    }
+    setIsDraggedOver(false)
+  }
+
+  function handleDrop (e) {
+    setIsDraggedOver(false)
+    onDrop(e)
+  }
+
   function handleTracksClick (e) {
     const x = getContentX(e)
     setPlayheadMs(utils.pixelsToMs(x, spec.scale))
@@ -258,12 +280,15 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   return (
     <div className='Timeline'>
       <div
-        className='Timeline-content'
+        className={`Timeline-content ${(isDraggedOver && timelineId) ? 'is-draggedOver' : ''}`}
         ref={contentRef}
         onWheel={handleWheel}
         onMouseMove={handleTracksMouseMove}
         onMouseLeave={handleTracksMouseLeave}
         onClick={handleTracksClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
         {
           (!timelineId && !lockedId)

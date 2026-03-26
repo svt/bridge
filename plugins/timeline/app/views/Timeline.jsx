@@ -139,6 +139,35 @@ export function Timeline () {
     }
   }
 
+  async function handleDrop (e) {
+    e.preventDefault()
+
+    if (!timelineIdRef.current) {
+      return
+    }
+
+    const itemId = e.dataTransfer.getData('text/plain')
+    const itemSpec = e.dataTransfer.getData('bridge/item')
+
+    if (itemSpec) {
+      try {
+        const spec = JSON.parse(itemSpec)
+        if (!spec.type) {
+          return
+        }
+        const newId = await bridge.items.createItem(spec.type, spec?.data)
+        bridge.commands.executeCommand('rundown.appendItem', timelineIdRef.current, newId)
+      } catch (_) {
+        console.warn('Tried to drop an invalid spec onto the timeline')
+      }
+      return
+    }
+
+    if (itemId) {
+      bridge.commands.executeCommand('rundown.appendItem', timelineIdRef.current, itemId)
+    }
+  }
+
   function handleItemPlay (item) {
     if (item.id === timelineIdRef.current) {
       setIsPlaying(true)
@@ -195,6 +224,7 @@ export function Timeline () {
       isPlaying={isPlaying}
       onLockChange={handleLockChange}
       onItemChange={handleDragChange}
+      onDrop={handleDrop}
     />
   )
 }
