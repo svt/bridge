@@ -11,7 +11,7 @@ import { Modal } from '../../../../app/components/Modal'
  * }} Filter
  */
 export const LibraryModal = () => {
-  const [items, setItems] = React.useState()
+  const [selection, setSelection] = React.useState([])
   const [modalId, setModalId] = React.useState()
   const [firstItem, setFirstItem] = React.useState()
 
@@ -23,7 +23,7 @@ export const LibraryModal = () => {
   React.useEffect(() => {
     async function getSelectedItems () {
       const selection = await bridge.client.selection.getSelection()
-      setItems(selection)
+      setSelection(selection)
 
       const firstItemId = selection?.[0]
       const item = await bridge.items.getItem(firstItemId)
@@ -39,10 +39,45 @@ export const LibraryModal = () => {
     bridge.ui.modal.close(modalId)
   }
 
+  /**
+   * Apply the asset's properties
+   * to the selected items
+   */
+  async function handleItemDoubleClick (item) {
+    if (
+      !Object.prototype.hasOwnProperty.call(item?.data?.caspar, 'server') ||
+      !Object.prototype.hasOwnProperty.call(item?.data?.caspar, 'target')
+    ) {
+      return
+    }
+
+    const set = {
+      data: {
+        caspar: {
+          server: item?.data?.caspar?.server,
+          target: item?.data?.caspar?.target
+        }
+      }
+    }
+
+    if (Object.prototype.hasOwnProperty.call(item?.data, 'duration')) {
+      set.data.duration = item.data.duration
+    }
+
+    for (const id of selection) {
+      await bridge.items.applyItem(id, JSON.parse(JSON.stringify(set)), true)
+    }
+    handleModalClose()
+  }
+
   return (  
     <div className='View--flex'>
-      <Library highlightItem={firstItem?.data?.caspar?.target} serverId={firstItem?.data?.caspar?.server} />
-      <ModalFooter numItemsSelected={items?.length} onModalClose={() => handleModalClose()} />
+      <Library
+        highlightItem={firstItem?.data?.caspar?.target}
+        serverId={firstItem?.data?.caspar?.server}
+        onItemDoubleClick={item => handleItemDoubleClick(item)}
+      />
+      <ModalFooter numItemsSelected={selection?.length} onModalClose={() => handleModalClose()} />
     </div>
   )
 }
