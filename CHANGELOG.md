@@ -9,12 +9,14 @@
 - A new on end action to force stop
 - In and out points on trimmable items
 - A timeline widget
+- In and out points for trimmable items
 ### Fixed
 - An issue where context menues wouldn't be properly placed when running in a web browser
 - An issue where time displays in the rundown didn't sync with the server time
 - The clipboard isn't available in insecure contexts
 - Updated dependencies
 - An issue where variable autocomplete wouldn't sync with the input field horisontal scroll
+- A bug where there were no guards for placing a group, or timeline, within itself
 
 ## 1.0.0-beta.10
 ### Added

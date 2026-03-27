@@ -153,6 +153,16 @@ exports.activate = async () => {
   async function moveItem (newParentId, newIndex, itemId) {
     const siblings = await getItems(newParentId)
     const item = await bridge.items.getItem(itemId)
+    const parentAncestors = await bridge.items.getItemAncestors(newParentId)
+
+    /*
+    No item can become a child or
+    grand child of itself,
+    make sure that doesn't happen
+    */
+    if (newParentId === itemId || parentAncestors?.includes(itemId)) {
+      return
+    }
 
     /*
     Remove the item from
@@ -365,6 +375,16 @@ exports.activate = async () => {
   async function appendItem (newParentId, itemId) {
     const items = await getItems(newParentId)
     const item = await bridge.items.getItem(itemId)
+    const parentAncestors = await bridge.items.getItemAncestors(newParentId)
+
+    /*
+    No item can become a child or
+    grand child of itself,
+    make sure that doesn't happen
+    */
+    if (newParentId === itemId || parentAncestors?.includes(itemId)) {
+      return
+    }
 
     if (item?.parent) {
       removeItemsFromParent(item.parent, [item.id])

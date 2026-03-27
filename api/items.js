@@ -218,6 +218,24 @@ class Items {
     return curState?.items?.[id]
   }
 
+  async getItemAncestors (id) {
+    const items = await this.#props.State.get('items')
+    if (!items) {
+      return
+    }
+
+    const out = []
+    let item = items?.[id]
+    while (item?.id) {
+      if (!item.parent) {
+        return out.reverse()
+      }
+      out.push(item.parent)
+      item = items[item.parent]
+    }
+    return out.reverse()
+  }
+
   /**
    * Delete an item by its id
    *
