@@ -93,7 +93,6 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   Its pixel position is derived at render time from the current scale
   */
   const [playheadMs, setPlayheadMs] = React.useState(null)
-  const [ghostX, setGhostX] = React.useState(null)
 
   /*
   Keep a ref so scale handlers always read the latest
@@ -215,21 +214,6 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
     })
   }
 
-  function getContentX (e) {
-    const rect = contentRef.current.getBoundingClientRect()
-    return e.clientX - rect.left + contentRef.current.scrollLeft
-  }
-
-  function handleTracksMouseMove (e) {
-    /* Only show ghost when no button is held (not dragging items) */
-    if (e.buttons !== 0) return
-    setGhostX(getContentX(e))
-  }
-
-  function handleTracksMouseLeave () {
-    setGhostX(null)
-  }
-
   function handleDragOver (e) {
     e.preventDefault()
     setIsDraggedOver(true)
@@ -249,11 +233,6 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   function handleDrop (e) {
     setIsDraggedOver(false)
     onDrop(e)
-  }
-
-  function handleTracksClick (e) {
-    const x = getContentX(e)
-    setPlayheadMs(utils.pixelsToMs(x, spec.scale))
   }
 
   function handleWheel (e) {
@@ -283,9 +262,6 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
         className={`Timeline-content ${(isDraggedOver && timelineId) ? 'is-draggedOver' : ''}`}
         ref={contentRef}
         onWheel={handleWheel}
-        onMouseMove={handleTracksMouseMove}
-        onMouseLeave={handleTracksMouseLeave}
-        onClick={handleTracksClick}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -310,7 +286,6 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
                   style={{ left: `${durationPx}px` }}
                 />
                 <Playhead x={playheadX} />
-                <Playhead x={ghostX} ghost />
               </div>
             )
         }

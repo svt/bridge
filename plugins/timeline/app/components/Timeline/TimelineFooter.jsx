@@ -6,9 +6,6 @@ export function TimelineFooter ({ scale = 1, min, max, frameRate, timelineOption
   return (
     <div className='TimelineFooter'>
       <div className='TimelineFooter-left'>
-        {frameRate != null && (
-          <span className='TimelineFooter-frameRate'>{frameRate} fps</span>
-        )}
         <select
           className='Select--small'
           value={lockedId ?? ''}
@@ -19,6 +16,9 @@ export function TimelineFooter ({ scale = 1, min, max, frameRate, timelineOption
             <option key={opt.id} value={opt.id}>{opt.label}</option>
           ))}
         </select>
+        {frameRate != null && (
+          <span className='TimelineFooter-frameRate'>{frameRate} fps</span>
+        )}
       </div>
       <div className='TimelineFooter-zoom'>
         <span className='TimelineFooter-zoom-label'>
