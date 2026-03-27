@@ -84,7 +84,7 @@ function constructPlayableItemInit (libraryAsset) {
  *  item: LibraryAsset
  * }} arg0
  */
-export const LibraryListItem = ({ item = {}, isHighlighted, itemRef, onClick, onDoubleClick }) => {
+export const LibraryListItem = ({ item = {}, isHighlighted, isFocused, itemRef, onClick, onDoubleClick }) => {
   async function handleDragStart (e) {
     const data = constructPlayableItemInit(item)
     e.dataTransfer.setData('bridge/item', JSON.stringify(data))
@@ -104,7 +104,7 @@ export const LibraryListItem = ({ item = {}, isHighlighted, itemRef, onClick, on
   return (
     <li
       ref={itemRef}
-      className={`LibraryListItem${isHighlighted ? ' is-highlighted' : ''}`}
+      className={`LibraryListItem${isHighlighted ? ' is-highlighted' : ''}${isFocused ? ' is-focused' : ''}`}
       onDragStart={e => handleDragStart(e)}
       onClick={e => handleClick(e)}
       onDoubleClick={e => handleDoubleClick(e)}
