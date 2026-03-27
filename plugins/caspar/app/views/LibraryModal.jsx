@@ -71,7 +71,7 @@ export const LibraryModal = () => {
   }
 
   return (  
-    <div className='View--flex'>
+    <div className='View--flex View--inset'>
       <Library
         highlightItem={firstItem?.data?.caspar?.target}
         serverId={firstItem?.data?.caspar?.server}
