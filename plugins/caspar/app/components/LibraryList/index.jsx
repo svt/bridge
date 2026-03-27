@@ -8,6 +8,10 @@ export const LibraryList = ({ items = [], highlightItem, onItemClick, onItemDoub
   const highlightedRef = React.useRef()
   const [focusedIndex, setFocusedIndex] = React.useState(null)
 
+  /*
+  If there's a highlighted item,
+  scroll to it
+  */
   React.useEffect(() => {
     if (!highlightItem) {
       return
@@ -16,9 +20,13 @@ export const LibraryList = ({ items = [], highlightItem, onItemClick, onItemDoub
     if (index !== -1) {
       setFocusedIndex(index)
     }
-    highlightedRef.current?.scrollIntoView({ block: 'nearest' })
+    highlightedRef.current?.scrollIntoView({ block: 'center' })
   }, [items, highlightItem])
 
+  /*
+  If there's a focused item,
+  scroll to it
+  */
   React.useEffect(() => {
     if (focusedIndex === null) {
       return
