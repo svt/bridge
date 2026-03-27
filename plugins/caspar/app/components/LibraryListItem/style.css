@@ -35,3 +35,7 @@
 .LibraryListItem-metadata {
   opacity: 0.5;
 }
+
+.LibraryListItem.is-highlighted {
+  background: var(--base-color--accent1);
+}

@@ -3,15 +3,12 @@ import './style.css'
 
 import { ServerSelector } from '../ServerSelector'
 
-export const LibraryHeader = ({ onChange = () => {} }) => {
-  const [filter, setFilter] = React.useState({})
-
+export const LibraryHeader = ({ filter = {}, onChange = () => {} }) => {
   function handleFilterValue (key, value) {
     const newFilter = {
       ...filter,
       [key]: value
     }
-    setFilter(newFilter)
     onChange(newFilter)
   }
 

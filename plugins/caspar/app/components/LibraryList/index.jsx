@@ -3,12 +3,31 @@ import './style.css'
 
 import { LibraryListItem } from '../LibraryListItem'
 
-export const LibraryList = ({ items = [] }) => {
+export const LibraryList = ({ items = [], highlightItem, onItemClick, onItemDoubleClick }) => {
+  const highlightedRef = React.useRef()
+
+  React.useEffect(() => {
+    if (!highlightItem) {
+      return
+    }
+    highlightedRef.current?.scrollIntoView({ block: 'nearest' })
+  }, [items, highlightItem])
+
   return (
     <ul className='LibraryList'>
       {
         (items || []).map((item, i) => {
-          return <LibraryListItem key={i} item={item} />
+          const isHighlighted = highlightItem && item.name === highlightItem
+          return (
+            <LibraryListItem
+              key={i}
+              item={item}
+              isHighlighted={isHighlighted}
+              itemRef={isHighlighted ? highlightedRef : undefined}
+              onClick={onItemClick}
+              onDoubleClick={onItemDoubleClick}
+            />
+          )
         })
       }
     </ul>
