@@ -210,7 +210,7 @@ class Items {
 
   /**
    * Get the local representation of an item
-   * @param { String } id The id of the item to get
+   * @param { string } id The id of the item to get
    * @returns { Item }
    */
   getLocalItem (id) {
@@ -218,6 +218,16 @@ class Items {
     return curState?.items?.[id]
   }
 
+  /**
+   * Get an array of ancestors to the item provided,
+   * that is a list of item ids of all its parents
+   * up to RUNDOWN_ROOT
+   *
+   * The response does not include the item itself
+   *
+   * @param { string } id The id of the item to lookup
+   * @returns { string[] }
+   */
   async getItemAncestors (id) {
     const items = await this.#props.State.get('items')
     if (!items) {

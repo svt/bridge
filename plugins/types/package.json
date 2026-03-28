@@ -100,7 +100,7 @@
       },
       {
         "id": "bridge.types.collection",
-        "inherits": "bridge.types.media",
+        "inherits": "bridge.types.duration",
         "properties": {}
       },
       {
