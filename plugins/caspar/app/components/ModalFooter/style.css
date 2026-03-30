@@ -1,7 +1,7 @@
 .ModalFooter {
   display: flex;
   width: 100%;
-  padding: 10px 10px 10px 20px;
+  padding: 10px 10px 7px 20px;
   border-top: 1px solid var(--base-color--shade1);
 
   flex-shrink: 0;
