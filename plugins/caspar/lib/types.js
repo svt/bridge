@@ -182,6 +182,12 @@ function init (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Caspar'
       },
+      'caspar.targetSearch': {
+        name: '',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/target`
+      },
       'caspar.scaleMode': {
         name: 'Scale mode',
         type: 'enum',
@@ -258,6 +264,12 @@ function init (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Caspar'
       },
+      'caspar.targetSearch': {
+        name: '',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/target`
+      },
       'caspar.speed': {
         name: 'Speed',
         type: 'string',
@@ -301,6 +313,12 @@ function init (htmlPath) {
         type: 'string',
         allowsVariables: true,
         'ui.group': 'Caspar'
+      },
+      'caspar.targetSearch': {
+        name: '',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/target`
       },
       'caspar.data': {
         default: { f0: 'Foo' },

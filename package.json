@@ -90,5 +90,6 @@
       }
     }
   },
-  "nodeGypRebuild": "true"
+  "nodeGypRebuild": "true",
+  "jest": {}
 }

@@ -2,34 +2,22 @@
   border-bottom: 1px solid var(--base-color--shade1);
 }
 
-.LibraryHeader-serverSelector {
+.LibraryHeader-section {
+  display: flex;
   width: 100%;
-  padding: 0 5px 5px;
+  padding: 0 5px 5px 5px;
+  gap: 5px;
+  
+  align-items: center;
   box-sizing: border-box;
 }
 
-.LibraryHeader-refresh {
-  margin: 0 5px 5px;
-}
-
-@media screen and (min-width: 350px) {
-  .LibraryHeader {
-    display: flex;
-    align-items: center;
-  }
-
-  .LibraryHeader-serverSelector {
-    width: 45%;
-  }
-
-  .LibraryHeader-refresh {
-    margin: 0 5px 5px 0;
-  }
+.LibraryHeader-select {
+  width: 100%;
 }
 
 .LibraryHeader-search {
   width: 100%;
-  padding: 0 5px 5px;
   box-sizing: border-box;
 }
 
