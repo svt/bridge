@@ -19,7 +19,7 @@
 - Updated dependencies
 - An issue where variable autocomplete wouldn't sync with the input field horisontal scroll
 - A bug where there were no guards for placing a group, or timeline, within itself
-- A memory leak occuring within widgets using hooking onto the state within caspar widgets
+- A memory leak occuring within widgets hooking onto the state within caspar widgets
 - UI issues with the caspar library widget 
 
 ## 1.0.0-beta.10
