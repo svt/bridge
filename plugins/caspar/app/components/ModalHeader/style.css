@@ -1,0 +1,9 @@
+.ModalHeader {
+  display: flex;
+  padding: 15px 0;
+
+  flex-shrink: 0;
+
+  align-items: center;
+  justify-content: center;
+}

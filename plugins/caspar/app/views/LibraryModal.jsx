@@ -3,7 +3,7 @@ import bridge from 'bridge'
 
 import { Library } from '../components/Library'
 import { ModalFooter } from '../components/ModalFooter'
-import { Modal } from '../../../../app/components/Modal'
+import { ModalHeader } from '../components/ModalHeader'
 
 /**
  * @typedef {{
@@ -71,7 +71,8 @@ export const LibraryModal = () => {
   }
 
   return (  
-    <div className='View--flex View--inset'>
+    <div className='View--flex'>
+      <ModalHeader title='Edit target' />
       <Library
         highlightItem={firstItem?.data?.caspar?.target}
         serverId={firstItem?.data?.caspar?.server}

@@ -4,7 +4,8 @@ import bridge from 'bridge'
 import { LibraryHeader } from '../LibraryHeader'
 import { LibraryList } from '../LibraryList'
 
-import * as asset from '../../utils/asset.cjs'
+import * as asset from '../../utils/asset'
+import * as filterUtils from '../../utils/filter'
 
 /**
  * Statuses that the
@@ -87,29 +88,47 @@ export const Library = ({ highlightItem, serverId, onItemClick, onItemDoubleClic
         return
       }
 
+      const typeStr = filter?.type || filterUtils.DEFAULT_TYPES_STR
+
       try {
-        const res = await Promise.all([
-          bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'cls'),
-          bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'tls')
-        ])
+        const commands = []
 
-        const parsedMediaAssets = (res?.[0]?.data || [])
-          .map(asset.parseMediaAsset)
+        if (filterUtils.typeIncludesMedia(typeStr)) {
+          commands.push(
+            bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'cls')
+              .then(res => {
+                return (res?.data || [])
+                  .map(asset.parseMediaAsset)
+              })
+          )
+        }
 
-        const parsedTemplateAssets = (res?.[1]?.data || [])
-          .map(asset.parseTemplateAsset)
+        if (filterUtils.typeIncludesTemplate(typeStr)) {
+          commands.push(
+            bridge.commands.executeCommand('caspar.sendCommand', filter.serverId, 'tls')
+              .then(res => {
+                return (res?.data || [])
+                  .map(asset.parseTemplateAsset)
+              })
+          )
+        }
 
-        const sortedAssets = [...parsedMediaAssets, ...parsedTemplateAssets]
+        const res = await Promise.all(commands)
+        const sortedAssets = res
+          .flat()
+          .filter(item => item)
           .sort((a, b) => String(a.name || '').localeCompare(b.name || ''))
+          .filter(item => filterUtils.filterByItemType(item?.type, typeStr))
 
         setItems(sortedAssets)
         setStatus(STATUS.list)
-      } catch (_) {
+      } catch (err) {
+        console.error('[Caspar Library] Error', err)
         setStatus(STATUS.error)
       }
     }
     exec()
-  }, [filter?.serverId, filter?.refresh])
+  }, [filter?.serverId, filter?.refresh, filter?.type])
 
   /**
    * An array of all items that matches

@@ -1,14 +1,14 @@
 import React from 'react'
 import './style.css'
 
-import * as asset from '../../utils/asset.cjs'
+import * as asset from '../../utils/asset.js'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
     channel: 1,
     layer: 10
   },
-  [asset.type.movie]: {
+  [asset.type.video]: {
     channel: 1,
     layer: 10
   },
@@ -30,7 +30,7 @@ const DEFAULT_VALUES = {
  */
 const ITEM_CONSTRUCTORS = [
   {
-    if: item => [asset.type.still, asset.type.movie, asset.type.audio].includes(item.type),
+    if: item => [asset.type.still, asset.type.video, asset.type.audio].includes(item.type),
     fn: item => {
       return {
         type: 'bridge.caspar.media',
@@ -78,7 +78,7 @@ function constructPlayableItemInit (libraryAsset) {
 }
 
 /**
- * @typedef { import('../../utils/asset.cjs').LibraryAsset } LibraryAsset
+ * @typedef { import('../../utils/asset.js').LibraryAsset } LibraryAsset
  *
  * @param {{
  *  item: LibraryAsset

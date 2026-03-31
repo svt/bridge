@@ -27,11 +27,6 @@ html, body, .View--flex {
   justify-content: center;
 }
 
-.View--inset {
-  padding: 5px 5px 0 5px;
-  box-sizing: border-box;
-}
-
 .View--spread {
   display: flex;
 }
