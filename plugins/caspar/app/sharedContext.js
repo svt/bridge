@@ -6,6 +6,8 @@
 import React from 'react'
 import bridge from 'bridge'
 
+import { useEffectWhileLoaded } from './hooks/useEffectWhileLoaded'
+
 /**
  * A context for being shared
  * across active clients
@@ -40,12 +42,15 @@ export const Provider = ({ children }) => {
   Listen for changes to the state
   and update the context accordingly
   */
-  React.useEffect(() => {
+  useEffectWhileLoaded(() => {
     function onStateChange (state) {
       setState({ ...state })
     }
     bridge.events.on('state.change', onStateChange)
-    return () => bridge.events.off('state.change', onStateChange)
+
+    return () => {
+      bridge.events.off('state.change', onStateChange)
+    }
   }, [])
 
   return (
