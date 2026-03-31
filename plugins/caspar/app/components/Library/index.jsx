@@ -30,12 +30,27 @@ const STATUS = Object.freeze({
 const NO_SERVER_ID = '__none'
 
 /**
+ * Check if a provided
+ * server id is a group
+ * @param { string } serverId 
+ * @returns { boolean }
+ */
+function serverIdIsGroup (serverId) {
+  if (typeof serverId !== 'string') {
+    return false
+  }
+  return serverId.startsWith('group:')
+}
+
+/**
  * @typedef {{
  *  serverId: String
  * }} Filter
  */
 export const Library = ({ highlightItem, serverId, onItemClick, onItemDoubleClick }) => {
   const [status, setStatus] = React.useState(STATUS.idle)
+  const [statusMessage, setStatusMessage] = React.useState()
+
   const [items, setItems] = React.useState()
 
   /**
@@ -78,6 +93,13 @@ export const Library = ({ highlightItem, serverId, onItemClick, onItemDoubleClic
         return
       }
 
+      if (serverIdIsGroup(filter.serverId)) {
+        setStatus(STATUS.error)
+        setStatusMessage('Cannot search server groups')
+        return
+      }
+
+      setStatusMessage(undefined)
       setStatus(STATUS.loading)
 
       /*
@@ -167,7 +189,21 @@ export const Library = ({ highlightItem, serverId, onItemClick, onItemDoubleClic
       }
       {
         status === STATUS.error &&
-        <div className='Warning' />
+        (
+          <div className='View--center'>
+            <div>
+              <div className='Warning' />
+              {
+                statusMessage &&
+                (
+                  <div className='u-marginTop--5px u-maxWidth--250px u-textAlign--center'>
+                    {statusMessage}
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        )
       }
       {
         status === STATUS.loading &&
