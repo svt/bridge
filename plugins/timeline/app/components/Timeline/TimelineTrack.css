@@ -2,7 +2,7 @@
   position: relative;
   margin: 3px 0;
   height: 35px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .TimelineTrack-ghost {
@@ -12,6 +12,12 @@
   border-radius: 5px;
   opacity: 0.25;
   pointer-events: none;
+}
+
+.TimelineTrack-item-wrapper {
+  position: relative;
+  display: inline-block;
+  height: inherit;
 }
 
 .TimelineTrack-item {
@@ -42,6 +48,17 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.TimelineTrack-item-label--external {
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--Timeline-color--text);
+  font-size: inherit;
+  line-height: 35px;
 }
 
 .TimelineTrack-resize-handle {

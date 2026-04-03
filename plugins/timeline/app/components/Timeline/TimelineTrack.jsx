@@ -256,6 +256,9 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
   const inPoint = localItem.data?.inPoint || 0
   const delay = localItem.data?.delay || 0
 
+  const pixelWidth = utils.getPixelWidth(effectiveDuration, spec.scale)
+  const isNarrow = pixelWidth < 100
+
   return (
     <div className='TimelineTrack'>
       {item.trimmable && sourceDuration > 0 && (
@@ -269,18 +272,23 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
         />
       )}
       <div
-        className='TimelineTrack-item'
-        style={{
-          backgroundColor: localItem?.data?.color,
-          width: `${utils.getPixelWidth(effectiveDuration, spec.scale)}px`,
-          marginLeft: `${utils.getPixelWidth(delay, spec.scale)}px`,
-          boxShadow: isSelected ? 'inset 0 0 0 1px var(--Timeline-color--text)' : undefined,
-        }}
-        onMouseDown={handleBodyMouseDown}
+        className='TimelineTrack-item-wrapper'
+        style={{ marginLeft: `${utils.getPixelWidth(delay, spec.scale)}px` }}
       >
-        {item.trimmable && sourceDuration > 0 && <div className='TimelineTrack-trim-handle' onMouseDown={handleTrimMouseDown} />}
-        <span className='TimelineTrack-item-label'>{localItem?.data?.name}</span>
-        {item.resizable && <div className='TimelineTrack-resize-handle' onMouseDown={handleResizeMouseDown} />}
+        <div
+          className='TimelineTrack-item'
+          style={{
+            backgroundColor: localItem?.data?.color,
+            width: `${pixelWidth}px`,
+            boxShadow: isSelected ? 'inset 0 0 0 1px var(--Timeline-color--text)' : undefined,
+          }}
+          onMouseDown={handleBodyMouseDown}
+        >
+          {item.trimmable && sourceDuration > 0 && <div className='TimelineTrack-trim-handle' onMouseDown={handleTrimMouseDown} />}
+          {!isNarrow && <span className='TimelineTrack-item-label'>{localItem?.data?.name}</span>}
+          {item.resizable && <div className='TimelineTrack-resize-handle' onMouseDown={handleResizeMouseDown} />}
+        </div>
+        {isNarrow && <span className='TimelineTrack-item-label--external'>{localItem?.data?.name}</span>}
       </div>
     </div>
   )
