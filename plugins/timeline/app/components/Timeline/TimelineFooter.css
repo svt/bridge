@@ -1,41 +1,46 @@
 .TimelineFooter {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 4px 8px;
+  
   border-top: 1px solid var(--Timeline-color--border);
   background: var(--Timeline-color--background);
+  
+  align-items: center;
+  justify-content: space-between;
   flex-shrink: 0;
 }
 
 .TimelineFooter-frameRate {
+  user-select: none;
   font-size: 0.7em;
   opacity: 0.6;
-  user-select: none;
 }
 
 .TimelineFooter-left {
   display: flex;
-  align-items: center;
   gap: 8px;
+  align-items: center;
 }
 
 .TimelineFooter-zoom {
   display: flex;
-  align-items: center;
   gap: 8px;
+  align-items: center;
 }
 
 .TimelineFooter-zoom-label {
-  font-size: 0.7em;
-  opacity: 0.6;
   min-width: 3.5em;
+
+  font-size: 0.7em;
   text-align: right;
+
   user-select: none;
+  opacity: 0.6;
 }
 
 .TimelineFooter-zoom-slider {
   width: 100px;
+
   accent-color: var(--Timeline-color--text);
   cursor: pointer;
 }
