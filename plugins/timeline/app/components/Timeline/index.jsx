@@ -185,31 +185,36 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
     setSpec(current => ({ ...current, frameRate: parseFloat(frameRate) }))
   }, [frameRate])
 
-  function computeScrollAfterScale (currentScale, newScale) {
-    /*
-    Convert the playhead time to pixels at both scales so the
-    anchor pixel position scales correctly with the content
-    */
-    const ms = playheadMsRef.current ?? 0
-    const anchorXBefore = utils.getPixelWidth(ms, currentScale)
-    const anchorXAfter = utils.getPixelWidth(ms, newScale)
+  function computeScrollAfterScale (currentScale, newScale, cursorOffsetX) {
     const scrollLeft = contentRef.current?.scrollLeft ?? 0
-    const visualOffset = anchorXBefore - scrollLeft
-    return anchorXAfter - visualOffset
+    /*
+    If a cursor position is provided, anchor the zoom on that pixel.
+    Otherwise fall back to the playhead position (e.g. for the footer slider).
+    */
+    let anchorMs
+    if (cursorOffsetX != null) {
+      anchorMs = utils.pixelsToMs(scrollLeft + cursorOffsetX, currentScale)
+    } else {
+      anchorMs = playheadMsRef.current ?? 0
+    }
+    const anchorPxBefore = utils.getPixelWidth(anchorMs, currentScale)
+    const anchorPxAfter = utils.getPixelWidth(anchorMs, newScale)
+    const visualOffset = anchorPxBefore - scrollLeft
+    return anchorPxAfter - visualOffset
   }
 
   function applyScale (newScale) {
     const clamped = clampScale(newScale, minScale)
     setSpec(current => {
-      pendingScrollRef.current = computeScrollAfterScale(current.scale, clamped)
+      pendingScrollRef.current = computeScrollAfterScale(current.scale, clamped, null)
       return { ...current, scale: clamped }
     })
   }
 
-  function applyScaleDelta (delta) {
+  function applyScaleDelta (delta, cursorOffsetX) {
     setSpec(current => {
       const clamped = clampScale(current.scale + delta, minScale)
-      pendingScrollRef.current = computeScrollAfterScale(current.scale, clamped)
+      pendingScrollRef.current = computeScrollAfterScale(current.scale, clamped, cursorOffsetX)
       return { ...current, scale: clamped }
     })
   }
@@ -250,7 +255,10 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
       ? e.deltaY * -0.02  /* pinch — small deltas */
       : e.deltaY * -0.05  /* alt+scroll — larger deltas */
 
-    applyScaleDelta(delta)
+    const rect = contentRef.current?.getBoundingClientRect()
+    const cursorOffsetX = rect ? e.clientX - rect.left : null
+
+    applyScaleDelta(delta, cursorOffsetX)
   }
 
   const durationPx = utils.getPixelWidth(spec.duration ?? 0, spec.scale)
