@@ -12,6 +12,8 @@
 - In and out points for trimmable items
 - A quick way to change caspar targets
 - An API for opening modals
+### Changed
+- Make margins in the inspector smaller
 ### Fixed
 - An issue where context menues wouldn't be properly placed when running in a web browser
 - An issue where time displays in the rundown didn't sync with the server time
