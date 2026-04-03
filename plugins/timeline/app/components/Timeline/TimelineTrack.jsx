@@ -280,7 +280,7 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
       >
         {item.trimmable && sourceDuration > 0 && <div className='TimelineTrack-trim-handle' onMouseDown={handleTrimMouseDown} />}
         <span className='TimelineTrack-item-label'>{localItem?.data?.name}</span>
-        <div className='TimelineTrack-resize-handle' onMouseDown={handleResizeMouseDown} />
+        {item.resizable && <div className='TimelineTrack-resize-handle' onMouseDown={handleResizeMouseDown} />}
       </div>
     </div>
   )

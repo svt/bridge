@@ -63,11 +63,14 @@ export function Timeline () {
           const type = await bridge.types.getType(child.type)
           const trimmable = type?.id === 'bridge.types.trimmable' ||
                             (type?.ancestors?.includes('bridge.types.trimmable') ?? false)
+          const resizable = 'duration' in (type?.properties ?? {})
+
           return {
             id: child.id,
             type: child.type,
             data: child.data,
-            trimmable
+            trimmable,
+            resizable
           }
         })
     )
