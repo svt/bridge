@@ -6,7 +6,7 @@
 
 .Accordion-header {
   display: flex;
-  padding: 3px;
+  padding: 5px;
 
   align-items: center;
   box-sizing: border-box;

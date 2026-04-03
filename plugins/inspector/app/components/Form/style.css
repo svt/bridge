@@ -99,8 +99,12 @@
 }
 
 .Form-section {
-  padding: 5px 10px;
+  padding: 5px 0;
   box-sizing: border-box;
+}
+
+.Form-section--padded {
+  padding: 5px 5px;
 }
 
 .Form-row {
@@ -121,11 +125,12 @@
 }
 
 .Form-accordion {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding-top: 10px;
-
+  padding: 5px 0;
   border-top: 1px solid var(--base-color--shade1);
+}
+
+.Form-accordionChildren {
+  padding: 0 5px;
 }
 
 .Form-notifications .Notification {

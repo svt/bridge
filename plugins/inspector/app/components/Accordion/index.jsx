@@ -28,7 +28,7 @@ export function Accordion ({ title, children, open: _open = true }) {
       </div>
       {
         open
-          ? children
+          ? <div className='Accordion-children'>{children}</div>
           : <></>
       }
     </div>
