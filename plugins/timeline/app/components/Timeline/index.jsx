@@ -68,15 +68,19 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   const [minScale, setMinScale] = React.useState(0.001)
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
 
-  /* Recompute minScale when the viewport or duration changes */
+  /*
+  Recompute minScale when the
+  viewport or duration changes
+  */
   React.useLayoutEffect(() => {
     if (!contentRef.current) return
     const update = () => {
       setMinScale(s => {
         const next = computeMinScale(spec.duration, contentRef.current?.clientWidth)
-        /* Also clamp the current scale up if it's now below the new minimum */
         setSpec(current => {
-          if (current.scale < next) return { ...current, scale: next }
+          if (current.scale < next) {
+            return { ...current, scale: next }
+          }
           return current
         })
         return next
@@ -127,23 +131,8 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
   }, [spec.duration])
 
   /*
-  Offset between server time and local Date.now()
-  Fetched once on mount (bridge.time.now() caches the server time
-  with a 10 s TTL so subsequent calls are synchronous)
-  Falls back to 0 (local time) until the first response arrives
-  */
-  const timeOffsetRef = React.useRef(0)
-  React.useEffect(() => {
-    bridge.time.now().then(serverNow => {
-      timeOffsetRef.current = serverNow - Date.now()
-    })
-  }, [])
-
-  /*
-  When the timeline is playing, run a rAF loop that derives playheadMs
-  from willStartPlayingAt in local state. This works for both free play
-  (willStartPlayingAt is fixed at play time) and TC-latched play
-  (willStartPlayingAt is continuously updated by TimelineSequencer)
+  Loop for keeping
+  the playhead updated
   */
   React.useEffect(() => {
     if (!isPlaying || !timelineId) {
@@ -152,10 +141,10 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
     }
 
     let rafId
-    function tick () {
+    async function tick () {
       const item = bridge.state.getLocalState()?.items?.[timelineId]
       if (item?.willStartPlayingAt) {
-        const positionMs = (Date.now() + timeOffsetRef.current) - item.willStartPlayingAt
+        const positionMs = (await bridge.time.now()) - item.willStartPlayingAt
         const duration = specDurationRef.current
 
         if (duration > 0 && positionMs >= duration) {
@@ -169,7 +158,9 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
       rafId = requestAnimationFrame(tick)
     }
     rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
+    return () => {
+      cancelAnimationFrame(rafId)
+    }
   }, [isPlaying, timelineId])
 
   React.useEffect(() => {
