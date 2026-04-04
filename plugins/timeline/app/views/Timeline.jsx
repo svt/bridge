@@ -3,6 +3,7 @@ import bridge from 'bridge'
 
 import { Timeline as TimelineComponent } from '../components/Timeline'
 import { useEffectWhileLoaded } from '../hooks/useEffectWhileLoaded'
+import * as widgetUtils from '../utils/widget'
 
 const FRAME_RATE_OPTIONS = ['23.97', '24', '25', '30', '50', '60']
 
@@ -23,11 +24,26 @@ function getAllTimelineItems () {
 }
 
 export function Timeline () {
+  const [isFloated, setIsFloated] = React.useState(false)
   const [items, setItems] = React.useState([])
   const [frameRate, setFrameRate] = React.useState(null)
   const [timelineOptions, setTimelineOptions] = React.useState([])
   const [lockedId, setLockedId] = React.useState(null)
   const [isPlaying, setIsPlaying] = React.useState(false)
+
+  /*
+  Update the isFloated
+  state to know if the 
+  widget floats or not
+  */
+  React.useEffect(() => {
+    async function getValue () {
+      const isFloated = await widgetUtils.isFloated()
+      setIsFloated(!!isFloated)
+    }
+    getValue()
+  }, [])
+
   const timelineIdRef = React.useRef(null)
   const lockedIdRef = React.useRef(null)
   const currentChildIdsRef = React.useRef([])
@@ -80,7 +96,10 @@ export function Timeline () {
   }
 
   async function handleSelection (selection) {
-    /* Ignore selection changes when locked to a specific timeline */
+    /*
+    Ignore selection changes when
+    locked to a specific timeline
+    */
     if (lockedIdRef.current) {
       return
     }
@@ -99,11 +118,11 @@ export function Timeline () {
   }
 
   async function handleItemChange (itemId) {
+    refreshTimelineOptions()
+
     if (!timelineIdRef.current) {
       return
     }
-
-    refreshTimelineOptions()
 
     const timeline = await bridge.items.getItem(timelineIdRef.current)
     const isTimeline = itemId === timelineIdRef.current
@@ -200,8 +219,6 @@ export function Timeline () {
       timelineIdRef.current = persistedId
       loadChildren(persistedId)
     }
-
-    bridge.client.selection.getSelection().then(handleSelection)
     bridge.events.on('selection', handleSelection)
     bridge.events.on('item.change', handleItemChange)
     bridge.events.on('item.play', handleItemPlay)
@@ -217,6 +234,17 @@ export function Timeline () {
     }
   }, [])
 
+  /*
+  When floated and not locked to a specific timeline, auto-lock to
+  the first available option as soon as options are loaded
+  */
+  React.useEffect(() => {
+    if (!isFloated || lockedId || !timelineOptions.length) {
+      return
+    }
+    handleLockChange(timelineOptions[0].id)
+  }, [isFloated, lockedId, timelineOptions])
+
   return (
     <TimelineComponent
       items={items}
@@ -225,6 +253,7 @@ export function Timeline () {
       lockedId={lockedId}
       timelineId={timelineIdRef.current}
       isPlaying={isPlaying}
+      isFloated={isFloated}
       onLockChange={handleLockChange}
       onItemChange={handleDragChange}
       onDrop={handleDrop}

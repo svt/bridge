@@ -62,7 +62,7 @@ const DUMMY_DATA = [
   }
 ]
 
-export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, onLockChange, onItemChange, onDrop = () => {} }) {
+export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, isFloated = false, onLockChange, onItemChange, onDrop = () => {} }) {
   const contentRef = React.useRef(null)
   const [spec, setSpec] = React.useState(() => utils.getTimelineSpec([]))
   const [minScale, setMinScale] = React.useState(0.001)
@@ -305,6 +305,7 @@ export function Timeline ({ items = DUMMY_DATA, frameRate = null, timelineOption
         frameRate={frameRate}
         timelineOptions={timelineOptions}
         lockedId={lockedId}
+        isFloated={isFloated}
         onLockChange={onLockChange}
         onScale={applyScale}
       />

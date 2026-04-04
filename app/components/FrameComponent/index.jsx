@@ -92,7 +92,7 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
-export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enableFloat = true }) {
+export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enableFloat = true, isFloated = false }) {
   const [caller] = React.useState(uuidv4())
   const [local] = React.useContext(LocalContext)
 
@@ -232,6 +232,10 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
     }
   }, [frameRef.current?.contentWindow])
 
+  /*
+  Register listeners
+  for keyboard events
+  */
   React.useEffect(() => {
     const contentWindow = frameRef.current?.contentWindow
     if (!contentWindow) {
@@ -253,6 +257,19 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       contentWindow.removeEventListener('keyup', onKeyUp)
     }
   }, [frameRef.current?.contentWindow])
+
+  /*
+  Set window.BRIDGE_WIDGET_IS_FLOATED
+  within the iframe to indicate whether
+  or not the widget is currently floated
+  */
+  React.useEffect(() => {
+    const contentWindow = frameRef.current?.contentWindow
+    if (!contentWindow) {
+      return
+    }
+    contentWindow.BRIDGE_WIDGET_IS_FLOATED = isFloated
+  }, [frameRef.current?.contentWindow, isFloated])
 
   /*
   Copy the theme variables from
