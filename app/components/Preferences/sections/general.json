@@ -6,6 +6,16 @@
     ]
   },
   {
+    "title": "Hide messages",
+    "description": "Hide all status messages that are normally shown in the bottom right of the app",
+    "inputs": [
+      { "type": "boolean", "bind": "shared._userDefaults.hideMessages", "label": "Hide messages" }
+    ]
+  },
+  {
+    "type": "divider"
+  },
+  {
     "title": "HTTP port",
     "description": "This setting requires a full restart",
     "inputs": [
@@ -19,11 +29,14 @@
       { "type": "boolean", "bind": "shared._userDefaults.httpBindToAll", "label": "Bind to 0.0.0.0" }
     ]
   },
-    {
-    "title": "Hide messages",
-    "description": "Hide all status messages that are normally shown in the bottom right of the app",
+  {
+    "type": "divider"
+  },
+  {
+    "title": "Loop prevention",
+    "description": "Disabling loop prevention will allow item loops with sub frame delays but risks creating loops that freeze the application",
     "inputs": [
-      { "type": "boolean", "bind": "shared._userDefaults.hideMessages", "label": "Hide messages" }
+      { "type": "boolean", "bind": "shared.core.internals.enableLoopPrevention", "label": "Prevent loops" }
     ]
   }
 ]
