@@ -9,6 +9,7 @@ AI-powered playout control software that can be customized to fit your needs.
 Developed for CasparCG but can control anything that supports OSC.
 
 ![Screenshot](/media/screenshot.png)
+![Screenshot with timeline](/media/screenshot-2.png)
 
 ## Goals
 - [x] ⚡️ To be a server agnostic, lightweight and quick playout client
@@ -47,6 +48,7 @@ The roadmap is available on Notion
 - LTC timecode triggers
 - Keyboard triggers
 - Built in AI-agent
+- Timelines
 
 ## Community plugins  
 - [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)
