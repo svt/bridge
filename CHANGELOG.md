@@ -4,7 +4,6 @@
 ### Added
 - An AI agent
 - A `bridge.time.now` api for getting the current server time
-- The new API function `bridge.items.seekItem` used to seek an item to a specific point in time
 - The ability to bypass delay and play an item immediately through the api
 - A new on end action to force stop
 - In and out points on trimmable items
