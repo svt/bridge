@@ -23,6 +23,23 @@ function getAllTimelineItems () {
     .filter(item => item.type === 'bridge.types.timeline')
 }
 
+/**
+ * Check whether a timeline item is currently playing
+ * by comparing the current server time against the window
+ * [willStartPlayingAt, willStartPlayingAt + duration].
+ *
+ * @param { any } item
+ * @returns { Promise.<boolean> }
+ */
+async function isItemPlaying (item) {
+  if (!item?.willStartPlayingAt) {
+    return false
+  }
+  const now = await bridge.time.now()
+  const end = item.willStartPlayingAt + (bridge.items.getEffectiveDuration(item) || Infinity)
+  return now >= item.willStartPlayingAt && now < end
+}
+
 export function Timeline () {
   const [isFloated, setIsFloated] = React.useState(false)
   const [items, setItems] = React.useState([])
@@ -64,6 +81,7 @@ export function Timeline () {
     const item = bridge.state.getLocalState()?.items?.[timelineId]
     setFrameRate(FRAME_RATE_OPTIONS[item?.data?.frameRate] ?? null)
     setDuration(item?.data?.duration ?? null)
+    setIsPlaying(await isItemPlaying(item))
     if (!item?.children?.length) {
       currentChildIdsRef.current = []
       setItems([])
