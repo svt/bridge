@@ -11,6 +11,7 @@
 - In and out points for trimmable items
 - A quick way to change caspar targets
 - An API for opening modals
+- Loop detection and prevention
 ### Changed
 - Make margins in the inspector smaller
 ### Fixed
