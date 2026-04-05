@@ -66,6 +66,7 @@ export function VariableStringInput ({
   variableContext = {},
   large
 }) {
+  const suggestionRef = React.useRef(null)
   const [suggestion, setSuggestion] = React.useState()
   const paths = React.useMemo(() => {
     return getPathsFromObject(variableContext)
@@ -88,6 +89,12 @@ export function VariableStringInput ({
     setSuggestion(suggestion.substring(lastUnfinishedVariable.length))
   }, [value, paths])
 
+  function handleScroll (e) {
+    if (suggestionRef.current) {
+      suggestionRef.current.scrollLeft = e.target.scrollLeft
+    }
+  }
+
   function handleKeyDown (e) {
     if (!suggestion) {
       return
@@ -100,12 +107,13 @@ export function VariableStringInput ({
 
   return (
     <div className='VariableStringInput'>
-      <div className='VariableStringInput-suggestion'>{value}{suggestion}</div>
+      <div ref={suggestionRef} className='VariableStringInput-suggestion'>{value}{suggestion}</div>
       <StringInput
         htmlFor={htmlFor}
         value={value}
         onChange={newValue => onChange(newValue)}
         onKeyDown={e => handleKeyDown(e)}
+        onScroll={e => handleScroll(e)}
         large={large}
       />
     </div>

@@ -1,0 +1,42 @@
+{
+  "name": "bridge-plugin-timeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "bridge": "^0.0.1"
+  },
+  "keywords": [
+    "bridge",
+    "plugin"
+  ],
+  "contributes": {
+    "types": [
+      {
+        "id": "bridge.types.timeline",
+        "name": "Timeline",
+        "inherits": "bridge.types.collection",
+        "properties": {
+          "color": {
+            "default": "#0F7B8C"
+          },
+          "name": {
+            "default": "Timeline"
+          },
+          "frameRate": {
+            "name": "Frame rate",
+            "type": "enum",
+            "default": 2,
+            "enum": ["23.97", "24", "25", "30", "50", "60"],
+            "ui.group": "Timing"
+          }
+        }
+      }
+    ]
+  },
+  "author": "Axel Boberg (hello@axelboberg.se)",
+  "license": "UNLICENSED"
+}

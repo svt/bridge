@@ -74,6 +74,38 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.playableWithoutTrim',
+    inherits: 'bridge.types.duration',
+    properties: {
+      'caspar.server': {
+        name: 'Server',
+        type: 'string',
+        default: DEFAULT_SERVER_ID,
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/server`
+      },
+      'caspar.channel': {
+        name: 'Channel',
+        type: 'string',
+        default: '1',
+        allowsVariables: true,
+        'ui.group': 'Caspar',
+        'ui.width': '50%',
+        'ui.readable': true
+      },
+      'caspar.layer': {
+        name: 'Layer',
+        type: 'string',
+        default: '1',
+        allowsVariables: true,
+        'ui.group': 'Caspar',
+        'ui.width': '50%',
+        'ui.readable': true
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.mixable',
     inherits: 'bridge.caspar.playable',
     properties: {
@@ -150,6 +182,12 @@ function init (htmlPath) {
         allowsVariables: true,
         'ui.group': 'Caspar'
       },
+      'caspar.targetSearch': {
+        name: '',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/target`
+      },
       'caspar.scaleMode': {
         name: 'Scale mode',
         type: 'enum',
@@ -215,7 +253,7 @@ function init (htmlPath) {
     id: 'bridge.caspar.image-scroller',
     name: 'Image scroller',
     category: 'Caspar',
-    inherits: 'bridge.caspar.playable',
+    inherits: 'bridge.caspar.playableWithoutTrim',
     properties: {
       name: {
         default: 'Image scroller'
@@ -225,6 +263,12 @@ function init (htmlPath) {
         type: 'string',
         allowsVariables: true,
         'ui.group': 'Caspar'
+      },
+      'caspar.targetSearch': {
+        name: '',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/target`
       },
       'caspar.speed': {
         name: 'Speed',
@@ -259,7 +303,7 @@ function init (htmlPath) {
     id: 'bridge.caspar.template',
     name: 'Template',
     category: 'Caspar',
-    inherits: 'bridge.caspar.playable',
+    inherits: 'bridge.caspar.playableWithoutTrim',
     properties: {
       name: {
         default: 'Template: $(this.data.caspar.data.f0)'
@@ -269,6 +313,12 @@ function init (htmlPath) {
         type: 'string',
         allowsVariables: true,
         'ui.group': 'Caspar'
+      },
+      'caspar.targetSearch': {
+        name: '',
+        type: 'string',
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/target`
       },
       'caspar.data': {
         default: { f0: 'Foo' },

@@ -12,6 +12,7 @@ export function StringInput ({
   value = '',
   onChange = () => {},
   onKeyDown = () => {},
+  onScroll = () => {},
   large
 }) {
   return (
@@ -22,6 +23,7 @@ export function StringInput ({
       value={value || ''}
       onChange={e => onChange(e.target.value)}
       onKeyDown={e => onKeyDown(e)}
+      onScroll={e => onScroll(e)}
     />
   )
 }

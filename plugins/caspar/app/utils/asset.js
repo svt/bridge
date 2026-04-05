@@ -1,5 +1,5 @@
 /**
- * @typedef { 'STILL' | 'MOVIE' | 'AUDIO' | 'TEMPLATE' } LibraryAssetType
+ * @typedef { 'STILL' | 'VIDEO' | 'AUDIO' | 'TEMPLATE' } LibraryAssetType
  *
  * @typedef {
  *  name: String,
@@ -15,13 +15,19 @@ const DEFAULT_DURATION_MS = 5000
 
 const REX = /"(?<name>.+)"\s{2}(?<type>.+)\s(?<size>.+)\s(?<timestamp>.+)\s(?<duration>.+)\s(?<framerate>.+)/i
 
-const type = Object.freeze({
+export const type = Object.freeze({
   still: 'STILL',
-  movie: 'MOVIE',
+  video: 'VIDEO',
   audio: 'AUDIO',
   template: 'TEMPLATE'
 })
-exports.type = type
+
+export const typeConversion = Object.freeze({
+  STILL: 'STILL',
+  MOVIE: 'VIDEO',
+  AUDIO: 'AUDIO',
+  TEMPLATE: 'TEMPLATE'
+})
 
 /**
  * Parse a library asset string
@@ -29,14 +35,15 @@ exports.type = type
  * @param { String } str
  * @returns { LibraryAsset }
  */
-function parseMediaAsset (str) {
+export function parseMediaAsset (str) {
   const res = REX.exec(str)
+  const rawType = (res?.groups?.type || '').replace(/\s/g, '')
+
   return {
     ...(res?.groups || {}),
-    type: (res?.groups?.type || '').replace(/\s/g, '')
+    type: typeConversion[rawType]
   }
 }
-exports.parseMediaAsset = parseMediaAsset
 
 /**
  * Parse a library asset string
@@ -44,13 +51,12 @@ exports.parseMediaAsset = parseMediaAsset
  * @param { String } str
  * @returns { LibraryAsset }
  */
-function parseTemplateAsset (str) {
+export function parseTemplateAsset (str) {
   return {
     type: type.template,
     name: str
   }
 }
-exports.parseTemplateAsset = parseTemplateAsset
 
 /**
  * Calculate the duration in milliseconds from an item
@@ -58,7 +64,7 @@ exports.parseTemplateAsset = parseTemplateAsset
  * @param { any } item
  * @returns { Number }
  */
-function calculateDurationMs (item) {
+export function calculateDurationMs (item) {
   if (!item) {
     return DEFAULT_DURATION_MS
   }
@@ -89,7 +95,6 @@ function calculateDurationMs (item) {
 
   return (Math.abs(item?.duration) / framerate) * 1000
 }
-exports.calculateDurationMs = calculateDurationMs
 
 /**
  * Calculate the decimal value of a fraction

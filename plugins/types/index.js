@@ -150,10 +150,11 @@ const ITEM_CHANGE_HANDLERS = [
 const ITEM_DELETE_HANDLERS = [
   /*
   Delete all children
-  if a group is deleted
+  if a group or collection
+  is deleted
   */
   {
-    predicate: (item, type) => item.type === 'bridge.types.group' || type.ancestors.includes('bridge.types.group'),
+    predicate: (item, type) => item.type === 'bridge.types.group' || type.ancestors.includes('bridge.types.group') || type.ancestors.includes('bridge.types.collection'),
     fn: item => {
       const childIds = item?.children || []
       if (!Array.isArray(childIds)) {

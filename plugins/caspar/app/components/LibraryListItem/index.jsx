@@ -1,16 +1,14 @@
 import React from 'react'
-import bridge from 'bridge'
-
 import './style.css'
 
-import * as asset from '../../utils/asset.cjs'
+import * as asset from '../../utils/asset.js'
 
 const DEFAULT_VALUES = {
   [asset.type.still]: {
     channel: 1,
     layer: 10
   },
-  [asset.type.movie]: {
+  [asset.type.video]: {
     channel: 1,
     layer: 10
   },
@@ -32,7 +30,7 @@ const DEFAULT_VALUES = {
  */
 const ITEM_CONSTRUCTORS = [
   {
-    if: item => [asset.type.still, asset.type.movie, asset.type.audio].includes(item.type),
+    if: item => [asset.type.still, asset.type.video, asset.type.audio].includes(item.type),
     fn: item => {
       return {
         type: 'bridge.caspar.media',
@@ -80,33 +78,35 @@ function constructPlayableItemInit (libraryAsset) {
 }
 
 /**
- * @typedef { import('../../utils/asset.cjs').LibraryAsset } LibraryAsset
+ * @typedef { import('../../utils/asset.js').LibraryAsset } LibraryAsset
  *
  * @param {{
  *  item: LibraryAsset
  * }} arg0
  */
-export const LibraryListItem = ({ item = {} }) => {
+export const LibraryListItem = ({ item = {}, isHighlighted, isFocused, itemRef, onClick, onDoubleClick }) => {
   async function handleDragStart (e) {
     const data = constructPlayableItemInit(item)
     e.dataTransfer.setData('bridge/item', JSON.stringify(data))
     e.stopPropagation()
   }
 
-  /*
-   * Create a new item and append it to
-   * the rundown root on double click
-   */
-  async function handleDoubleClick (e) {
+  function handleClick () {
     const data = constructPlayableItemInit(item)
-    const itemId = await bridge.items.createItem(data.type, data.data)
-    bridge.commands.executeCommand('rundown.appendItem', 'RUNDOWN_ROOT', itemId)
+    onClick?.(data)
+  }
+
+  function handleDoubleClick () {
+    const data = constructPlayableItemInit(item)
+    onDoubleClick?.(data)
   }
 
   return (
     <li
-      className='LibraryListItem'
+      ref={itemRef}
+      className={`LibraryListItem${isHighlighted ? ' is-highlighted' : ''}${isFocused ? ' is-focused' : ''}`}
       onDragStart={e => handleDragStart(e)}
+      onClick={e => handleClick(e)}
       onDoubleClick={e => handleDoubleClick(e)}
       draggable
     >

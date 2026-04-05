@@ -4,6 +4,7 @@
 
 import arrowDownSecondary from './arrow-down-secondary.svg'
 import arrowDownPlay from './arrow-down-play.svg'
+import stopOnEnd from './stop-on-end.svg'
 import arrowDown from './arrow-down.svg'
 import warning from './warning.svg'
 import empty from './empty.svg'
@@ -12,6 +13,7 @@ export default {
   arrowDownSecondary,
   arrowDownPlay,
   arrowDown,
+  stopOnEnd,
   warning,
   empty
 }

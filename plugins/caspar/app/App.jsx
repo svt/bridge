@@ -4,12 +4,15 @@ import * as SharedContext from './sharedContext'
 import * as Settings from './views/Settings'
 
 import { InspectorServer } from './views/InspectorServer'
+import { InspectorTarget } from './views/InspectorTarget'
 import { InspectorTemplate } from './views/InspectorTemplate'
 import { InspectorTransition } from './views/InspectorTransition'
 
+import { LibraryModal } from './views/LibraryModal'
+import { Library } from './views/Library'
+
 import { LiveSwitch } from './views/LiveSwitch'
 import { Thumbnail } from './views/Thumbnail'
-import { Library } from './views/Library'
 import { Status } from './views/Status'
 
 export default function App () {
@@ -27,6 +30,8 @@ export default function App () {
           switch (view) {
             case 'inspector/server':
               return <InspectorServer />
+            case 'inspector/target':
+              return <InspectorTarget />
             case 'inspector/transition':
               return <InspectorTransition />
             case 'inspector/template':
@@ -41,6 +46,8 @@ export default function App () {
               return <Status />
             case 'library':
               return <Library />
+            case 'library/modal':
+              return <LibraryModal />
             default:
               return <></>
           }

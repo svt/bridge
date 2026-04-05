@@ -7,7 +7,8 @@ const commands = require('./commands')
 
 const ITEM_ACTIONS = {
   playNextSibling: 1,
-  selectNextSibling: 2
+  selectNextSibling: 2,
+  stopSelf: 3
 }
 
 const MAIN_ROLE_ID = 1
@@ -65,6 +66,11 @@ const END_HANDLERS = [
           return
         }
         selectItem(sibling)
+        return
+      }
+
+      if (value === ITEM_ACTIONS.stopSelf) {
+        bridge.items.stopItem(item?.id)
       }
     }
   }

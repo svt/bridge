@@ -50,31 +50,63 @@
         }
       },
       {
-        "id": "bridge.types.media",
-        "inherits": "bridge.types.playable",
+        "id": "bridge.types.duration",
+        "inherits": "bridge.types.delayable",
         "properties": {
-          "name": {
-            "default": "Media"
-          },
+          "duration": {
+            "name": "Duration",
+            "type": "string",
+            "ui.group": "Timing",
+            "ui.unit": "ms"
+          }
+        }
+      },      
+      {
+        "id": "bridge.types.trimmable",
+        "inherits": "bridge.types.duration",
+        "properties": {
           "duration": {
             "name": "Duration",
             "type": "string",
             "ui.group": "Timing",
             "ui.unit": "ms"
           },
-          "delay": {
-            "name": "Delay",
+          "inPoint": {
+            "name": "In point",
             "type": "string",
             "allowsVariables": true,
             "ui.group": "Timing",
-            "ui.unit": "ms"
+            "ui.unit": "ms",
+            "ui.dependsOn": ["duration"]
+          },
+          "outPoint": {
+            "name": "Out point",
+            "type": "string",
+            "allowsVariables": true,
+            "ui.group": "Timing",
+            "ui.unit": "ms",
+            "ui.dependsOn": ["duration"]
           }
         }
       },
       {
+        "id": "bridge.types.media",
+        "inherits": "bridge.types.trimmable",
+        "properties": {
+          "name": {
+            "default": "Media"
+          }
+        }
+      },
+      {
+        "id": "bridge.types.collection",
+        "inherits": "bridge.types.duration",
+        "properties": {}
+      },
+      {
         "id": "bridge.types.group",
         "name": "Group",
-        "inherits": "bridge.types.media",
+        "inherits": "bridge.types.collection",
         "properties": {
           "name": {
             "default": "Group"

@@ -1,4 +1,4 @@
-const { calculateDurationMs } = require('./asset.cjs')
+import { calculateDurationMs } from './asset.js'
 
 test('calculateDurationMs should return 0 for 0 duration (string or number)', () => {
   // Test for both string and number '0'

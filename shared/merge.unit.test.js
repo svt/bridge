@@ -58,3 +58,29 @@ test('invert string value', () => {
   }
   expect(merge.deep(source, apply).myBoolean).toEqual(false)
 })
+
+test('delete an existing key', () => {
+  const source = {
+    keep: 'yes',
+    remove: 'goodbye'
+  }
+
+  const apply = {
+    remove: { $delete: true }
+  }
+
+  const result = merge.deep(source, apply)
+  expect(result.keep).toEqual('yes')
+  expect(Object.prototype.hasOwnProperty.call(result, 'remove')).toEqual(false)
+})
+
+test('$delete on a new key does not write the keyword object to state', () => {
+  const source = {}
+
+  const apply = {
+    willStartPlayingAt: { $delete: true }
+  }
+
+  const result = merge.deep(source, apply)
+  expect(Object.prototype.hasOwnProperty.call(result, 'willStartPlayingAt')).toEqual(false)
+})

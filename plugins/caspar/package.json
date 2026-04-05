@@ -21,5 +21,8 @@
   },
   "devDependencies": {
     "monaco-editor-webpack-plugin": "^7.1.0"
+  },
+  "jest": {
+    "transform": {}
   }
 }

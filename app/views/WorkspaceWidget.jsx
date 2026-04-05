@@ -41,6 +41,43 @@ function findWidget (root, id) {
   }
 }
 
+/**
+ * Find the path of keys from a root node down
+ * to a component with the given id, where each
+ * level is keyed by the component's id.
+ * Returns an array of keys, or null if not found.
+ * @param { any } root
+ * @param { String } id
+ * @param { String[] } path
+ * @returns { String[] | null }
+ */
+function findWidgetPath (root, id, path = []) {
+  if (!id) return null
+  const children = root?.children || {}
+  for (const [key, child] of Object.entries(children)) {
+    if (key === id) {
+      return [...path, key]
+    }
+    const result = findWidgetPath(child, id, [...path, key])
+    if (result) return result
+  }
+  return null
+}
+
+/**
+ * Build a nested children update object from a path array.
+ * e.g. ['a', 'b', 'c'] + data → { a: { children: { b: { children: { c: data } } } } }
+ * @param { String[] } path
+ * @param { any } data
+ * @returns { any }
+ */
+function buildChildrenUpdate (path, data) {
+  if (path.length === 1) {
+    return { [path[0]]: data }
+  }
+  return { [path[0]]: { children: buildChildrenUpdate(path.slice(1), data) } }
+}
+
 function getWidgetId () {
   return widgetId
 }
@@ -69,16 +106,20 @@ export const WorkspaceWidget = () => {
    * @param { Object } data
    */
   function handleComponentUpdate (data) {
-    applyShared({
-      children: data
-    })
+    const path = findWidgetPath({ children: shared.children }, widgetId)
+    if (!path) {
+      return
+    }
+
+    console.log('Update', buildChildrenUpdate(path, data))
+    applyShared({ children: buildChildrenUpdate(path, data) })
   }
 
   return (
     <>
       <Header features={['stayOnTop', 'reload', 'palette']} />
       <div className='View-component'>
-        <WidgetRenderer widgetId={widgetId} widgets={repository} data={widget} onUpdate={data => handleComponentUpdate({ [id]: data })} forwardProps={{ enableFloat: false }} />
+        <WidgetRenderer widgetId={widgetId} widgets={repository} data={widget} onUpdate={handleComponentUpdate} forwardProps={{ isFloated: true, enableFloat: false }} />
       </div>
       <Footer features={['role']} />
     </>

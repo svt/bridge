@@ -5,7 +5,7 @@ function sign (path, label) {
   const opts = {
     app: path,
     binaries: [
-      `${path}/Contents/Frameworks/libltc.11.dylib`
+      /* `${path}/Contents/Frameworks/libltc.11.dylib` */
     ],
     optionsForFile: () => {
       return {

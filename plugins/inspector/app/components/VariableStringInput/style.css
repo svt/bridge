@@ -11,9 +11,12 @@
 
 .VariableStringInput-suggestion {
   position: absolute;
-  padding: 0.75em 0.6em;
+  padding: 0.65em 0.6em;
   pointer-events: none;
   opacity: 0.5;
 
-  white-space: nowrap;
+  white-space: pre;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }

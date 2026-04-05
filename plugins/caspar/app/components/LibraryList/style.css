@@ -8,4 +8,5 @@
   list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
+  outline: none;
 }

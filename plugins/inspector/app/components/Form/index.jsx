@@ -270,6 +270,12 @@ export function Form () {
    * @returns { import('react').ReactElement }
    */
   function renderProperty (property, id) {
+    if (
+      (property['ui.dependsOn'] ?? []).some(key => !getValue(key))
+    ) {
+      return null
+    }
+
     const Component = INPUT_COMPONENTS[property.type]
 
     function handleVariableHintClick () {
@@ -333,7 +339,7 @@ export function Form () {
         </div>
       </div>
       <div className='Form-scroll'>
-        <div className='Form-section'>
+        <div className='Form-section Form-section--padded'>
           <div className='Form-notifications'>
             {
               Object.values(store.items?.[0]?.issues ?? {})
@@ -383,14 +389,16 @@ export function Form () {
                 return (
                   <div key={i} className='Form-accordion'>
                     <Accordion title={group.name}>
-                      {
-                        Object.values(group.properties || {})
-                          .filter(property => INPUT_COMPONENTS[property.type])
-                          .map((property, i) => {
-                            const id = `${group.name}_${i}`
-                            return renderProperty(property, id)
-                          })
-                      }
+                      <div className='Form-accordionChildren'>
+                        {
+                          Object.values(group.properties || {})
+                            .filter(property => INPUT_COMPONENTS[property.type])
+                            .map((property, i) => {
+                              const id = `${group.name}_${i}`
+                              return renderProperty(property, id)
+                            })
+                        }
+                      </div>
                     </Accordion>
                   </div>
                 )

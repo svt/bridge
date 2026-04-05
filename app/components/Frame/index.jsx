@@ -40,6 +40,8 @@ const COPY_THEME_VARIABLES = [
   '--base-color--shade4',
   '--base-color--alert',
   '--base-color--background',
+  '--base-color--background2',
+  '--base-color--background3',
   '--base-fontFamily--primary',
   '--base-color-type--variable',
   '--base-color--notificationColor',
@@ -75,7 +77,7 @@ function copyThemeVariables (fromEl, iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
-export function Frame ({ src, api, doUpdateTheme = 1 }) {
+export function Frame ({ className, src, api, doUpdateTheme = 1, autoresize = true }) {
   const [caller] = React.useState(uuidv4())
 
   const snapshotRef = React.useRef()
@@ -196,7 +198,7 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
   equal the height of the frame's content
   */
   React.useEffect(() => {
-    let shouldResize = true
+    let shouldResize = autoresize
     function resize () {
       window.requestAnimationFrame(() => {
         if (!shouldResize) {
@@ -213,7 +215,7 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
     return () => {
       shouldResize = false
     }
-  }, [frameRef.current])
+  }, [frameRef.currentm, autoresize])
 
   /*
   Copy the theme variables from
@@ -226,5 +228,5 @@ export function Frame ({ src, api, doUpdateTheme = 1 }) {
     copyThemeVariables(wrapperRef.current, frameRef.current)
   }, [doUpdateTheme, wrapperRef.current])
 
-  return <div ref={wrapperRef} className='Frame' />
+  return <div ref={wrapperRef} className={`Frame ${className}`} />
 }

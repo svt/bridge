@@ -347,11 +347,36 @@ Get an item from the local state representation by its id. This is useful when r
 ### `bridge.items.deleteItem(id)`  
 Delete an item by its id.
 
-### `bridge.items.playItem(id): Promise<Void>`
-Play an item and set its state to 'playing'.
+### `bridge.items.playItem(id[, opts]): Promise<Void>`
+Play an item and set its state to `playing`.
+
+| Option | Type | Description |
+| ------ | ---- | ----------- |
+| `immediate` | `boolean` | Skip any `delay` set on the item and play it immediately |
+
+### `bridge.items.seekItem(id, positionMs): Promise<Void>`
+Seek an already-playing item to `positionMs` milliseconds into its duration without re-emitting `item.play` and reschedules the `item.end` event at the correct remaining time.
+
+### `bridge.items.getEffectiveDuration(item): number`
+Get the effective playback duration of an item in milliseconds, taking `data.inPoint` and `data.outPoint` into account.
+
+Falls back to `data.duration` when trim points are not set, so items without `inPoint`/`outPoint` behave exactly as before.
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `data.duration` | `number` | Total source media length in milliseconds |
+| `data.inPoint` | `number` | Start offset into the source media in milliseconds (defaults to `0`) |
+| `data.outPoint` | `number` | End offset into the source media in milliseconds (defaults to `data.duration`) |
+
+**Example**
+```javascript
+const item = await bridge.items.getItem('6jI2')
+const playbackDuration = bridge.items.getEffectiveDuration(item)
+// For an item with duration=10000, inPoint=2000, outPoint=7000 → returns 5000
+```
 
 ### `bridge.items.stopItem(id): Promise<Void>`
-Stop an item and set its state to 'stopped'.
+Stop an item and set its state to `stopped`.
 
 ### `bridge.items.applyIssue(itemId, issueId, issueSpec): Promise<Void>`  
 Add an issue to an item.

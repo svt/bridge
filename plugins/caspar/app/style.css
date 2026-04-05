@@ -31,12 +31,12 @@ html, body, .View--flex {
   display: flex;
 }
 
-.u-width--100pct {
-  width: 100%;
-}
-
 .u-marginBottom--5px {
   margin-bottom: 5px;
+}
+
+.u-marginTop--5px {
+  margin-top: 5px;
 }
 
 .u-scroll--y {
@@ -49,4 +49,14 @@ html, body, .View--flex {
 
 .u-textAlign--center {
   text-align: center;
+}
+
+/* Sizes */
+
+.u-width--100pct {
+  width: 100%;
+}
+
+.u-maxWidth--250px {
+  max-width: 250px;
 }

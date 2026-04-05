@@ -35,3 +35,7 @@
 .LibraryListItem-metadata {
   opacity: 0.5;
 }
+
+.LibraryListItem.is-focused {
+  box-shadow: inset 0 0 1px 1px var(--base-color);
+}

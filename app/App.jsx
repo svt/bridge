@@ -5,6 +5,7 @@ import { WorkspaceWidget } from './views/WorkspaceWidget'
 
 import { Router } from './components/Router'
 import { Transparency } from './components/Transparency'
+import { ModalBoundary } from './components/ModalBoundary'
 import { ContextMenuBoundary } from './components/ContextMenuBoundary'
 
 import { LocalContext } from './localContext'
@@ -236,21 +237,23 @@ export default function App () {
       <LocalContext.Provider value={[local, applyLocal]}>
         <SharedContext.Provider value={[shared, applyShared]}>
           <ContextMenuBoundary>
-            <Transparency />
-            <Router routes={[
-              {
-                path: /^\/workspaces\/.+\/widgets\/.+$/,
-                render: () => <WorkspaceWidget />
-              },
-              {
-                path: /^\/workspaces\/.+$/,
-                render: () => <Workspace />
-              },
-              {
-                path: '/',
-                render: () => <Start />
-              }
-            ]}/>
+            <ModalBoundary>
+              <Transparency />
+              <Router routes={[
+                {
+                  path: /^\/workspaces\/.+\/widgets\/.+$/,
+                  render: () => <WorkspaceWidget />
+                },
+                {
+                  path: /^\/workspaces\/.+$/,
+                  render: () => <Workspace />
+                },
+                {
+                  path: '/',
+                  render: () => <Start />
+                }
+              ]}/>
+            </ModalBoundary>
           </ContextMenuBoundary>
         </SharedContext.Provider>
       </LocalContext.Provider>
