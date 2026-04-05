@@ -62,7 +62,7 @@ const DUMMY_DATA = [
   }
 ]
 
-export function Timeline ({ items = [], frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, isFloated = false, onLockChange, onItemChange, onDrop = () => {} }) {
+export function Timeline ({ items = [], duration = null, frameRate = null, timelineOptions = [], lockedId = null, timelineId = null, isPlaying = false, isFloated = false, onLockChange, onItemChange, onDrop = () => {} }) {
   const contentRef = React.useRef(null)
   const [spec, setSpec] = React.useState(() => utils.getTimelineSpec([]))
   const [minScale, setMinScale] = React.useState(0.001)
@@ -164,12 +164,9 @@ export function Timeline ({ items = [], frameRate = null, timelineOptions = [], 
   }, [isPlaying, timelineId])
 
   React.useEffect(() => {
-    setSpec(current => ({
-      ...utils.getTimelineSpec(items),
-      scale: current.scale,
-      frameRate: current.frameRate
-    }))
-  }, [items])
+    if (duration == null) return
+    setSpec(current => ({ ...current, duration }))
+  }, [duration])
 
   React.useEffect(() => {
     if (frameRate == null) return
@@ -253,6 +250,10 @@ export function Timeline ({ items = [], frameRate = null, timelineOptions = [], 
   }
 
   const durationPx = utils.getPixelWidth(spec.duration ?? 0, spec.scale)
+  const itemsExtentPx = items.reduce((max, item) => {
+    return Math.max(max, utils.getPixelWidth((item.data?.delay || 0) + bridge.items.getEffectiveDuration(item), spec.scale))
+  }, 0)
+  const bodyWidth = Math.max(durationPx, itemsExtentPx) + 100
   const playheadX = playheadMs != null ? utils.getPixelWidth(playheadMs, spec.scale) : null
 
   return (
@@ -269,7 +270,7 @@ export function Timeline ({ items = [], frameRate = null, timelineOptions = [], 
           (!timelineId && !lockedId)
             ? <NoTimelineSelected />
             : (
-              <div className='Timeline-body' style={{ width: `${durationPx + 100}px` }}>
+              <div className='Timeline-body' style={{ width: `${bodyWidth}px` }}>
                 <TimelineHeader spec={spec} />
                 <div className='Timeline-tracks'>
                   {

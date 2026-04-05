@@ -26,6 +26,7 @@ function getAllTimelineItems () {
 export function Timeline () {
   const [isFloated, setIsFloated] = React.useState(false)
   const [items, setItems] = React.useState([])
+  const [duration, setDuration] = React.useState(null)
   const [frameRate, setFrameRate] = React.useState(null)
   const [timelineOptions, setTimelineOptions] = React.useState([])
   const [lockedId, setLockedId] = React.useState(null)
@@ -60,17 +61,16 @@ export function Timeline () {
   }
 
   async function loadChildren (timelineId) {
-    const item = await bridge.items.getItem(timelineId)
+    const item = bridge.state.getLocalState()?.items?.[timelineId]
     setFrameRate(FRAME_RATE_OPTIONS[item?.data?.frameRate] ?? null)
+    setDuration(item?.data?.duration ?? null)
     if (!item?.children?.length) {
       currentChildIdsRef.current = []
       setItems([])
       return
     }
 
-    const children = await Promise.all(
-      item.children.map(id => bridge.items.getItem(id))
-    )
+    const children = item.children.map(id => bridge.state.getLocalState()?.items?.[id])
 
     const mapped = await Promise.all(
       children
@@ -124,7 +124,7 @@ export function Timeline () {
       return
     }
 
-    const timeline = await bridge.items.getItem(timelineIdRef.current)
+    const timeline = bridge.state.getLocalState()?.items?.[timelineIdRef.current]
     const isTimeline = itemId === timelineIdRef.current
     const isChild = timeline?.children?.includes(itemId)
     const wasChild = currentChildIdsRef.current.includes(itemId)
@@ -248,6 +248,7 @@ export function Timeline () {
   return (
     <TimelineComponent
       items={items}
+      duration={duration}
       frameRate={frameRate}
       timelineOptions={timelineOptions}
       lockedId={lockedId}

@@ -33,10 +33,15 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100px;
+  right: 0;
 
   background: var(--Timeline-color--outOfBounds);
   
   pointer-events: none;
   z-index: 1;
+}
+
+.Timeline-body {
+  position: relative;
+  height: 100%;
 }
