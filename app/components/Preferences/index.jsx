@@ -41,6 +41,8 @@ const INTERNAL_SETTINGS = [
   }
 ]
 
+const DIVIDER_SETTING_KEY = 'divider'
+
 export function Preferences ({ onClose = () => {} }) {
   const [, applyShared] = React.useContext(SharedContext)
   const [, applyLocal] = React.useContext(LocalContext)
@@ -154,12 +156,17 @@ export function Preferences ({ onClose = () => {} }) {
           {
             (sections[curPath[0]]?.items[curPath[1]]?.items || [])
               .filter(setting => setting)
-              .map(setting => {
+              .map((setting, i) => {
+                if (setting?.type === DIVIDER_SETTING_KEY) {
+                  return <div key={`preferences-divider-${i}`} className='Preferences-divider' />
+                }
+
                 /*
                 Compose a key that's somewhat unique but still static
                 in order to prevent unnecessary re-rendering
                 */
                 const key = `${setting?.title}${setting?.description}${JSON.stringify(setting?.inputs)}`
+
                 return (
                   <Preference
                     key={key}

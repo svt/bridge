@@ -38,3 +38,11 @@
 
   box-sizing: border-box;
 }
+
+.Preferences-divider {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0 20px;
+
+  background: var(--base-color--shade1);
+}
