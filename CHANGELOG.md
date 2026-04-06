@@ -25,6 +25,8 @@
 - UI issues with the caspar library widget
 - An issue preventing nested groups from being 'stepped into'
 - An issue where the menus of window buttons became misaligned on Windows
+- Updated non-breaking dependencies
+- Updated Electron to 41.1.1
 
 ## 1.0.0-beta.10
 ### Added
