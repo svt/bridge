@@ -4,7 +4,6 @@
 ### Added
 - An AI agent
 - A `bridge.time.now` api for getting the current server time
-- The new API function `bridge.items.seekItem` used to seek an item to a specific point in time
 - The ability to bypass delay and play an item immediately through the api
 - A new on end action to force stop
 - In and out points on trimmable items
@@ -12,6 +11,7 @@
 - In and out points for trimmable items
 - A quick way to change caspar targets
 - An API for opening modals
+- Loop detection and prevention
 ### Changed
 - Make margins in the inspector smaller
 ### Fixed
@@ -22,7 +22,11 @@
 - An issue where variable autocomplete wouldn't sync with the input field horisontal scroll
 - A bug where there were no guards for placing a group, or timeline, within itself
 - A memory leak occuring within caspar widgets hooking onto the state
-- UI issues with the caspar library widget 
+- UI issues with the caspar library widget
+- An issue preventing nested groups from being 'stepped into'
+- An issue where the menus of window buttons became misaligned on Windows
+- Updated non-breaking dependencies
+- Updated Electron to 41.1.1
 
 ## 1.0.0-beta.10
 ### Added

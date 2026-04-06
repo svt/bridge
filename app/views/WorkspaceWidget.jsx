@@ -110,8 +110,6 @@ export const WorkspaceWidget = () => {
     if (!path) {
       return
     }
-
-    console.log('Update', buildChildrenUpdate(path, data))
     applyShared({ children: buildChildrenUpdate(path, data) })
   }
 

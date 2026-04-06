@@ -74,5 +74,10 @@
         }
       }
     }
+  },
+  "core": {
+    "internals": {
+      "enableLoopPrevention": true
+    }
   }
 }

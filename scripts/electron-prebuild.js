@@ -1,7 +1,7 @@
 /**
  * @description
- * Pre build actions for macOS-builds
- * Run as `node electron-prebuild-macos.js <arm64|x64>`
+ * Pre build actions for Electron builds
+ * Run as `node electron-prebuild.js <arm64|x64>`
  *
  * Actions:
  * - Rebuild native addons for all plugins

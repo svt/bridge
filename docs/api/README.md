@@ -354,9 +354,6 @@ Play an item and set its state to `playing`.
 | ------ | ---- | ----------- |
 | `immediate` | `boolean` | Skip any `delay` set on the item and play it immediately |
 
-### `bridge.items.seekItem(id, positionMs): Promise<Void>`
-Seek an already-playing item to `positionMs` milliseconds into its duration without re-emitting `item.play` and reschedules the `item.end` event at the correct remaining time.
-
 ### `bridge.items.getEffectiveDuration(item): number`
 Get the effective playback duration of an item in milliseconds, taking `data.inPoint` and `data.outPoint` into account.
 

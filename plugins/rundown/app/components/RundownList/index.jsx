@@ -470,7 +470,7 @@ export function RundownList ({
                 contextMenuItems={contextMenuItems}
                 selected={isSelected}
               >
-                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item}/>
+                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} onChangeRundownId={onChangeRundownId} />
               </RundownListItem>
             )
           })

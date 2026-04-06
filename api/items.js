@@ -354,26 +354,6 @@ class Items {
   }
 
   /**
-   * Seek an already-playing item to a position
-   * without re-emitting item.play
-   *
-   * Updates willStartPlayingAt / didStartPlayingAt and
-   * reschedules items.endItem at the correct remaining time
-   *
-   * @param { String } id
-   * @param { Number } positionMs  How far into the item's duration to seek
-   */
-  async seekItem (id, positionMs) {
-    const item = await this.getItem(id)
-
-    if (!item) {
-      return
-    }
-
-    this.#props.Commands.executeCommand('items.seekItem', item, positionMs)
-  }
-
-  /**
    * Play the item and emit
    * the 'stop' event
    * @param { String } id
