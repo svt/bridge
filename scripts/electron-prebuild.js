@@ -18,8 +18,11 @@ assert(ARCH, 'Missing required argument \'arch\'')
 const PLUGINS_DIR = path.join(__dirname, '../plugins')
 const MAIN_DIR = path.join(__dirname, '../')
 
+const ELECTRON_REBUILD_BIN = path.join(__dirname, '../node_modules/.bin/electron-rebuild')
+const ELECTRON_VERSION = require('../node_modules/electron/package.json').version
+
 function forcePackageRebuild (path, arch) {
-  cp.execSync(`npm run env -- electron-rebuild -f -a ${arch}`, {
+  cp.execSync(`"${ELECTRON_REBUILD_BIN}" -f -a ${arch} -v ${ELECTRON_VERSION}`, {
     cwd: path
   })
 }
