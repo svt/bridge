@@ -24,6 +24,7 @@
 - A memory leak occuring within caspar widgets hooking onto the state
 - UI issues with the caspar library widget
 - An issue preventing nested groups from being 'stepped into'
+- An issue where the menus of window buttons became misaligned on Windows
 
 ## 1.0.0-beta.10
 ### Added
