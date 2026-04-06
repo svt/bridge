@@ -22,7 +22,8 @@
 - An issue where variable autocomplete wouldn't sync with the input field horisontal scroll
 - A bug where there were no guards for placing a group, or timeline, within itself
 - A memory leak occuring within caspar widgets hooking onto the state
-- UI issues with the caspar library widget 
+- UI issues with the caspar library widget
+- An issue preventing nested groups from being 'stepped into'
 
 ## 1.0.0-beta.10
 ### Added

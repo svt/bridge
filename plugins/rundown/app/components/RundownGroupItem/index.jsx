@@ -11,7 +11,7 @@ import { RundownItemProgress } from '../RundownItemProgress'
 import { RundownList } from '../RundownList'
 import { Icon } from '../Icon'
 
-export function RundownGroupItem ({ index, item }) {
+export function RundownGroupItem ({ index, item, onChangeRundownId }) {
   const [shared] = React.useContext(SharedContext)
   const [isDraggedOver, setIsDraggedOver] = React.useState(false)
 
@@ -179,7 +179,7 @@ export function RundownGroupItem ({ index, item }) {
                  onDrop={e => handleDrop(e)}
                />
                )
-             : <RundownList className='RundownGroupItem-children' rundownId={item.id} indexPrefix={`${index}.`} disableShortcuts />
+             : <RundownList className='RundownGroupItem-children' rundownId={item.id} indexPrefix={`${index}.`} onChangeRundownId={onChangeRundownId} disableShortcuts />
         }
       </div>
     </div>
