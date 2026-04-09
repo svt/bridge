@@ -409,29 +409,37 @@ function init (htmlPath) {
       'caspar.x': {
         name: 'X',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '0.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       },
       'caspar.y': {
         name: 'Y',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '0.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       },
       'caspar.width': {
         name: 'Width',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '1.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       },
       'caspar.height': {
         name: 'Height',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '1.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       }
     }

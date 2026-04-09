@@ -44,6 +44,9 @@ const PLAY_HANDLERS = {
   },
   'bridge.caspar.html': (serverId, item) => {
     return commands.sendCommand(serverId, 'html', item?.data?.caspar?.url, item?.data?.caspar)
+  },
+  'bridge.caspar.transform': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerFill', item?.data?.caspar?.x, item?.data?.caspar?.y, item?.data?.caspar?.width, item?.data?.caspar?.height, item?.data?.caspar)
   }
 }
 
@@ -71,6 +74,9 @@ const STOP_HANDLERS = {
   },
   'bridge.caspar.html': (serverId, item) => {
     return commands.sendCommand(serverId, 'stop', item?.data?.caspar)
+  },
+  'bridge.caspar.transform': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerFill', 0, 0, 1, 1, { ...(item?.data?.caspar || {}), transitionDuration: 0 })
   }
 }
 

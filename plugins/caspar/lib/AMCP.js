@@ -193,6 +193,18 @@ exports.mixerOpacity = (opacity, opts) => `MIXER ${layerString(opts)} OPACITY ${
 exports.mixerVolume = (volume, opts) => `MIXER ${layerString(opts)} VOLUME ${volume}${transitionString(opts)}`
 
 /**
+ * Scale and position a layer using the Mixer Fill command
+ * @see https://casparcg.com/docs/wiki/protocols/amcp-protocol#mixer-fill
+ * @param { number } x The x position (0 = left, 0.5 = center, 1.0 = right)
+ * @param { number } y The y position (0 = top, 0.5 = center, 1.0 = bottom)
+ * @param { number } xScale The x scale (1 = full width, 0.5 = half width)
+ * @param { number } yScale The y scale (1 = full height, 0.5 = half height)
+ * @param { AMCPOptions } opts
+ * @returns { string }
+ */
+exports.mixerFill = (x, y, xScale, yScale, opts) => `MIXER ${layerString(opts)} FILL ${x} ${y} ${xScale} ${yScale}${transitionString(opts)}`
+
+/**
  * Get the thumbnail for a file
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#thumbnail-retrieve
  * @param { string } fileName
