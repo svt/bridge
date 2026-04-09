@@ -14,6 +14,7 @@
 - Loop detection and prevention
 ### Changed
 - Make margins in the inspector smaller
+- Improved spacing in rundown items
 ### Fixed
 - An issue where context menues wouldn't be properly placed when running in a web browser
 - An issue where time displays in the rundown didn't sync with the server time

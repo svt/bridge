@@ -1,7 +1,6 @@
 .RundownItemIndicatorsSection {
   display: flex;
   height: 1.2em;
-  width: 100px;
 
   align-items: center;
   justify-content: flex-end;
