@@ -47,6 +47,9 @@ const PLAY_HANDLERS = {
   },
   'bridge.caspar.transform': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerFill', item?.data?.caspar?.x, item?.data?.caspar?.y, item?.data?.caspar?.width, item?.data?.caspar?.height, item?.data?.caspar)
+  },
+  'bridge.caspar.snapshot': (serverId, item) => {
+    return commands.sendCommand(serverId, 'print', item?.data?.caspar)
   }
 }
 

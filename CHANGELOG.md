@@ -12,6 +12,7 @@
 - A quick way to change caspar targets
 - An API for opening modals
 - Loop detection and prevention
+- Support for the PRINT command in AMCP for taking snapshots
 ### Changed
 - Make margins in the inspector smaller
 - Improved spacing in rundown items

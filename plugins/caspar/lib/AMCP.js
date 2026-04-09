@@ -205,6 +205,15 @@ exports.mixerVolume = (volume, opts) => `MIXER ${layerString(opts)} VOLUME ${vol
 exports.mixerFill = (x, y, xScale, yScale, opts) => `MIXER ${layerString(opts)} FILL ${x} ${y} ${xScale} ${yScale}${transitionString(opts)}`
 
 /**
+ * Save a snapshot of a channel as a PNG image
+ * in the media folder
+ * @see https://casparcg.com/docs/wiki/protocols/amcp-protocol#print
+ * @param { AMCPOptions } opts
+ * @returns { string }
+ */
+exports.print = opts => `PRINT ${opts?.channel || 1}`
+
+/**
  * Get the thumbnail for a file
  * @see https://github.com/CasparCG/help/wiki/AMCP-Protocol#thumbnail-retrieve
  * @param { string } fileName

@@ -380,6 +380,32 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.snapshot',
+    name: 'Snapshot',
+    category: 'Caspar',
+    inherits: 'bridge.types.playable',
+    properties: {
+      name: {
+        default: 'Snapshot'
+      },
+      'caspar.server': {
+        name: 'Server',
+        type: 'string',
+        default: DEFAULT_SERVER_ID,
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/server`
+      },
+      'caspar.channel': {
+        name: 'Channel',
+        type: 'string',
+        default: '1',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.opacity',
     name: 'Opacity',
     category: 'Caspar',
