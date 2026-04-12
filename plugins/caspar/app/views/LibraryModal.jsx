@@ -55,7 +55,8 @@ export const LibraryModal = () => {
       data: {
         caspar: {
           server: item?.data?.caspar?.server,
-          target: item?.data?.caspar?.target
+          target: item?.data?.caspar?.target,
+          frameRate: item?.data?.caspar?.frameRate
         }
       }
     }

@@ -195,6 +195,14 @@ function init (htmlPath) {
         default: '0',
         'ui.group': 'Caspar'
       },
+      'caspar.frameRate': {
+        name: 'Frame rate',
+        type: 'string',
+        default: '25',
+        allowsVariables: true,
+        'ui.group': 'Timing',
+        'ui.unit': 'fps'
+      },
       'caspar.loop': {
         name: 'Loop',
         type: 'boolean',
