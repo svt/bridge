@@ -342,6 +342,11 @@ class Caspar extends EventEmitter {
   }
 
   async #getChannels () {
+    if (this.mode === Caspar.mode.COMPATIBILITY) {
+      logger.debug('Unable to read channels from a server in compatibility mode')
+      return
+    }
+
     const [res, config] = await Promise.all([
       this.send('INFO'),
       this.#getConfig()
@@ -390,6 +395,11 @@ class Caspar extends EventEmitter {
    *                                            server's configuration
    */
   async #getConfig () {
+    if (this.mode === Caspar.mode.COMPATIBILITY) {
+      logger.debug('Unable to read configuration from a server in compatibility mode')
+      return {}
+    }
+
     const config = await this.send('INFO CONFIG')
     if (config.code !== '201') {
       logger.warn('Failed to get configuration')

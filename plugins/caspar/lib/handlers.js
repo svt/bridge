@@ -12,6 +12,7 @@ const manifest = require('../package.json')
 const commands = require('./commands')
 
 const Logger = require('../../../lib/Logger')
+const Caspar = require('./Caspar')
 const logger = new Logger({ name: 'CasparPlugin' })
 
 /**
@@ -70,13 +71,21 @@ function sendMediaCommand (serverId, command, item, auto) {
   const channel = (server.channels || [])
     .find(channel => channel?.id === channelId)
 
-  if (!channel) {
+  /*
+  Verify that a channel was found and that the
+  server isn't running in compatibility mode,
+
+  Running in compat mode should play the media
+  but disable seek and length as they both become
+  undefined
+  */
+  if (!channel && server.mode !== Caspar.mode.COMPATIBILITY) {
     logger.warn('Channel not found')
     return
   }
 
-  const seek = calculateSeek(item?.data?.inPoint, channel.frameRate)
-  const length = calculateLength(item?.data?.inPoint, item?.data?.outPoint, channel.frameRate)
+  const seek = calculateSeek(item?.data?.inPoint, channel?.frameRate)
+  const length = calculateLength(item?.data?.inPoint, item?.data?.outPoint, channel?.frameRate)
   return commands.sendCommand(serverId, command, item?.data?.caspar?.target, item?.data?.caspar?.loop, seek, length, undefined, auto, item?.data?.caspar)
 }
 
