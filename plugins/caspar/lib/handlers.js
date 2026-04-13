@@ -14,6 +14,57 @@ const commands = require('./commands')
 const Logger = require('../../../lib/Logger')
 const logger = new Logger({ name: 'CasparPlugin' })
 
+/**
+ * @param { string | number | undefined } inPoint In milliseconds
+ * @param { string | number | undefined } frameRate In fps
+ * @returns { number | undefined }
+ */
+function calculateSeek (inPoint, frameRate) {
+  if (inPoint == null || inPoint === '' || frameRate == null || frameRate === '') {
+    return undefined
+  }
+  const fps = parseFloat(frameRate)
+  const ip = parseFloat(inPoint)
+  if (isNaN(fps) || isNaN(ip)) {
+    return undefined
+  }
+  return Math.round((ip / 1000) * fps)
+}
+
+/**
+ * @param { string | number | undefined } inPoint In milliseconds
+ * @param { string | number | undefined } outPoint In milliseconds
+ * @param { string | number | undefined } frameRate In fps
+ * @returns { number | undefined }
+ */
+function calculateLength (inPoint, outPoint, frameRate) {
+  if (outPoint == null || outPoint === '' || frameRate == null || frameRate === '') {
+    return undefined
+  }
+  const fps = parseFloat(frameRate)
+  const ip = parseFloat(inPoint) || 0
+  const op = parseFloat(outPoint)
+  if (isNaN(fps) || isNaN(op)) {
+    return undefined
+  }
+  return Math.round(((op - ip) / 1000) * fps)
+}
+
+/**
+ * A helper function to send the play and
+ * loadbg commands as they share signature
+ *
+ * @param { string } serverId
+ * @param { string } command
+ * @param { Object } item
+ * @param { boolean }
+ */
+function sendMediaCommand (serverId, command, item, auto) {
+  const seek = calculateSeek(item?.data?.inPoint, item?.data?.caspar?.frameRate)
+  const length = calculateLength(item?.data?.inPoint, item?.data?.outPoint, item?.data?.caspar?.frameRate)
+  return commands.sendCommand(serverId, command, item?.data?.caspar?.target, item?.data?.caspar?.loop, seek, length, undefined, auto, item?.data?.caspar)
+}
+
 const PLAY_HANDLERS = {
   'bridge.caspar.clear': (serverId, item) => {
     return commands.sendCommand(serverId, 'clear', item?.data?.caspar)
@@ -21,14 +72,14 @@ const PLAY_HANDLERS = {
   'bridge.caspar.amcp': (serverId, item) => {
     return commands.sendString(serverId, item?.data?.caspar?.amcp)
   },
-  'bridge.caspar.media': async (serverId, item) => {
-    return commands.sendCommand(serverId, 'play', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, undefined, item?.data?.caspar)
+  'bridge.caspar.media': (serverId, item) => {
+    return sendMediaCommand(serverId, 'play', item)
   },
   'bridge.caspar.image-scroller': async (serverId, item) => {
     return commands.sendCommand(serverId, 'playImageScroller', item?.data?.caspar?.target, item?.data?.caspar)
   },
-  'bridge.caspar.load': async (serverId, item) => {
-    return commands.sendCommand(serverId, 'loadbg', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, item?.data?.caspar?.auto, item?.data?.caspar)
+  'bridge.caspar.load': (serverId, item) => {
+    return sendMediaCommand(serverId, 'loadbg', item, item?.data?.caspar?.auto)
   },
   'bridge.caspar.template': (serverId, item) => {
     return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, getCleanTemplateDataString(item), true, item?.data?.caspar)
