@@ -32,7 +32,6 @@ const ITEM_CONSTRUCTORS = [
   {
     if: item => [asset.type.still, asset.type.video, asset.type.audio].includes(item.type),
     fn: item => {
-      console.log('Item', item)
       return {
         type: 'bridge.caspar.media',
         data: {
