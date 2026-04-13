@@ -13,7 +13,7 @@
 - An API for opening modals
 - Loop detection and prevention
 - Support for the PRINT command in AMCP for taking snapshots
-- A frame rate property to Caspar media items
+- Logic for discovering caspar channels automatically
 ### Changed
 - Make margins in the inspector smaller
 - Improved spacing in rundown items
