@@ -85,23 +85,3 @@ test('frameRateFractionToDecimal should handle non-string input by coercing to s
   expect(frameRateFractionToDecimal(undefined)).toBeUndefined()
   expect(frameRateFractionToDecimal(null)).toBeUndefined()
 })
-
-// frameRateFractionToDecimalRounded tests
-
-test('frameRateFractionToDecimalRounded should return a string rounded to 3 decimal places for even frame rates', () => {
-  expect(frameRateFractionToDecimalRounded('1/24')).toEqual('24.000')
-  expect(frameRateFractionToDecimalRounded('1/25')).toEqual('25.000')
-  expect(frameRateFractionToDecimalRounded('1/30')).toEqual('30.000')
-})
-
-test('frameRateFractionToDecimalRounded should return a string rounded to 3 decimal places for odd (NTSC) frame rates', () => {
-  expect(frameRateFractionToDecimalRounded('1001/24000')).toEqual('23.976')
-  expect(frameRateFractionToDecimalRounded('1001/30000')).toEqual('29.970')
-  expect(frameRateFractionToDecimalRounded('1001/60000')).toEqual('59.940')
-})
-
-test('frameRateFractionToDecimalRounded should return undefined for undefined or non-numeric input', () => {
-  expect(frameRateFractionToDecimalRounded(undefined)).toBeUndefined()
-  expect(frameRateFractionToDecimalRounded(null)).toBeUndefined()
-  expect(frameRateFractionToDecimalRounded('abc/def')).toBeUndefined()
-})

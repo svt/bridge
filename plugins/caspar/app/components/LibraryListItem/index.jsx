@@ -39,7 +39,6 @@ const ITEM_CONSTRUCTORS = [
           caspar: {
             server: item?._filter?.serverId,
             target: item.name,
-            frameRate: asset.frameRateFractionToDecimalRounded(item?.framerate || asset.DEFAULT_FRAMERATE_FRACTION),
             ...(DEFAULT_VALUES[item.type] || {})
           },
           duration: asset.calculateDurationMs(item)

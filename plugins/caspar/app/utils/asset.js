@@ -120,19 +120,3 @@ export function frameRateFractionToDecimal (fraction) {
 
   return dividend / divisor
 }
-
-/**
- * Calculate the decimal value of a fraction, rounded to 3 decimal places
- * @example
- * '30000/1001' -> 29.97
- * '1/25' -> 25
- * @param { string } fraction
- * @returns { string } decimal value rounded to 3 decimal places
- */
-export function frameRateFractionToDecimalRounded (fraction) {
-  const decimal = frameRateFractionToDecimal(fraction)
-  if (decimal === undefined) {
-    return undefined
-  }
-  return decimal.toFixed(3)
-}
