@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.11 [UNRELEASED]
+## 1.0.0-beta.11
 ### Added
 - An AI agent
 - A `bridge.time.now` api for getting the current server time
