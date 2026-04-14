@@ -15,13 +15,35 @@
 }
 
 .ColorInput-button {
-  width: 35px;
+  display: flex;
   height: 22px;
 
-  border-radius: 10px;
+  border-radius: 3px;
   border: none;
+  
+  font-family: var(--base-fontFamily--primary);
+  background: var(--base-color--shade1);
+  color: var(--base-color);
+
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.ColorInput-button:hover {
+  box-shadow: inset 0 0 0 1px var(--base-color--shade1);
+}
+
+.ColorInput-buttonPreview {
+  display: inline-block;
+  width: 22px;
+  height: 100%;
 
   box-shadow: inset 0 0 0 1px var(--base-color--shade1);
+}
+
+.ColorInput-buttonText {
+  padding: 5px;
 }
 
 .ColorInput-popover {

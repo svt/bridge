@@ -417,6 +417,7 @@ function init (htmlPath) {
       'caspar.opacity': {
         name: 'Opacity',
         type: 'string',
+        default: '1',
         allowsVariables: true,
         'ui.group': 'Caspar'
       }

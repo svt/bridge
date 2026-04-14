@@ -43,6 +43,7 @@
           "delay": {
             "name": "Delay",
             "type": "string",
+            "default": "0",
             "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms"

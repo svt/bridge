@@ -116,9 +116,11 @@ export function ColorInput ({
     <div ref={elRef} className={`ColorInput ${className}`}>
       <button
         className='ColorInput-button'
-        style={{ backgroundColor: value }}
         onClick={() => handleClick()}
-      />
+      >
+        <span className='ColorInput-buttonPreview' style={{ backgroundColor: value }} />
+        <span className='ColorInput-buttonText'>Color</span>
+      </button>
       {
         isOpen
           ? (
