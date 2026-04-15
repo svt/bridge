@@ -40,7 +40,8 @@ async function init (htmlPath) {
         name: 'Target',
         type: 'string',
         'ui.group': 'Reference',
-        'ui.readable': true
+        'ui.readable': true,
+        'ui.glyph': '\uE903'
       },
       targetButton: {
         name: '',

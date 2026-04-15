@@ -10,6 +10,7 @@ import './style.css'
 export function StringInput ({
   htmlFor,
   value = '',
+  data = {},
   onChange = () => {},
   onKeyDown = () => {},
   onScroll = () => {},
@@ -19,7 +20,7 @@ export function StringInput ({
     <input
       type='text'
       htmlFor={htmlFor}
-      className={`StringInput ${large ? 'StringInput--large' : ''}`}
+      className={`StringInput ${data['ui.glyph'] && 'StringInput--glyph'} ${large ? 'StringInput--large' : ''}`}
       value={value || ''}
       onChange={e => onChange(e.target.value)}
       onKeyDown={e => onKeyDown(e)}

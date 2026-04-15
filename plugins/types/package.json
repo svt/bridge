@@ -46,7 +46,8 @@
             "default": "0",
             "allowsVariables": true,
             "ui.group": "Timing",
-            "ui.unit": "ms"
+            "ui.unit": "ms",
+            "ui.glyph": "\uE902"
           }
         }
       },
@@ -58,7 +59,8 @@
             "name": "Duration",
             "type": "string",
             "ui.group": "Timing",
-            "ui.unit": "ms"
+            "ui.unit": "ms",
+            "ui.glyph": "\uE902"
           }
         }
       },      

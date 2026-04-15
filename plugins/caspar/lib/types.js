@@ -114,7 +114,8 @@ function init (htmlPath) {
         type: 'string',
         default: '0',
         'ui.group': 'Transition',
-        'ui.unit': 'frames'
+        'ui.unit': 'frames',
+        'ui.glyph': '\uE902'
       },
       'caspar.transitionEasing': {
         name: 'Easing',
@@ -154,7 +155,8 @@ function init (htmlPath) {
         default: '0',
         allowsVariables: true,
         'ui.group': 'Transition',
-        'ui.unit': 'frames'
+        'ui.unit': 'frames',
+        'ui.glyph': '\uE902'
       },
       'caspar.transitionEasing': {
         name: 'Easing',
@@ -220,7 +222,8 @@ function init (htmlPath) {
         default: '0',
         allowsVariables: true,
         'ui.group': 'Transition',
-        'ui.unit': 'frames'
+        'ui.unit': 'frames',
+        'ui.glyph': '\uE902'
       },
       'caspar.transitionEasing': {
         name: 'Easing',

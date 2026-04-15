@@ -83,6 +83,7 @@
 }
 
 .Form-inputValue {
+  position: relative;
   align-items: center;
 }
 

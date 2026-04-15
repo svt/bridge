@@ -14,6 +14,8 @@
 - Loop detection and prevention
 - Support for the PRINT command in AMCP for taking snapshots
 - Logic for discovering caspar channels automatically
+- The new ui.glyph field for inlining glyphs within the inspector's inputs
+- Additional glyphs to the bridge glyphs font
 ### Changed
 - Make margins in the inspector smaller
 - Improved spacing in rundown items

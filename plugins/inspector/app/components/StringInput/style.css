@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-.StringInput,
-.StringInput-input {
+.StringInput {
   width: 100%;
   padding: 0.5em;
 
@@ -21,10 +20,10 @@
   box-sizing: border-box;
 }
 
-.StringInput-input {
-  border-radius: 0;
+input.StringInput--glyph {
+  padding-left: 1.75em;
 }
 
-.StringInput-input--large {
+.StringInput--large {
   font-size: 1.1em;
 }
