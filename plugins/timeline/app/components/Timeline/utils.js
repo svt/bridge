@@ -97,18 +97,22 @@ export function getDisplayUnitDurationMS (scale, frameRate) {
       duration: UNIT_MS_DURATION.frame(frameRate) * 10
     },
     {
-      scale: 0.1,
+      scale: 0.8,
       duration: UNIT_MS_DURATION.second()
+    },
+    {
+      scale: 0.1,
+      duration: UNIT_MS_DURATION.second() * 10
     },
     {
       scale: 0.01,
       duration: UNIT_MS_DURATION.minute()
-    },
-    {
-      scale: 0.001,
-      duration: UNIT_MS_DURATION.hour()
     }
   ]
+
+  if (scale < 0.01) {
+    return (1 / scale) * UNIT_MS_DURATION.hour()
+  }
 
   for (const breakpoint of SCALE_BREAKPOINTS) {
     if (scale > breakpoint.scale) {
