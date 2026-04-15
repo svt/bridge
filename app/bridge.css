@@ -159,6 +159,7 @@ input {
   user-select: auto;
 }
 
+.Input,
 input[type="tel"],
 input[type="date"],
 input[type="text"],
@@ -182,6 +183,7 @@ textarea {
   box-sizing: border-box;
 }
 
+.Input,
 input[type="tel"]:focus,
 input[type="date"]:focus,
 input[type="text"]:focus,
@@ -193,6 +195,7 @@ textarea:focus {
   box-shadow: inset 0 0 0 1px var(--base-color--shade1);
 }
 
+.Input,
 input[type="tel"]:hover,
 input[type="date"]:hover,
 input[type="text"]:hover,

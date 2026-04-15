@@ -59,7 +59,8 @@ async function init (htmlPath) {
       tag: {
         name: 'Tag',
         type: 'string',
-        'ui.group': 'Timing'
+        'ui.group': 'Timing',
+        'ui.glyph': '#'
       },
       onPlay: {
         name: 'On play',
