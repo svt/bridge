@@ -28,15 +28,5 @@
     "inputs": [
       { "type": "boolean", "bind": "shared._userDefaults.httpBindToAll", "label": "Bind to 0.0.0.0" }
     ]
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "title": "Loop prevention",
-    "description": "Disabling loop prevention will allow item loops with sub frame delays but risks creating loops that freeze the application",
-    "inputs": [
-      { "type": "boolean", "bind": "shared.core.internals.enableLoopPrevention", "label": "Prevent loops" }
-    ]
   }
 ]
