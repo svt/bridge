@@ -58,13 +58,13 @@ function calculateLength (inPoint, outPoint, frameRate) {
  * @param { string } serverId
  * @param { string } command
  * @param { Object } item
- * @param { boolean }
+ * @param { Promise.<boolean> }
  */
 function sendMediaCommand (serverId, command, item, auto) {
   const server = commands.getServer(serverId)
   if (!server) {
     logger.warn('Server not found')
-    return
+    return Promise.reject(new Error('Server not found'))
   }
 
   const channelId = item?.data?.caspar?.channel
@@ -81,7 +81,7 @@ function sendMediaCommand (serverId, command, item, auto) {
   */
   if (!channel && server.mode !== Caspar.mode.COMPATIBILITY) {
     logger.warn('Channel not found')
-    return
+    return Promise.reject(new Error('Channel not found'))
   }
 
   const seek = calculateSeek(item?.data?.inPoint, channel?.frameRate)
