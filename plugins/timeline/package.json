@@ -26,6 +26,9 @@
           "name": {
             "default": "Timeline"
           },
+          "duration": {
+            "default": "10000"
+          },
           "frameRate": {
             "name": "Frame rate",
             "type": "enum",
