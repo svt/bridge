@@ -152,7 +152,6 @@ export function Chat () {
             .filter(message => message?.text)
             .map(message => {
               const Component = MESSAGE_RENDERER[message?.type] || MESSAGE_RENDERER.default
-              console.log('Rendering', message)
               
               return (
                 <div key={message?.id} className='Chat-message'>
