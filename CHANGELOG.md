@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.11 [UNRELEASED]
+## 1.0.0-beta.11
 ### Added
 - An AI agent
 - A `bridge.time.now` api for getting the current server time
@@ -12,8 +12,13 @@
 - A quick way to change caspar targets
 - An API for opening modals
 - Loop detection and prevention
+- Support for the PRINT command in AMCP for taking snapshots
+- Logic for discovering caspar channels automatically
+- The new ui.glyph field for inlining glyphs within the inspector's inputs
+- Additional glyphs to the bridge glyphs font
 ### Changed
 - Make margins in the inspector smaller
+- Improved spacing in rundown items
 ### Fixed
 - An issue where context menues wouldn't be properly placed when running in a web browser
 - An issue where time displays in the rundown didn't sync with the server time
@@ -27,6 +32,8 @@
 - An issue where the menus of window buttons became misaligned on Windows
 - Updated non-breaking dependencies
 - Updated Electron to 41.1.1
+- Implemented bridge.caspar.transform
+- Made select elements support the light theme
 
 ## 1.0.0-beta.10
 ### Added

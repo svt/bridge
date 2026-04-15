@@ -11,7 +11,8 @@
  * } LibraryAsset
  */
 
-const DEFAULT_DURATION_MS = 5000
+export const DEFAULT_DURATION_MS = 5000
+export const DEFAULT_FRAMERATE_FRACTION = '1/25'
 
 const REX = /"(?<name>.+)"\s{2}(?<type>.+)\s(?<size>.+)\s(?<timestamp>.+)\s(?<duration>.+)\s(?<framerate>.+)/i
 
@@ -93,17 +94,17 @@ export function calculateDurationMs (item) {
     return DEFAULT_DURATION_MS
   }
 
-  return (Math.abs(item?.duration) / framerate) * 1000
+  return Math.round((Math.abs(item?.duration) / framerate) * 1000)
 }
 
 /**
  * Calculate the decimal value of a fraction
  * @example
  * '30000/1001' -> 29.97
- * @param {any} fraction
- * @returns decimal value
+ * @param { string } fraction
+ * @returns { number } decimal value
  */
-function frameRateFractionToDecimal (fraction) {
+export function frameRateFractionToDecimal (fraction) {
   const [divisorStr, dividendStr] = String(fraction).split('/')
 
   const divisor = parseInt(divisorStr)

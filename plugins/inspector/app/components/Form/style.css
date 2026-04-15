@@ -78,7 +78,12 @@
   justify-content: space-between;
 }
 
+.Form-inputHeader {
+  align-items: end;
+}
+
 .Form-inputValue {
+  position: relative;
   align-items: center;
 }
 
@@ -87,7 +92,7 @@
   display: block;
   margin: 0 5px 3px;
 
-  font-size: 0.8em;
+  font-size: 0.7em;
   text-transform: uppercase;
 
   opacity: 0.7;
@@ -136,4 +141,14 @@
 .Form-notifications .Notification {
   margin-top: 5px;
   margin-bottom: 15px;
+}
+
+.Form-id {
+  display: block;
+  margin: 0 5px 3px;
+
+  font-size: 0.8em;
+  text-transform: uppercase;
+
+  opacity: 0.7;
 }

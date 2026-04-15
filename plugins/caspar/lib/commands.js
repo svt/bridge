@@ -184,6 +184,16 @@ exports.listServers = listServers
 bridge.commands.registerCommand('caspar.listServers', listServers)
 
 /**
+ * Get a server by its id
+ * @param { string } serverId
+ * @returns { Caspar? }
+ */
+function getServer (serverId) {
+  return casparManager.get(serverId)
+}
+exports.getServer = getServer
+
+/**
  * Reconnect a server using
  * a new connection init
  * @param { String } serverId The id of the server to reconnect

@@ -1,0 +1,9 @@
+.Glyph {
+  position: absolute;
+
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+
+  font-family: 'Bridge Glyphs', var(--base-fontFamily--primary);
+  opacity: 0.75;
+}

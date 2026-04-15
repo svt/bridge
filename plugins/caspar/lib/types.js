@@ -114,7 +114,8 @@ function init (htmlPath) {
         type: 'string',
         default: '0',
         'ui.group': 'Transition',
-        'ui.unit': 'frames'
+        'ui.unit': 'frames',
+        'ui.glyph': '\uE902'
       },
       'caspar.transitionEasing': {
         name: 'Easing',
@@ -154,7 +155,8 @@ function init (htmlPath) {
         default: '0',
         allowsVariables: true,
         'ui.group': 'Transition',
-        'ui.unit': 'frames'
+        'ui.unit': 'frames',
+        'ui.glyph': '\uE902'
       },
       'caspar.transitionEasing': {
         name: 'Easing',
@@ -220,7 +222,8 @@ function init (htmlPath) {
         default: '0',
         allowsVariables: true,
         'ui.group': 'Transition',
-        'ui.unit': 'frames'
+        'ui.unit': 'frames',
+        'ui.glyph': '\uE902'
       },
       'caspar.transitionEasing': {
         name: 'Easing',
@@ -380,6 +383,32 @@ function init (htmlPath) {
   })
 
   bridge.types.registerType({
+    id: 'bridge.caspar.snapshot',
+    name: 'Snapshot',
+    category: 'Caspar',
+    inherits: 'bridge.types.playable',
+    properties: {
+      name: {
+        default: 'Snapshot'
+      },
+      'caspar.server': {
+        name: 'Server',
+        type: 'string',
+        default: DEFAULT_SERVER_ID,
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/server`
+      },
+      'caspar.channel': {
+        name: 'Channel',
+        type: 'string',
+        default: '1',
+        allowsVariables: true,
+        'ui.group': 'Caspar'
+      }
+    }
+  })
+
+  bridge.types.registerType({
     id: 'bridge.caspar.opacity',
     name: 'Opacity',
     category: 'Caspar',
@@ -391,6 +420,7 @@ function init (htmlPath) {
       'caspar.opacity': {
         name: 'Opacity',
         type: 'string',
+        default: '1',
         allowsVariables: true,
         'ui.group': 'Caspar'
       }
@@ -409,29 +439,37 @@ function init (htmlPath) {
       'caspar.x': {
         name: 'X',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '0.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       },
       'caspar.y': {
         name: 'Y',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '0.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       },
       'caspar.width': {
         name: 'Width',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '1.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       },
       'caspar.height': {
         name: 'Height',
         type: 'string',
+        description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
-        'ui.unit': 'px',
+        default: '1.0',
+        'ui.width': '50%',
         'ui.group': 'Caspar'
       }
     }

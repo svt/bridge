@@ -12,7 +12,82 @@ const manifest = require('../package.json')
 const commands = require('./commands')
 
 const Logger = require('../../../lib/Logger')
+const Caspar = require('./Caspar')
 const logger = new Logger({ name: 'CasparPlugin' })
+
+/**
+ * @param { string | number | undefined } inPoint In milliseconds
+ * @param { string | number | undefined } frameRate In fps
+ * @returns { number | undefined }
+ */
+function calculateSeek (inPoint, frameRate) {
+  if (inPoint == null || inPoint === '' || frameRate == null || frameRate === '') {
+    return undefined
+  }
+  const fps = parseFloat(frameRate)
+  const ip = parseFloat(inPoint)
+  if (isNaN(fps) || isNaN(ip)) {
+    return undefined
+  }
+  return Math.round((ip / 1000) * fps)
+}
+
+/**
+ * @param { string | number | undefined } inPoint In milliseconds
+ * @param { string | number | undefined } outPoint In milliseconds
+ * @param { string | number | undefined } frameRate In fps
+ * @returns { number | undefined }
+ */
+function calculateLength (inPoint, outPoint, frameRate) {
+  if (outPoint == null || outPoint === '' || frameRate == null || frameRate === '') {
+    return undefined
+  }
+  const fps = parseFloat(frameRate)
+  const ip = parseFloat(inPoint) || 0
+  const op = parseFloat(outPoint)
+  if (isNaN(fps) || isNaN(op)) {
+    return undefined
+  }
+  return Math.round(((op - ip) / 1000) * fps)
+}
+
+/**
+ * A helper function to send the play and
+ * loadbg commands as they share signature
+ *
+ * @param { string } serverId
+ * @param { string } command
+ * @param { Object } item
+ * @param { Promise.<boolean> }
+ */
+function sendMediaCommand (serverId, command, item, auto) {
+  const server = commands.getServer(serverId)
+  if (!server) {
+    logger.warn('Server not found')
+    return Promise.reject(new Error('Server not found'))
+  }
+
+  const channelId = item?.data?.caspar?.channel
+  const channel = (server.channels || [])
+    .find(channel => channel?.id === channelId)
+
+  /*
+  Verify that a channel was found and that the
+  server isn't running in compatibility mode,
+
+  Running in compat mode should play the media
+  but disable seek and length as they both become
+  undefined
+  */
+  if (!channel && server.mode !== Caspar.mode.COMPATIBILITY) {
+    logger.warn('Channel not found')
+    return Promise.reject(new Error('Channel not found'))
+  }
+
+  const seek = calculateSeek(item?.data?.inPoint, channel?.frameRate)
+  const length = calculateLength(item?.data?.inPoint, item?.data?.outPoint, channel?.frameRate)
+  return commands.sendCommand(serverId, command, item?.data?.caspar?.target, item?.data?.caspar?.loop, seek, length, undefined, auto, item?.data?.caspar)
+}
 
 const PLAY_HANDLERS = {
   'bridge.caspar.clear': (serverId, item) => {
@@ -21,14 +96,14 @@ const PLAY_HANDLERS = {
   'bridge.caspar.amcp': (serverId, item) => {
     return commands.sendString(serverId, item?.data?.caspar?.amcp)
   },
-  'bridge.caspar.media': async (serverId, item) => {
-    return commands.sendCommand(serverId, 'play', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, undefined, item?.data?.caspar)
+  'bridge.caspar.media': (serverId, item) => {
+    return sendMediaCommand(serverId, 'play', item)
   },
   'bridge.caspar.image-scroller': async (serverId, item) => {
     return commands.sendCommand(serverId, 'playImageScroller', item?.data?.caspar?.target, item?.data?.caspar)
   },
-  'bridge.caspar.load': async (serverId, item) => {
-    return commands.sendCommand(serverId, 'loadbg', item?.data?.caspar?.target, item?.data?.caspar?.loop, 0, undefined, undefined, item?.data?.caspar?.auto, item?.data?.caspar)
+  'bridge.caspar.load': (serverId, item) => {
+    return sendMediaCommand(serverId, 'loadbg', item, item?.data?.caspar?.auto)
   },
   'bridge.caspar.template': (serverId, item) => {
     return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, getCleanTemplateDataString(item), true, item?.data?.caspar)
@@ -44,6 +119,12 @@ const PLAY_HANDLERS = {
   },
   'bridge.caspar.html': (serverId, item) => {
     return commands.sendCommand(serverId, 'html', item?.data?.caspar?.url, item?.data?.caspar)
+  },
+  'bridge.caspar.transform': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerFill', item?.data?.caspar?.x, item?.data?.caspar?.y, item?.data?.caspar?.width, item?.data?.caspar?.height, item?.data?.caspar)
+  },
+  'bridge.caspar.snapshot': (serverId, item) => {
+    return commands.sendCommand(serverId, 'print', item?.data?.caspar)
   }
 }
 
@@ -71,6 +152,9 @@ const STOP_HANDLERS = {
   },
   'bridge.caspar.html': (serverId, item) => {
     return commands.sendCommand(serverId, 'stop', item?.data?.caspar)
+  },
+  'bridge.caspar.transform': (serverId, item) => {
+    return commands.sendCommand(serverId, 'mixerFill', 0, 0, 1, 1, { ...(item?.data?.caspar || {}), transitionDuration: 0 })
   }
 }
 

@@ -62,6 +62,7 @@ function getPathsFromObject (obj) {
 export function VariableStringInput ({
   htmlFor,
   value = '',
+  data = {},
   onChange = () => {},
   variableContext = {},
   large
@@ -106,11 +107,12 @@ export function VariableStringInput ({
   }
 
   return (
-    <div className='VariableStringInput'>
+    <div className={`VariableStringInput ${data['ui.glyph'] && 'VariableStringInput--glyph'}`}>
       <div ref={suggestionRef} className='VariableStringInput-suggestion'>{value}{suggestion}</div>
       <StringInput
         htmlFor={htmlFor}
         value={value}
+        data={data}
         onChange={newValue => onChange(newValue)}
         onKeyDown={e => handleKeyDown(e)}
         onScroll={e => handleScroll(e)}

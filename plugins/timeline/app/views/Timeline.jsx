@@ -154,18 +154,6 @@ export function Timeline () {
 
   async function handleDragChange (id, changes) {
     await bridge.items.applyItem(id, { data: changes }, true)
-
-    if (!timelineIdRef.current) {
-      return
-    }
-
-    const updatedItems = items.map(child =>
-      child.id === id ? { ...child, data: { ...child.data, ...changes } } : child
-    )
-    const totalDuration = updatedItems.reduce((max, child) => {
-      return Math.max(max, (child.data?.delay || 0) + bridge.items.getEffectiveDuration(child))
-    }, 0)
-    await bridge.items.applyItem(timelineIdRef.current, { data: { duration: totalDuration } }, true)
   }
 
   function handleLockChange (id) {

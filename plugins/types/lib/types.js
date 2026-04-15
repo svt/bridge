@@ -40,7 +40,8 @@ async function init (htmlPath) {
         name: 'Target',
         type: 'string',
         'ui.group': 'Reference',
-        'ui.readable': true
+        'ui.readable': true,
+        'ui.glyph': '\uE903'
       },
       targetButton: {
         name: '',
@@ -59,21 +60,24 @@ async function init (htmlPath) {
       tag: {
         name: 'Tag',
         type: 'string',
-        'ui.group': 'Timing'
+        'ui.group': 'Timing',
+        'ui.glyph': '#'
       },
       onPlay: {
         name: 'On play',
         type: 'enum',
         default: defaults?.onPlay || 0,
         enum: ['Do nothing', 'Play next sibling', 'Select next sibling (main client)'],
-        'ui.group': 'Timing'
+        'ui.group': 'Timing',
+        'ui.width': '50%'
       },
       onEnd: {
         name: 'On end',
         type: 'enum',
         default: defaults?.onEnd || 0,
         enum: ['Do nothing', 'Play next sibling', 'Select next sibling (main client)', 'Stop'],
-        'ui.group': 'Timing'
+        'ui.group': 'Timing',
+        'ui.width': '50%'
       }
     }
   })

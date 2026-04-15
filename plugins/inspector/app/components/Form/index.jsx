@@ -44,6 +44,7 @@ import { BooleanInput } from '../BooleanInput'
 import { VariableHint } from '../VariableHint'
 import { VariableStringInput } from '../VariableStringInput'
 import { InspectorShortcutInput } from '../InspectorShortcutInput'
+import { Glyph } from '../Glyph'
 
 const PLUGIN_NAME = pkg.name
 
@@ -302,6 +303,9 @@ export function Form () {
             ? <Frame src={property['ui.uri']} api={bridge} doUpdateTheme={1} />
             : (
               <div className='Form-inputValue'>
+                {
+                  property['ui.glyph'] && <Glyph char={property['ui.glyph']} />
+                }
                 <Component
                   htmlFor={id}
                   data={property}
@@ -366,7 +370,7 @@ export function Form () {
           <div className='Form-row'>
             <div className='Form-input'>
               <label className='Form-inputLabel'>ID</label>
-              <label className='Form-inputLabel u-textTransform--none u-selectable'>
+              <label className='Form-id u-textTransform--none u-selectable'>
                 {
                   (store.items || []).length > 1
                     ? 'Multiple items selected'

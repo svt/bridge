@@ -14,10 +14,43 @@
  * @typedef {
  *  'DEFAULT' | 'COMPATIBILITY'
  * } CasparModeEnum
+ *
+ * @typedef {{
+ *  id: number,
+ *  frameRate: string
+ * }} CasparChannel
+ *
+ * @typedef {{
+ *  videoMode: string,
+ *  consumers: Object | undefined
+ * }} CasparConfigChannel
+ *
+ * @typedef {{
+ *  mediaPath: string | undefined,
+ *  logPath: string | undefined,
+ *  templatePath: string | undefined,
+ *  dataPath: string | undefined
+ * }} CasparConfigPaths
+ *
+ * @typedef {{
+ *  id: string,
+ *  timeScale: string,
+ *  duration: string
+ * }} CasparConfigVideoMode
+ *
+ * @typedef {{
+ *  channels: { channel: CasparConfigChannel | CasparConfigChannel[] } | undefined,
+ *  videoModes: { videoMode: CasparConfigVideoMode | CasparConfigVideoMode[] } | undefined,
+ *  paths: CasparConfigPaths | undefined
+ * }} CasparConfiguration
  */
 
 const TcpSocket = require('./TcpSocket')
+const XmlParser = require('./XmlParser')
 const CasparError = require('./error/CasparError')
+
+const Logger = require('../../../lib/Logger')
+const logger = new Logger({ name: 'CasparPlugin/Caspar' })
 
 const EventEmitter = require('events')
 
@@ -39,6 +72,35 @@ const TIMEOUT_TRANSACTIONS_MS = 30000
  * @type { Number }
  */
 const TIMEOUT_TRANSACTIONS_INTERVAL_MS = 1000
+
+/**
+ * Known frame rates for named video modes
+ * @type { Object.<string, number> }
+ */
+const NAMED_MODE_FRAMERATES = {
+  pal: 25,
+  ntsc: 30000 / 1001,
+  ntsc2398: 24000 / 1001
+}
+
+/**
+ * Extract the frame rate in fps from a standard CasparCG
+ * video mode name such as '1080i5000' or '720p2997'.
+ * Returns undefined for unrecognised mode names.
+ * @param { string } modeName
+ * @returns { number | undefined }
+ */
+function parseFrameRateFromMode (modeName) {
+  const lower = modeName.toLowerCase()
+  if (NAMED_MODE_FRAMERATES[lower] !== undefined) {
+    return NAMED_MODE_FRAMERATES[lower]
+  }
+  const match = lower.match(/[pi](\d+)$/)
+  if (match) {
+    return parseInt(match[1]) / 100
+  }
+  return undefined
+}
 
 /**
  * @class Caspar
@@ -128,21 +190,31 @@ class Caspar extends EventEmitter {
 
   /**
    * @private
-   * @type { String[] }
+   * @type { string[] }
    */
   #unprocessedLines = []
 
   /**
    * @private
-   * @type { String | undefined }
+   * @type { string? }
    */
   #unprocessedData = undefined
 
   /**
    * @private
-   * @type { any | undefined }
+   * @type { any? }
    */
   #opts
+
+  /**
+   * @private
+   * @type { CasparChannel[]? }
+   */
+  #channels
+
+  get channels () {
+    return this.#channels
+  }
 
   /**
    * @private
@@ -224,7 +296,8 @@ class Caspar extends EventEmitter {
 
     this.#setStatus(Caspar.status.CONNECTING)
 
-    this.#socket.on('connect', () => {
+    this.#socket.on('connect', async () => {
+      this.#channels = await this.#getChannels()
       this.#setStatus(Caspar.status.CONNECTED)
       this.emit('connect')
     })
@@ -266,6 +339,74 @@ class Caspar extends EventEmitter {
   #setStatus (newStatus) {
     this.#status = newStatus
     this.emit('status', newStatus)
+  }
+
+  async #getChannels () {
+    if (this.mode === Caspar.mode.COMPATIBILITY) {
+      logger.debug('Unable to read channels from a server in compatibility mode')
+      return
+    }
+
+    const [res, config] = await Promise.all([
+      this.send('INFO'),
+      this.#getConfig()
+    ])
+
+    if (res.code !== '200') {
+      logger.debug('Failed to get channel info')
+      return
+    }
+
+    if (!Array.isArray(res?.data)) {
+      logger.debug('Received invalid channel info')
+      return
+    }
+
+    /*
+    Build a lookup of custom video modes from the config,
+    keyed by lower-case id. Frame rate = timescale / duration.
+    */
+    const customModes = {}
+    const rawModes = config?.videoModes?.videoMode
+    if (rawModes) {
+      const modeArray = Array.isArray(rawModes) ? rawModes : [rawModes]
+      for (const mode of modeArray) {
+        if (mode.id && mode.timeScale && mode.duration) {
+          customModes[mode.id.toLowerCase()] = parseInt(mode.timeScale) / parseInt(mode.duration)
+        }
+      }
+    }
+
+    return res.data
+      .map(line => {
+        const match = line.match(/^(\d+)\s+(\S+)\s+(\S+)$/)
+        if (!match) return null
+        const [, id, videoMode] = match
+        const frameRate = customModes[videoMode.toLowerCase()] ?? parseFrameRateFromMode(videoMode)
+        return { id: parseInt(id), videoMode, frameRate }
+      })
+      .filter(Boolean)
+  }
+
+  /**
+   * Get the configuration of this server
+   *
+   * @returns { Promise.<CasparConfiguration> } An object representing the
+   *                                            server's configuration
+   */
+  async #getConfig () {
+    if (this.mode === Caspar.mode.COMPATIBILITY) {
+      logger.debug('Unable to read configuration from a server in compatibility mode')
+      return {}
+    }
+
+    const config = await this.send('INFO CONFIG')
+    if (config.code !== '201') {
+      logger.warn('Failed to get configuration')
+      return
+    }
+    const xml = config?.data?.[0]
+    return XmlParser.parse(xml)?.configuration
   }
 
   /**
