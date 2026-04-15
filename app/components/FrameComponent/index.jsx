@@ -8,6 +8,7 @@ import { Icon } from '../Icon'
 
 import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
+import * as theme from '../../utils/theme'
 import * as api from '../../api'
 
 import './style.css'
@@ -92,6 +93,21 @@ function copyThemeVariables (iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
+/**
+ * Apply the same theme class as the
+ * closest ancestor to the iframe document
+ * 
+ * @param { HTMLElement } fromEl 
+ * @param { HTMLIFrameElement} iframe
+ */
+function applyThemeClass (fromEl, iframe) {
+  const className = theme.findClosestAncestorThemeClass(fromEl)
+  if (!className) {
+    return
+  }
+  iframe.contentDocument.documentElement.className += ` ${className}`
+}
+
 export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enableFloat = true, isFloated = false }) {
   const [caller] = React.useState(uuidv4())
   const [local] = React.useContext(LocalContext)
@@ -157,6 +173,11 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
         Setup the theme variables
         */
         copyThemeVariables(frameRef.current)
+
+        /*
+        Setup the theme class name
+        */
+        applyThemeClass(wrapperRef.current, frameRef.current)
 
         /*
         Add a data attribute with the platform

@@ -33,6 +33,7 @@
 - Updated non-breaking dependencies
 - Updated Electron to 41.1.1
 - Implemented bridge.caspar.transform
+- Made select elements support the light theme
 
 ## 1.0.0-beta.10
 ### Added

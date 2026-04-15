@@ -283,7 +283,7 @@ input[type="checkbox"]:checked::before {
 }
 
 select {
-  padding: 0.8em 1.3em 0.8em 1em;
+  padding: 0.8em 2.5em 0.8em 1em;
 
   color: inherit;
   font-size: 1em;
@@ -298,14 +298,26 @@ select {
   appearance: none;
 
   box-sizing: border-box;
+
+  overflow: hidden; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.u-theme--light select {
+  background: url('./assets/icons/arrow-down-dark.svg') no-repeat right 10px center var(--base-color--shade3);
 }
 
 .Select--small {
-  padding: 0.4em 0.75em;
+  padding: 0.4em 2.2em 0.4em 0.75em;
 }
 
 select:focus {
   background: url('./assets/icons/arrow-down.svg') no-repeat right 10px center var(--base-color--background1);
+}
+
+.u-theme--light select:focus {
+  background: url('./assets/icons/arrow-down-dark.svg') no-repeat right 10px center var(--base-color--background1);
 }
 
 /* Labels */

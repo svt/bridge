@@ -2,6 +2,7 @@ import React from 'react'
 
 import * as shortcuts from '../../utils/shortcuts'
 import * as browser from '../../utils/browser'
+import * as theme from '../../utils/theme'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -77,6 +78,21 @@ function copyThemeVariables (fromEl, iframe, variables = COPY_THEME_VARIABLES) {
   }
 }
 
+/**
+ * Apply the same theme class as the
+ * closest ancestor to the iframe document
+ * 
+ * @param { HTMLElement } fromEl 
+ * @param { HTMLIFrameElement} iframe
+ */
+function applyThemeClass (fromEl, iframe) {
+  const className = theme.findClosestAncestorThemeClass(fromEl)
+  if (!className) {
+    return
+  }
+  iframe.contentDocument.documentElement.className += ` ${className}`
+}
+
 export function Frame ({ className, src, api, doUpdateTheme = 1, autoresize = true }) {
   const [caller] = React.useState(uuidv4())
 
@@ -117,6 +133,11 @@ export function Frame ({ className, src, api, doUpdateTheme = 1, autoresize = tr
         Setup the theme variables
         */
         copyThemeVariables(wrapperRef.current, frameRef.current)
+
+        /*
+        Setup the theme class name
+        */
+        applyThemeClass(wrapperRef.current, frameRef.current)
 
         /*
         Add a data attribute with the platform
