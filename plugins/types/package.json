@@ -72,15 +72,18 @@
             "name": "Duration",
             "type": "string",
             "ui.group": "Timing",
-            "ui.unit": "ms"
+            "ui.unit": "ms",
+            "ui.glyph": "\uE902"
           },
           "inPoint": {
             "name": "In point",
             "type": "string",
             "allowsVariables": true,
+            "default": "0",
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.dependsOn": ["duration"]
+            "ui.dependsOn": ["duration"],
+            "ui.glyph": "\uE902"
           },
           "outPoint": {
             "name": "Out point",
@@ -88,7 +91,8 @@
             "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.dependsOn": ["duration"]
+            "ui.dependsOn": ["duration"],
+            "ui.glyph": "\uE902"
           }
         }
       },
