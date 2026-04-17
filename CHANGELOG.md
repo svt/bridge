@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.11
+## 1.0.0
 ### Added
 - An AI agent
 - A `bridge.time.now` api for getting the current server time
@@ -23,14 +23,13 @@
 - An issue where context menues wouldn't be properly placed when running in a web browser
 - An issue where time displays in the rundown didn't sync with the server time
 - The clipboard isn't available in insecure contexts
-- Updated dependencies
 - An issue where variable autocomplete wouldn't sync with the input field horisontal scroll
 - A bug where there were no guards for placing a group, or timeline, within itself
 - A memory leak occuring within caspar widgets hooking onto the state
 - UI issues with the caspar library widget
 - An issue preventing nested groups from being 'stepped into'
 - An issue where the menus of window buttons became misaligned on Windows
-- Updated non-breaking dependencies
+- Updated dependencies
 - Updated Electron to 41.1.1
 - Implemented bridge.caspar.transform
 - Made select elements support the light theme
