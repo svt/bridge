@@ -106,10 +106,10 @@ const PLAY_HANDLERS = {
     return sendMediaCommand(serverId, 'loadbg', item, item?.data?.caspar?.auto)
   },
   'bridge.caspar.template': (serverId, item) => {
-    return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, getCleanTemplateDataString(item), true, item?.data?.caspar)
+    return commands.sendCommand(serverId, 'cgAdd', item?.data?.caspar?.target, processTemplateData(item), true, item?.data?.caspar)
   },
   'bridge.caspar.template.update': (serverId, item) => {
-    return commands.sendCommand(serverId, 'cgUpdate', getCleanTemplateDataString(item), item?.data?.caspar)
+    return commands.sendCommand(serverId, 'cgUpdate', processTemplateData(item), item?.data?.caspar)
   },
   'bridge.caspar.opacity': (serverId, item) => {
     return commands.sendCommand(serverId, 'mixerOpacity', item?.data?.caspar?.opacity, item?.data?.caspar)
@@ -165,15 +165,19 @@ const STOP_HANDLERS = {
  * @param { Item } item
  * @returns { String }
  */
-function getCleanTemplateDataString (item) {
+function processTemplateData (item) {
   try {
-    const dirty = item?.data?.caspar?.templateDataSource
-
+    let dirty = item?.data?.caspar?.data
     if (dirty == null) {
-      return JSON.stringify({})
+      dirty = {}
     }
 
-    return JSON.stringify(JSON.parse(dirty))
+    const str = JSON.stringify(dirty)
+
+    /*
+    Substitute any variables
+    */
+    return bridge.variables.substituteInString(str, undefined, { this: item })
   } catch (err) {
     logger.warn('Failed to clean template data')
     return JSON.stringify({})
@@ -283,33 +287,9 @@ bridge.events.on('item.end', async coldItem => {
 })
 
 /*
- * Handle changes to item data by updating the item
- * with a parsed value of the same data in order for
- * variables to be able to utilize it
- */
-bridge.events.on('item.change', (itemId, _, set) => {
-  /*
-   * Make sure that the apply operation actually
-   * modifies the templateDataSource value
-   */
-  if (!set?.data?.caspar?.templateDataSource) {
-    return
-  }
-
-  try {
-    /*
-     * Parse the data and
-     * apply it to the item
-     */
-    const structuredData = JSON.parse(set?.data?.caspar?.templateDataSource)
-    bridge.items.applyItem(itemId, {
-      data: {
-        caspar: {
-          data: { $replace: structuredData }
-        }
-      }
-    }, false)
-  } catch (e) {
-    logger.warn('Failed to apply structured data to item with error: ', e)
-  }
-})
+Add a listener to
+keep the state updated,
+this is a requirement
+by the Bridge API
+*/
+bridge.events.on('state.change', () => {})

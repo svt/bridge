@@ -170,7 +170,7 @@ class State {
    * @param { string | undefined } delimiter
    * @returns { any }
    */
-  #expandObjectPath (path, value, delimiter = '.') {
+  expandObjectPath (path, value, delimiter = '.') {
     const parts = path.split(delimiter)
 
     const out = {}
@@ -218,7 +218,7 @@ class State {
     expand create an object that can be set directly
     */
     if (typeof arg0 === 'string' && arg1) {
-      set = this.#expandObjectPath(arg0, arg1)
+      set = this.expandObjectPath(arg0, arg1)
     }
 
     this.#props.Commands.executeRawCommand('state.apply', set)

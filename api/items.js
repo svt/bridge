@@ -54,8 +54,16 @@ class Items {
     Intercept the item.change event
     to always include the full item
     */
-    this.#props.Events.intercept('item.change', async (itemId, set) => {
-      return [itemId, await this.getItem(itemId), set]
+    this.#props.Events.intercept('item.change', async (itemId, arg0, arg1) => {
+      /*
+      Just forward the event if
+      all properties are set already
+      */
+      if (arg0 && arg1) {
+        return [itemId, arg0, arg1]
+      }
+
+      return [itemId, await this.getItem(itemId), arg1]
     })
   }
 
@@ -124,24 +132,44 @@ class Items {
    * @param { string } id The id of an item to update
    * @param { Item } set An item object to apply
    * @param { boolean } emitEvent Whether or not to emit the item.change event
+   *//**
+   * Apply changes to an
+   * item in the this.#props.State
+   *
+   * @param { string } id The id of an item to update
+   * @param { string } path The path to the property to set, from the root of the item
+   * @param { any } value The value to set
+   * @param { boolean } emitEvent Whether or not to emit the item.change event
    */
-  async applyItem (id, set = {}, emitEvent = false) {
+  async applyItem (id, ...args) {
+    let [set, emitEvent] = args
+    let path
+    if (args.length === 3) {
+      [path, set, emitEvent] = args
+    }
+
     if (typeof id !== 'string') {
       throw new MissingArgumentError('Invalid value for item id, must be a string')
     }
 
-    if (typeof set !== 'object' || Array.isArray(set)) {
-      throw new InvalidArgumentError('Argument \'item\' must be a valid object that\'s not an array')
+    if (path == null && (typeof set !== 'object' || Array.isArray(set))) {
+      throw new InvalidArgumentError('Argument \'set\' must be a valid object that\'s not an array')
     }
 
-    this.#props.State.apply({
-      items: {
-        [id]: set
-      }
-    })
+    let setToEmit = set
+    if (path) {
+      this.#props.State.apply(`items.${id}.${path}`, set)
+      setToEmit = this.#props.State.expandObjectPath(`items.${id}.${path}`, set)
+    } else {
+      this.#props.State.apply({
+        items: {
+          [id]: set
+        }
+      })
+    }
 
     if (emitEvent) {
-      this.#props.Events.emit('item.change', id, set)
+      this.#props.Events.emit('item.change', id, undefined, setToEmit)
     }
   }
 

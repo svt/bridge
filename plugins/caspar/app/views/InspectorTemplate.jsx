@@ -40,7 +40,7 @@ export const InspectorTemplate = () => {
       }
 
       setId(item?.id)
-      setValue(item?.data?.caspar?.templateDataSource)
+      setValue(JSON.stringify(item?.data?.caspar?.data, null, 2))
       setUnsavedValue(undefined)
     }
 
@@ -58,12 +58,7 @@ export const InspectorTemplate = () => {
       handleNewValue({
         data: {
           caspar: {
-            /*
-            templateDataSource holds the actual data sent in commands
-            while templateDataString holds prettified data only
-            shown within the Bridge UI
-            */
-            templateDataSource: newValue
+            data: JSON.parse(newValue)
           }
         }
       })

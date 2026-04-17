@@ -324,15 +324,10 @@ function init (htmlPath) {
         'ui.uri': `${htmlPath}?path=inspector/target`
       },
       'caspar.data': {
-        default: { f0: 'Foo' },
-        description: 'This data must always match caspar.templateDataSource'
-      },
-      'caspar.templateDataSource': {
         name: 'Data',
         type: 'string',
-        default: '{\n  "f0": "Foo"\n}',
-        description: 'This must always be a string representation of the object stored in caspar.data',
-        allowsVariables: true,
+        default: { f0: 'Foo' },
+        description: 'The actual template data object that contains properties to send to the template',
         'ui.group': 'Caspar',
         'ui.uri': `${htmlPath}?path=inspector/template`
       }
