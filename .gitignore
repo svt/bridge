@@ -12,3 +12,6 @@ build
 
 # temporary files
 data
+
+# secrets
+.env.build
