@@ -33,6 +33,7 @@
 - Updated Electron to 41.1.1
 - Implemented bridge.caspar.transform
 - Made select elements support the light theme
+- Incorrect margins and alignment of switch-controls
 
 ## 1.0.0-beta.10
 ### Added
