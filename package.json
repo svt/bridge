@@ -1,6 +1,6 @@
 {
   "name": "bridge",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -83,13 +83,6 @@
     "webpack-asset-map": "^1.0.1",
     "webpack-cli": "^4.5.0",
     "webpack-merge": "^5.7.3"
-  },
-  "build": {
-    "mac": {
-      "extendInfo": {
-        "NSMicrophoneUsageDescription": "This app requires access to the microphone to decode SMPTE timecode."
-      }
-    }
   },
   "nodeGypRebuild": "true",
   "overrides": {

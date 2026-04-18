@@ -21,5 +21,7 @@
         <string>Editor</string>
       </dict>
     </array>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires access to the microphone to enable LTC timecode input</string>
   </dict>
 </plist>
