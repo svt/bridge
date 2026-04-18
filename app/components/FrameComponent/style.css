@@ -57,6 +57,12 @@
   border: none;
 }
 
+.FrameComponent-headerTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .FrameComponent-headerButtons {
   margin-right: -10px;
 }
