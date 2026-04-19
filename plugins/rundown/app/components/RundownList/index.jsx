@@ -1,6 +1,8 @@
 import React from 'react'
 import bridge from 'bridge'
 
+import { useEffectWhileLoaded } from '../../../../shared/hooks/useEffectWhileLoaded'
+
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
@@ -184,7 +186,7 @@ export function RundownList ({
   Handle selections that are made through the palette
   and scroll to the item if it's in this list
   */
-  React.useEffect(() => {
+  useEffectWhileLoaded(() => {
     function onSelection (selection, state) {
       if (state?.caller !== 'palette') {
         return
@@ -208,7 +210,7 @@ export function RundownList ({
     }
   }, [itemIds, rundownId, scrollSettings])
 
-  React.useEffect(() => {
+  useEffectWhileLoaded(() => {
     function onShortcut (shortcut) {
       /*
       Don't execute any shortcuts

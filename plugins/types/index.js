@@ -113,7 +113,7 @@ const ITEM_CHANGE_HANDLERS = [
   targeting one of its own ancestors
   */
   {
-    predicate: (item, type) => item.type === 'bridge.types.reference' || type.ancestors.includes('bridge.types.reference'),
+    predicate: (item, type) => item.type === 'bridge.types.reference' || type?.ancestors?.includes('bridge.types.reference'),
     fn: async item => {
       const hasTarget = item?.data?.targetId && String(item.data.targetId).length === 4
       if (hasTarget) {

@@ -27,6 +27,10 @@
   resize: none;
 }
 
+.ChatFooter-input:hover {
+  box-shadow: none;
+}
+
 .ChatFooter-actions {
   display: flex;
   justify-content: space-between;

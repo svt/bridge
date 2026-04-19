@@ -16,19 +16,14 @@
   opacity: 0.6;
 }
 
-.TimelineFooter-left {
+.TimelineFooter-left,
+.TimelineFooter-right {
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.TimelineFooter-zoom {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.TimelineFooter-zoom-label {
+.TimelineFooter-zoomLabel {
   min-width: 3.5em;
 
   font-size: 0.7em;
@@ -38,9 +33,27 @@
   opacity: 0.6;
 }
 
-.TimelineFooter-zoom-slider {
+.TimelineFooter-zoomSlider {
   width: 100px;
 
   accent-color: var(--Timeline-color--text);
   cursor: pointer;
+}
+
+.TimelineFooter-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.TimelineFooter-controlButton {
+  padding: 3px;
+
+  appearance: none;
+  background: none;
+  border: none;
+}
+
+.TimelineFooter-controlButton:hover {
+  background: var(--Timeline-color--selection);
+  border-radius: 5px;
 }

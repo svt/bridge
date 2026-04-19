@@ -318,7 +318,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   return (
     <div className={`FrameComponent ${hasFocus ? 'is-focused' : ''}`}>
       <header className='FrameComponent-header'>
-        <div>
+        <div className='FrameComponent-headerTitle'>
           {widgets?.[data.component]?.name}
         </div>
         <div className='FrameComponent-headerButtons'>

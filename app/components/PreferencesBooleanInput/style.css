@@ -1,5 +1,9 @@
-
-
 .PreferencesBooleanInput {
   margin: 5px 0;
+}
+
+.PreferencesBooleanInput input[type="checkbox"].PreferencesBooleanInput-checkbox {
+  margin-top: 5px;
+  margin-right: 10px;
+  vertical-align: -0.6em;
 }

@@ -1,6 +1,7 @@
 .Timeline {
   --Timeline-color--background: var(--base-color--background2);
   --Timeline-color--border: var(--base-color--shade);
+  --Timeline-color--selection: var(--base-color--shade1);
   --Timeline-color--text: var(--base-color);
   --Timeline-color--playhead: #ffffff;
   --Timeline-color--outOfBounds: var(--base-color--background3);

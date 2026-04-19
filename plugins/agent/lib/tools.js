@@ -79,7 +79,7 @@ function registerTools (server, session) {
             .describe('The id of the parent rundown or group of this item, defaults to RUNDOWN_ROOT'),
           properties: z.array(
             z.object({
-              propertyPath: z.string().describe('The dot notation equivalent of the property to set, without the initial \'data\' part'),
+              propertyPath: z.string().describe('The dot notation equivalent of the full path of the property to set from the item root'),
               value: z.any().describe('The new value of the property')
             })
               .describe('A property that should be set of the newly created item')
@@ -111,7 +111,20 @@ function registerTools (server, session) {
         if (!propertyOp?.propertyPath) {
           continue
         }
-        await bridge.state.apply(`items.${itemId}.data.${propertyOp?.propertyPath}`, propertyOp?.value)
+
+        /*
+        Forcefully set the first part of
+        the data path to be data. as all
+        properties that the agent should
+        be able to update are children
+        of that key
+        */
+        let path = String(propertyOp?.propertyPath || '')
+        if (path.indexOf('data.') !== 0) {
+          path = 'data.' + path
+        }
+
+        bridge.items.applyItem(itemId, path, propertyOp?.value, true)
       }
 
       out.push({ typeId: item.typeId, itemId })
@@ -134,7 +147,7 @@ function registerTools (server, session) {
       properties: z.array(
         z.object({
           itemId: z.string().describe('The id of the item to update'),
-          propertyPath: z.string().describe('The dot notation equivalent of the property to update, without the initial \'data\' part'),
+          propertyPath: z.string().describe('The dot notation equivalent of the property to update, from the root of the item'),
           value: z.any().describe('The new value of the property')
         })
           .describe('A single property update')
@@ -146,11 +159,25 @@ function registerTools (server, session) {
       if (!propertyOp?.itemId || !propertyOp?.propertyPath) {
         continue
       }
+
       const itemExists = await bridge.items.itemExists(propertyOp.itemId)
       if (!itemExists) {
         return
       }
-      await bridge.state.apply(`items.${propertyOp?.itemId}.data.${propertyOp?.propertyPath}`, propertyOp?.value)
+
+      /*
+      Forcefully set the first part of
+      the data path to be data. as all
+      properties that the agent should
+      be able to update are children
+      of that key
+      */
+      let path = String(propertyOp?.propertyPath || '')
+      if (path.indexOf('data.') !== 0) {
+        path = 'data.' + path
+      }
+
+      await bridge.items.applyItem(propertyOp?.itemId, path, propertyOp?.value, true)
     }
     return {
       content: [{ type: 'text', text: 'Success' }]
@@ -158,7 +185,7 @@ function registerTools (server, session) {
   })
   session.addAuthDetailForTool('bridge_update_item_properties', {
     requiresAuth: true,
-    authMessage: 'Allow agent to create items?',
+    authMessage: 'Allow agent to update items?',
     usageDescription: 'Updating item(s)'
   })
 

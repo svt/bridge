@@ -2,7 +2,9 @@ import React from 'react'
 import bridge from 'bridge'
 
 import './TimelineTrack.css'
-import { useEffectWhileLoaded } from '../../hooks/useEffectWhileLoaded'
+
+import { useAsyncValue } from '../../../../shared/hooks/useAsyncValue'
+import { useEffectWhileLoaded } from '../../../../shared/hooks/useEffectWhileLoaded'
 
 import * as utils from './utils'
 
@@ -33,6 +35,19 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
   const [isSelected, setIsSelected] = React.useState(false)
   const isDragging = React.useRef(false)
   const dragValuesRef = React.useRef({ delay: 0, inPoint: 0, outPoint: 0 })
+
+  const [name] = useAsyncValue(() => {
+    /*
+    Make sure to check if there
+    really is a variable to render
+    as that operation is rather expensive
+    */
+    if (!bridge.variables.stringContainsVariable(item?.data?.name)) {
+      return item?.data?.name
+    }
+
+    return bridge.items.renderValue(item.id, 'data.name')
+  }, [item?.data?.name])
 
   /*
   Mirror the incoming item into local state so that drag operations
@@ -138,10 +153,10 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
       const dMs = utils.pixelsToMs(e.clientX - startX, spec.scale)
       const rawOutPoint = Math.max(startInPoint + MIN_DURATION_MS, startOutPoint + dMs)
       const clampedOutPoint = Math.min(maxOutPoint, rawOutPoint)
-      const trailRaw = delay + (clampedOutPoint - startInPoint)
+      const trailRaw = Number(delay) + Number(clampedOutPoint - startInPoint)
       const snappedTrail = getSnapped(trailRaw, utils.getSnapPoints(allItems, item.id))
       const finalOutPoint = utils.quantizeToFrame(
-        Math.min(maxOutPoint, Math.max(startInPoint + MIN_DURATION_MS, snappedTrail - delay + startInPoint)),
+        Math.min(maxOutPoint, Math.max(Number(startInPoint) + MIN_DURATION_MS, snappedTrail - Number(delay) + Number(startInPoint))),
         spec.frameRate
       )
       dragValuesRef.current.outPoint = finalOutPoint
@@ -278,17 +293,17 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
         <div
           className='TimelineTrack-item'
           style={{
-            backgroundColor: localItem?.data?.color,
+            backgroundColor: item?.data?.color,
             width: `${pixelWidth}px`,
             boxShadow: isSelected ? 'inset 0 0 0 1px var(--Timeline-color--text)' : undefined,
           }}
           onMouseDown={handleBodyMouseDown}
         >
           {item.trimmable && sourceDuration > 0 && <div className='TimelineTrack-trim-handle' onMouseDown={handleTrimMouseDown} />}
-          {!isNarrow && <span className='TimelineTrack-item-label'>{localItem?.data?.name}</span>}
+          {!isNarrow && <span className='TimelineTrack-item-label'>{name}</span>}
           {item.resizable && <div className='TimelineTrack-resize-handle' onMouseDown={handleResizeMouseDown} />}
         </div>
-        {isNarrow && <span className='TimelineTrack-item-label--external'>{localItem?.data?.name}</span>}
+        {isNarrow && <span className='TimelineTrack-item-label--external'>{name}</span>}
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import bridge from 'bridge'
 
 import { Timeline as TimelineComponent } from '../components/Timeline'
-import { useEffectWhileLoaded } from '../hooks/useEffectWhileLoaded'
+import { useEffectWhileLoaded } from '../../../shared/hooks/useEffectWhileLoaded'
 import * as widgetUtils from '../utils/widget'
 
 const FRAME_RATE_OPTIONS = ['23.97', '24', '25', '30', '50', '60']

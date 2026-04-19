@@ -1,0 +1,19 @@
+[
+  {
+    "title": "Loop prevention",
+    "description": "Disabling loop prevention will allow item loops with sub frame delays but risks creating loops that freeze the application",
+    "inputs": [
+      { "type": "boolean", "bind": "shared.core.internals.enableLoopPrevention", "label": "Prevent loops" }
+    ]
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "title": "Clear items",
+    "description": "Will remove all items from the current workspace without emitting the remove event",
+    "inputs": [
+      { "type": "clear", "bind": "shared.items", "label": "Clear all items" }
+    ]
+  }
+]

@@ -14,7 +14,7 @@ import objectPath from 'object-path'
 import './style.css'
 
 import { SharedContext } from '../../sharedContext'
-import { useAsyncValue } from '../../hooks/useAsyncValue'
+import { useAsyncValue } from '../../../../shared/hooks/useAsyncValue'
 
 import { Icon as MainAppIcon } from '../../../../../app/components/Icon'
 import { RundownItemProgress } from '../RundownItemProgress'
