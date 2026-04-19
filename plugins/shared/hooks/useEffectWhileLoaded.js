@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 Axel Boberg
+//
+// SPDX-License-Identifier: MIT
+
 import React from 'react'
 
 /**
