@@ -153,10 +153,10 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
       const dMs = utils.pixelsToMs(e.clientX - startX, spec.scale)
       const rawOutPoint = Math.max(startInPoint + MIN_DURATION_MS, startOutPoint + dMs)
       const clampedOutPoint = Math.min(maxOutPoint, rawOutPoint)
-      const trailRaw = delay + (clampedOutPoint - startInPoint)
+      const trailRaw = Number(delay) + Number(clampedOutPoint - startInPoint)
       const snappedTrail = getSnapped(trailRaw, utils.getSnapPoints(allItems, item.id))
       const finalOutPoint = utils.quantizeToFrame(
-        Math.min(maxOutPoint, Math.max(startInPoint + MIN_DURATION_MS, snappedTrail - delay + startInPoint)),
+        Math.min(maxOutPoint, Math.max(Number(startInPoint) + MIN_DURATION_MS, snappedTrail - Number(delay) + Number(startInPoint))),
         spec.frameRate
       )
       dragValuesRef.current.outPoint = finalOutPoint
