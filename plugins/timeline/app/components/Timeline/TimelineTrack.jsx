@@ -2,7 +2,7 @@ import React from 'react'
 import bridge from 'bridge'
 
 import './TimelineTrack.css'
-import { useEffectWhileLoaded } from '../../hooks/useEffectWhileLoaded'
+import { useEffectWhileLoaded } from '../../../../shared/hooks/useEffectWhileLoaded'
 
 import * as utils from './utils'
 

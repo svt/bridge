@@ -6,7 +6,7 @@
 import React from 'react'
 import bridge from 'bridge'
 
-import { useEffectWhileLoaded } from './hooks/useEffectWhileLoaded'
+import { useEffectWhileLoaded } from '../../shared/hooks/useEffectWhileLoaded'
 
 /**
  * A context for being shared

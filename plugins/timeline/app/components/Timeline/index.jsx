@@ -1,6 +1,8 @@
 import React from 'react'
 import bridge from 'bridge'
 
+import { useEffectWhileLoaded } from '../../../../shared/hooks/useEffectWhileLoaded'
+
 import { TimelineTrack } from './TimelineTrack'
 import { TimelineHeader } from './TimelineHeader'
 import { TimelineFooter } from './TimelineFooter'
@@ -173,6 +175,32 @@ export function Timeline ({ items = [], duration = null, frameRate = null, timel
     setSpec(current => ({ ...current, frameRate: parseFloat(frameRate) }))
   }, [frameRate])
 
+  useEffectWhileLoaded(() => {
+    function onShortcut (shortcut) {
+      /*
+      Don't execute any shortcuts
+      if the frame isn't focused
+      */
+      if (!window.bridgeFrameHasFocus) {
+        return
+      }
+
+      switch (shortcut) {
+        case 'play':
+          bridge.items.playItem(timelineId)
+          break
+        case 'stop':
+          bridge.items.stopItem(timelineId)
+          break
+      }
+    }
+
+    bridge.events.on('shortcut', onShortcut)
+    return () => {
+      bridge.events.off('shortcut', onShortcut)
+    }
+  }, [timelineId])
+
   function computeScrollAfterScale (currentScale, newScale, cursorOffsetX) {
     const scrollLeft = contentRef.current?.scrollLeft ?? 0
     /*
@@ -291,6 +319,7 @@ export function Timeline ({ items = [], duration = null, frameRate = null, timel
         }
       </div>
       <TimelineFooter
+        timelineId={timelineId}
         scale={spec.scale ?? 1}
         min={minScale}
         max={MAX_SCALE}

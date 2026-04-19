@@ -4,6 +4,8 @@
 
 import add from './add.svg'
 import edit from './edit.svg'
+import play from './play.svg'
+import stop from './stop.svg'
 import close from './close.svg'
 import float from './float.svg'
 import person from './person.svg'
@@ -36,6 +38,8 @@ import colorWarning from './color-warning.svg'
 export default {
   add,
   edit,
+  play,
+  stop,
   close,
   float,
   person,
