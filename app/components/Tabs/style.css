@@ -18,7 +18,6 @@
   flex-shrink: 0;
 
   box-sizing: border-box;
-  overflow-x: scroll;
 }
 
 .Tabs-tab {

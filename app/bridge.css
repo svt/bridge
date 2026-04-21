@@ -33,22 +33,29 @@ html, body, #root {
 }
 
 /*
-Style the scrollbars on all
-non-macOS platforms to make them
-more subtle
+Style the scrollbars on all non-macOS platforms
+and macOS when a mouse is connected
 */
-html:not([data-platform="darwin"]) *::-webkit-scrollbar {
-  width: 7px;
+html:not([data-platform="darwin"]) *:not(.u-scrollbarStyle--none)::-webkit-scrollbar,
+html[data-has-mouse="true"] *:not(.u-scrollbarStyle--none)::-webkit-scrollbar {
+  width: 10px;
 }
 
-html:not([data-platform="darwin"]) *::-webkit-scrollbar-track {
+html:not([data-platform="darwin"]) *:not(.u-scrollbarStyle--none)::-webkit-scrollbar-track,
+html[data-has-mouse="true"] *:not(.u-scrollbarStyle--none)::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 0 transparent;
+  border-left: none;
 }
 
-html:not([data-platform="darwin"]) *::-webkit-scrollbar-thumb {
-  background-color: var(--base-color--shade1);
-  border-radius: 10px;
+html:not([data-platform="darwin"]) *:not(.u-scrollbarStyle--none)::-webkit-scrollbar-thumb,
+html[data-has-mouse="true"] *:not(.u-scrollbarStyle--none)::-webkit-scrollbar-thumb {
+  background-color: var(--base-color--shade3);
   outline: none;
+}
+
+html:not([data-platform="darwin"]) *:not(.u-scrollbarStyle--none):hover::-webkit-scrollbar-thumb,
+html[data-has-mouse="true"] *:not(.u-scrollbarStyle--none):hover::-webkit-scrollbar-thumb {
+  background-color: var(--base-color--shade1);
 }
 
 a, .Link {
