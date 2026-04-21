@@ -21,6 +21,10 @@ describe('getEffectiveDuration', () => {
     expect(getEffectiveDuration({ data: { duration: 10000, outPoint: 6000 } })).toBe(6000)
   })
 
+  test('treats empty-string outPoint as unset', () => {
+    expect(getEffectiveDuration({ data: { duration: 10000, inPoint: 3000, outPoint: '' } })).toBe(7000)
+  })
+
   test('returns 0 when item has no data', () => {
     expect(getEffectiveDuration({ data: {} })).toBe(0)
     expect(getEffectiveDuration(null)).toBe(0)

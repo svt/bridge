@@ -224,6 +224,26 @@ export function registerKeyUp (e) {
 }
 
 /**
+ * Reset pressed key state by simulating keyup
+ * for every key hotkeys currently tracks.
+ *
+ * This helps recover from lost keyup events,
+ * e.g. when focus leaves an iframe while
+ * modifiers are still pressed.
+ */
+export function resetPressedKeys () {
+  const pressed = hotkeys.getPressedKeyString()
+  for (const key of pressed) {
+    const event = new KeyboardEvent('keyup', {
+      key,
+      bubbles: true,
+      cancelable: true
+    })
+    document.dispatchEvent(event)
+  }
+}
+
+/**
  * Dispatch a simulated keyboard event
  * for hotkeys to recognize
  *
@@ -278,3 +298,7 @@ export function getPressed () {
       return key
     })
 }
+
+window.addEventListener('blur', () => {
+  resetPressedKeys()
+})

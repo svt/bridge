@@ -1,7 +1,7 @@
 [
   {
     "title": "Loop prevention",
-    "description": "Disabling loop prevention will allow item loops with sub frame delays but risks creating loops that freeze the application",
+    "description": "With this enabled Bridge will try to prevent infinite item loops that may cause the application to crash, however, you may want to disable this if you're intentionally using a lot of sub-frame delays",
     "inputs": [
       { "type": "boolean", "bind": "shared.core.internals.enableLoopPrevention", "label": "Prevent loops" }
     ]

@@ -59,7 +59,7 @@ export function TimelineTrack ({ spec, item, allItems = [], onChange }) {
     if (!isDragging.current) {
       setLocalItem(item)
     }
-  }, [item])
+  }, [JSON.stringify(item)])
 
   /*
   Keep the selection highlight in sync with the global selection state.

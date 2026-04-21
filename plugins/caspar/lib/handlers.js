@@ -69,7 +69,7 @@ function sendMediaCommand (serverId, command, item, auto) {
 
   const channelId = item?.data?.caspar?.channel
   const channel = (server.channels || [])
-    .find(channel => channel?.id === channelId)
+    .find(channel => channel?.id === channelId || `${channel?.id}` === channelId)
 
   /*
   Verify that a channel was found and that the

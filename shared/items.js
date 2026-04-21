@@ -15,7 +15,12 @@
 function getEffectiveDuration (item) {
   const duration = Number(item?.data?.duration) || 0
   const inPoint = Number(item?.data?.inPoint) || 0
-  const outPoint = item?.data?.outPoint != null ? Number(item.data.outPoint) : duration
+
+  let outPoint = duration
+  if (item?.data?.outPoint != null && item?.data?.outPoint !== '') {
+    outPoint = Number(item.data.outPoint)
+  }
+
   return Math.max(0, outPoint - inPoint)
 }
 

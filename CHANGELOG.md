@@ -34,6 +34,7 @@
 - Implemented bridge.caspar.transform
 - Made select elements support the light theme
 - Incorrect margins and alignment of switch-controls
+- Styles scroll bars on macOS when a mouse is connected
 
 ## 1.0.0-beta.10
 ### Added

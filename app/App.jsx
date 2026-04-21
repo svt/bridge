@@ -15,11 +15,14 @@ import { SocketContext } from './socketContext'
 import { useWebsocket } from './hooks/useWebsocket'
 
 import * as windowUtils from './utils/window'
+import * as scrolling from './utils/scrolling'
 import * as browser from './utils/browser'
 import * as auth from './auth'
 import * as api from './api'
 
 import './utils/shortcuts'
+
+const CHECK_MOUSE_CONNECTION_INTERVAL_MS = 2000
 
 /**
   * The protocol (wss or ws)
@@ -182,6 +185,27 @@ export default function App () {
       bridge.transport.receive(data)
     })()
   }, [data])
+
+  /*
+  Continiously check if a mouse is connected,
+  this decides how scroll bars are rendered
+  */
+  React.useEffect(() => {
+    function updateContext () {
+      const hasMouse = scrolling.mouseIsConnected()
+      document.documentElement.dataset.hasMouse = hasMouse
+      applyLocal({ hasMouse })
+    }
+
+    updateContext()
+    const ival = setInterval(() => {
+      updateContext()
+    }, CHECK_MOUSE_CONNECTION_INTERVAL_MS)
+
+    return () => {
+      clearInterval(ival)
+    }
+  }, [])
 
   /*
   Listen for changes to the theme and

@@ -113,6 +113,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   const [local] = React.useContext(LocalContext)
 
   const [hasFocus, setHasFocus] = React.useState(false)
+  const [contentWindowChanged, setContentWindowChanged] = React.useState(null)
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
@@ -124,11 +125,18 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   }, [onUpdate])
 
   React.useEffect(() => {
+    let didCancel = false
+
     async function setup () {
       const bridge = await api.load()
 
+      if (didCancel) {
+        return
+      }
+
       wrapperRef.current.innerHTML = getFrameHtml(uri)
       frameRef.current = wrapperRef.current.firstChild
+      setContentWindowChanged(Math.floor(Math.random() * 1000))
 
       /*
       Shim window.require for the loaded
@@ -185,6 +193,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
         styling e.t.c.
         */
         frameRef.current.contentDocument.documentElement.dataset.platform = browser.platform()
+        frameRef.current.contentDocument.documentElement.dataset.hasMouse = local.hasMouse
       }
     }
 
@@ -200,7 +209,26 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
     snapshotRef.current = snapshot
 
     setup()
+
+    return () => {
+      didCancel = true
+      setContentWindowChanged(null)
+    }
   }, [uri, data])
+
+  /*
+  Update the hasMouse dataset property whenever there's a
+  major document change of the parent document
+
+  this decides how scrollbars are being rendered
+  */
+  React.useEffect(() => {
+    const contentDocumentElement = frameRef.current?.contentDocument?.documentElement
+    if (!contentDocumentElement) {
+      return
+    }
+    contentDocumentElement.dataset.hasMouse = local.hasMouse
+  }, [local.hasMouse])
 
   /*
   Clean up all event listeners 
@@ -243,6 +271,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
     function onBlur () {
       setHasFocus(false)
       contentWindow.bridgeFrameHasFocus = false
+      shortcuts.resetPressedKeys()
     }
     contentWindow.addEventListener('blur', onBlur)
 
@@ -251,7 +280,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       contentWindow.removeEventListener('focus', onFocus)
       contentWindow.removeEventListener('blur', onBlur)
     }
-  }, [frameRef.current?.contentWindow])
+  }, [contentWindowChanged])
 
   /*
   Register listeners
@@ -277,7 +306,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       contentWindow.removeEventListener('keydown', onKeyDown)
       contentWindow.removeEventListener('keyup', onKeyUp)
     }
-  }, [frameRef.current?.contentWindow])
+  }, [contentWindowChanged])
 
   /*
   Set window.BRIDGE_WIDGET_IS_FLOATED
@@ -290,7 +319,13 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       return
     }
     contentWindow.BRIDGE_WIDGET_IS_FLOATED = isFloated
-  }, [frameRef.current?.contentWindow, isFloated])
+  }, [contentWindowChanged, isFloated])
+
+  React.useEffect(() => {
+    return () => {
+      shortcuts.resetPressedKeys()
+    }
+  }, [])
 
   /*
   Copy the theme variables from

@@ -265,7 +265,8 @@ async function sendCommand (serverId, command, ...args) {
   if (AMCP[command] == null) {
     return Promise.reject(new Error('Command not found'))
   }
-  return sendString(serverId, AMCP[command](...args))
+  const commandString = AMCP[command](...args)
+  return sendString(serverId, commandString)
 }
 exports.sendCommand = sendCommand
 bridge.commands.registerCommand('caspar.sendCommand', sendCommand)
