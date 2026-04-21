@@ -172,6 +172,7 @@ export function Frame ({ className, src, api, doUpdateTheme = 1, autoresize = tr
 
     function onBlur () {
       contentWindow.bridgeFrameHasFocus = false
+      shortcuts.resetPressedKeys()
     }
     contentWindow.addEventListener('blur', onBlur)
 

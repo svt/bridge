@@ -113,6 +113,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   const [local] = React.useContext(LocalContext)
 
   const [hasFocus, setHasFocus] = React.useState(false)
+  const [contentWindow, setContentWindow] = React.useState(null)
 
   const snapshotRef = React.useRef()
   const wrapperRef = React.useRef()
@@ -124,11 +125,18 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   }, [onUpdate])
 
   React.useEffect(() => {
+    let didCancel = false
+
     async function setup () {
       const bridge = await api.load()
 
+      if (didCancel) {
+        return
+      }
+
       wrapperRef.current.innerHTML = getFrameHtml(uri)
       frameRef.current = wrapperRef.current.firstChild
+      setContentWindow(frameRef.current.contentWindow)
 
       /*
       Shim window.require for the loaded
@@ -200,6 +208,11 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
     snapshotRef.current = snapshot
 
     setup()
+
+    return () => {
+      didCancel = true
+      setContentWindow(null)
+    }
   }, [uri, data])
 
   /*
@@ -220,7 +233,6 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   if it gains focus
   */
   React.useEffect(() => {
-    const contentWindow = frameRef.current?.contentWindow
     if (!contentWindow) {
       return
     }
@@ -243,6 +255,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
     function onBlur () {
       setHasFocus(false)
       contentWindow.bridgeFrameHasFocus = false
+      shortcuts.resetPressedKeys()
     }
     contentWindow.addEventListener('blur', onBlur)
 
@@ -251,14 +264,13 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       contentWindow.removeEventListener('focus', onFocus)
       contentWindow.removeEventListener('blur', onBlur)
     }
-  }, [frameRef.current?.contentWindow])
+  }, [contentWindow])
 
   /*
   Register listeners
   for keyboard events
   */
   React.useEffect(() => {
-    const contentWindow = frameRef.current?.contentWindow
     if (!contentWindow) {
       return
     }
@@ -277,7 +289,7 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
       contentWindow.removeEventListener('keydown', onKeyDown)
       contentWindow.removeEventListener('keyup', onKeyUp)
     }
-  }, [frameRef.current?.contentWindow])
+  }, [contentWindow])
 
   /*
   Set window.BRIDGE_WIDGET_IS_FLOATED
@@ -285,12 +297,17 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
   or not the widget is currently floated
   */
   React.useEffect(() => {
-    const contentWindow = frameRef.current?.contentWindow
     if (!contentWindow) {
       return
     }
     contentWindow.BRIDGE_WIDGET_IS_FLOATED = isFloated
-  }, [frameRef.current?.contentWindow, isFloated])
+  }, [contentWindow, isFloated])
+
+  React.useEffect(() => {
+    return () => {
+      shortcuts.resetPressedKeys()
+    }
+  }, [])
 
   /*
   Copy the theme variables from
