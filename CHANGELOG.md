@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 [UNRELEASED]
+### Fixed
+- Added a check for undefined items in item.change in the type plugin
+
 ## 1.0.0
 ### Added
 - An AI agent
