@@ -4,6 +4,7 @@
 ### Fixed
 - Added a check for undefined items in item.change in the type plugin
 - Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)
+- Icons for rundown items became misaligned when the items grew in height
 
 ## 1.0.0
 ### Added
