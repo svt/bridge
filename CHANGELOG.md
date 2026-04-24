@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 [UNRELEASED]
+### Fixed
+- Added a check for undefined items in item.change in the type plugin
+- Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)
+
 ## 1.0.0
 ### Added
 - An AI agent

@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import hotkeys from 'hotkeys-js'
+
+import * as browser from './browser'
 import * as api from '../api'
 
 /**
@@ -66,7 +68,14 @@ hotkeys('*', async e => {
 
   const shortcuts = await findShortcuts(pressed)
   const items = await findItemTriggers(pressed)
-  e.preventDefault()
+
+  /*
+  Prevent the browser to handle the event, but not when running
+  in Electron as that would prevent accelerators as well
+  */
+  if (!browser.isElectron()) {
+    e.preventDefault()
+  }
 
   /*
   Execute registered shortcuts

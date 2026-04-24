@@ -218,7 +218,10 @@ exports.activate = async () => {
   })
 
   bridge.events.on('item.change', async (_, item) => {
-    const type = await bridge.types.getType(item.type)
+    if (!item) {
+      return
+    }
+    const type = await bridge.types.getType(item?.type)
     callHandlers(ITEM_CHANGE_HANDLERS, item, type)
   })
 
