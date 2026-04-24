@@ -1,6 +1,8 @@
 # Changelog
 
 ## 1.0.1 [UNRELEASED]
+### Changed
+- Added 'Stop' as an option when setting default on end actions in settings
 ### Fixed
 - Added a check for undefined items in item.change in the type plugin
 - Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)

@@ -185,7 +185,7 @@
             "type": "select",
             "label": "Save the project and restart Bridge for this setting to take effect",
             "bind": "shared.plugins.bridge-plugin-types.settings.defaults.onEnd",
-            "options": ["Do nothing", "Play next sibling", "Select next sibling (main client)"]
+            "options": ["Do nothing", "Play next sibling", "Select next sibling (main client)", "Stop"]
           }
         ]
       }
