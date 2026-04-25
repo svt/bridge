@@ -122,7 +122,7 @@
             "name": "Play mode",
             "type": "enum",
             "default": 0,
-            "enum": ["Trigger all children at once", "Trigger the first child"],
+            "enum": ["Trigger all", "Trigger first", "Trigger random"],
             "ui.group": "Timing"
           }
         }

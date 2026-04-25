@@ -15,7 +15,8 @@ const utils = require('./lib/utils')
 
 const GROUP_PLAY_MODES = {
   all: 0,
-  first: 1
+  first: 1,
+  random: 2
 }
 
 const PLAY_HANDLERS = [
@@ -31,6 +32,13 @@ const PLAY_HANDLERS = [
           if (item?.children?.[0]) {
             bridge.items.playItem(item?.children?.[0])
           }
+          break
+        case GROUP_PLAY_MODES.random:
+          ;(function () {
+            const children = item?.children || []
+            const index = Math.round(Math.random() * (children.length - 1))
+            bridge.items.playItem(children[index])
+          })()
           break
         case GROUP_PLAY_MODES.all:
         default:

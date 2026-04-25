@@ -4,6 +4,7 @@
 ### Added
 - `bridge.client.openExternalUrl()` for opening URLs with the default browser
 - A link to the OSC reference within settings
+- A new play mode for groups, Random, which will trigger a random child on play
 ### Changed
 - Added 'Stop' as an option when setting default on end actions in settings
 ### Fixed
