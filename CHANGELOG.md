@@ -1,6 +1,9 @@
 # Changelog
 
 ## 1.0.1 [UNRELEASED]
+### Added
+- `bridge.client.openExternalUrl()` for opening URLs with the default browser
+- A link to the OSC reference within settings
 ### Changed
 - Added 'Stop' as an option when setting default on end actions in settings
 ### Fixed

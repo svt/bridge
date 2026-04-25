@@ -12,6 +12,10 @@ const DIController = require('../../shared/DIController')
 require('./clipboard')
 require('./selection')
 
+function isElectron () {
+  return window.navigator.userAgent.includes('Bridge')
+}
+
 /**
  * @typedef {{
  *  id: String,
@@ -179,7 +183,7 @@ class Client {
   /**
    * Get an array of all clients that
    * have assumed a certain role
-   * @param { Number } role A valid role
+   * @param { number } role A valid role
    * @returns { Promise.<Connection[]> }
    */
   async getConnectionsByRole (role) {
@@ -189,6 +193,20 @@ class Client {
 
     return (await this.getAllConnections())
       .filter(connection => connection.role === role)
+  }
+
+  /**
+   * Open an external URL
+   * This will open a new tab if run in browser
+   * or the OS' default browser if run in Electron
+   * @param { string } url
+   */
+  openExternalUrl (url) {
+    if (!isElectron()) {
+      window.open(url, '_blank')
+      return Promise.resolve()
+    }
+    return this.#props.Commands.executeCommand('window.openExternal', url)
   }
 }
 

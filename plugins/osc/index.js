@@ -304,6 +304,18 @@ exports.activate = async () => {
   })
 
   /*
+  Register the reference setting as
+  soon as the widget is setup
+  */
+  bridge.settings.registerSetting({
+    title: 'Reference',
+    group: 'OSC',
+    inputs: [
+      { type: 'frame', uri: `${htmlPath}?path=settings/reference` }
+    ]
+  })
+
+  /*
   Register the targets setting as
   soon as the widget is setup
   */

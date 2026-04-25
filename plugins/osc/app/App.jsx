@@ -25,6 +25,8 @@ export default function App () {
               return <InspectorTarget />
             case 'settings/targets':
               return <Settings.Targets />
+            case 'settings/reference':
+              return <Settings.Reference />
             default:
               return <></>
           }

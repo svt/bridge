@@ -438,7 +438,11 @@ Clear the current selection
 
 ### `bridge.client.selection.getSelection(): Promise<String[]>`  
 **Only available within the render process**  
-Get the current selection  
+Get the current selection
+
+### `bridge.client.openExternalUrl(string): Promise<void>`  
+**Only available within the render process**  
+Open an URL in a new browser tab, if called from Electron the default browser will open
 
 ### `bridge.client.selection.getSelection(connectionId): Promise<String[]>`  
 **Only available within main processes**  
@@ -452,7 +456,6 @@ Get an array of all current connections
 
 ### `bridge.client.getAllConnectionsByRole(role): Promise<Connection[]>`  
 Get an array of all current connections with a specific role
-
 
 ### Clipboard
 
