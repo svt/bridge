@@ -301,8 +301,8 @@ class Items {
     are no longer selected if available
     in the current context
     */
-    if (typeof this.#props.Client?.subtractSelection === 'function') {
-      this.#props.client.selection.subtractSelection(ids)
+    if (typeof this.#props.Client?.selection?.subtractSelection === 'function') {
+      this.#props.Client.selection.subtractSelection(ids)
     }
     return this.#props.Commands.executeCommand('items.deleteItems', ids)
   }
