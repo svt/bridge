@@ -9,6 +9,7 @@
 - A shortcut for aborting an item silently (Shift + F1)
 ### Changed
 - Added 'Stop' as an option when setting default on end actions in settings
+- Electron now bypasses proxies on requests to localhost
 ### Fixed
 - Added a check for undefined items in item.change in the type plugin
 - Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)
