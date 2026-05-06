@@ -5,6 +5,8 @@
   width: 100%;
   height: 24px;
 
+  font-size: 0.8em;
+
   border-top: 1px solid var(--base-color--shade1);
   box-sizing: border-box;
 
@@ -17,6 +19,10 @@
 .Footer-block {
   display: flex;
   align-items: center;
+}
+
+.Footer-block:last-child {
+  margin-right: 10px;
 }
 
 .Footer-actionSection {
@@ -61,7 +67,6 @@
   border: none;
 
   color: inherit;
-  font-size: 0.8em;
   font-family: var(--base-fontFamily--primary);
 
   background: none;

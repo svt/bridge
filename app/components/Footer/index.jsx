@@ -33,6 +33,17 @@ export function Footer ({ title = DEFAULT_TITLE, features }) {
   const connectionCount = Object.keys(shared?._connections || {}).length
   const role = shared?._connections?.[local.id]?.role
 
+  const [selection, setSelection] = React.useState()
+
+  React.useEffect(() => {
+    async function updateSelection () {
+      const bridge = await api.load()
+      const selection = await bridge.client.selection.getSelection()
+      setSelection(selection)
+    }
+    updateSelection()
+  }, [shared])
+
   function featureShown (feature) {
     if (!Array.isArray(features)) {
       return true
@@ -64,6 +75,16 @@ export function Footer ({ title = DEFAULT_TITLE, features }) {
                   {connectionCount || 0}
                 </button>
                 <Sharing open={sharingOpen} onClose={() => setSharingOpen(false)} />
+              </div>
+            )
+          }
+        </div>
+        <div className='Footer-block'>
+          {
+            selection?.length > 0 &&
+            (
+              <div className='Footer-selectionSection'>
+                Selected: {selection?.length}
               </div>
             )
           }

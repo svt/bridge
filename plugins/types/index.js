@@ -37,7 +37,9 @@ const PLAY_HANDLERS = [
           ;(function () {
             const children = item?.children || []
             const index = Math.round(Math.random() * (children.length - 1))
-            bridge.items.playItem(children[index])
+            if (children[index]) {
+              bridge.items.playItem(children[index])
+            }
           })()
           break
         case GROUP_PLAY_MODES.all:
@@ -173,6 +175,34 @@ const ITEM_DELETE_HANDLERS = [
   }
 ]
 
+const ABORT_HANDLERS = [
+  /*
+  Abort all children if
+  a group is aborted
+  */
+  {
+    predicate: (item, type) => item.type === 'bridge.types.group' || type.ancestors.includes('bridge.types.group') || type.ancestors.includes('bridge.types.collection'),
+    fn: item => {
+      for (const child of (item?.children || [])) {
+        bridge.items.abortItem(child)
+      }
+    }
+  },
+
+  /*
+  Abort target items of references
+  */
+  {
+    predicate: (item, type) => item.type === 'bridge.types.reference' || type.ancestors.includes('bridge.types.reference'),
+    fn: item => {
+      if (!item?.data?.targetId) {
+        return
+      }
+      bridge.items.abortItem(item.data.targetId)
+    }
+  }
+]
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`
@@ -223,6 +253,11 @@ exports.activate = async () => {
   bridge.events.on('item.stop', async item => {
     const type = await bridge.types.getType(item.type)
     callHandlers(STOP_HANDLERS, item, type)
+  })
+
+  bridge.events.on('item.abort', async item => {
+    const type = await bridge.types.getType(item.type)
+    callHandlers(ABORT_HANDLERS, item, type)
   })
 
   bridge.events.on('item.change', async (_, item) => {
