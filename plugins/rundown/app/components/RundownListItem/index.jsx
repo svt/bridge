@@ -201,6 +201,11 @@ export function RundownListItem ({
       return
     }
 
+    /**
+     * @todo
+     * Insert default values based on
+     * the type we're converting to
+     */
     await bridge.items.applyItem(item?.id, {
       type: typeId
     }, true)

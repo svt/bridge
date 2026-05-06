@@ -13,6 +13,12 @@ const REFERENCE_ACTION = {
 }
 exports.REFERENCE_ACTION = REFERENCE_ACTION
 
+const REFERENCE_TARGET_TYPE = {
+  itemById: 0,
+  selection: 1
+}
+exports.REFERENCE_TARGET_TYPE = REFERENCE_TARGET_TYPE
+
 async function init (htmlPath) {
   bridge.types.registerType({
     id: 'bridge.types.reference',
@@ -36,18 +42,27 @@ async function init (htmlPath) {
         default: REFERENCE_ACTION.stop,
         'ui.group': 'Reference'
       },
+      targetType: {
+        name: 'Target type',
+        type: 'enum',
+        enum: ['Item by id', 'Selection (main client)'],
+        default: String(REFERENCE_TARGET_TYPE.itemById),
+        'ui.group': 'Reference'
+      },
       targetId: {
         name: 'Target',
         type: 'string',
         'ui.group': 'Reference',
         'ui.readable': true,
-        'ui.glyph': '\uE903'
+        'ui.glyph': '\uE903',
+        'ui.dependsOn': [['targetType', String(REFERENCE_TARGET_TYPE.itemById)]]
       },
       targetButton: {
         name: '',
         type: 'string',
         'ui.group': 'Reference',
-        'ui.uri': `${htmlPath}?path=inspector/reference/button`
+        'ui.uri': `${htmlPath}?path=inspector/reference/button`,
+        'ui.dependsOn': [['targetType', String(REFERENCE_TARGET_TYPE.itemById)]]
       }
     }
   })
