@@ -6,6 +6,7 @@
 - A link to the OSC reference within settings
 - A new play mode for groups, Random, which will trigger a random child on play
 - A counter showing selected items in the footer
+- A shortcut for aborting an item silently (Shift + F1)
 ### Changed
 - Added 'Stop' as an option when setting default on end actions in settings
 ### Fixed

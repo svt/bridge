@@ -59,6 +59,12 @@
         "trigger": ["F1"]
       },
       {
+        "id": "bridge.rundown.abort",
+        "action": "abort",
+        "description": "Abort the selected item's scheduling silently",
+        "trigger": ["Shift", "F1"]
+      },
+      {
         "id": "bridge.rundown.next",
         "action": "bridge.rundown.next",
         "trigger": ["ArrowDown"]

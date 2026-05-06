@@ -239,6 +239,9 @@ export function RundownList ({
         case 'stop':
           selectionUtils.stopSelection()
           break
+        case 'abort':
+          selectionUtils.abortSelection()
+          break
         case 'copy':
           selectionUtils.copySelection()
           break

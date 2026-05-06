@@ -375,6 +375,10 @@ const playbackDuration = bridge.items.getEffectiveDuration(item)
 ### `bridge.items.stopItem(id): Promise<Void>`
 Stop an item and set its state to `stopped`.
 
+### `bridge.items.abortItem(id): Promise<Void>`
+Silently abort an item that's currently scheduled or running.
+This will prevent any onEnd-actions to fire.
+
 ### `bridge.items.applyIssue(itemId, issueId, issueSpec): Promise<Void>`  
 Add an issue to an item.
 

@@ -88,3 +88,12 @@ export async function stopSelection () {
   const selection = await bridge.client.selection.getSelection()
   selection.forEach(itemId => bridge.items.stopItem(itemId))
 }
+
+/**
+ * Abort the currently selected items
+ * @returns { Promise.<void> }
+ */
+export async function abortSelection () {
+  const selection = await bridge.client.selection.getSelection()
+  selection.forEach(itemId => bridge.items.abortItem(itemId))
+}

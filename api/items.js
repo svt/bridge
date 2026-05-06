@@ -350,12 +350,30 @@ class Items {
   }
 
   /**
+   * Create a clone of an item
+   * object and populate its variables
+   * @param { any } itemObj
+   * @returns { Promise.<any> }
+   */
+  async #createPopulatedItemClone (itemObj) {
+    if (!itemObj?.type) {
+      return
+    }
+
+    const type = await this.#props.Types.getType(itemObj.type)
+    const vars = await this.#props.Variables.getAllVariables()
+    const clone = this.populateVariablesMutable(deepClone(itemObj), type, vars)
+    return clone
+  }
+
+  /**
    * Play the item and emit
    * the 'playing' event`
    *
    * @param { string } id
    * @param {{ immediate?: boolean }} opts
    *   immediate - skip any delay on the item and play right away
+   * @returns { Promise.<void> }
    */
   async playItem (id, opts = {}) {
     const item = await this.getItem(id)
@@ -368,9 +386,10 @@ class Items {
       return
     }
 
-    const type = await this.#props.Types.getType(item.type)
-    const vars = await this.#props.Variables.getAllVariables()
-    const clone = this.populateVariablesMutable(deepClone(item), type, vars)
+    const clone = await this.#createPopulatedItemClone(item)
+    if (!clone) {
+      return
+    }
 
     const delay = parseInt(clone?.data?.delay)
 
@@ -385,6 +404,7 @@ class Items {
    * Play the item and emit
    * the 'stop' event
    * @param { String } id
+   * @returns { Promise.<void> }
    */
   async stopItem (id) {
     const item = await this.getItem(id)
@@ -397,11 +417,37 @@ class Items {
       return
     }
 
-    const type = await this.#props.Types.getType(item.type)
-    const vars = await this.#props.Variables.getAllVariables()
-    const clone = this.populateVariablesMutable(deepClone(item), type, vars)
+    const clone = await this.#createPopulatedItemClone(item)
+    if (!clone) {
+      return
+    }
 
     this.#props.Commands.executeCommand('items.stopItem', clone)
+  }
+
+  /**
+   * Abort an item that's
+   * scheduled to play
+   * @param { string } id
+   * @returns { Promise.<void> }
+   */
+  async abortItem (id) {
+    const item = await this.getItem(id)
+
+    if (!item) {
+      return
+    }
+
+    if (item?.data?.disabled) {
+      return
+    }
+
+    const clone = await this.#createPopulatedItemClone(item)
+    if (!clone) {
+      return
+    }
+
+    this.#props.Commands.executeCommand('items.abortItem', clone)
   }
 
   /**
