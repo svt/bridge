@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1 [UNRELEASED]
+## 1.0.1
 ### Added
 - `bridge.client.openExternalUrl()` for opening URLs with the default browser
 - A link to the OSC reference within settings
