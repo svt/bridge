@@ -58,7 +58,7 @@ export const InspectorTemplate = () => {
       handleNewValue({
         data: {
           caspar: {
-            data: JSON.parse(newValue)
+            data: { $replace: JSON.parse(newValue) }
           }
         }
       })
@@ -75,6 +75,8 @@ export const InspectorTemplate = () => {
   function handleChange (newValue) {
     setUnsavedValue(newValue)
   }
+
+  console.log('Rendering', value)
 
   return (
     <>

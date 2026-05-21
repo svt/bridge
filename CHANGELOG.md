@@ -16,6 +16,7 @@
 - Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)
 - Icons for rundown items became misaligned when the items grew in height
 - An issue causing deleted items not to be removed from the selection
+- An issue where caspar template data wouldn't completely overwrite old data
 
 ## 1.0.0
 ### Added
