@@ -264,6 +264,26 @@ export function Form () {
   }
 
   /**
+   * Check if a dependency is met
+   * @param { string } dep 
+   * @returns { boolean }
+   *//**
+   * Check if a dependency matches a specified value
+   * @param { [string, any] } dep 
+   * @returns { boolean }
+   * 
+   * @example
+   * ['key', 'foo'] -> True if item.data.key === 'foo'
+   */
+  function checkDependency (dep) {
+    if (Array.isArray(dep)) {
+      const [key, val] = dep
+      return getValue(key) === val
+    }
+    return !!getValue(String(dep))
+  }
+
+  /**
    * Render a property
    * @param { TypeProperty } property
    * @param { String } id A unique identifier to
@@ -272,7 +292,7 @@ export function Form () {
    */
   function renderProperty (property, id) {
     if (
-      (property['ui.dependsOn'] ?? []).some(key => !getValue(key))
+      (property['ui.dependsOn'] ?? []).some(dep => !checkDependency(dep))
     ) {
       return null
     }

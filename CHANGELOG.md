@@ -1,20 +1,23 @@
 # Changelog
 
-## 1.0.1 [UNRELEASED]
+## 1.0.1
 ### Added
 - `bridge.client.openExternalUrl()` for opening URLs with the default browser
 - A link to the OSC reference within settings
 - A new play mode for groups, Random, which will trigger a random child on play
 - A counter showing selected items in the footer
 - A shortcut for aborting an item silently (Shift + F1)
+- References and triggers can now target the main client's selection
 ### Changed
 - Added 'Stop' as an option when setting default on end actions in settings
 - Electron now bypasses proxies on requests to localhost
+- Update dependencies
 ### Fixed
 - Added a check for undefined items in item.change in the type plugin
 - Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)
 - Icons for rundown items became misaligned when the items grew in height
 - An issue causing deleted items not to be removed from the selection
+- An issue where caspar template data wouldn't completely overwrite old data
 
 ## 1.0.0
 ### Added

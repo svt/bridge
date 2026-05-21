@@ -57,8 +57,9 @@ const PLAY_HANDLERS = [
   */
   {
     predicate: (item, type) => item.type === 'bridge.types.reference' || type.ancestors.includes('bridge.types.reference'),
-    fn: item => {
-      if (!item?.data?.targetId) {
+    fn: async item => {
+      const targets = await getReferenceTargets(item)
+      if (!targets) {
         return
       }
 
@@ -66,11 +67,21 @@ const PLAY_HANDLERS = [
         case types.REFERENCE_ACTION.none:
           break
         case types.REFERENCE_ACTION.stop:
-          bridge.items.stopItem(item?.data?.targetId)
+          for (const targetId of targets) {
+            if (targetId === item?.id) {
+              continue
+            }
+            bridge.items.stopItem(targetId)
+          }
           break
         case types.REFERENCE_ACTION.play:
         default:
-          bridge.items.playItem(item?.data?.targetId)
+          for (const targetId of targets) {
+            if (targetId === item?.id) {
+              continue
+            }
+            bridge.items.playItem(targetId)
+          }
           break
       }
     }
@@ -97,8 +108,9 @@ const STOP_HANDLERS = [
   */
   {
     predicate: (item, type) => item.type === 'bridge.types.reference' || type.ancestors.includes('bridge.types.reference'),
-    fn: item => {
-      if (!item?.data?.targetId) {
+    fn: async item => {
+      const targets = await getReferenceTargets(item)
+      if (!targets) {
         return
       }
 
@@ -106,11 +118,21 @@ const STOP_HANDLERS = [
         case types.REFERENCE_ACTION.none:
           break
         case types.REFERENCE_ACTION.play:
-          bridge.items.playItem(item?.data?.targetId)
+          for (const targetId of targets) {
+            if (targetId === item?.id) {
+              continue
+            }
+            bridge.items.playItem(targetId)
+          }
           break
         case types.REFERENCE_ACTION.stop:
         default:
-          bridge.items.stopItem(item?.data?.targetId)
+          for (const targetId of targets) {
+            if (targetId === item?.id) {
+              continue
+            }
+            bridge.items.stopItem(targetId)
+          }
           break
       }
     }
@@ -125,6 +147,14 @@ const ITEM_CHANGE_HANDLERS = [
   {
     predicate: (item, type) => item.type === 'bridge.types.reference' || type?.ancestors?.includes('bridge.types.reference'),
     fn: async item => {
+      const isExpectingId = parseInt(item?.data?.targetType) === types.REFERENCE_TARGET_TYPE.itemById
+      if (!isExpectingId) {
+        bridge.items.removeIssue(item?.id, 'types.reference-targeting-ancestor')
+        bridge.items.removeIssue(item?.id, 'types.reference-targeting-itself')
+        bridge.items.removeIssue(item?.id, 'types.reference-missing-target')
+        return
+      }
+
       const hasTarget = item?.data?.targetId && String(item.data.targetId).length === 4
       if (hasTarget) {
         bridge.items.removeIssue(item?.id, 'types.reference-missing-target')
@@ -194,14 +224,33 @@ const ABORT_HANDLERS = [
   */
   {
     predicate: (item, type) => item.type === 'bridge.types.reference' || type.ancestors.includes('bridge.types.reference'),
-    fn: item => {
-      if (!item?.data?.targetId) {
+    fn: async item => {
+      const targets = await getReferenceTargets(item)
+      if (!targets) {
         return
       }
-      bridge.items.abortItem(item.data.targetId)
+
+      for (const targetId of targets) {
+        bridge.items.abortItem(targetId)
+      }
     }
   }
 ]
+
+/**
+ * Get the target(s) for
+ * the specified reference item
+ * @param { any } referenceItem
+ * @returns { Promise.<string[] | undefined> }
+ */
+async function getReferenceTargets (referenceItem) {
+  switch (parseInt(referenceItem?.data?.targetType)) {
+    case types.REFERENCE_TARGET_TYPE.selection:
+      return bridge.client.getMainClientSelection()
+    default:
+      return [referenceItem?.data?.targetId]
+  }
+}
 
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`

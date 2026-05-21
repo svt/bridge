@@ -107,13 +107,27 @@ class Client {
    * Get the current selection
    * of a connection by its id
    * @param { String } connectionId
-   * @returns { Promise.<String[]> }
+   * @returns { Promise.<string[]> }
    */
   async getSelection (connectionId) {
     if (!connectionId) {
       throw new MissingArgumentError('Missing required argument \'connectionId\'')
     }
     return (await this.#props.State.get(`_connections.${connectionId}.selection`)) || []
+  }
+
+  /**
+   * Get the current selection
+   * by the main client
+   * @returns { Promise.<string[]> }
+   */
+  async getMainClientSelection () {
+    const main = await this.getConnectionsByRole(this.ROLES.main)
+    if (main.length === 0) {
+      return
+    }
+    const selection = await this.getSelection(main[0]?.id)
+    return selection
   }
 }
 
