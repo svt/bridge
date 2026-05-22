@@ -76,8 +76,6 @@ export const InspectorTemplate = () => {
     setUnsavedValue(newValue)
   }
 
-  console.log('Rendering', value)
-
   return (
     <>
       <div className='View--spread u-marginBottom--5px'>
