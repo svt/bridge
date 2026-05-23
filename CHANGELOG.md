@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.2
+## 1.0.2 [UNRELEASED]
 ### Fixed
 - Select options now render in the system default color (#137)
 
