@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+### Fixed
+- Select options now render in the system default color (#137)
+
 ## 1.0.1
 ### Added
 - `bridge.client.openExternalUrl()` for opening URLs with the default browser
