@@ -325,6 +325,11 @@ select:focus {
   background: url('./assets/icons/arrow-down-dark.svg') no-repeat right 10px center var(--base-color--background1);
 }
 
+select option {
+  background: initial;
+  color: initial;
+}
+
 /* Labels */
 
 .u-text--label {
