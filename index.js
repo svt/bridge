@@ -10,8 +10,8 @@ Do required initialization
 require('./lib/init-common')
 require('./lib/server')
 
-if (platform.isElectron()) {
-  require('./lib/init-electron')
+if (platform.isElectrobun()) {
+  require('./lib/init-electrobun')
 } else {
   require('./lib/init-node')
 }

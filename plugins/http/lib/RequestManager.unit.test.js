@@ -14,6 +14,8 @@ function fetchShim (url, opts, fail) {
   ))
 }
 
+let manager
+
 beforeAll(() => {
   manager = new RequestManager({ fetchFunction: fetchShim })
 })

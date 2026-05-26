@@ -1,7 +1,8 @@
 import * as api from '../api'
 
 export function isElectron () {
-  return window.navigator.userAgent.includes('Bridge')
+  return typeof window.BRIDGE_WINDOW_ID === 'string' ||
+    window.navigator.userAgent.includes('Bridge')
 }
 
 export function isMacOS () {

@@ -9,6 +9,7 @@ assets.json
 dist
 bin
 build
+artifacts
 
 # temporary files
 data

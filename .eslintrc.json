@@ -3,12 +3,16 @@
         "**/*.test.js",
         "**/node_modules/**/*.js",
         "/bin/**/*.js",
-        "/dist/**/*.js"
+        "/dist/**/*.js",
+        "/build/**/*.js"
     ],
     "env": {
         "browser": true,
         "es2021": true,
         "node": true
+    },
+    "globals": {
+        "Bun": "readonly"
     },
     "extends": [
         "standard"

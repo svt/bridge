@@ -194,6 +194,15 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
         */
         frameRef.current.contentDocument.documentElement.dataset.platform = browser.platform()
         frameRef.current.contentDocument.documentElement.dataset.hasMouse = local.hasMouse
+
+        /*
+        Suppress the native WebView context menu inside this widget's
+        document so the widget's own onContextMenu handlers are the
+        ones rendering popups. Capture phase to fire before any
+        in-widget React handlers, which may still call preventDefault
+        themselves redundantly — that's fine.
+        */
+        frameRef.current.contentDocument.addEventListener('contextmenu', e => e.preventDefault(), true)
       }
     }
 

@@ -3,13 +3,23 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Returns whether or not the current
- * window is running as an electron app
- * by checking the user agent
+ * True when running inside the Bridge desktop shell (Electrobun, or
+ * legacy Electron). The name is historical — callers really mean
+ * "do we have access to the native window/menu API". Detection now
+ * uses the preload-injected BRIDGE_TOKEN since Electrobun's WebView
+ * does not surface a custom navigator.userAgent the way Electron did.
  * @returns { Boolean }
  */
 export function isElectron () {
-  return window.navigator.userAgent.includes('Bridge')
+  /*
+  BRIDGE_WINDOW_ID is a plain string property set by the desktop
+  preload script. We deliberately do not check BRIDGE_TOKEN here —
+  app/auth.js installs a getter on it that returns a Promise, so
+  `typeof window.BRIDGE_TOKEN` is always 'object' after the bundle
+  runs.
+  */
+  return typeof window.BRIDGE_WINDOW_ID === 'string' ||
+    window.navigator.userAgent.includes('Bridge')
 }
 
 /**

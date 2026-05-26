@@ -7,19 +7,16 @@
     "test": "npm run lint && dotenvx run --quiet -f .env.test -- jest",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
-    "start": "node index.js",
+    "start": "electrobun run",
+    "dev": "electrobun dev",
+    "dev:watch": "electrobun dev --watch",
+    "build:dev": "bun install && electrobun build",
+    "build:canary": "electrobun build --env=canary",
+    "build:stable": "electrobun build --env=stable",
     "nodemon": "nodemon --trace-warnings --inspect=0.0.0.0 index.js",
-    "build": "npm run clean | webpack --config webpack.prod.js",
-    "build:dev": "npm run clean | webpack --config webpack.dev.js",
+    "build": "bun scripts/bun-build.js",
+    "build:dev": "bun scripts/bun-build.js --dev",
     "clean": "node ./scripts/clean-build-folder.js",
-    "electron": "NODE_ENV=development electron --trace-warnings index.js",
-    "electron:rebuild": "electron-rebuild -f",
-    "electron:prebuild:arm64": "node scripts/electron-prebuild arm64",
-    "electron:prebuild:x64": "node scripts/electron-prebuild x64",
-    "electron:build:mac:arm": "npm run build && npm run electron:prebuild:arm64 && node scripts/electron-build-mac.js arm64",
-    "electron:build:mac:intel": "npm run build && npm run electron:prebuild:x64 && node scripts/electron-build-mac.js x64",
-    "electron:build:win": "npm run build && npm run electron:prebuild:x64 && electron-packager . \"Bridge\" --platform=win32 --arch=x64 --extend-info extra.plist --icon=media/appicon.ico --overwrite --asar.unpack='**/*.{node,dylib}' --asar.unpackDir='**/libltc-wrapper' --ignore=\"webpack.*\\.js\" --ignore=\"docs/*\" --ignore=\"./README.md\" --ignore=\"./Dockerfile\" --ignore=\"./docker-compose.yml\" --out ./bin",
-    "electron:sign:mac": "node scripts/sign-macos.js",
     "prepare": "husky install",
     "postinstall": "node scripts/install-plugin-dependencies.js"
   },
@@ -37,56 +34,36 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "^8.10.0",
-    "bufferutil": "^4.0.7",
-    "express": "^4.19.2",
     "fast-equals": "^5.3.3",
     "hotkeys-js": "^4.0.1",
     "jose": "^6.0.13",
     "jszip": "^3.10.1",
-    "node-fetch": "^2.6.1",
     "node-policy-agent": "^1.5.0",
     "obj-router": "^3.0.2",
     "object-path": "^0.11.8",
     "react-colorful": "^5.5.1",
     "semver": "^7.3.5",
-    "utf-8-validate": "^5.0.10",
-    "uuid": "^8.3.2",
-    "ws": "^8.17.1"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/plugin-transform-runtime": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
-    "@babel/preset-react": "^7.12.13",
     "@dotenvx/dotenvx": "^1.38.4",
-    "@electron/notarize": "^3.1.1",
-    "@electron/osx-sign": "^1.3.2",
-    "@electron/packager": "^18.3.3",
-    "@electron/rebuild": "^4.0.3",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^5.2.0",
-    "electron": "^41.1.1",
+    "electrobun": "^1.18.1",
     "eslint": "^8.38.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
-    "html-webpack-plugin": "^5.3.1",
     "husky": "^7.0.4",
     "jest": "^30.2.0",
-    "mini-css-extract-plugin": "^1.3.9",
     "nodemon": "^3.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-grid-layout": "^1.3.4",
-    "webpack": "^5.28.0",
-    "webpack-asset-map": "^1.0.1",
-    "webpack-cli": "^4.5.0",
-    "webpack-merge": "^5.7.3"
+    "react-grid-layout": "^1.3.4"
   },
-  "nodeGypRebuild": "true",
-  "overrides": {
-    "node-gyp": "^12.2.0"
-  },
-  "jest": {}
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/build/"
+    ]
+  }
 }

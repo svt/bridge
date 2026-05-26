@@ -128,6 +128,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
       <header
         className={`
           Header
+          electrobun-webkit-app-region-drag
           ${windowUtils.isMacOS() && windowUtils.isElectron() ? 'has-leftMargin' : ''}
           ${windowUtils.isWindows() && windowUtils.isElectron() ? 'has-rightMargin' : ''}
         `}
@@ -137,7 +138,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
           (windowUtils.isWindows() && windowUtils.isElectron())
           ? (
             <>
-              <div className='Header-title'>
+              <div className='Header-title electrobun-webkit-app-region-no-drag'>
                 <AppMenu />
               </div>
               <div className='Header-center'>
@@ -162,7 +163,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
             </>
           )
         }
-        <div className='Header-block'>
+        <div className='Header-block electrobun-webkit-app-region-no-drag'>
           {
             featureShown('stayOnTop') && windowUtils.isElectron() &&
             (
