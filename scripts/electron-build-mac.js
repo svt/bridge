@@ -27,7 +27,9 @@ packager({
   },
   ignore: [
     /webpack.*\.js/,
+    /^\/bin\//,
     /^\/docs\//,
+    /^\/examples\//,
     /^\/README\.md$/,
     /^\/Dockerfile$/,
     /^\/docker-compose\.yml$/
