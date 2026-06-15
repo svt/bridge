@@ -1,6 +1,8 @@
 # Changelog
 
 ## 1.0.2 [UNRELEASED]
+### Changed
+- Context menus of rundown items are now searchable
 ### Fixed
 - Select options now render in the system default color (#137)
 
