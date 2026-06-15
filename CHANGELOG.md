@@ -3,6 +3,7 @@
 ## 1.0.2 [UNRELEASED]
 ### Changed
 - Context menus of rundown items are now searchable
+- Updated dependencies
 ### Fixed
 - Select options now render in the system default color (#137)
 
@@ -17,7 +18,7 @@
 ### Changed
 - Added 'Stop' as an option when setting default on end actions in settings
 - Electron now bypasses proxies on requests to localhost
-- Update dependencies
+- Updated dependencies
 ### Fixed
 - Added a check for undefined items in item.change in the type plugin
 - Regular Electron accelerators now work even though a widget isn't focused (CMD+Q e.t.c.)
