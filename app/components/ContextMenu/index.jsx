@@ -3,6 +3,14 @@ import { createPortal } from 'react-dom'
 
 import './style.css'
 
+const DIRECTION = Object.freeze({
+  UP: 'up',
+  DOWN: 'down'
+})
+
+const VERTICAL_MARGIN_TO_WINDOW_EDGE_PX = 5
+const VERTICAL_DIRECTION_SHIFT_PX = 20
+
 /**
  * A threshold for how long the context menu has
  * to have been open before an event can close it
@@ -26,15 +34,54 @@ const OPEN_THRESHOLD_MS = 100
  */
 const DEFAULT_WIDTH_PX = 150
 
-export const ContextMenu = ({ x, y, width = DEFAULT_WIDTH_PX, children, onClose = () => {} }) => {
+export const ContextMenu = ({ x: _x, y: _y, width = DEFAULT_WIDTH_PX, children, onClose = () => {} }) => {
   const elRef = React.useRef()
   const openTimestampRef = React.useRef()
 
-  const [direction, setDirection] = React.useState('down')
+  const [direction, setDirection] = React.useState(DIRECTION.DOWN)
+  const [x, setX] = React.useState(_x)
+  const [y, setY] = React.useState(_y)
 
   React.useEffect(() => {
     openTimestampRef.current = Date.now()
   }, [x, y])
+
+  /*
+  Avoid clipping the context menu as much as possible
+  by shifting it based on the window size and the menus
+  direction
+  */
+  React.useEffect(() => {
+    const observer = new ResizeObserver(entries => {
+      if (!entries[0]) {
+        return
+      }
+
+      if (!elRef.current) {
+        return
+      }
+      const bounds = elRef.current.getBoundingClientRect()
+
+      /*
+      Move it down from the top
+      */
+      if (direction === DIRECTION.UP && y - bounds.height < 0) {
+        setY(bounds.height + VERTICAL_MARGIN_TO_WINDOW_EDGE_PX)
+        return
+      }
+
+      /*
+      Move it up from the bottom
+      */
+      if (direction === DIRECTION.DOWN && y + bounds.height > window.innerHeight) {
+        setY(window.innerHeight - bounds.height - VERTICAL_MARGIN_TO_WINDOW_EDGE_PX)
+        return
+      }
+    })
+
+    observer.observe(elRef.current)
+    return () => observer.disconnect(elRef.current)
+  }, [x, y, direction])
 
   React.useEffect(() => {
     function closeContext () {
@@ -77,12 +124,14 @@ export const ContextMenu = ({ x, y, width = DEFAULT_WIDTH_PX, children, onClose 
   */
   React.useEffect(() => {
     const viewportHeight = window.innerHeight
-    if (y > viewportHeight / 2) {
-      setDirection('up')
+    if (_y > viewportHeight / 2) {
+      setDirection(DIRECTION.UP)
+      setY(current => current + VERTICAL_DIRECTION_SHIFT_PX)
     } else {
-      setDirection('down')
+      setDirection(DIRECTION.DOWN)
+      setY(current => current - VERTICAL_DIRECTION_SHIFT_PX)
     }
-  }, [y])
+  }, [_y])
 
   return (
     <>

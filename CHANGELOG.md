@@ -6,6 +6,7 @@
 - Updated dependencies
 ### Fixed
 - Select options now render in the system default color (#137)
+- Context menus now align themselvses with respect to the top and bottom of the viewport
 
 ## 1.0.1
 ### Added
