@@ -29,7 +29,7 @@ const TYPE_COMPONENTS = {
   'bridge.variables.variable': { item: RundownVariableItem },
   'bridge.types.reference': { item: RundownReferenceItem },
   'bridge.types.trigger': { item: RundownTriggerItem },
-  'bridge.types.divider': { item: RundownDividerItem },
+  'bridge.types.comment': { item: RundownDividerItem },
   'bridge.types.group': {
     item: RundownGroupItem,
     getContextMenuItems: (ctx, item) => rundownGroupItemGetContextMenuItems(ctx, item)

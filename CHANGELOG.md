@@ -7,6 +7,7 @@
 ### Changed
 - Context menus of rundown items are now searchable
 - Updated dependencies
+- "Divider" cues have been renamed to "Comments"
 ### Fixed
 - Select options now render in the system default color (#137)
 - Context menus now align themselvses with respect to the top and bottom of the viewport
