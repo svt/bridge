@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.2 [UNRELEASED]
+## 1.0.2
 ### Added
 - Support for using the whole state in variables
 - Auto save functionality
