@@ -3,6 +3,7 @@
 ## 1.0.2 [UNRELEASED]
 ### Added
 - Support for using the whole state in variables
+- Auto save functionality
 ### Changed
 - Context menus of rundown items are now searchable
 - Updated dependencies

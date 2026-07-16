@@ -13,6 +13,7 @@ import { Preferences } from '../Preferences'
 import { Icon } from '../Icon'
 
 import * as api from '../../api'
+import * as dateUtils from '../../utils/date'
 import * as windowUtils from '../../utils/window'
 
 import './style.css'
@@ -80,6 +81,12 @@ export function Footer ({ title = DEFAULT_TITLE, features }) {
           }
         </div>
         <div className='Footer-block'>
+          {
+            shared?._lastSavedAt &&
+            <div className='Footer-section Footer-section--hint' title='Last saved at'>
+               <Icon name='save' /> {dateUtils.format(new Date(shared?._lastSavedAt), 'h:m:s')}
+            </div>
+          }
           {
             selection?.length > 0 &&
             (
