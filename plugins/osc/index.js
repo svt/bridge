@@ -120,6 +120,14 @@ function isTruthy (value) {
   return !!value
 }
 
+function parseArgumentAsStringWithVariables (rawValue) {
+  const str = String(rawValue)
+  if (bridge.variables.stringContainsVariable(str)) {
+    return bridge.variables.substituteInString(str)
+  }
+  return str
+}
+
 /**
  * Parse a value according
  * to an argument type
@@ -134,7 +142,7 @@ function parseAsArgumentType (type, value) {
 
   switch (type) {
     case 'string':
-      return String(value)
+      return parseArgumentAsStringWithVariables(value)
     case 'integer':
       return parseInt(value)
     case 'float':
@@ -419,4 +427,10 @@ exports.activate = async () => {
       }
     }
   })
+
+  /*
+  Add an empty event listener to
+  force the local state to be updated
+  */
+  bridge.events.on('state.change', () => {})
 }

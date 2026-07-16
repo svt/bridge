@@ -13,8 +13,8 @@ import appearance from './sections/appearance.json'
 import shortcuts from './sections/shortcuts.json'
 import general from './sections/general.json'
 
-import advanced from './sections/project-advanced.json'
-import sharing from './sections/project-sharing.json'
+import projectGeneral from './sections/project-general.json'
+import projectAdvanced from './sections/project-advanced.json'
 
 import './style.css'
 
@@ -36,8 +36,8 @@ const INTERNAL_SETTINGS = [
   {
     title: 'Project',
     items: [
-      { title: 'Sharing', items: sharing },
-      { title: 'Advanced', items: advanced }
+      { title: 'General', items: projectGeneral },
+      { title: 'Advanced', items: projectAdvanced }
     ]
   }
 ]

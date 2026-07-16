@@ -5,6 +5,7 @@
 import add from './add.svg'
 import edit from './edit.svg'
 import play from './play.svg'
+import save from './save.svg'
 import stop from './stop.svg'
 import close from './close.svg'
 import float from './float.svg'
@@ -39,6 +40,7 @@ export default {
   add,
   edit,
   play,
+  save,
   stop,
   close,
   float,

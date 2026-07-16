@@ -11,7 +11,6 @@ test('calculates next frame', () => {
     smpte: '00:00:00:01'
   }
   expect(TimecodeFrame.next(frame1, 25)).toMatchObject({
-    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -20,7 +19,6 @@ test('calculates next frame', () => {
   })
 
   const frame2 = {
-    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -28,7 +26,6 @@ test('calculates next frame', () => {
     smpte: '00:00:00:49'
   }
   expect(TimecodeFrame.next(frame2, 50)).toMatchObject({
-    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 1,
@@ -45,7 +42,6 @@ test('calculates next frame', () => {
     smpte: '02:03:04:05'
   }
   expect(TimecodeFrame.next(frame3, 24)).toMatchObject({
-    days: 1,
     hours: 2,
     minutes: 3,
     seconds: 4,
@@ -54,7 +50,6 @@ test('calculates next frame', () => {
   })
 
   const frame4 = {
-    days: 1,
     hours: 23,
     minutes: 59,
     seconds: 59,
@@ -62,7 +57,6 @@ test('calculates next frame', () => {
     smpte: '23:59:59:29'
   }
   expect(TimecodeFrame.next(frame4, 30)).toMatchObject({
-    days: 2,
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -71,7 +65,6 @@ test('calculates next frame', () => {
   })
 
   const frame5 = {
-    days: 0,
     hours: 22,
     minutes: 59,
     seconds: 59,
@@ -79,7 +72,6 @@ test('calculates next frame', () => {
     smpte: '22:59:59:24'
   }
   expect(TimecodeFrame.next(frame5, 25)).toMatchObject({
-    days: 0,
     hours: 23,
     minutes: 0,
     seconds: 0,
@@ -90,7 +82,6 @@ test('calculates next frame', () => {
 
 test('validates frames', () => {
   const frame1 = {
-    days: 0,
     hours: 22,
     minutes: 59,
     seconds: 59,
@@ -100,52 +91,38 @@ test('validates frames', () => {
   expect(TimecodeFrame.validate(frame1, 25)).toBe(true)
 
   const frame2 = {
-    // Missing days
-    hours: 22,
-    minutes: 59,
-    seconds: 59,
-    frames: 24,
-    smpte: '22:59:59:24'
-  }
-  expect(() => TimecodeFrame.validate(frame2, 25)).toThrow(TimecodeFrameValidationError)
-
-  const frame3 = {
-    days: 0,
     hours: 22,
     minutes: 59,
     seconds: 59,
     frames: 24
     // Missing smpte string
   }
-  expect(() => TimecodeFrame.validate(frame3, 50)).toThrow(TimecodeFrameValidationError)
+  expect(() => TimecodeFrame.validate(frame2, 50)).toThrow(TimecodeFrameValidationError)
 
-  const frame4 = {
-    days: 0,
+  const frame3 = {
     hours: 22,
     minutes: 59,
     seconds: 59,
     frames: 50, // Invalid frame count
     smpte: '00:00:00:00'
   }
-  expect(() => TimecodeFrame.validate(frame4, 50)).toThrow(TimecodeFrameValidationError)
+  expect(() => TimecodeFrame.validate(frame3, 50)).toThrow(TimecodeFrameValidationError)
 
-  const frame5 = {
-    days: 0,
+  const frame4 = {
     hours: 22,
     minutes: 59,
     seconds: 59,
     frames: 23,
     smpte: '010:00:00:00' // Invalid smpte string
   }
-  expect(() => TimecodeFrame.validate(frame5, 25)).toThrow(TimecodeFrameValidationError)
+  expect(() => TimecodeFrame.validate(frame4, 25)).toThrow(TimecodeFrameValidationError)
 
-  const frame6 = {
-    days: 0,
+  const frame5 = {
     hours: 22,
     minutes: 59,
     seconds: 59,
     frames: 23,
     smpte: 'foo00:00:00' // Invalid smpte string
   }
-  expect(() => TimecodeFrame.validate(frame6, 25)).toThrow(TimecodeFrameValidationError)
+  expect(() => TimecodeFrame.validate(frame5, 25)).toThrow(TimecodeFrameValidationError)
 })

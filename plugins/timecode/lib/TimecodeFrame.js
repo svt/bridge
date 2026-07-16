@@ -6,7 +6,6 @@ const TimecodeFrameValidationError = require('./error/TimecodeFrameValidationErr
 
 /**
  * @typedef {{
- *  days: number,
  *  hours: number,
  *  minutes: number,
  *  seconds: number,
@@ -49,12 +48,6 @@ const FRAME_VALIDATION_RULES = [
     required: true
   },
   {
-    key: 'days',
-    type: 'number',
-    min: 0,
-    required: true
-  },
-  {
     key: 'smpte',
     type: 'string',
     fn: val => /^\d{2}:\d{2}:\d{2}:\d{2}$/.test(val),
@@ -78,7 +71,6 @@ class TimecodeFrame {
     }
 
     const out = {
-      days: parseInt(partial?.days || 0),
       hours: parseInt(partial?.hours || 0),
       minutes: parseInt(partial?.minutes || 0),
       seconds: parseInt(partial?.seconds || 0),
@@ -119,7 +111,6 @@ class TimecodeFrame {
       .reverse()
 
     return {
-      days: parseInt(components[4] || 0),
       hours: parseInt(components[3] || 0),
       minutes: parseInt(components[2] || 0),
       seconds: parseInt(components[1] || 0),
@@ -146,7 +137,6 @@ class TimecodeFrame {
     }
 
     return (
-      frameA?.days === frameB?.days &&
       frameA?.hours === frameB?.hours &&
       frameA?.minutes === frameB?.minutes &&
       frameA?.seconds === frameB?.seconds &&
@@ -164,7 +154,6 @@ class TimecodeFrame {
     }
 
     return (
-      frame?.days * 86_400_000 +
       frame?.hours * 3_600_000 +
       frame?.minutes * 60_000 +
       frame?.seconds * 1000 +
@@ -248,7 +237,6 @@ class TimecodeFrame {
     out.seconds = (frame.seconds + (out.frames < frame.frames ? 1 : 0)) % 60
     out.minutes = (frame.minutes + (out.seconds < frame.seconds ? 1 : 0)) % 60
     out.hours = (frame.hours + (out.minutes < frame.minutes ? 1 : 0)) % 24
-    out.days = frame.days + (out.hours < frame.hours ? 1 : 0)
     out.smpte = this.#makeSMPTEString(out.hours, out.minutes, out.seconds, out.frames)
 
     return out

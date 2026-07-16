@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Named url",
+    "description": "This workspace will become available as /named/<custom name> and persistent across restarts if a custom name is specified",
+    "inputs": [
+      { "type": "string", "bind": "shared.url", "label": "Custom name" }
+    ]
+  },
+  {
+    "title": "Auto save",
+    "inputs": [
+      { "type": "boolean", "bind": "shared.core.internals.enableAutoSave", "label": "Enable auto save" },
+      { "type": "number", "bind": "shared.core.internals.autoSaveInterval", "label": "Save interval in seconds", "max": 86400, "min": 1 }
+    ]
+  }
+]

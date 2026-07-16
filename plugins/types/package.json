@@ -128,9 +128,13 @@
         }
       },
       {
-        "id": "bridge.types.divider",
-        "name": "Divider",
+        "id": "bridge.types.comment",
+        "name": "Comment",
         "inherits": "bridge.types.root"
+      },
+      {
+        "id": "bridge.types.divider",
+        "inherits": "bridge.types.comment"
       },
       {
         "id": "bridge.types.trigger",

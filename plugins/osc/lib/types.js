@@ -40,7 +40,8 @@ function init (htmlPath) {
       'osc.value': {
         name: 'Value',
         type: 'string',
-        'ui.group': 'OSC'
+        'ui.group': 'OSC',
+        allowsVariables: true
       }
     }
   })

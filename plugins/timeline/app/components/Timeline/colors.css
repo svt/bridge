@@ -3,6 +3,6 @@
   --Timeline-color--border: var(--base-color--shade);
   --Timeline-color--selection: var(--base-color--shade1);
   --Timeline-color--text: var(--base-color);
-  --Timeline-color--playhead: #ffffff;
+  --Timeline-color--playhead: var(--base-color);
   --Timeline-color--outOfBounds: var(--base-color--background3);
 }

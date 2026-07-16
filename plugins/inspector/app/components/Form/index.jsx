@@ -170,7 +170,7 @@ export function Form () {
    * The context used for
    * variable suggestions
    */
-  const variableContext = {this: firstItem, ...globalVariableContext}
+  const variableContext = {this: firstItem, ...globalVariableContext, state: shared}
 
   async function conditionallyUpdateGroups () {
     const types = store.items.map(item => item.type)

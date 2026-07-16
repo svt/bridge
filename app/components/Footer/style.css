@@ -25,8 +25,20 @@
   margin-right: 10px;
 }
 
-.Footer-actionSection {
+.Footer-section {
+  display: flex;
   margin-right: 10px;
+
+  align-items: center;
+}
+
+.Footer-section--hint {
+  opacity: 0.5;
+}
+
+.Footer-section .Icon {
+  transform: scale(0.75);
+  transform-origin: 50% 50%;
 }
 
 .Footer-button.Footer-sharingBtn {

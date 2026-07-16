@@ -177,7 +177,7 @@ function processTemplateData (item) {
     /*
     Substitute any variables
     */
-    return bridge.variables.substituteInString(str, undefined, { this: item })
+    return bridge.variables.substituteInString(str, undefined, { this: item, state: bridge.state.getLocalState() })
   } catch (err) {
     logger.warn('Failed to clean template data')
     return JSON.stringify({})
