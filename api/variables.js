@@ -83,7 +83,7 @@ class Variables {
    *                              default data rather than replace
    * @returns { String }
    */
-  substituteInString (str, data = (this.#props.State.getLocalState()?.variables || {}), overrideData = {}) {
+  substituteInString (str, data = { ...(this.#props.State.getLocalState()?.variables || {}), state: this.#props.State.getLocalState() }, overrideData = {}) {
     if (!str) {
       return ''
     }

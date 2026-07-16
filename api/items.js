@@ -362,7 +362,8 @@ class Items {
 
     const type = await this.#props.Types.getType(itemObj.type)
     const vars = await this.#props.Variables.getAllVariables()
-    const clone = this.populateVariablesMutable(deepClone(itemObj), type, vars)
+    const clone = this.populateVariablesMutable(deepClone(itemObj), type, { ...vars, state: this.#props.State.getLocalState() })
+
     return clone
   }
 
@@ -530,7 +531,7 @@ class Items {
   async renderValue (itemId, path) {
     const item = await this.getItem(itemId)
     const currentValue = objectPath.get(item || {}, path)
-    return this.#props.Variables.substituteInString(currentValue, undefined, { this: item })
+    return this.#props.Variables.substituteInString(currentValue, undefined, { this: item, state: this.#props.State.getLocalState() })
   }
 }
 

@@ -1,6 +1,8 @@
 # Changelog
 
 ## 1.0.2 [UNRELEASED]
+### Added
+- Support for using the whole state in variables
 ### Changed
 - Context menus of rundown items are now searchable
 - Updated dependencies
