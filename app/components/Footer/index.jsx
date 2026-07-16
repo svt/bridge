@@ -59,7 +59,7 @@ export function Footer ({ title = DEFAULT_TITLE, features }) {
           {
             featureShown('role') &&
             (
-              <div className='Footer-actionSection'>
+              <div className='Footer-section'>
                 <button className={`Footer-button Footer-roleBtn ${role === 1 ? 'is-main' : ''}`} onClick={() => setRoleOpen(true)}>
                   {role === 1 ? 'Main' : 'Satellite'}
                 </button>
@@ -70,7 +70,7 @@ export function Footer ({ title = DEFAULT_TITLE, features }) {
           {
             featureShown('sharing') &&
             (
-              <div className='Footer-actionSection'>
+              <div className='Footer-section'>
                 <button className='Footer-button Footer-sharingBtn' onClick={() => setSharingOpen(true)}>
                   <Icon name='person' />
                   {connectionCount || 0}
@@ -79,14 +79,14 @@ export function Footer ({ title = DEFAULT_TITLE, features }) {
               </div>
             )
           }
-        </div>
-        <div className='Footer-block'>
           {
             shared?._lastSavedAt &&
             <div className='Footer-section Footer-section--hint' title='Last saved at'>
                <Icon name='save' /> {dateUtils.format(new Date(shared?._lastSavedAt), 'h:m:s')}
             </div>
           }
+        </div>
+        <div className='Footer-block'>
           {
             selection?.length > 0 &&
             (

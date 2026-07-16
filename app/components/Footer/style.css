@@ -25,7 +25,6 @@
   margin-right: 10px;
 }
 
-.Footer-actionSection,
 .Footer-section {
   display: flex;
   margin-right: 10px;
@@ -38,7 +37,8 @@
 }
 
 .Footer-section .Icon {
-  transform: scale(0.7);
+  transform: scale(0.75);
+  transform-origin: 50% 50%;
 }
 
 .Footer-button.Footer-sharingBtn {
