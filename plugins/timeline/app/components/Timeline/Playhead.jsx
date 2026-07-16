@@ -9,7 +9,7 @@ export function Playhead ({ x, ghost = false }) {
 
   return (
     <div
-      className={`Playhead${ghost ? ' Playhead--ghost' : ''}`}
+      className={`Playhead ${ghost ? 'Playhead--ghost' : ''}`}
       style={{ left: `${x}px` }}
     />
   )

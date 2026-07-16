@@ -11,6 +11,7 @@
 - Select options now render in the system default color (#137)
 - Context menus now align themselvses with respect to the top and bottom of the viewport
 - An issue where the role popover had the wrong text size
+- The playhead of timelines now change color with the theme
 ### Removed
 - Support for days in LTC
 
