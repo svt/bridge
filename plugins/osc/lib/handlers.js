@@ -5,7 +5,7 @@
 const bridge = require('bridge')
 
 async function getMainSelection () {
-  const connections = await bridge.client.getConnectionsByRole(bridge.client.roles.main)
+  const connections = await bridge.client.getConnectionsByRole(bridge.client.ROLES.main)
   return connections[0]?.selection || []
 }
 

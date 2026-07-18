@@ -3,6 +3,8 @@
 ## 1.0.3 [UNRELEASED]
 ### Changed
 - Improved stability and UX of the agent plugin
+### Fixed
+- An issue where OSC play current main selection stopped working
 
 ## 1.0.2
 ### Added
