@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 [UNRELEASED]
+### Changed
+- Improved stability and UX of the agent plugin
+
 ## 1.0.2
 ### Added
 - Support for using the whole state in variables
