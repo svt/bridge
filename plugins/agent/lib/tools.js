@@ -76,6 +76,7 @@ function registerTools (server, session) {
             .describe('The type id of the item to create'),
           parent: z
             .string()
+            .optional()
             .describe('The id of the parent rundown or group of this item, defaults to RUNDOWN_ROOT'),
           properties: z.array(
             z.object({
@@ -84,6 +85,11 @@ function registerTools (server, session) {
             })
               .describe('A property that should be set of the newly created item')
           )
+            .optional()
+            .default([]),
+          data: z
+            .record(z.string(), z.any())
+            .optional()
         })
           .describe('An object describing an item that should be created')
       )
@@ -96,44 +102,70 @@ function registerTools (server, session) {
           itemId: z.string().describe('The newly created item\'s id')
         })
       )
-        .describe('An array of newly created item ids')
+        .describe('An array of newly created item ids'),
+      failedItems: z.array(
+        z.object({
+          typeId: z.string().optional(),
+          parent: z.string().optional(),
+          reason: z.string().describe('The error that prevented this item from being created')
+        })
+      )
+        .describe('An array of item descriptors that failed to be created')
     })
   }, async ({ items = [] }) => {
-    const out = []
+    if (!Array.isArray(items)) {
+      return {
+        content: [{ type: 'text', text: 'Argument items must be an array' }],
+        structuredContent: { createdItems: [], failedItems: [] }
+      }
+    }
+
+    const createdItems = []
+    const failedItems = []
 
     for (const item of items) {
       if (!item?.typeId) {
+        failedItems.push({ reason: 'Missing typeId' })
         continue
       }
-      const itemId = await bridge.items.createItem(item.typeId, item?.data || {})
 
-      for (const propertyOp of (item?.properties || [])) {
-        if (!propertyOp?.propertyPath) {
-          continue
+      try {
+        const itemId = await bridge.items.createItem(item.typeId, item?.data || {})
+
+        for (const propertyOp of (item?.properties || [])) {
+          if (!propertyOp?.propertyPath) {
+            continue
+          }
+
+          /*
+          Forcefully set the first part of
+          the data path to be data. as all
+          properties that the agent should
+          be able to update are children
+          of that key
+          */
+          let path = String(propertyOp?.propertyPath || '')
+          if (path.indexOf('data.') !== 0) {
+            path = 'data.' + path
+          }
+
+          await bridge.items.applyItem(itemId, path, propertyOp?.value, true)
         }
 
-        /*
-        Forcefully set the first part of
-        the data path to be data. as all
-        properties that the agent should
-        be able to update are children
-        of that key
-        */
-        let path = String(propertyOp?.propertyPath || '')
-        if (path.indexOf('data.') !== 0) {
-          path = 'data.' + path
-        }
-
-        bridge.items.applyItem(itemId, path, propertyOp?.value, true)
+        await bridge.commands.executeCommand('rundown.appendItem', item?.parent || 'RUNDOWN_ROOT', itemId)
+        createdItems.push({ typeId: item.typeId, itemId })
+      } catch (err) {
+        failedItems.push({
+          typeId: item?.typeId,
+          parent: item?.parent,
+          reason: err?.message || 'Unknown error'
+        })
       }
-
-      out.push({ typeId: item.typeId, itemId })
-      await bridge.commands.executeCommand('rundown.appendItem', item?.parent || 'RUNDOWN_ROOT', itemId)
     }
 
     return {
-      content: [{ type: 'text', text: JSON.stringify(out) }],
-      structuredContent: { createdItems: out }
+      content: [{ type: 'text', text: JSON.stringify({ createdItems, failedItems }) }],
+      structuredContent: { createdItems, failedItems }
     }
   })
   session.addAuthDetailForTool('bridge_create_items_with_properties', {
@@ -162,7 +194,7 @@ function registerTools (server, session) {
 
       const itemExists = await bridge.items.itemExists(propertyOp.itemId)
       if (!itemExists) {
-        return
+        continue
       }
 
       /*
@@ -200,6 +232,7 @@ function registerTools (server, session) {
               .describe('The id of the item to move'),
             index: z
               .number()
+              .optional()
               .describe('The index within the new parent that the item will be placed at, set to -1 to append the item'),
             newParentId: z
               .string()
@@ -214,18 +247,109 @@ function registerTools (server, session) {
         content: [{ type: 'text', text: 'Argument operations must be an array' }]
       }
     }
-    for (const operation of operations) {
+
+    const movedItems = []
+    const failedMoves = []
+
+    async function executeOperation (operation, targetIndex) {
       if (!operation?.itemId || !operation?.newParentId) {
-        continue
+        failedMoves.push({
+          itemId: operation?.itemId,
+          newParentId: operation?.newParentId,
+          reason: 'Missing itemId or newParentId'
+        })
+        return
       }
-      if (operation.index === -1) {
-        await bridge.commands.executeCommand('rundown.appendItem', operation.newParentId, operation.itemId)
-      } else {
-        await bridge.commands.executeCommand('rundown.moveItem', operation.newParentId, operation.index || 0, operation.itemId)
+
+      const itemExists = await bridge.items.itemExists(operation.itemId)
+      if (!itemExists) {
+        failedMoves.push({
+          itemId: operation.itemId,
+          newParentId: operation.newParentId,
+          reason: 'Item does not exist'
+        })
+        return
+      }
+
+      try {
+        if (targetIndex == null) {
+          await bridge.commands.executeCommand('rundown.appendItem', operation.newParentId, operation.itemId)
+        } else {
+          await bridge.commands.executeCommand('rundown.moveItem', operation.newParentId, targetIndex, operation.itemId)
+        }
+
+        movedItems.push({
+          itemId: operation.itemId,
+          newParentId: operation.newParentId,
+          index: operation.index
+        })
+      } catch (err) {
+        failedMoves.push({
+          itemId: operation.itemId,
+          newParentId: operation.newParentId,
+          reason: err?.message || 'Unknown error'
+        })
       }
     }
+
+    const enriched = operations.map((operation, originalOrder) => ({ operation, originalOrder }))
+    const parentOrder = []
+    const groupedByParent = {}
+
+    for (const entry of enriched) {
+      const parentId = entry?.operation?.newParentId || ''
+      if (!groupedByParent[parentId]) {
+        groupedByParent[parentId] = []
+        parentOrder.push(parentId)
+      }
+      groupedByParent[parentId].push(entry)
+    }
+
+    for (const parentId of parentOrder) {
+      const entries = groupedByParent[parentId]
+      const indexed = []
+      const append = []
+
+      for (const entry of entries) {
+        const index = entry?.operation?.index
+        if (index == null || index < 0) {
+          append.push(entry)
+        } else {
+          indexed.push(entry)
+        }
+      }
+
+      indexed.sort((a, b) => {
+        const aIndex = Math.max(0, Math.trunc(a.operation.index))
+        const bIndex = Math.max(0, Math.trunc(b.operation.index))
+        if (aIndex === bIndex) {
+          return a.originalOrder - b.originalOrder
+        }
+        return aIndex - bIndex
+      })
+
+      let previousBaseIndex = null
+      let duplicateOffset = 0
+      for (const entry of indexed) {
+        const baseIndex = Math.max(0, Math.trunc(entry.operation.index))
+        if (baseIndex !== previousBaseIndex) {
+          previousBaseIndex = baseIndex
+          duplicateOffset = 0
+        }
+
+        const targetIndex = baseIndex + duplicateOffset
+        duplicateOffset += 1
+        await executeOperation(entry.operation, targetIndex)
+      }
+
+      for (const entry of append) {
+        await executeOperation(entry.operation, null)
+      }
+    }
+
     return {
-      content: [{ type: 'text', text: 'Successfully moved items' }]
+      content: [{ type: 'text', text: JSON.stringify({ movedItems, failedMoves }) }],
+      structuredContent: { movedItems, failedMoves }
     }
   })
   session.addAuthDetailForTool('bridge_move_items', {
