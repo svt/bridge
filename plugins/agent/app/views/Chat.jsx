@@ -178,7 +178,12 @@ export function Chat () {
         isConfigured &&
         (
           <div className='Chat-footer'>
-            <ChatFooter model={model} contextUsage={contextUsage} onSend={msg => handleSendMessage(msg)} />
+            <ChatFooter
+              model={model}
+              contextUsage={contextUsage}
+              isThinking={!!isWaitingForAnswer}
+              onSend={msg => handleSendMessage(msg)}
+            />
           </div>
         )
       }
