@@ -51,6 +51,14 @@
   overflow-x: scroll;
 }
 
+.ChatMessage a {
+  border-radius: 5px;
+}
+
+.ChatMessage a:hover {
+  background: var(--base-color--shade2);
+}
+
 .ChatMessage-actions {
   display: flex;
   align-items: center;

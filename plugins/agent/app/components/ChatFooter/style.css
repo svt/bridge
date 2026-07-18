@@ -1,13 +1,69 @@
 .ChatFooter {
+  --agent-thinking-c1: rgba(88, 162, 255, 0.95);
+  --agent-thinking-c2: rgba(109, 214, 194, 0.9);
+  --agent-thinking-c3: rgba(239, 184, 104, 0.85);
+  --agent-thinking-c4: rgba(202, 138, 255, 0.88);
+
+  position: relative;
+  overflow: hidden;
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
   border: 1px solid var(--base-color--shade1);
 }
 
+.ChatFooter-thinkingOutline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+}
+
 .ChatFooter:active,
 .ChatFooter:focus {
   border: 1px solid var(--base-color);
+}
+
+.ChatFooter--thinking .ChatFooter-thinkingOutline {
+  opacity: 1;
+}
+
+.ChatFooter-thinkingGlow,
+.ChatFooter-thinkingStroke {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.ChatFooter-thinkingGlow {
+  stroke-width: 2.8;
+  stroke-dasharray: 15 85;
+  stroke-dashoffset: 0;
+  opacity: 0.3;
+  filter: blur(2.6px);
+  animation: ChatFooter-borderTravel 1.5s linear infinite;
+}
+
+.ChatFooter-thinkingStroke {
+  stroke-width: 1.6;
+  stroke-dasharray: 14 86;
+  stroke-dashoffset: 0;
+  opacity: 0.9;
+  animation: ChatFooter-borderTravel 1.5s linear infinite;
+}
+
+@keyframes ChatFooter-borderTravel {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -100;
+  }
 }
 
 .ChatFooter-input,
