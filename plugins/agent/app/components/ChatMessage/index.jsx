@@ -1,3 +1,5 @@
+import bridge from 'bridge'
+
 import React from 'react'
 import './style.css'
 
@@ -71,9 +73,36 @@ export function ChatMessage ({ type, text: _text, animate = true, onSend = () =>
     onSend({ text: _text })
   }
 
+  function isExternalLink (href) {
+    if (!href || typeof href !== 'string') {
+      return false
+    }
+
+    if (href.indexOf('#') === 0 || href.indexOf('/') === 0) {
+      return false
+    }
+
+    return /^(https?:|mailto:|tel:)/i.test(href)
+  }
+
+  function handleContentClick (e) {
+    if (!e?.target || typeof e.target.closest !== 'function') {
+      return
+    }
+
+    const link = e.target.closest('a[href]')
+    const href = link?.getAttribute('href')
+    if (!link || !isExternalLink(href)) {
+      return
+    }
+
+    e.preventDefault()
+    bridge.client.openExternalUrl(href)
+  }
+
   return (
     <div className={`ChatMessage ChatMessage--${type}`}>
-      <div className='ChatMessage-content'  dangerouslySetInnerHTML={{ __html: html }} />
+      <div className='ChatMessage-content' onClick={handleContentClick} dangerouslySetInnerHTML={{ __html: html }} />
       {
         type === 'user' &&
         (
