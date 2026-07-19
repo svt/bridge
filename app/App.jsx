@@ -1,5 +1,6 @@
 import React from 'react'
 import { Start } from './views/Start'
+import { Error } from './views/Error'
 import { Workspace } from './views/Workspace'
 import { WorkspaceWidget } from './views/WorkspaceWidget'
 
@@ -271,6 +272,10 @@ export default function App () {
                 {
                   path: /^\/workspaces\/.+$/,
                   render: () => <Workspace />
+                },
+                {
+                  path: /^\/error(?:\/.*)?$/,
+                  render: () => <Error />
                 },
                 {
                   path: '/',
