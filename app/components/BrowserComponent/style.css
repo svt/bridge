@@ -1,0 +1,19 @@
+
+
+.BrowserComponent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+  align-items: center;
+}
+
+.BrowserComponent-container {
+  width: 100%;
+}
+
+.BrowserComponent-heading {
+  margin: 10px 0 3px;
+  font-weight: 600;
+}

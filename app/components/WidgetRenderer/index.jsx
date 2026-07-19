@@ -6,6 +6,7 @@ import { GridItem } from '../GridItem'
 import { TabsComponent } from '../TabsComponent'
 import { EmptyComponent } from '../EmptyComponent'
 import { FrameComponent } from '../FrameComponent'
+import { BrowserComponent } from '../BrowserComponent'
 import { MissingComponent } from '../MissingComponent'
 
 /**
@@ -41,6 +42,9 @@ const INTERNAL_COMPONENTS = {
   },
   'bridge.internals.tabs': (widgetId, data, onUpdate, widgets) => {
     return <TabsComponent widgetId={widgetId} data={data} widgets={widgets} onUpdate={onUpdate} />
+  },
+  'bridge.internals.browser': (widgetId, data, onUpdate, widgets) => {
+    return <BrowserComponent widgetId={widgetId} data={data} widgets={widgets} onUpdate={onUpdate} />
   },
   'bridge.internals.empty': () => {
     return <EmptyComponent />

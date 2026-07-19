@@ -14,22 +14,13 @@ class Widgets {
   /**
    * Make a widget available
    * to the application
-   * @param {
-   *   id: String,
-   *   name: String,
-   *   uri: String,
-   *   description: String
-   * } spec
+   * @param { import('../shared/definitions.js').BridgeApiWidgetSpec } spec
    */
   registerWidget (spec) {
-    this.#props.State.apply({
-      _widgets: {
-        [spec.id]: spec
-      }
-    })
+    this.#props.Commands.executeCommand('widgets.registerWidget', spec)
   }
 }
 
 DIController.main.register('Widgets', Widgets, [
-  'State'
+  'Commands'
 ])
