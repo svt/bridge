@@ -1,0 +1,13 @@
+.BrowserComponentHeader {
+  display: flex;
+  width: 100%;
+  gap: 5px;
+}
+
+.BrowserComponentHeader-section--address {
+  width: 100%;
+}
+
+.BrowserComponentHeader-addressInput {
+  width: 100%;
+}
