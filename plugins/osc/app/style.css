@@ -14,7 +14,13 @@ html, body {
 }
 
 .LogList {
-  height: calc(100% - 30px);
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.LogListView {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 }

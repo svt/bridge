@@ -37,7 +37,7 @@ export const WidgetLog = () => {
   }
 
   return (
-    <>
+    <div className='LogListView'>
       <LogHeader data={settings} onChange={newSettings => handleSettingsChange(newSettings)} />
       <div ref={scrollRef} className='LogList'>
         {
@@ -46,6 +46,6 @@ export const WidgetLog = () => {
           })
         }
       </div>
-    </>
+    </div>
   )
 }

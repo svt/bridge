@@ -2,10 +2,7 @@
   display: flex;
   width: 100%;
 
-  font-size: 0.9em;
-
   opacity: 0.8;
-
   white-space: nowrap;
 }
 
@@ -17,14 +14,15 @@
 }
 
 .LogItem-timestamp {
-  width: 90px;
   flex-shrink: 0;
 }
 
 .LogItem-direction {
   flex-shrink: 0;
+  color: var(--base-color--warn);
 }
 
-.LogItem:nth-child(odd) {
-  background: var(--base-color--shade2);
+.LogItem > * {
+  -webkit-user-select: all;
+  user-select: all;
 }

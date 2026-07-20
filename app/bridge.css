@@ -430,3 +430,10 @@ select option {
   mask-image: url('./assets/icons/warning.svg');
   mask-size: 90%;
 }
+
+/* Code */
+
+pre, .u-pre {
+  font-family: var(--base-fontFamily--mono);
+  font-size: 0.85em;
+}

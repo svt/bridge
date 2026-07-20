@@ -128,7 +128,8 @@ export const Monaco = ({ defaultValue = '', value = '', reset, onChange = () => 
       lineNumbersMinChars: 3,
       colorDecorators: true,
       contextmenu: false,
-      tabSize: 2
+      tabSize: 2,
+      fontFamily: 'var(--base-fontFamily--mono)'
     })
 
     const model = editor.getModel()

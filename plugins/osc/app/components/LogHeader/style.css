@@ -1,12 +1,13 @@
 .LogHeader {
   width: 100%;
-  padding: 0 10px 10px;
+  padding: 0 5px 5px;
 
   border-bottom: 1px solid var(--base-color--shade2);
 }
 
 .LogHeader-setting {
   display: flex;
+  align-items: center;
 }
 
 .LogHeader-settingLabel {
