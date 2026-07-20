@@ -57,6 +57,12 @@
         "trigger": ["CommandOrControl", "P"]
       },
       {
+        "id": "search",
+        "action": "openPalette",
+        "description": "Search",
+        "trigger": ["CommandOrControl", "F"]
+      },
+      {
         "id": "openPreferences",
         "action": "openPreferences",
         "description": "Open settings",

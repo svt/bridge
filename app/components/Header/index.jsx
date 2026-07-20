@@ -124,7 +124,6 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
       <Modal open={prefsOpen} onClose={() => setPrefsOpen(false)}>
         <Preferences onClose={() => setPrefsOpen(false)} />
       </Modal>
-      <Palette open={paletteIsOpen} onClose={() => handlePaletteClose()} />
       <header
         className={`
           Header
@@ -141,24 +140,22 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
                 <AppMenu />
               </div>
               <div className='Header-center'>
-                { featureShown('title') && title }
                 {
-                  featureShown('title') && shared?._hasUnsavedChanges &&
-                  <span className='Header-edited'> — edited</span>
+                  (featureShown('palette') || paletteIsOpen) &&
+                  <Palette title={`${title}${shared?._hasUnsavedChanges ? ' – edited' : ''}`} open={paletteIsOpen} onOpen={() => handlePaletteOpen()} onClose={() => handlePaletteClose()} />
                 }
               </div>
             </>
           )
           : (
             <>
-              <div className='Header-title'>
-                { featureShown('title') && title }
+              <div className='Header-title' />
+              <div className='Header-center'>
                 {
-                  featureShown('title') && shared?._hasUnsavedChanges &&
-                  <span className='Header-edited'> — edited</span>
+                  (featureShown('palette') || paletteIsOpen) &&
+                  <Palette title={`${title}${shared?._hasUnsavedChanges ? ' – edited' : ''}`} open={paletteIsOpen} onOpen={() => handlePaletteOpen()} onClose={() => handlePaletteClose()} />
                 }
               </div>
-              <div className='Header-center' />
             </>
           )
         }
@@ -168,14 +165,6 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
             (
               <button className='Header-button' onClick={() => handleStayOnTopChange(!stayOnTop)} title='Toggle stay on top'>
                 <Icon name={stayOnTop ? 'stayOnTopOn' : 'stayOnTopOff'} />
-              </button>
-            )
-          }
-          {
-            featureShown('palette') &&
-            (
-              <button className='Header-button' onClick={() => handlePaletteOpen()} title='Open palette'>
-                <Icon name='search' />
               </button>
             )
           }

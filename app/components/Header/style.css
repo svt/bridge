@@ -8,9 +8,10 @@
   padding: 0 8px 0 20px;
   box-sizing: border-box;
 
+  border-bottom: 1px solid var(--base-color--shade1);
+
   flex-shrink: 0;
 
-  align-items: center;
   justify-content: space-between;
   
   -webkit-app-region: drag;

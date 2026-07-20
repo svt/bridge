@@ -1,9 +1,12 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
+
 import './style.css'
 
 import integrations from './integrations'
+import { Icon } from '../Icon'
 
-export const Palette = ({ open, onClose = () => {} }) => {
+export const Palette = ({ title, open, onOpen = () => {}, onClose = () => {} }) => {
   const elRef = React.useRef()
   const inputRef = React.useRef()
 
@@ -38,12 +41,14 @@ export const Palette = ({ open, onClose = () => {} }) => {
 
   /*
   Reset and focus the input
-  whenever the palette is opened
+  whenever the palette is
+  opened or closed
   */
   React.useEffect(() => {
-    if (!open) return
     inputRef.current.value = ''
-    inputRef.current.focus()
+    if (open) {
+      inputRef.current.focus()
+    }
   }, [open])
 
   /*
@@ -64,10 +69,6 @@ export const Palette = ({ open, onClose = () => {} }) => {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [open, onClose])
-
-  if (!open) {
-    return <></>
-  }
 
   function select (currentEl, direction) {
     let nextTarget
@@ -145,7 +146,10 @@ export const Palette = ({ open, onClose = () => {} }) => {
       Override arrow up and arrow down
       for the input element to
       select rows rather than
-      its text content
+      its text content,
+
+      and override escape
+      to close the palette
       */
       case 'ArrowDown':
         e.preventDefault()
@@ -155,27 +159,42 @@ export const Palette = ({ open, onClose = () => {} }) => {
         e.preventDefault()
         select(e.target, -1)
         break
+      case 'Escape':
+        e.preventDefault()
+        inputRef.current?.blur()
+        onClose()
+        break
     }
   }
 
   return (
     <div ref={elRef} className='Palette'>
-      <div className='Palette-backdrop' onClick={() => onClose()} onContextMenu={() => onClose()} />
-      <div className='Palette-input'>
+      {
+        open &&
+        createPortal(
+          <div className='Palette-backdrop' onClick={() => onClose()} onContextMenu={() => onClose()} />,
+          document.body
+        )
+      }
+      <div className={`Palette-input ${open ? 'is-open' : ''} ${result.length ? 'has-results' : ''}`}>
+        <div className='Palette-icon'>
+          <Icon name='search' />
+        </div>
         <input
           ref={inputRef}
           type='text'
           className='is-selectable'
           onKeyDown={e => handleInputKeyDown(e)}
           onChange={e => handleInput(e.target.value)}
-          placeholder='Press ESC to close the palette'
+          onFocus={() => onOpen()}
+          placeholder={title || ''}
         />
         {
           /*
           Render all integrations one by one
           if there are results to render
           */
-          result.length
+          (open && result.length)
           ? (
               <div className='Palette-result'>
                 {
