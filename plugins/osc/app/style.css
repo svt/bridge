@@ -18,3 +18,9 @@ html, body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+.LogListView {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
