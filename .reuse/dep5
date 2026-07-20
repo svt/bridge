@@ -66,3 +66,6 @@ Files: /app/assets/fonts/Inter*
 Copyright: 2016 The Inter Project Authors
 License: OFL-1.1
 
+Files: /app/assets/fonts/JetBrainsMono*
+Copyright: 2020 The JetBrains Mono Project Authors
+License: OFL-1.1

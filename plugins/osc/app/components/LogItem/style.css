@@ -17,12 +17,12 @@
 }
 
 .LogItem-timestamp {
-  width: 90px;
   flex-shrink: 0;
 }
 
 .LogItem-direction {
   flex-shrink: 0;
+  color: var(--base-color--warn);
 }
 
 .LogItem:nth-child(odd) {

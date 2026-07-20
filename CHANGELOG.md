@@ -3,8 +3,10 @@
 ## 1.0.3 [UNRELEASED]
 ### Added
 - A browser widget for custom embeds
+- A monospace font (JetBrains Mono) is now bundled with the app
 ### Changed
 - Improved stability and UX of the agent plugin
+- Improved UX in the OSC log widget
 ### Fixed
 - An issue where OSC play current main selection stopped working
 

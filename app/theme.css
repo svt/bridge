@@ -31,8 +31,10 @@
   --base-color--notificationColor: white;
 
   --base-color--alert: #E13241;
+  --base-color--warn: #e1a132;
 
   --base-fontFamily--primary: 'Inter', -apple-system, BlinkMacSystemFont, 'helvetica', bridge-glyphs, sans-serif;
+  --base-fontFamily--mono: 'JetBrainsMono', monospace;
 
   --base-color-type--variable: #0F418C;
 }
