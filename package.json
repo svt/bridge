@@ -43,7 +43,6 @@
     "hotkeys-js": "^4.0.1",
     "jose": "^6.0.13",
     "jszip": "^3.10.1",
-    "node-fetch": "^2.6.1",
     "node-policy-agent": "^1.5.0",
     "obj-router": "^3.0.2",
     "object-path": "^0.11.8",

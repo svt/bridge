@@ -1,6 +1,8 @@
 # Changelog
 
 ## 1.0.3 [UNRELEASED]
+### Added
+- A browser widget for custom embeds
 ### Changed
 - Improved stability and UX of the agent plugin
 ### Fixed

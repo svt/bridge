@@ -1,0 +1,25 @@
+.BrowserComponentHeader {
+  display: flex;
+  padding: 5px;
+  width: 100%;
+  gap: 5px;
+
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.BrowserComponentHeader-section--address {
+  width: 100%;
+}
+
+.BrowserComponentHeader-addressInput {
+  width: 100%;
+}
+
+.BrowserComponentHeader .Button {
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  align-items: center;
+}
