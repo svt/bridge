@@ -21,3 +21,8 @@
   flex-shrink: 0;
   color: var(--base-color--warn);
 }
+
+.LogItem > * {
+  -webkit-user-select: all;
+  user-select: all;
+}

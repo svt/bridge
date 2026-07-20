@@ -7,8 +7,10 @@
 ### Changed
 - Improved stability and UX of the agent plugin
 - Improved UX in the OSC log widget
+- Text in the OSC log widget can now be selected and copied
 ### Fixed
 - An issue where OSC play current main selection stopped working
+- The OSC log widget can now scroll to show the full last row
 
 ## 1.0.2
 ### Added
