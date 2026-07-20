@@ -29,6 +29,10 @@
   z-index: 1;
 }
 
+.Palette-input.is-windows {
+  margin-top: 7px;
+}
+
 .Palette-input.is-open {
   border: 1px solid var(--base-color--shade1);
 }

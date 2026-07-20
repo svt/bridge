@@ -6,6 +6,8 @@ import './style.css'
 import integrations from './integrations'
 import { Icon } from '../Icon'
 
+import * as windowUtils from '../../utils/window'
+
 export const Palette = ({ title, open, onOpen = () => {}, onClose = () => {} }) => {
   const elRef = React.useRef()
   const inputRef = React.useRef()
@@ -176,7 +178,7 @@ export const Palette = ({ title, open, onOpen = () => {}, onClose = () => {} }) 
           document.body
         )
       }
-      <div className={`Palette-input ${open ? 'is-open' : ''} ${result.length ? 'has-results' : ''}`}>
+      <div className={`Palette-input ${open ? 'is-open' : ''} ${result.length ? 'has-results' : ''} ${(windowUtils.isWindows() && windowUtils.isElectron()) ? 'is-windows' : ''}`}>
         <div className='Palette-icon'>
           <Icon name='search' />
         </div>

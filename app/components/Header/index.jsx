@@ -129,6 +129,7 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
           Header
           ${windowUtils.isMacOS() && windowUtils.isElectron() ? 'has-leftMargin' : ''}
           ${windowUtils.isWindows() && windowUtils.isElectron() ? 'has-rightMargin' : ''}
+          ${windowUtils.isWindows() && windowUtils.isElectron() ? 'is-windows' : ''}
         `}
         onDoubleClick={() => windowUtils.toggleMaximize()}
       >
