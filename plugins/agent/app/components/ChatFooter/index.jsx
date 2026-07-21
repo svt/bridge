@@ -3,13 +3,15 @@ import './style.css'
 
 import { Icon } from '../Icon'
 
+const GLOW_BORDER_WIDTH_PX = 1.25
+
 export function ChatFooter ({ model, contextUsage = 0, isThinking = false, onSend = () => {} }) {
   const [input, setInput] = React.useState()
   const [outline, setOutline] = React.useState({
     width: 100,
     height: 100,
     radius: 10,
-    borderWidth: 1
+    borderWidth: GLOW_BORDER_WIDTH_PX
   })
   const footerRef = React.useRef()
   const gradientId = React.useId().replace(/:/g, '')
@@ -28,14 +30,15 @@ export function ChatFooter ({ model, contextUsage = 0, isThinking = false, onSen
     }
 
     function updateOutline () {
-      const rect = node.getBoundingClientRect()
       const styles = window.getComputedStyle(node)
       const borderRadius = parseFloat(styles.borderTopLeftRadius) || 10
-      const borderWidth = parseFloat(styles.borderTopWidth) || 1
+      const borderWidth = GLOW_BORDER_WIDTH_PX
+      const width = node.clientWidth + (borderWidth * 2)
+      const height = node.clientHeight + (borderWidth * 2)
 
       setOutline({
-        width: Math.max(2, rect.width),
-        height: Math.max(2, rect.height),
+        width: Math.max(2, width),
+        height: Math.max(2, height),
         radius: Math.max(0, borderRadius),
         borderWidth: Math.max(0, borderWidth)
       })
@@ -80,7 +83,18 @@ export function ChatFooter ({ model, contextUsage = 0, isThinking = false, onSen
 
   return (
     <div ref={footerRef} className={`ChatFooter ${isThinking ? 'ChatFooter--thinking' : ''}`} tabIndex={0}>
-      <svg className='ChatFooter-thinkingOutline' viewBox={`0 0 ${outline.width} ${outline.height}`} preserveAspectRatio='xMidYMid meet' aria-hidden='true'>
+      <svg
+        className='ChatFooter-thinkingOutline'
+        style={{
+          left: `${-outline.borderWidth}px`,
+          top: `${-outline.borderWidth}px`,
+          width: `calc(100% + ${outline.borderWidth * 2}px)`,
+          height: `calc(100% + ${outline.borderWidth * 2}px)`
+        }}
+        viewBox={`0 0 ${outline.width} ${outline.height}`}
+        preserveAspectRatio='none'
+        aria-hidden='true'
+      >
         <defs>
           <linearGradient id={glowGradientId} x1='0%' y1='0%' x2='100%' y2='100%'>
             <stop offset='0%' stopColor='var(--agent-thinking-c1)' />
@@ -96,7 +110,7 @@ export function ChatFooter ({ model, contextUsage = 0, isThinking = false, onSen
           </linearGradient>
         </defs>
         <rect className='ChatFooter-thinkingGlow' style={{ stroke: `url(#${glowGradientId})` }} x={strokeInset} y={strokeInset} width={rectWidth} height={rectHeight} rx={cornerRadius} ry={cornerRadius} pathLength='100' />
-        <rect className='ChatFooter-thinkingStroke' style={{ stroke: `url(#${strokeGradientId})` }} x={strokeInset} y={strokeInset} width={rectWidth} height={rectHeight} rx={cornerRadius} ry={cornerRadius} pathLength='100' />
+        <rect className='ChatFooter-thinkingStroke' style={{ stroke: `url(#${strokeGradientId})`, strokeWidth: outline.borderWidth }} x={strokeInset} y={strokeInset} width={rectWidth} height={rectHeight} rx={cornerRadius} ry={cornerRadius} pathLength='100' />
       </svg>
       <textarea
         className='ChatFooter-input'

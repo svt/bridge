@@ -5,7 +5,7 @@
   --agent-thinking-c4: rgba(202, 138, 255, 0.88);
 
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
