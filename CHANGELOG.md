@@ -12,6 +12,7 @@
 ### Fixed
 - An issue where OSC play current main selection stopped working
 - The OSC log widget can now scroll to show the full last row
+- (Windows) The app menu would sometimes get cut off by the window's upper bounds
 
 ## 1.0.2
 ### Added

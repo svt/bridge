@@ -8,8 +8,8 @@ const DIRECTION = Object.freeze({
   DOWN: 'down'
 })
 
-const VERTICAL_MARGIN_TO_WINDOW_EDGE_PX = 5
-const VERTICAL_DIRECTION_SHIFT_PX = 20
+const VERTICAL_MARGIN_TO_WINDOW_EDGE_PX = 10
+const VERTICAL_DIRECTION_SHIFT_PX = 10
 
 /**
  * A threshold for how long the context menu has
@@ -129,7 +129,7 @@ export const ContextMenu = ({ x: _x, y: _y, width = DEFAULT_WIDTH_PX, children, 
       setY(current => current + VERTICAL_DIRECTION_SHIFT_PX)
     } else {
       setDirection(DIRECTION.DOWN)
-      setY(current => current - VERTICAL_DIRECTION_SHIFT_PX)
+      setY(current => Math.max(current - VERTICAL_DIRECTION_SHIFT_PX, VERTICAL_MARGIN_TO_WINDOW_EDGE_PX))
     }
   }, [_y])
 
