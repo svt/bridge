@@ -109,6 +109,10 @@ export function FrameComponent ({ widgetId, uri, widgets, data, onUpdate, enable
         return
       }
 
+      // Reset this caller scope before recreating the frame.
+      bridge.events.removeAllListeners(caller)
+      bridge.events.removeAllIntercepts(caller)
+
       wrapperRef.current.innerHTML = getFrameHtml(uri)
       frameRef.current = wrapperRef.current.firstChild
       setContentWindowChanged(Math.floor(Math.random() * 1000))

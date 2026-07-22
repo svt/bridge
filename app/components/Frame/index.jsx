@@ -81,6 +81,10 @@ export function Frame ({ className, src, api, doUpdateTheme = 1, autoresize = tr
         return
       }
 
+      // Reset this caller scope before recreating the frame.
+      api.events.removeAllListeners(caller)
+      api.events.removeAllIntercepts(caller)
+
       wrapperRef.current.innerHTML = getFrameHtml(src)
       frameRef.current = wrapperRef.current.firstChild
 
