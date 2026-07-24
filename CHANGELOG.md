@@ -4,6 +4,7 @@
 ### Added
 - A browser widget for custom embeds
 - A monospace font (JetBrains Mono) is now bundled with the app
+- The ability to create triggers for an item from the context menu
 ### Changed
 - Improved stability and UX of the agent plugin
 - Improved UX in the OSC log widget

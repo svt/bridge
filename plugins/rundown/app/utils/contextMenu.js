@@ -73,3 +73,17 @@ export function generateAddContextMenuItems (types, onItemClick) {
     })
     .flat(1)
 }
+
+export function generateCreateTriggerContextMenuItems (types, onItemClick = () => {}) {
+  const renderedTypes = renderAllTypes(types)
+
+  return Object.entries(renderedTypes)
+    .filter(([id, type]) => type?.ancestors?.includes('bridge.types.trigger'))
+    .map(([id, type]) => {
+      return {
+        type: 'item',
+        label: type.name,
+        onClick: () => onItemClick(type.id)
+      }
+    })
+}

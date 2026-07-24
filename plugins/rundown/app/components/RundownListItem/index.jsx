@@ -140,6 +140,11 @@ export function RundownListItem ({
       },
       {
         type: 'item',
+        label: 'Create trigger',
+        children: contextMenu.generateCreateTriggerContextMenuItems(types, typeId => handleCreateTrigger(typeId))
+      },
+      {
+        type: 'item',
         label: item?.data?.disabled ? 'Enable' : 'Disable',
         onClick: () => selection.disableSelection(!item?.data?.disabled)
       },
@@ -217,7 +222,20 @@ export function RundownListItem ({
 
     await bridge.items.applyItem(newItemId, {
       data: {
-        name: `Reference to ${item?.data?.name}`,
+        name: `Reference to $(state.items.${item?.id}.data.name)`,
+        targetId: item.id
+      }
+    }, true)
+
+    bridge.commands.executeCommand('rundown.moveItem', rundownId, index + 1, newItemId)
+  }
+
+  async function handleCreateTrigger (typeId) {
+    const newItemId = await bridge.items.createItem(typeId)
+
+    await bridge.items.applyItem(newItemId, {
+      data: {
+        name: `Trigger for $(state.items.${item?.id}.data.name)`,
         targetId: item.id
       }
     }, true)
