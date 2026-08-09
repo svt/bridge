@@ -9,6 +9,9 @@
   "engines": {
     "bridge": "^0.0.1"
   },
+  "os": [
+    "!win32"
+  ],
   "keywords": [
     "bridge",
     "plugin"

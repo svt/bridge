@@ -10,6 +10,7 @@ Plugins allows Bridge to be extended with functionality, both through the backen
     - [name](#name)
     - [main](#main)
     - [engines](#engines)
+    - [os](#os)
     - [contributes](#contributes)
   - [Building plugins](#building-plugins)
   - [Installing plugins](./installation.md)
@@ -45,6 +46,7 @@ Contributions can be added either through `package.json` or using the matching a
   "engines": {
     "bridge": "^1.0.0"
   },
+  "platforms": ["darwin", "win32"],
   "contributes": {
     "shortcuts": [
       {
@@ -104,6 +106,11 @@ A boolean indicating whether this plugin is disabled or not, this is useful for 
 **Required**  
 *See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines)*  
 Declare what version of Bridge is required to run the plugin. This property is required and must contain the `bridge` key and a valid semver tag.
+
+#### os
+**Optional**  
+*See [https://docs.npmjs.com/cli/v8/configuring-npm/package-json#os](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#os)*  
+Declare which platforms this plugin is compatible with. If this is not present in the manifest the plugin will load on all platforms.
 
 #### contributes
 **Optional**  

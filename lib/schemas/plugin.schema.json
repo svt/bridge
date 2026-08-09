@@ -23,6 +23,12 @@
       },
       "required": [ "bridge" ]
     },
+    "os": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "contributes": {
       "type": "object",
       "properties": {
