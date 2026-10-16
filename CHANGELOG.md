@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.4 – [UNRELEASED]
+### Added
+- The ability to duplicate tabs
+- A switch to deactivate individual Caspar servers
+- Support for file storage within project files
+- An image widget for displaying static images within the interface
+### Changed
+- Updated dependencies
+
 ## 1.0.3
 ### Added
 - A browser widget for custom embeds

@@ -43,7 +43,7 @@
 
   background: var(--base-color--shade2);
 
-  border-radius: 5px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -60,7 +60,7 @@
   height: 20px;
 
   left: 0;
-  bottom: -18px;
+  top: -17px;
 
   background: var(--base-color--accent1);
 }

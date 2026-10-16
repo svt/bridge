@@ -22,6 +22,7 @@
   --base-color--shade4: rgba(255, 255, 255, 0.5);
 
   --base-color--shade-3pct: rgba(255, 255, 255, 0.03);
+  --base-color--shade-1pct: rgba(255, 255, 255, 0.01);
 
   --base-color--background1: #121212;
   --base-color--background2: #292a2c;
@@ -32,6 +33,8 @@
 
   --base-color--alert: #E13241;
   --base-color--warn: #e1a132;
+  --base-color--warn: #e1a132;
+  --base-color--green-400: #11E67C;
 
   --base-fontFamily--primary: 'Inter', -apple-system, BlinkMacSystemFont, 'helvetica', bridge-glyphs, sans-serif;
   --base-fontFamily--mono: 'JetBrainsMono', monospace;
@@ -58,12 +61,14 @@
   --base-color--shade4: rgba(0, 0, 0, 0.5);
 
   --base-color--shade-3pct: rgba(0, 0, 0, 0.03);
+  --base-color--shade-1pct: rgba(0, 0, 0, 0.01);
 
   --base-color--background1: white;
   --base-color--background2: #f0f0f0;
   --base-color--background3: rgba(255, 255, 255, 0.9);
 
   --base-color--alert: #FF5E6C;
+  --base-color--green-400: #1DB368;
 
   --base-color--notificationBackground: #641E78;
   --base-color--notificationColor: white;

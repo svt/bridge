@@ -1,6 +1,7 @@
 import React from 'react'
 
 import * as random from '../../utils/random'
+import * as tabsUtils from './tabs'
 
 import { ContextMenu } from '../ContextMenu'
 import { ContextMenuItem } from '../ContextMenuItem'
@@ -77,7 +78,7 @@ export function TabsComponent ({ data, widgets, onUpdate = () => {} }) {
    * it last in the tab order
    */
   function createTab () {
-    const id = random.number(5)
+    const id = tabsUtils.getUniqueTabId(data?.children, () => random.number(5))
     onUpdate({
       order: { $replace: [...data.order, id] },
       children: {
@@ -86,6 +87,33 @@ export function TabsComponent ({ data, widgets, onUpdate = () => {} }) {
         }
       }
     })
+  }
+
+  /**
+   * Duplicate an existing tab and insert
+   * the duplicated tab next to the source tab.
+   * @param { String } id
+   */
+  function duplicateTab (id) {
+    const duplicatedState = tabsUtils.getDuplicateTabState({
+      id,
+      order: data?.order,
+      children: data?.children,
+      createId: () => random.number(5)
+    })
+
+    if (!duplicatedState) {
+      return
+    }
+
+    onUpdate({
+      order: { $replace: duplicatedState.newOrder },
+      children: {
+        [duplicatedState.duplicateId]: duplicatedState.duplicatedChild
+      }
+    })
+
+    setActiveTab(duplicatedState.nextActiveTab)
   }
 
   /**
@@ -172,7 +200,7 @@ export function TabsComponent ({ data, widgets, onUpdate = () => {} }) {
     return <WidgetRenderer widgets={widgets} data={data?.children[activeTab]} onUpdate={data => handleChildUpdate(activeTab, data)} />
   }
 
-  const tabs = (data?.order || [])
+  const tabItems = (data?.order || [])
     .map(id => {
       return {
         id,
@@ -187,6 +215,7 @@ export function TabsComponent ({ data, widgets, onUpdate = () => {} }) {
         (
           <ContextMenu x={contextParams[0]} y={contextParams[1]} onClose={() => setContextParams(undefined)}>
             <ContextMenuItem text='Rename' onClick={() => handleRenameOpen(contextParams[2])} />
+            <ContextMenuItem text='Duplicate' onClick={() => duplicateTab(contextParams[2])} />
             {
               /*
               Prevent the tab to be removed if there's only one tab left,
@@ -212,7 +241,7 @@ export function TabsComponent ({ data, widgets, onUpdate = () => {} }) {
         <input type='text' value={renamingValue} onChange={e => setRenamingValue(e.target.value)} />
       </PopupConfirm>
       <Tabs
-        tabs={tabs}
+        tabs={tabItems}
         activeTab={activeTab}
         onCreate={() => createTab()}
         onRemove={id => setTabToRemove(id)}

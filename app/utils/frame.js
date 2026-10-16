@@ -26,5 +26,6 @@ export const COPY_THEME_VARIABLES = [
   '--base-fontFamily--primary',
   '--base-color-type--variable',
   '--base-color--notificationColor',
-  '--base-color--notificationBackground'
+  '--base-color--notificationBackground',
+  '--base-color--green-400'
 ]

@@ -16,6 +16,7 @@ const InvalidArgumentError = require('./error/InvalidArgumentError')
 const DIController = require('../shared/DIController')
 
 const DEFAULT_MESSAGE_TTL_MS = 10000
+const FINISH_LINGER_MS = 400
 
 class Messages {
   #props
@@ -93,6 +94,47 @@ class Messages {
       id: this.#getMessageId()
     })
     this.#props.Events.emit('message', spec)
+  }
+
+  /**
+   * Show a local message with a progress bar
+   * until it's finished or dismissed by the user
+   *
+   * The message is only shown in this client
+   *
+   * @param {{ text: String, progress: Number= }} spec Progress is a number
+   *                                                    between 0 and 1,
+   *                                                    leave it out for an
+   *                                                    indeterminate bar
+   * @returns {{
+   *  id: String,
+   *  update: (set: { progress: Number=, text: String= }) => void,
+   *  finish: () => void,
+   *  dismiss: () => void
+   * }}
+   */
+  createProgressMessage (spec) {
+    const validated = this.validateMessageSpec(spec, {
+      dismissable: true,
+      ttl: 0,
+      type: 'progress',
+      id: this.#getMessageId()
+    })
+    const id = validated.id
+
+    this.#props.Events.emitLocally('message', validated)
+
+    const dismiss = () => this.#props.Events.emitLocally('message.dismiss', id)
+
+    return {
+      id,
+      update: set => this.#props.Events.emitLocally('message.update', id, set),
+      dismiss,
+      finish: () => {
+        this.#props.Events.emitLocally('message.update', id, { progress: 1 })
+        setTimeout(dismiss, FINISH_LINGER_MS)
+      }
+    }
   }
 }
 

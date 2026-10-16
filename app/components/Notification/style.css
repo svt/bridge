@@ -1,12 +1,13 @@
 .Notification {
   display: flex;
+  position: relative;
 
   width: 100%;
 
   box-sizing: border-box;
   justify-content: space-between;
 
-  border-radius: 10px;
+  border-radius: 4px;
   
   --color-text: var(--base-color);
   --color-background: var(--base-color--notificationBackground);
@@ -15,6 +16,19 @@
   color: var(--color-text);
 
   -webkit-app-region: no-drag;
+  
+  overflow: hidden;
+}
+
+.Notification::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+
+  background-color: var(--color-background);
 }
 
 .Notification.is-transparent {
@@ -34,6 +48,7 @@
   top: 10px;
 
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 
   transform: translate(-50%, 0);
 

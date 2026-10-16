@@ -4,9 +4,16 @@
  * Run as `node scripts/electron-build-mac.js <arm64|x64>`
  */
 
-const packager = require('@electron/packager')
+const electronPackager = require('@electron/packager')
 const assert = require('node:assert')
 const path = require('node:path')
+
+const packager =
+  typeof electronPackager === 'function'
+    ? electronPackager
+    : electronPackager.packager || electronPackager.default
+
+assert.strictEqual(typeof packager, 'function', 'Unable to resolve @electron/packager function export')
 
 const [,, ARCH] = process.argv
 assert(ARCH, 'Missing required argument \'arch\'')

@@ -60,7 +60,11 @@ function calculateLength (inPoint, outPoint, frameRate) {
  * @param { Object } item
  * @param { Promise.<boolean> }
  */
-function sendMediaCommand (serverId, command, item, auto) {
+async function sendMediaCommand (serverId, command, item, auto) {
+  if (!(await commands.isServerActive(serverId))) {
+    return Promise.resolve()
+  }
+
   const server = commands.getServer(serverId)
   if (!server) {
     logger.warn('Server not found')

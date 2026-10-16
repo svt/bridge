@@ -162,6 +162,15 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
         }
         <div className='Header-block'>
           {
+            featureShown('editLayout') &&
+            (
+              <button className={`Header-button Header-button--text ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)} title='Edit layout'>
+                <Icon name='edit' color={isEditingLayout ? 'var(--base-color--accent1)' : 'var(--base-color)'} />
+                Edit layout
+              </button>
+            )
+          }
+          {
             featureShown('stayOnTop') && windowUtils.isElectron() &&
             (
               <button className='Header-button' onClick={() => handleStayOnTopChange(!stayOnTop)} title='Toggle stay on top'>
@@ -174,14 +183,6 @@ export function Header ({ title = DEFAULT_TITLE, features }) {
             (
               <button className='Header-button' onClick={() => handleReload()} title='Reload'>
                 <Icon name='reload' />
-              </button>
-            )
-          }
-          {
-            featureShown('editLayout') &&
-            (
-              <button className={`Header-button ${isEditingLayout ? 'is-active' : ''}`} onClick={() => handleEdit(!isEditingLayout)} title='Edit layout'>
-                <Icon name='edit' color={isEditingLayout ? 'var(--base-color--accent1)' : 'var(--base-color)'} />
               </button>
             )
           }

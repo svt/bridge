@@ -60,6 +60,23 @@ export function SuccessMessage (props) {
   )
 }
 
+export function ProgressMessage (props) {
+  const { progress } = props
+  const isIndeterminate = typeof progress !== 'number'
+
+  return (
+    <Message {...props}>
+      <div className='Message-text'>{props?.text}</div>
+      <div className='Message-progress'>
+        <div
+          className={`Message-progressBar${isIndeterminate ? ' Message-progressBar--indeterminate' : ''}`}
+          style={isIndeterminate ? undefined : { width: `${Math.min(Math.max(progress, 0), 1) * 100}%` }}
+        />
+      </div>
+    </Message>
+  )
+}
+
 export function WarningMessage (props) {
   return (
     <Message {...props}>

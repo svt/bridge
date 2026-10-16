@@ -1,4 +1,5 @@
 import { PreferencesClearStateInput } from '../PreferencesClearStateInput'
+import { PreferencesClearFilesInput } from '../PreferencesClearFilesInput'
 import { PreferencesSegmentedInput } from '../PreferencesSegmentedInput'
 import { PreferencesShortcutsInput } from '../PreferencesShortcutsInput'
 import { PreferencesWarningInput } from '../PreferencesWarningInput'
@@ -18,6 +19,7 @@ import { PreferencesListInput } from '../PreferencesListInput'
  * @type { Object.<String, React.Component> }
  */
 export const inputComponents = {
+  'clear-files': PreferencesClearFilesInput,
   shortcuts: PreferencesShortcutsInput,
   segmented: PreferencesSegmentedInput,
   boolean: PreferencesBooleanInput,

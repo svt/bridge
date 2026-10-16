@@ -15,5 +15,15 @@
     "inputs": [
       { "type": "clear", "bind": "shared.items", "label": "Clear all items" }
     ]
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "title": "Clear files",
+    "description": "Will remove all files from the current workspace",
+    "inputs": [
+      { "type": "clear-files", "label": "Clear all files" }
+    ]
   }
 ]

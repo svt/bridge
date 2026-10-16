@@ -46,6 +46,11 @@ export const ServerInput = ({ data = {}, onChange = () => {}, onDelete = () => {
           </div>
           <div className='ServerInput-space' />
           <div className='ServerInput-input'>
+            <h3>Active</h3>
+            Deactivating a server will prevent any commands from being sent<br/>
+            <input type='checkbox' className='Switch ServerInput-input--switch' checked={data?.active ?? true} onChange={e => handleInput('active', e.target.checked)} />
+          </div>
+          <div className='ServerInput-input'>
             <h3>Compatibility mode</h3>
             For servers prior to version 2.1.0, some functionality will be disabled<br/>
             <input type='checkbox' className='Switch ServerInput-input--switch' checked={data?.compatibilityMode ?? false} onChange={e => handleInput('compatibilityMode', e.target.checked)} />

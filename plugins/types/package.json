@@ -32,7 +32,7 @@
           "color": {
             "name": "Color",
             "type": "color",
-            "default": "#FF4B7D"
+            "default": "#ff205f"
           }
         }
       },

@@ -12,7 +12,8 @@
  *  id: String?,
  *  name: String,
  *  host: String,
- *  port: Number
+ *  port: Number,
+ *  active: Boolean?
  * }} ServerDescription
  */
 
@@ -52,6 +53,39 @@ const SERVER_GROUPS = [
 ]
 
 /**
+ * @param { ServerDescription } description
+ * @returns { ServerDescription }
+ */
+function normalizeServerDescription (description = {}) {
+  return {
+    ...description,
+    active: description.active ?? true
+  }
+}
+
+/**
+ * @param { String } serverId
+ * @returns { Promise.<ServerDescription?> }
+ */
+async function getServerDescription (serverId) {
+  const servers = await bridge.state.get(`${paths.STATE_SETTINGS_PATH}.servers`) || []
+  return servers.find(server => server.id === serverId)
+}
+
+/**
+ * @param { String } serverId
+ * @returns { Promise.<Boolean> }
+ */
+async function isServerActive (serverId) {
+  const description = await getServerDescription(serverId)
+  if (!description) {
+    return true
+  }
+  return description.active !== false
+}
+exports.isServerActive = isServerActive
+
+/**
 * Setup a server instance
 * from an init-object,
 * also adding references to
@@ -60,6 +94,8 @@ const SERVER_GROUPS = [
 * @param { ServerDescription } description
 */
 async function setupServer (description) {
+  description = normalizeServerDescription(description)
+
   if (!description.id) {
     return
   }
@@ -85,7 +121,7 @@ async function setupServer (description) {
 
   casparManager.add(description.id, server)
 
-  if (description.host && description.port) {
+  if (description.active !== false && description.host && description.port) {
     server.connect(description.host, description.port)
   }
 }
@@ -100,6 +136,8 @@ exports.setupServer = setupServer
  */
 async function addServer (description) {
   logger.debug('Adding server')
+
+  description = normalizeServerDescription(description)
 
   /*
   Generate a new id for
@@ -141,6 +179,8 @@ bridge.commands.registerCommand('caspar.addServer', addServer)
  *                                          to apply to the server
  */
 async function editServer (serverId, description) {
+  description = normalizeServerDescription(description)
+
   const server = casparManager.get(serverId)
   if (!server) {
     throw new Error('Server not found')
@@ -200,6 +240,10 @@ exports.getServer = getServer
  * @param { ConnectionDescription } description An object describing the new connection
  */
 async function connectServer (serverId, description) {
+  if (!(await isServerActive(serverId))) {
+    return
+  }
+
   const server = casparManager.get(serverId)
   if (!server) {
     return Promise.reject(new Error('Server not found'))
@@ -262,6 +306,10 @@ bridge.commands.registerCommand('caspar.removeServer', removeServer)
  * @returns { CasparResponse }
  */
 async function sendCommand (serverId, command, ...args) {
+  if (!(await isServerActive(serverId))) {
+    return
+  }
+
   if (AMCP[command] == null) {
     return Promise.reject(new Error('Command not found'))
   }
@@ -300,6 +348,10 @@ bridge.commands.registerCommand('caspar.sendCachedCommand', sendCachedCommand)
  * @returns { Promise.<CasparResponse> }
  */
 async function sendString (serverId, string) {
+  if (!(await isServerActive(serverId))) {
+    return
+  }
+
   const server = casparManager.get(serverId)
   if (!server) {
     return Promise.reject(new Error('Server not found'))

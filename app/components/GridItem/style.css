@@ -1,7 +1,7 @@
 .GridItem {
   width: 100%;
   height: 100%;
-  background: var(--base-color--shade-3pct);
+  background: var(--base-color--shade-1pct);
   border-radius: 5px;
 
   box-shadow: inset 0 0 0 1px var(--base-color--shade-3pct);

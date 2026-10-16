@@ -5,7 +5,8 @@ import './style.css'
 import {
   TextMessage,
   SuccessMessage,
-  WarningMessage
+  WarningMessage,
+  ProgressMessage
 } from '../Message'
 
 import * as api from '../../api'
@@ -25,6 +26,9 @@ const MESSAGE_TYPES = {
   },
   warning: {
     component: WarningMessage
+  },
+  progress: {
+    component: ProgressMessage
   }
 }
 
@@ -42,16 +46,30 @@ export function MessageContainer () {
       })
     }
 
+    function onUpdate (id, set) {
+      setMessages(messages => messages.map(message => {
+        return message.id === id ? { ...message, ...set } : message
+      }))
+    }
+
+    function onDismiss (id) {
+      setMessages(messages => messages.filter(message => message.id !== id))
+    }
+
     async function setup () {
       const bridge = await api.load()
       bridge.events.on('message', onMessage)
+      bridge.events.on('message.update', onUpdate)
+      bridge.events.on('message.dismiss', onDismiss)
     }
     setup()
 
     return () => {
       async function teardown () {
         const bridge = await api.load()
-        bridge.events.off('shortcut', onMessage)
+        bridge.events.off('message', onMessage)
+        bridge.events.off('message.update', onUpdate)
+        bridge.events.off('message.dismiss', onDismiss)
       }
       teardown()
     }
@@ -97,6 +115,7 @@ export function MessageContainer () {
                 key={message.id}
                 ttl={message.ttl}
                 text={message.text}
+                progress={message.progress}
                 dismissable={message.dismissable}
                 onDismiss={() => handleDismiss(message.id)}
               />
