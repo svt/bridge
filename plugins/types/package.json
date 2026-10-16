@@ -47,7 +47,7 @@
             "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.glyph": "\uE902"
+            "ui.glyph": ""
           }
         }
       },
@@ -60,10 +60,10 @@
             "type": "string",
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.glyph": "\uE902"
+            "ui.glyph": ""
           }
         }
-      },      
+      },
       {
         "id": "bridge.types.trimmable",
         "inherits": "bridge.types.duration",
@@ -73,7 +73,7 @@
             "type": "string",
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.glyph": "\uE902"
+            "ui.glyph": ""
           },
           "inPoint": {
             "name": "In point",
@@ -82,8 +82,10 @@
             "default": "0",
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.dependsOn": ["duration"],
-            "ui.glyph": "\uE902"
+            "ui.dependsOn": [
+              "duration"
+            ],
+            "ui.glyph": ""
           },
           "outPoint": {
             "name": "Out point",
@@ -91,8 +93,10 @@
             "allowsVariables": true,
             "ui.group": "Timing",
             "ui.unit": "ms",
-            "ui.dependsOn": ["duration"],
-            "ui.glyph": "\uE902"
+            "ui.dependsOn": [
+              "duration"
+            ],
+            "ui.glyph": ""
           }
         }
       },
@@ -122,7 +126,11 @@
             "name": "Play mode",
             "type": "enum",
             "default": 0,
-            "enum": ["Trigger all", "Trigger first", "Trigger random"],
+            "enum": [
+              "Trigger all",
+              "Trigger first",
+              "Trigger random"
+            ],
             "ui.group": "Timing"
           }
         }
@@ -162,6 +170,7 @@
           "keybinding": {
             "name": "Keybinding",
             "type": "keybinding",
+            "required": true,
             "ui.group": "Shortcut",
             "ui.readable": true
           }
@@ -177,7 +186,11 @@
             "type": "select",
             "label": "Save the project and restart Bridge for this setting to take effect",
             "bind": "shared.plugins.bridge-plugin-types.settings.defaults.onPlay",
-            "options": ["Do nothing", "Play next sibling", "Select next sibling (main client)"]
+            "options": [
+              "Do nothing",
+              "Play next sibling",
+              "Select next sibling (main client)"
+            ]
           }
         ]
       },
@@ -189,12 +202,20 @@
             "type": "select",
             "label": "Save the project and restart Bridge for this setting to take effect",
             "bind": "shared.plugins.bridge-plugin-types.settings.defaults.onEnd",
-            "options": ["Do nothing", "Play next sibling", "Select next sibling (main client)", "Stop"]
+            "options": [
+              "Do nothing",
+              "Play next sibling",
+              "Select next sibling (main client)",
+              "Stop"
+            ]
           }
         ]
       }
     ]
   },
   "author": "Axel Boberg (axel.boberg@svt.se)",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "object-path": "^0.11.8"
+  }
 }

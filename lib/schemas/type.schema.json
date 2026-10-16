@@ -49,6 +49,9 @@
             "description": {
               "type": "string"
             },
+            "required": {
+              "type": "boolean"
+            },
             "default": {},
             "group": {
               "type": "string"

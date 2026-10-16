@@ -6,6 +6,7 @@
 - A switch to deactivate individual Caspar servers
 - Support for file storage within project files
 - An image widget for displaying static images within the interface
+- The ability to mark properties as required within type definitions and subsequent warnings
 ### Changed
 - Updated dependencies
 

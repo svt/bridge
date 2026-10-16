@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+const objectPath = require('object-path')
+
 /**
  * @type { import('../../api').Api }
  */
@@ -17,6 +19,11 @@ const GROUP_PLAY_MODES = {
   all: 0,
   first: 1,
   random: 2
+}
+
+const EVALUATE_IF_MISSING_BY_TYPE = {
+  default: val => val == null,
+  string: val => val == null || val === ''
 }
 
 const PLAY_HANDLERS = [
@@ -141,6 +148,51 @@ const STOP_HANDLERS = [
 
 const ITEM_CHANGE_HANDLERS = [
   /*
+  Validate if any type is missing
+  any required values
+  */
+  {
+    predicate: (item, type) => true,
+    fn: async (item, type) => {
+      const properties = Object.entries(type?.properties || {})
+      const missingValues = []
+
+      for (const [key, definition] of properties) {
+        if (!definition?.required) {
+          continue
+        }
+
+        const currentValue = objectPath.get(item?.data || {}, key)
+
+        /*
+        Use different functions to determine if the current
+        value is a non value or not based on its type
+        */
+        let isNonValue = EVALUATE_IF_MISSING_BY_TYPE.default
+        if (EVALUATE_IF_MISSING_BY_TYPE[definition.type]) {
+          isNonValue = EVALUATE_IF_MISSING_BY_TYPE[definition.type]
+        }
+
+        /*
+        If the current value doesn't count as a value,
+        mark the property as missing
+        */
+        if (isNonValue(currentValue) && definition?.default == null) {
+          missingValues.push(definition.name)
+        }
+      }
+
+      if (missingValues.length > 0) {
+        bridge.items.applyIssue(item?.id, 'types.missing-required-values', {
+          description: `Missing required values for properties: ${missingValues.join(', ')}`
+        })
+      } else {
+        bridge.items.removeIssue(item?.id, 'types.missing-required-values')
+      }
+    }
+  },
+
+  /*
   Warn the user if a reference is
   targeting one of its own ancestors
   */
@@ -152,16 +204,6 @@ const ITEM_CHANGE_HANDLERS = [
         bridge.items.removeIssue(item?.id, 'types.reference-targeting-ancestor')
         bridge.items.removeIssue(item?.id, 'types.reference-targeting-itself')
         bridge.items.removeIssue(item?.id, 'types.reference-missing-target')
-        return
-      }
-
-      const hasTarget = item?.data?.targetId && String(item.data.targetId).length === 4
-      if (hasTarget) {
-        bridge.items.removeIssue(item?.id, 'types.reference-missing-target')
-      } else {
-        bridge.items.applyIssue(item?.id, 'types.reference-missing-target', {
-          description: 'This item requires a valid target'
-        })
         return
       }
 
