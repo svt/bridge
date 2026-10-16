@@ -22,6 +22,7 @@ const GROUP_PLAY_MODES = {
 }
 
 const EVALUATE_IF_MISSING_BY_TYPE = {
+  default: val => val == null,
   string: val => val == null || val === ''
 }
 
