@@ -52,6 +52,7 @@ async function init (htmlPath) {
       targetId: {
         name: 'Target',
         type: 'string',
+        required: true,
         'ui.group': 'Reference',
         'ui.readable': true,
         'ui.glyph': '\uE903',

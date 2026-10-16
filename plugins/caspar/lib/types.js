@@ -36,6 +36,7 @@ function init (htmlPath) {
         name: 'Command',
         type: 'string',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       }
     }
@@ -57,6 +58,7 @@ function init (htmlPath) {
         type: 'string',
         default: '1',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar',
         'ui.width': '50%',
         'ui.readable': true
@@ -66,6 +68,7 @@ function init (htmlPath) {
         type: 'string',
         default: '1',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar',
         'ui.width': '50%',
         'ui.readable': true
@@ -89,6 +92,7 @@ function init (htmlPath) {
         type: 'string',
         default: '1',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar',
         'ui.width': '50%',
         'ui.readable': true
@@ -98,6 +102,7 @@ function init (htmlPath) {
         type: 'string',
         default: '1',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar',
         'ui.width': '50%',
         'ui.readable': true
@@ -182,6 +187,7 @@ function init (htmlPath) {
         name: 'Target',
         type: 'string',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       },
       'caspar.targetSearch': {
@@ -265,6 +271,7 @@ function init (htmlPath) {
         name: 'Target',
         type: 'string',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       },
       'caspar.targetSearch': {
@@ -315,6 +322,7 @@ function init (htmlPath) {
         name: 'Target',
         type: 'string',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       },
       'caspar.targetSearch': {
@@ -360,6 +368,7 @@ function init (htmlPath) {
         type: 'string',
         default: 'https://',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       }
     }
@@ -369,10 +378,35 @@ function init (htmlPath) {
     id: 'bridge.caspar.clear',
     name: 'Clear',
     category: 'Caspar',
-    inherits: 'bridge.caspar.playable',
     properties: {
       name: {
         default: 'Clear'
+      },
+      'caspar.server': {
+        name: 'Server',
+        type: 'string',
+        default: DEFAULT_SERVER_ID,
+        'ui.group': 'Caspar',
+        'ui.uri': `${htmlPath}?path=inspector/server`
+      },
+      'caspar.channel': {
+        name: 'Channel',
+        type: 'string',
+        default: '1',
+        allowsVariables: true,
+        required: true,
+        'ui.group': 'Caspar',
+        'ui.width': '50%',
+        'ui.readable': true
+      },
+      'caspar.layer': {
+        name: 'Layer',
+        type: 'string',
+        default: '1',
+        allowsVariables: true,
+        'ui.group': 'Caspar',
+        'ui.width': '50%',
+        'ui.readable': true
       }
     }
   })
@@ -398,6 +432,7 @@ function init (htmlPath) {
         type: 'string',
         default: '1',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       }
     }
@@ -417,6 +452,7 @@ function init (htmlPath) {
         type: 'string',
         default: '1',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       }
     }
@@ -437,6 +473,7 @@ function init (htmlPath) {
         description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
         default: '0.0',
+        required: true,
         'ui.width': '50%',
         'ui.group': 'Caspar'
       },
@@ -446,6 +483,7 @@ function init (htmlPath) {
         description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
         default: '0.0',
+        required: true,
         'ui.width': '50%',
         'ui.group': 'Caspar'
       },
@@ -455,6 +493,7 @@ function init (htmlPath) {
         description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
         default: '1.0',
+        required: true,
         'ui.width': '50%',
         'ui.group': 'Caspar'
       },
@@ -464,6 +503,7 @@ function init (htmlPath) {
         description: 'Must be a fraction between 0 and 1',
         allowsVariables: true,
         default: '1.0',
+        required: true,
         'ui.width': '50%',
         'ui.group': 'Caspar'
       }
@@ -483,6 +523,7 @@ function init (htmlPath) {
         name: 'Volume',
         type: 'string',
         allowsVariables: true,
+        required: true,
         'ui.group': 'Caspar'
       }
     }
