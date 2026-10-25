@@ -11,6 +11,7 @@
 - The ability for agents to read and execute commands
 - Commands can now be run from the palette
 - The ability to import legacy Caspar CG rundowns
+- Search in rundowns
 ### Changed
 - Updated dependencies
 - Updated to Electron 45
