@@ -13,6 +13,7 @@
 - The ability to import legacy Caspar CG rundowns
 ### Changed
 - Updated dependencies
+- Updated to Electron 45
 
 ## 1.0.3
 ### Added
