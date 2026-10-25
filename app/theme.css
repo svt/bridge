@@ -21,6 +21,8 @@
   --base-color--shade3: rgba(57, 58, 61, 0.5);
   --base-color--shade4: rgba(255, 255, 255, 0.5);
 
+  --base-color--shade-30pct: rgba(255, 255, 255, 0.3);
+  --base-color--shade-7pct: rgba(255, 255, 255, 0.07);
   --base-color--shade-3pct: rgba(255, 255, 255, 0.03);
   --base-color--shade-1pct: rgba(255, 255, 255, 0.01);
 
@@ -60,6 +62,8 @@
   --base-color--shade3: rgba(221, 221, 221, 0.5);
   --base-color--shade4: rgba(0, 0, 0, 0.5);
 
+  --base-color--shade-30pct: rgba(0, 0, 0, 0.3);
+  --base-color--shade-7pct: rgba(0, 0, 0, 0.07);
   --base-color--shade-3pct: rgba(0, 0, 0, 0.03);
   --base-color--shade-1pct: rgba(0, 0, 0, 0.01);
 
