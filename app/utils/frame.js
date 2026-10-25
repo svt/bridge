@@ -20,6 +20,7 @@ export const COPY_THEME_VARIABLES = [
   '--base-color--warn',
   '--base-color--alert',
   '--base-color--background',
+  '--base-color--background1',
   '--base-color--background2',
   '--base-color--background3',
   '--base-fontFamily--mono',

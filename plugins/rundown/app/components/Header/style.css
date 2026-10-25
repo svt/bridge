@@ -20,8 +20,13 @@
   align-items: center;
 }
 
+.Header-section > .Header-button {
+  margin-right: 5px;
+  height: 37px;
+}
+
 .Header-addBtn {
-  padding: 0.4em 1em 0.4em 0.7em;
+  padding: 0.4em 0.8em 0.4em 0.45em;
 }
 
 .Header-label {

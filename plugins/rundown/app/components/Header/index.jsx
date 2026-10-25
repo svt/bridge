@@ -80,8 +80,11 @@ export function Header () {
   return (
     <header className='Header'>
       <div className='Header-section'>
-        <button className='Button Button--small Button--ghost Header-addBtn' onClick={e => handleCreateOnClick(e)}>
+        <button className='Button Button--small Button--ghost Header-button Header-addBtn' onClick={e => handleCreateOnClick(e)}>
           <Icon name='add' /> Add
+        </button>
+        <button className='Button Button--small Button--ghost Header-button Header-searchBtn' title='Find' onClick={() => window.dispatchEvent(new CustomEvent('rundown.search.toggle'))}>
+          <Icon name='search' />
         </button>
       </div>
       <div className='Header-section'>

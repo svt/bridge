@@ -1,0 +1,31 @@
+.RundownSearch {
+  display: flex;
+  position: fixed;
+
+  top: 48px;
+  right: 16px;
+  padding: 4px;
+
+  align-items: center;
+  gap: 4px;
+
+  background: var(--base-color--background1);
+  border: 1px solid var(--base-color--shade1);
+
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+  z-index: 10;
+}
+
+.RundownSearch-input.Input {
+  width: 200px;
+  padding: 0.4em 0.45em;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+.RundownSearch-close {
+  background: none;
+  border: none;
+}

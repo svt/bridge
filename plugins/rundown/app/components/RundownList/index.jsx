@@ -14,6 +14,7 @@ import { RundownDividerItem } from '../RundownDividerItem'
 import { RundownGroupItem, getContextMenuItems as rundownGroupItemGetContextMenuItems } from '../RundownGroupItem'
 import { RundownListItem } from '../RundownListItem'
 import { RundownItem } from '../RundownItem'
+import { RundownSearch, RundownSearchContext, itemMatchesQuery } from '../RundownSearch'
 
 import * as selectionUtils from '../../utils/selection'
 import * as keyboard from '../../utils/keyboard'
@@ -101,6 +102,56 @@ export function RundownList ({
   const typeCacheRef = React.useRef({})
 
   const itemIds = shared?.items?.[rundownId]?.children || []
+
+  /*
+  Only the list that handles shortcuts owns the search,
+  nested lists inherit the query from it
+  */
+  const inheritedQuery = React.useContext(RundownSearchContext)
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false)
+  const [ownQuery, setOwnQuery] = React.useState('')
+  const query = disableShortcuts ? inheritedQuery : (isSearchOpen ? ownQuery : '')
+
+  function closeSearch () {
+    setIsSearchOpen(false)
+    setOwnQuery('')
+  }
+
+  /**
+   * Check if an item, or any of its
+   * descendants, matches the query
+   */
+  function itemOrDescendantMatches (item, depth = 0) {
+    if (itemMatchesQuery(item, query)) {
+      return true
+    }
+    if (depth > 50) {
+      return false
+    }
+    return (shared?.items?.[item.id]?.children || []).some(childId => {
+      const child = bridge.items.getLocalItem(childId)
+      return child && itemOrDescendantMatches(child, depth + 1)
+    })
+  }
+
+  React.useEffect(() => {
+    if (disableShortcuts) {
+      return
+    }
+
+    function onToggle () {
+      if (isSearchOpen) {
+        closeSearch()
+      } else {
+        setIsSearchOpen(true)
+      }
+    }
+
+    window.addEventListener('rundown.search.toggle', onToggle)
+    return () => {
+      window.removeEventListener('rundown.search.toggle', onToggle)
+    }
+  }, [disableShortcuts, isSearchOpen])
 
   const scrollSettings = shared?.plugins?.['bridge-plugin-rundown']?.settings?.scrolling
 
@@ -210,6 +261,33 @@ export function RundownList ({
     }
   }, [itemIds, rundownId, scrollSettings])
 
+  /*
+  Hide the search
+  popover on escape
+  */
+  useEffectWhileLoaded(() => {
+    function handleKeyDown (e) {
+      if (e.key !== 'Escape') {
+        return
+      }
+      setIsSearchOpen(false)
+      setOwnQuery('')
+    }
+
+    if (!isSearchOpen) {
+      return
+    }
+
+    if (disableShortcuts) {
+      return
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isSearchOpen, disableShortcuts])
+
   useEffectWhileLoaded(() => {
     function onShortcut (shortcut) {
       /*
@@ -221,6 +299,9 @@ export function RundownList ({
       }
 
       switch (shortcut) {
+        case 'bridge.rundown.search':
+          setIsSearchOpen(true)
+          break
         case 'bridge.rundown.next':
           select(1)
           break
@@ -430,56 +511,64 @@ export function RundownList ({
   }
 
   return (
-    <div
-      ref={elRef}
-      className={`RundownList ${className}`}
-      onDrop={e => handleDrop(e, itemIds.length)}
-      onFocus={e => handleFocusPropagation(e)}
-      /*
-      We need to prevent onDragOver
-      for onDrop to be fired,
-      this is standard behaviour
-      for div-elements
-      */
-      onDragOver={e => e.preventDefault()}
-      onKeyDown={e => handleKeyDown(e)}
-    >
-      {
-        itemIds.length === 0 &&
-        <div className="RundownList-empty">This rundown is empty,<br/>get started by adding a new item</div>
-      }
-      {
-        itemIds
-          .map(id => bridge.items.getLocalItem(id))
-          .filter(item => item)
-          .map((item, i) => {
-            const ItemComponent = getTypeComponent(item.type)
-            const isSelected = bridge.client.selection.isSelected(item.id)
+    <RundownSearchContext.Provider value={query}>
+      <div
+        ref={elRef}
+        className={`RundownList ${className}`}
+        onDrop={e => handleDrop(e, itemIds.length)}
+        onFocus={e => handleFocusPropagation(e)}
+        /*
+        We need to prevent onDragOver
+        for onDrop to be fired,
+        this is standard behaviour
+        for div-elements
+        */
+        onDragOver={e => e.preventDefault()}
+        onKeyDown={e => handleKeyDown(e)}
+      >
+        {
+          !disableShortcuts && isSearchOpen &&
+          <RundownSearch query={ownQuery} onChange={setOwnQuery} onClose={closeSearch} />
+        }
+        {
+          itemIds.length === 0 &&
+          <div className="RundownList-empty">This rundown is empty,<br/>get started by adding a new item</div>
+        }
+        {
+          itemIds
+            .map(id => bridge.items.getLocalItem(id))
+            .filter(item => item)
+            .map((item, i) => ({ item, i }))
+            .filter(({ item }) => itemOrDescendantMatches(item))
+            .map(({ item, i }) => {
+              const ItemComponent = getTypeComponent(item.type)
+              const isSelected = bridge.client.selection.isSelected(item.id)
 
-            let contextMenuItems
-            if (typeof TYPE_COMPONENTS[item.type]?.getContextMenuItems === 'function') {
-              contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems({
-                setRundownId: onChangeRundownId
-              }, item)
-            }
+              let contextMenuItems
+              if (typeof TYPE_COMPONENTS[item.type]?.getContextMenuItems === 'function') {
+                contextMenuItems = TYPE_COMPONENTS[item.type].getContextMenuItems({
+                  setRundownId: onChangeRundownId
+                }, item)
+              }
 
-            return (
-              <RundownListItem
-                key={item.id}
-                item={item}
-                index={i}
-                rundownId={rundownId}
-                onDrop={e => handleDrop(e, i)}
-                onFocus={e => handleFocus(item.id)}
-                onMouseDown={e => blurActiveElementBeforeFocus()}
-                contextMenuItems={contextMenuItems}
-                selected={isSelected}
-              >
-                <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} onChangeRundownId={onChangeRundownId} />
-              </RundownListItem>
-            )
-          })
-      }
-    </div>
+              return (
+                <RundownListItem
+                  key={item.id}
+                  item={item}
+                  index={i}
+                  rundownId={rundownId}
+                  onDrop={e => handleDrop(e, i)}
+                  onFocus={e => handleFocus(item.id)}
+                  onMouseDown={e => blurActiveElementBeforeFocus()}
+                  contextMenuItems={contextMenuItems}
+                  selected={isSelected}
+                >
+                  <ItemComponent index={`${indexPrefix}${i + 1}`} item={item} onChangeRundownId={onChangeRundownId} />
+                </RundownListItem>
+              )
+            })
+        }
+      </div>
+    </RundownSearchContext.Provider>
   )
 }

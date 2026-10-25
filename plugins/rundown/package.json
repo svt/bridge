@@ -65,6 +65,12 @@
         "trigger": ["Shift", "F1"]
       },
       {
+        "id": "bridge.rundown.search",
+        "action": "bridge.rundown.search",
+        "description": "Find items in the rundown",
+        "trigger": ["CommandOrControl", "F"]
+      },
+      {
         "id": "bridge.rundown.next",
         "action": "bridge.rundown.next",
         "trigger": ["ArrowDown"]
