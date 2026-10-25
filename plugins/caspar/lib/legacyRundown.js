@@ -24,6 +24,12 @@ const DEFAULT_GROUP_NAME = 'Imported rundown'
 
 const DEFAULT_FRAME_RATE = 25
 
+/*
+Enum values from the types plugin
+*/
+const GROUP_PLAY_MODE_FIRST = 1
+const ON_END_PLAY_NEXT_SIBLING = 1
+
 const ENTITIES = { '&lt;': '<', '&gt;': '>', '&quot;': '"', '&apos;': '\'', '&amp;': '&' }
 
 /**
@@ -236,26 +242,32 @@ async function importFadeToBlack (legacy, parentId, ctx, { label, color, tag }) 
   const mix = mixData(legacy)
   const fadeMs = framesToMs(Number(mix.transitionDuration), caspar.server, caspar.channel, label, ctx)
 
-  const groupId = await bridge.items.createItem('bridge.types.group', compact({ name: label, color, tag, delay: text(legacy.delay) }))
+  const groupId = await bridge.items.createItem('bridge.types.group', compact({
+    name: label,
+    color,
+    tag,
+    delay: text(legacy.delay),
+    playMode: GROUP_PLAY_MODE_FIRST
+  }))
 
   /*
-  The steps are delayed to run in sequence, the reset is
-  delayed one extra ms to be sent after the clear
+  Only the first step is triggered by the group, each step then plays
+  the next when it ends. Items without a duration end immediately
   */
   const steps = [
     ['bridge.caspar.opacity', {
       name: `${label}: Fade out`,
       duration: fadeMs > 0 ? String(fadeMs) : undefined,
+      onEnd: ON_END_PLAY_NEXT_SIBLING,
       caspar: compact({ ...caspar, ...mix, opacity: '0' })
     }],
     ['bridge.caspar.clear', {
       name: `${label}: Clear`,
-      delay: String(fadeMs),
+      onEnd: ON_END_PLAY_NEXT_SIBLING,
       caspar
     }],
     ['bridge.caspar.opacity', {
       name: `${label}: Reset opacity`,
-      delay: String(fadeMs + 1),
       caspar: { ...caspar, opacity: '1', transitionDuration: '0' }
     }]
   ]
