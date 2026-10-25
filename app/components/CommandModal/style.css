@@ -81,3 +81,7 @@
 .SchemaForm input[type="checkbox"] {
   margin-left: 0;
 }
+
+.SchemaForm-input--textArea {
+  resize: vertical;
+}

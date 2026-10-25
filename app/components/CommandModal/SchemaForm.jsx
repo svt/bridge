@@ -61,7 +61,7 @@ function JsonField ({ value, onChange }) {
 
   return (
     <>
-      <textarea className='SchemaForm-input' rows={4} value={text} onChange={handleChange} />
+      <textarea className='SchemaForm-input SchemaForm-input--textArea' rows={4} value={text} onChange={handleChange} />
       { invalid && <div className='SchemaForm-hint'>Invalid JSON</div> }
     </>
   )
@@ -80,7 +80,7 @@ function FileTextField ({ value, onChange }) {
 
   return (
     <>
-      <textarea className='SchemaForm-input' rows={6} value={value ?? ''} onChange={e => onChange(e.target.value)} />
+      <textarea className='SchemaForm-input SchemaForm-input--textArea' rows={6} value={value ?? ''} onChange={e => onChange(e.target.value)} />
       <input ref={fileRef} type='file' hidden onChange={handleFile} />
       <button type='button' className='Button Button--small' onClick={() => fileRef.current.click()}>
         Load from file
