@@ -139,19 +139,33 @@ class Commands {
    *  (...Any) => Promise.<Any> | (...Any) => Void
    * } handler A handler to invoke whenever
    *           the command is run
-   * @param { Boolean } returns Indicate whether or not
-   *                            the handler returns a value,
+   * @param { Boolean | {
+   *  description?: String,
+   *  args?: Object,
+   *  exposed?: Boolean
+   * } } returnsOrMetadata Either a boolean indicating whether or not
+   *                       the handler returns a value (defaults to true),
+   *                       or a metadata object, in which case 'returns'
+   *                       is the fourth argument
+   * @param { Boolean } returns Only used when metadata is provided,
    *                            defaults to true
    */
-  registerCommand (command, handler, returns = true) {
+  registerCommand (command, handler, returnsOrMetadata = true, returns = true) {
     if (typeof handler !== 'function') {
       throw new InvalidArgumentError('Parameter \'handler\' must be a function')
+    }
+
+    let metadata
+    if (typeof returnsOrMetadata === 'object' && returnsOrMetadata !== null) {
+      metadata = returnsOrMetadata
+    } else {
+      returns = returnsOrMetadata
     }
 
     this.#handlers.set(command, handlerFactory(handler, returns))
     this.#props.Transport.send({
       command: 'commands.registerCommand',
-      args: [command]
+      args: metadata ? [command, metadata] : [command]
     })
   }
 

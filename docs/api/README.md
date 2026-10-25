@@ -36,10 +36,52 @@ The api is available for plugins and widgets running in either the main process 
 ## Commands  
 Commands are a way of interacting with Bridge and other plugins. They are a form of RPC. Any data returned from a command handler will be returned as a Promise to `executeCommand`.
 
-### `bridge.commands.registerCommand(id, handler[, returns])`
+### `bridge.commands.registerCommand(id, handler[, returns])`  `bridge.commands.registerCommand(id, handler, metadata[, returns])`
 Register a new command
 
 This is a global operation as commands can only be registered once per workspace. Therefore, prefer registering commands in your plugin's main process.
+
+The third argument is either a boolean `returns`, indicating whether the handler returns a value (defaults to `true`), or a `metadata` object. When `metadata` is provided, `returns` becomes the fourth argument.
+
+#### Metadata
+Metadata describes a command to other consumers, such as the agent plugin, which discovers commands through `commands.list`.
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| `label` | `string` | A short, human-readable name for the command, shown in the palette. Defaults to an empty string, in which case the id is shown |
+| `description` | `string` | A short description of what the command does, defaults to an empty string |
+| `args` | `object` | A [JSON schema](https://json-schema.org) describing the array of positional arguments, see the example below |
+| `exposed` | `boolean` | Whether the command is listed by `commands.list`, defaults to `false` |
+
+Commands are not exposed unless `exposed` is explicitly set to `true`.
+
+```javascript
+import bridge from 'bridge'
+
+bridge.commands.registerCommand('my-plugin.addTarget', addTarget, {
+  label: 'Add target',
+  description: 'Add a new target. Returns the id of the target',
+  args: {
+    type: 'array',
+    prefixItems: [
+      {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          port: { type: 'number' }
+        },
+        required: ['name', 'port']
+      }
+    ],
+    minItems: 1,
+    maxItems: 1
+  },
+  exposed: true
+})
+```
+
+### `bridge.commands.executeCommand('commands.list'): Promise<{ id, label, description, args }[]>`
+List all commands registered with `exposed: true`. Commands without metadata are never included.
 
 ### `bridge.commands.executeCommand(id[, ...parameters]): Promise<unknown>`
 Execute a command

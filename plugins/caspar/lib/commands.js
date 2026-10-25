@@ -53,6 +53,22 @@ const SERVER_GROUPS = [
 ]
 
 /**
+ * JSON schema for a server description
+ */
+const SERVER_DESCRIPTION_SCHEMA = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', description: 'A display name for the server' },
+    host: { type: 'string', description: 'The server\'s hostname or ip address' },
+    port: { type: 'number', description: 'The AMCP port, usually 5250' },
+    active: { type: 'boolean', description: 'Whether to connect to the server, defaults to true' },
+    compatibilityMode: { type: 'boolean', description: 'Enable compatibility mode for older CasparCG versions' },
+    group: { type: 'string', description: 'The index of the server group, "0" for primary or "1" for secondary' }
+  },
+  required: ['name', 'host', 'port']
+}
+
+/**
  * @param { ServerDescription } description
  * @returns { ServerDescription }
  */
@@ -169,7 +185,17 @@ async function addServer (description) {
   return description.id
 }
 exports.addServer = addServer
-bridge.commands.registerCommand('caspar.addServer', addServer)
+bridge.commands.registerCommand('caspar.addServer', addServer, {
+  label: 'Add CasparCG server',
+  description: 'Add a new CasparCG server and connect to it. Returns the id of the new server',
+  args: {
+    type: 'array',
+    prefixItems: [SERVER_DESCRIPTION_SCHEMA],
+    minItems: 1,
+    maxItems: 1
+  },
+  exposed: true
+})
 
 /**
  * Update the state from
@@ -206,7 +232,20 @@ async function editServer (serverId, description) {
   })
 }
 exports.editServer = editServer
-bridge.commands.registerCommand('caspar.editServer', editServer)
+bridge.commands.registerCommand('caspar.editServer', editServer, {
+  label: 'Edit CasparCG server',
+  description: 'Replace the description of an existing CasparCG server, the full description must be provided',
+  args: {
+    type: 'array',
+    prefixItems: [
+      { type: 'string', description: 'The id of the server to edit' },
+      SERVER_DESCRIPTION_SCHEMA
+    ],
+    minItems: 2,
+    maxItems: 2
+  },
+  exposed: true
+})
 
 /**
  * Get a list of all configured servers
@@ -221,7 +260,18 @@ async function listServers (groups = false) {
   ]
 }
 exports.listServers = listServers
-bridge.commands.registerCommand('caspar.listServers', listServers)
+bridge.commands.registerCommand('caspar.listServers', listServers, {
+  label: 'List CasparCG servers',
+  description: 'List all configured CasparCG servers including their ids',
+  args: {
+    type: 'array',
+    prefixItems: [
+      { type: 'boolean', description: 'Whether to include server groups, defaults to false' }
+    ],
+    maxItems: 1
+  },
+  exposed: true
+})
 
 /**
  * Get a server by its id

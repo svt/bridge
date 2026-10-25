@@ -7,8 +7,13 @@
 - Support for file storage within project files
 - An image widget for displaying static images within the interface
 - The ability to mark properties as required within type definitions and subsequent warnings
+- Metadata to commands
+- The ability for agents to read and execute commands
+- Commands can now be run from the palette
+- The ability to import legacy Caspar CG rundowns
 ### Changed
 - Updated dependencies
+- Updated to Electron 45
 
 ## 1.0.3
 ### Added

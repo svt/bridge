@@ -14,6 +14,7 @@ const SCALE_MODE_ENUM = ['Stretch', 'Fit', 'Fill', 'Original', 'HFILL', 'VFILL']
 exports.SCALE_MODE_ENUM = SCALE_MODE_ENUM
 
 const DEFAULT_SERVER_ID = 'group:0'
+exports.DEFAULT_SERVER_ID = DEFAULT_SERVER_ID
 
 function init (htmlPath) {
   bridge.types.registerType({

@@ -37,6 +37,11 @@ listens for play events
 */
 require('./lib/handlers')
 
+/*
+Bootstrap the legacy rundown importer
+*/
+require('./lib/legacyRundown')
+
 async function initWidget () {
   const cssPath = `${assets.hash}.${manifest.name}.bundle.css`
   const jsPath = `${assets.hash}.${manifest.name}.bundle.js`

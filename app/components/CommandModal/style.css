@@ -1,0 +1,83 @@
+/* Command modal */
+.SchemaForm {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+
+  text-align: left;
+}
+
+.SchemaForm-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 12px;
+
+  padding: 20px;
+
+  /*
+  A height of 1px lets the body grow to fit
+  the form and scroll rather than push the footer out
+  */
+  height: 1px;
+  overflow-y: auto;
+
+  box-sizing: border-box;
+}
+
+.SchemaForm-title {
+  margin: 0;
+}
+
+.SchemaForm-field,
+.SchemaForm-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.SchemaForm-field:last-child,
+.SchemaForm-group:last-child {
+  margin-bottom: 0;
+}
+
+.SchemaForm-input {
+  width: 100%;
+}
+
+.SchemaForm-hint {
+  margin: 0;
+  opacity: 0.6;
+  font-size: 0.9em;
+}
+
+.SchemaForm-error {
+  color: #d33;
+}
+
+.SchemaForm-result {
+  max-height: 300px;
+  margin: 0;
+  overflow: auto;
+}
+
+.SchemaForm-actions {
+  display: flex;
+  width: 100%;
+
+  padding: 10px;
+
+  border-top: 1px solid var(--base-color--shade1);
+
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  box-sizing: border-box;
+}
+
+.SchemaForm input[type="checkbox"] {
+  margin-left: 0;
+}

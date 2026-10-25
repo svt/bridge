@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import './style.css'
 
 import integrations from './integrations'
+import { CommandModal } from '../CommandModal'
 import { Icon } from '../Icon'
 
 import * as windowUtils from '../../utils/window'
@@ -33,9 +34,20 @@ export const Palette = ({ title, open, onOpen = () => {}, onClose = () => {} }) 
 
     const newResult = []
     for (const integration of integrations) {
+      const hasPrefix = input.startsWith(integration.prefix || '\0')
+
+      /*
+      Prefixed integrations are exclusive, they replace
+      all others when the input starts with their prefix
+      */
+      const prefixed = integrations.some(({ prefix }) => prefix && input.startsWith(prefix))
+      if (prefixed !== hasPrefix) {
+        continue
+      }
+
       newResult.push({
         label: integration.label,
-        rows: await integration.get({ query: input })
+        rows: await integration.get({ query: hasPrefix ? input.slice(integration.prefix.length) : input })
       })
     }
     setResult(newResult)
@@ -171,6 +183,7 @@ export const Palette = ({ title, open, onOpen = () => {}, onClose = () => {} }) 
 
   return (
     <div ref={elRef} className='Palette'>
+      <CommandModal />
       {
         open &&
         createPortal(

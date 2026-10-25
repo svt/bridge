@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+    <allowremotetriggering>false</allowremotetriggering>
+    <item>
+        <type>MOVIE</type>
+        <devicename>My server</devicename>
+        <label>Video</label>
+        <name>DIRECTORY/MY_FILE</name>
+        <channel>1</channel>
+        <videolayer>10</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <transition>CUT</transition>
+        <transitionDuration>0</transitionDuration>
+        <tween>Linear</tween>
+        <direction>RIGHT</direction>
+        <seek>0</seek>
+        <length>0</length>
+        <loop>false</loop>
+        <freezeonload>false</freezeonload>
+        <triggeronnext>false</triggeronnext>
+        <autoplay>false</autoplay>
+        <color>Transparent</color>
+        <timecode></timecode>
+    </item>
+    <item>
+        <type>SEPARATOR</type>
+        <devicename></devicename>
+        <label>This is a comment</label>
+        <name></name>
+        <channel>1</channel>
+        <videolayer>10</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <color>Maroon</color>
+    </item>
+    <item>
+        <type>STILL</type>
+        <devicename>My server</devicename>
+        <label>Image</label>
+        <name>DIR2/image</name>
+        <channel>1</channel>
+        <videolayer>4</videolayer>
+        <delay>500</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <transition>CUT</transition>
+        <transitionDuration>0</transitionDuration>
+        <tween>Linear</tween>
+        <direction>RIGHT</direction>
+        <useauto>false</useauto>
+        <triggeronnext>false</triggeronnext>
+        <color>Transparent</color>
+    </item>
+    <item>
+        <type>TEMPLATE</type>
+        <devicename>My server</devicename>
+        <label>Template</label>
+        <name>templates/myTemplate</name>
+        <channel>1</channel>
+        <videolayer>20</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <flashlayer>1</flashlayer>
+        <invoke></invoke>
+        <usestoreddata>false</usestoreddata>
+        <useuppercasedata>false</useuppercasedata>
+        <triggeronnext>false</triggeronnext>
+        <sendasjson>false</sendasjson>
+        <templatedata>
+            <componentdata>
+                <id>f0</id>
+                <value>Some data</value>
+            </componentdata>
+        </templatedata>
+        <color>Transparent</color>
+    </item>
+    <item>
+        <type>GROUP</type>
+        <label>My group</label>
+        <expanded>true</expanded>
+        <channel>1</channel>
+        <videolayer>10</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>true</allowremotetriggering>
+        <remotetriggerid>UID becomes a bridge tag</remotetriggerid>
+        <storyid></storyid>
+        <notes></notes>
+        <autostep>false</autostep>
+        <autoplay>false</autoplay>
+        <color>Transparent</color>
+        <items>
+            <item>
+                <type>TEMPLATE</type>
+                <devicename>My server</devicename>
+                <label>Another template</label>
+                <name>templates/myTemplate</name>
+                <channel>1</channel>
+                <videolayer>20</videolayer>
+                <delay>0</delay>
+                <duration>0</duration>
+                <allowgpi>false</allowgpi>
+                <allowremotetriggering>false</allowremotetriggering>
+                <remotetriggerid></remotetriggerid>
+                <storyid></storyid>
+                <flashlayer>1</flashlayer>
+                <invoke></invoke>
+                <usestoreddata>false</usestoreddata>
+                <useuppercasedata>false</useuppercasedata>
+                <triggeronnext>false</triggeronnext>
+                <sendasjson>false</sendasjson>
+                <templatedata>
+                    <componentdata>
+                        <id>f0</id>
+                        <value>Some data</value>
+                    </componentdata>
+                </templatedata>
+                <color>Transparent</color>
+            </item>
+            <item>
+                <type>CUSTOMCOMMAND</type>
+                <devicename>My server</devicename>
+                <label>Custom Command</label>
+                <name></name>
+                <channel>1</channel>
+                <videolayer>10</videolayer>
+                <delay>0</delay>
+                <duration>0</duration>
+                <allowgpi>false</allowgpi>
+                <allowremotetriggering>false</allowremotetriggering>
+                <remotetriggerid></remotetriggerid>
+                <storyid></storyid>
+                <stopCommand></stopCommand>
+                <playCommand>PLAY 1-10 SOMEFILE</playCommand>
+                <loadCommand></loadCommand>
+                <pauseCommand></pauseCommand>
+                <nextCommand></nextCommand>
+                <updateCommand></updateCommand>
+                <invokeCommand></invokeCommand>
+                <previewCommand></previewCommand>
+                <clearCommand></clearCommand>
+                <clearVideolayerCommand></clearVideolayerCommand>
+                <clearChannelCommand></clearChannelCommand>
+                <triggeronnext>false</triggeronnext>
+                <color>Transparent</color>
+            </item>
+        </items>
+    </item>
+    <item>
+        <type>IMAGESCROLLER</type>
+        <devicename>My server</devicename>
+        <label>Image Scroller</label>
+        <name>dir/myImage</name>
+        <channel>1</channel>
+        <videolayer>10</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <blur>0</blur>
+        <speed>8</speed>
+        <premultiply>false</premultiply>
+        <progressive>false</progressive>
+        <color>rgba(65, 105, 225, 64)</color>
+    </item>
+    <item>
+        <type>OPACITY</type>
+        <devicename>My server</devicename>
+        <label>Opacity</label>
+        <name></name>
+        <channel>1</channel>
+        <videolayer>10</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <opacity>1</opacity>
+        <transitionDuration>0</transitionDuration>
+        <tween>Linear</tween>
+        <triggeronnext>false</triggeronnext>
+        <defer>false</defer>
+        <color>Transparent</color>
+    </item>
+    <item>
+        <type>FILL</type>
+        <devicename>My server</devicename>
+        <label>Transform</label>
+        <name></name>
+        <channel>1</channel>
+        <videolayer>5</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <positionx>0</positionx>
+        <positiony>0</positiony>
+        <scalex>1</scalex>
+        <scaley>1</scaley>
+        <transitionDuration>0</transitionDuration>
+        <tween>Linear</tween>
+        <triggeronnext>false</triggeronnext>
+        <defer>false</defer>
+        <usemipmap>false</usemipmap>
+        <color>rgba(46, 139, 87, 128)</color>
+    </item>
+    <item>
+        <type>CLEAROUTPUT</type>
+        <devicename>My server</devicename>
+        <label>Clear Output</label>
+        <name></name>
+        <channel>1</channel>
+        <videolayer>10</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <clearchannel>true</clearchannel>
+        <triggeronnext>false</triggeronnext>
+        <color>rgba(189, 183, 107, 64)</color>
+    </item>
+    <item>
+        <type>VOLUME</type>
+        <devicename>My server</devicename>
+        <label>Volume</label>
+        <name></name>
+        <channel>1</channel>
+        <videolayer>30</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <volume>1</volume>
+        <transitionDuration>0</transitionDuration>
+        <tween>Linear</tween>
+        <defer>false</defer>
+        <color>rgba(123, 63, 0, 128)</color>
+    </item>
+    <item>
+        <type>FADETOBLACK</type>
+        <devicename>My server</devicename>
+        <label>Fade Out</label>
+        <name></name>
+        <channel>1</channel>
+        <videolayer>20</videolayer>
+        <delay>0</delay>
+        <duration>0</duration>
+        <allowgpi>false</allowgpi>
+        <allowremotetriggering>false</allowremotetriggering>
+        <remotetriggerid></remotetriggerid>
+        <storyid></storyid>
+        <transition>MIX</transition>
+        <transitionDuration>25</transitionDuration>
+        <tween>Linear</tween>
+        <direction>RIGHT</direction>
+        <useauto>false</useauto>
+        <triggeronnext>false</triggeronnext>
+        <color>Transparent</color>
+    </item>
+</items>

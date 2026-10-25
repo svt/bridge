@@ -49,6 +49,7 @@ The roadmap is available on Notion
 - Keyboard triggers
 - Built in AI-agent
 - Timelines
+- Import rundowns from the CasparCG Client
 
 ## Community plugins  
 - [CRON - triggers based on the time of day](https://github.com/axelboberg/bridge-plugin-cron)
