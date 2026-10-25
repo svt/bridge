@@ -15,15 +15,16 @@ export const RundownSearchContext = React.createContext('')
  * by its name, notes or id
  * @param { Object } item
  * @param { String } query
+ * @param { String } renderedName The name with variables substituted
  * @returns { Boolean }
  */
-export function itemMatchesQuery (item, query) {
+export function itemMatchesQuery (item, query, renderedName) {
   const needle = query.trim().toLowerCase()
   if (!needle) {
     return true
   }
 
-  return [item?.data?.name, item?.data?.notes, item?.id]
+  return [item?.data?.name, renderedName, item?.data?.notes, item?.id]
     .some(value => typeof value === 'string' && value.toLowerCase().includes(needle))
 }
 

@@ -117,12 +117,56 @@ export function RundownList ({
     setOwnQuery('')
   }
 
+  /*
+  Render names containing variables while searching
+  so that the composed names can be matched as well
+  */
+  const [renderedNames, setRenderedNames] = React.useState({})
+  React.useEffect(() => {
+    if (!query.trim()) {
+      setRenderedNames(prev => Object.keys(prev).length ? {} : prev)
+      return
+    }
+
+    let cancelled = false
+    const ids = []
+    function collect (id, depth = 0) {
+      if (depth > 50) {
+        return
+      }
+      ids.push(id)
+      for (const childId of shared?.items?.[id]?.children || []) {
+        collect(childId, depth + 1)
+      }
+    }
+    itemIds.forEach(id => collect(id))
+
+    ;(async function () {
+      const entries = await Promise.all(ids.map(async id => {
+        const item = bridge.items.getLocalItem(id)
+        if (!bridge.variables.stringContainsVariable(item?.data?.name)) {
+          return null
+        }
+        try {
+          return [id, await bridge.items.renderValue(id, 'data.name')]
+        } catch (_) {
+          return null
+        }
+      }))
+      if (!cancelled) {
+        setRenderedNames(Object.fromEntries(entries.filter(e => e)))
+      }
+    })()
+
+    return () => { cancelled = true }
+  }, [query, shared?.items, shared?.variables, itemIds.join(',')])
+
   /**
    * Check if an item, or any of its
    * descendants, matches the query
    */
   function itemOrDescendantMatches (item, depth = 0) {
-    if (itemMatchesQuery(item, query)) {
+    if (itemMatchesQuery(item, query, renderedNames[item.id])) {
       return true
     }
     if (depth > 50) {
