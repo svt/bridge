@@ -48,6 +48,7 @@ Metadata describes a command to other consumers, such as the agent plugin, which
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
+| `label` | `string` | A short, human-readable name for the command, shown in the palette. Defaults to an empty string, in which case the id is shown |
 | `description` | `string` | A short description of what the command does, defaults to an empty string |
 | `args` | `object` | A [JSON schema](https://json-schema.org) describing the array of positional arguments, see the example below |
 | `exposed` | `boolean` | Whether the command is listed by `commands.list`, defaults to `false` |
@@ -58,6 +59,7 @@ Commands are not exposed unless `exposed` is explicitly set to `true`.
 import bridge from 'bridge'
 
 bridge.commands.registerCommand('my-plugin.addTarget', addTarget, {
+  label: 'Add target',
   description: 'Add a new target. Returns the id of the target',
   args: {
     type: 'array',
@@ -78,7 +80,7 @@ bridge.commands.registerCommand('my-plugin.addTarget', addTarget, {
 })
 ```
 
-### `bridge.commands.executeCommand('commands.list'): Promise<{ id, description, args }[]>`
+### `bridge.commands.executeCommand('commands.list'): Promise<{ id, label, description, args }[]>`
 List all commands registered with `exposed: true`. Commands without metadata are never included.
 
 ### `bridge.commands.executeCommand(id[, ...parameters]): Promise<unknown>`

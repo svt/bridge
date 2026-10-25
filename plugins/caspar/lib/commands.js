@@ -186,6 +186,7 @@ async function addServer (description) {
 }
 exports.addServer = addServer
 bridge.commands.registerCommand('caspar.addServer', addServer, {
+  label: 'Add CasparCG server',
   description: 'Add a new CasparCG server and connect to it. Returns the id of the new server',
   args: {
     type: 'array',
@@ -232,6 +233,7 @@ async function editServer (serverId, description) {
 }
 exports.editServer = editServer
 bridge.commands.registerCommand('caspar.editServer', editServer, {
+  label: 'Edit CasparCG server',
   description: 'Replace the description of an existing CasparCG server, the full description must be provided',
   args: {
     type: 'array',
@@ -259,6 +261,7 @@ async function listServers (groups = false) {
 }
 exports.listServers = listServers
 bridge.commands.registerCommand('caspar.listServers', listServers, {
+  label: 'List CasparCG servers',
   description: 'List all configured CasparCG servers including their ids',
   args: {
     type: 'array',

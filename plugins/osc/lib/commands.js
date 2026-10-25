@@ -68,6 +68,7 @@ async function addTarget (description) {
 }
 exports.addTarget = addTarget
 bridge.commands.registerCommand('osc.addTarget', addTarget, {
+  label: 'Add OSC target',
   description: 'Add a new OSC target. Returns the id of the new target',
   args: {
     type: 'array',
@@ -113,6 +114,7 @@ async function editTarget (targetId, description) {
 }
 exports.editTarget = editTarget
 bridge.commands.registerCommand('osc.editTarget', editTarget, {
+  label: 'Edit OSC target',
   description: 'Replace the description of an existing OSC target, the full description must be provided',
   args: {
     type: 'array',
@@ -141,6 +143,7 @@ async function getTarget (targetId) {
 }
 exports.getTarget = getTarget
 bridge.commands.registerCommand('osc.getTarget', getTarget, {
+  label: 'Get OSC target',
   description: 'Get a single OSC target by its id',
   args: {
     type: 'array',

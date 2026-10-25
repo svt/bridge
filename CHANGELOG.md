@@ -9,6 +9,8 @@
 - The ability to mark properties as required within type definitions and subsequent warnings
 - Metadata to commands
 - The ability for agents to read and execute commands
+- Commands can now be run from the palette
+- The ability to import legacy Caspar CG rundowns
 ### Changed
 - Updated dependencies
 

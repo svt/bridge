@@ -28,8 +28,8 @@ module.exports = {
 
     const commands = (await getExposedCommands())
       .filter(command => !prefix || command.id.startsWith(prefix))
-      .filter(command => !needle || command.id.toLowerCase().includes(needle) || command.description.toLowerCase().includes(needle))
-      .map(({ id, description }) => ({ id, description }))
+      .filter(command => !needle || command.id.toLowerCase().includes(needle) || command.label.toLowerCase().includes(needle) || command.description.toLowerCase().includes(needle))
+      .map(({ id, label, description }) => ({ id, label, description }))
 
     return {
       content: [{ type: 'text', text: JSON.stringify(commands) }],

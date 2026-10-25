@@ -117,3 +117,18 @@
 
   opacity: 0.3;
 }
+
+.Palette-row--commandRow {
+  padding: 3px 7px;
+  box-sizing: border-box;
+}
+
+.Palette-row--commandRow-label {
+  font-size: 0.9em;
+}
+
+.Palette-row--commandRow-id {
+  font-size: 0.8em;
+  font-family: var(--base-fontFamily--mono);
+  opacity: 0.5;
+}
