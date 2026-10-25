@@ -123,6 +123,10 @@
   box-sizing: border-box;
 }
 
+.Palette-row--commandRow:hover {
+  background-color: var(--base-color--shade1);
+}
+
 .Palette-row--commandRow-label {
   font-size: 0.9em;
 }
