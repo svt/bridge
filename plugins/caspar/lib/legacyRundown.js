@@ -21,6 +21,7 @@ The id of the rundown plugin's main rundown
 const MAIN_RUNDOWN_ID = 'RUNDOWN_ROOT'
 
 const DEFAULT_GROUP_NAME = 'Imported rundown'
+const IMPORT_GROUP_COLOR = '#000000'
 
 const DEFAULT_FRAME_RATE = 25
 
@@ -397,7 +398,7 @@ async function importRundown (xml, name = DEFAULT_GROUP_NAME) {
   Collect everything in a new group and only attach
   it to the main rundown when it's complete
   */
-  const groupId = await bridge.items.createItem('bridge.types.group', { name: name || DEFAULT_GROUP_NAME })
+  const groupId = await bridge.items.createItem('bridge.types.group', { name: name || DEFAULT_GROUP_NAME, color: IMPORT_GROUP_COLOR })
   await importItems(toArray(root.item), groupId, ctx)
   await bridge.commands.executeCommand('rundown.appendItem', MAIN_RUNDOWN_ID, groupId)
 
