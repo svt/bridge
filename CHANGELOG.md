@@ -7,6 +7,8 @@
 - Support for file storage within project files
 - An image widget for displaying static images within the interface
 - The ability to mark properties as required within type definitions and subsequent warnings
+- Metadata to commands
+- The ability for agents to read and execute commands
 ### Changed
 - Updated dependencies
 

@@ -19,6 +19,19 @@ const manifest = require('../package.json')
 const paths = require('./paths')
 
 /**
+ * JSON schema for a target description
+ */
+const TARGET_DESCRIPTION_SCHEMA = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', description: 'A display name for the target' },
+    host: { type: 'string', description: 'The target\'s hostname or ip address' },
+    port: { type: 'number', description: 'The UDP port to send OSC messages to' }
+  },
+  required: ['name', 'host', 'port']
+}
+
+/**
  * Add a new target
  * from a description object
  * @param { TargetDescription } description
@@ -54,7 +67,16 @@ async function addTarget (description) {
   return description.id
 }
 exports.addTarget = addTarget
-bridge.commands.registerCommand('osc.addTarget', addTarget)
+bridge.commands.registerCommand('osc.addTarget', addTarget, {
+  description: 'Add a new OSC target. Returns the id of the new target',
+  args: {
+    type: 'array',
+    prefixItems: [TARGET_DESCRIPTION_SCHEMA],
+    minItems: 1,
+    maxItems: 1
+  },
+  exposed: true
+})
 
 /**
  * Update the state from
@@ -90,7 +112,19 @@ async function editTarget (targetId, description) {
   })
 }
 exports.editTarget = editTarget
-bridge.commands.registerCommand('osc.editTarget', editTarget)
+bridge.commands.registerCommand('osc.editTarget', editTarget, {
+  description: 'Replace the description of an existing OSC target, the full description must be provided',
+  args: {
+    type: 'array',
+    prefixItems: [
+      { type: 'string', description: 'The id of the target to edit' },
+      TARGET_DESCRIPTION_SCHEMA
+    ],
+    minItems: 2,
+    maxItems: 2
+  },
+  exposed: true
+})
 
 /**
  * Get a single target by its id
@@ -106,7 +140,16 @@ async function getTarget (targetId) {
   return targets.find(target => target.id === targetId)
 }
 exports.getTarget = getTarget
-bridge.commands.registerCommand('osc.getTarget', getTarget)
+bridge.commands.registerCommand('osc.getTarget', getTarget, {
+  description: 'Get a single OSC target by its id',
+  args: {
+    type: 'array',
+    prefixItems: [{ type: 'string', description: 'The id of the target' }],
+    minItems: 1,
+    maxItems: 1
+  },
+  exposed: true
+})
 
 /**
  * Remove a target by its id

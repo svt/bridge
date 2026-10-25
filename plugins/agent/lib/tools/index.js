@@ -5,6 +5,10 @@ const getAllTypes = require('./getAllTypes')
 const getTypeById = require('./getTypeById')
 const updateItemProperties = require('./updateItemProperties')
 const createItemsWithProperties = require('./createItemsWithProperties')
+const searchCommands = require('./searchCommands')
+const describeCommand = require('./describeCommand')
+const executeCommand = require('./executeCommand')
+const getState = require('./getState')
 
 /**
  * Register all MCP tools on the provided
@@ -22,7 +26,11 @@ function registerTools (server, session) {
     createItemsWithProperties,
     updateItemProperties,
     moveItems,
-    deleteItems
+    deleteItems,
+    searchCommands,
+    describeCommand,
+    executeCommand,
+    getState
   ]
 
   for (const tool of tools) {
