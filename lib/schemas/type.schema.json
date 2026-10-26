@@ -41,7 +41,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": ["string", "number", "text", "color", "enum", "boolean", "keybinding"]
+              "enum": ["string", "number", "text", "color", "enum", "boolean", "keybinding", "time.timecode"]
             },
             "name": {
               "type": "string"

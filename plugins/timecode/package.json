@@ -60,7 +60,7 @@
           },
           "timecode.smpte": {
             "name": "Timecode",
-            "type": "string",
+            "type": "time.timecode",
             "default": "10:00:00:00",
             "allowsVariables": false,
             "ui.group": "Timecode",

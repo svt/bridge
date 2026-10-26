@@ -42,6 +42,7 @@ import { ColorInput } from '../ColorInput'
 import { SelectInput } from '../SelectInput'
 import { BooleanInput } from '../BooleanInput'
 import { VariableHint } from '../VariableHint'
+import { TimecodeInput } from '../TimecodeInput'
 import { VariableStringInput } from '../VariableStringInput'
 import { InspectorShortcutInput } from '../InspectorShortcutInput'
 import { Glyph } from '../Glyph'
@@ -50,6 +51,7 @@ const PLUGIN_NAME = pkg.name
 
 const INPUT_COMPONENTS = {
   keybinding: InspectorShortcutInput,
+  'time.timecode': TimecodeInput,
   boolean: BooleanInput,
   string: VariableStringInput,
   color: ColorInput,
