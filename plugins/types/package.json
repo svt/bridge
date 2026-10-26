@@ -127,11 +127,12 @@
             "type": "enum",
             "default": 0,
             "enum": [
-              "Trigger all",
-              "Trigger first",
-              "Trigger random"
+              "All",
+              "First",
+              "Random"
             ],
-            "ui.group": "Timing"
+            "ui.group": "Timing",
+            "ui.control": "segmented"
           }
         }
       },

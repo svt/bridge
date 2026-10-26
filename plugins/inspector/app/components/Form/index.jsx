@@ -40,6 +40,7 @@ import { Notification } from '../../../../../app/components/Notification'
 import { TextInput } from '../TextInput'
 import { ColorInput } from '../ColorInput'
 import { SelectInput } from '../SelectInput'
+import { SegmentedInput } from '../SegmentedInput'
 import { BooleanInput } from '../BooleanInput'
 import { VariableHint } from '../VariableHint'
 import { TimecodeInput } from '../TimecodeInput'
@@ -49,14 +50,32 @@ import { Glyph } from '../Glyph'
 
 const PLUGIN_NAME = pkg.name
 
-const INPUT_COMPONENTS = {
+/*
+All available input components, selectable
+with a property's 'ui.control'
+*/
+const CONTROL_COMPONENTS = {
   keybinding: InspectorShortcutInput,
-  'time.timecode': TimecodeInput,
+  timecode: TimecodeInput,
   boolean: BooleanInput,
   string: VariableStringInput,
   color: ColorInput,
-  enum: SelectInput,
-  text: TextInput,
+  select: SelectInput,
+  segmented: SegmentedInput,
+  text: TextInput
+}
+
+/*
+The default component for each property type,
+overridden by a property's 'ui.control'
+*/
+const INPUT_DEFAULTS = {
+  keybinding: CONTROL_COMPONENTS.keybinding,
+  boolean: CONTROL_COMPONENTS.boolean,
+  string: CONTROL_COMPONENTS.string,
+  color: CONTROL_COMPONENTS.color,
+  enum: CONTROL_COMPONENTS.select,
+  text: CONTROL_COMPONENTS.text
 }
 
 /**
@@ -299,7 +318,7 @@ export function Form () {
       return null
     }
 
-    const Component = INPUT_COMPONENTS[property.type]
+    const Component = CONTROL_COMPONENTS[property['ui.control']] || INPUT_DEFAULTS[property.type]
 
     function handleVariableHintClick () {
       const currentVal = getValue(property.key)
@@ -418,7 +437,7 @@ export function Form () {
                       <div className='Form-accordionChildren'>
                         {
                           Object.values(group.properties || {})
-                            .filter(property => INPUT_COMPONENTS[property.type])
+                            .filter(property => INPUT_DEFAULTS[property.type])
                             .map((property, i) => {
                               const id = `${group.name}_${i}`
                               return renderProperty(property, id)
