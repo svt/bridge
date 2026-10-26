@@ -1,0 +1,77 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Sveriges Television AB
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.TimecodeInput {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.25em;
+
+  width: 100%;
+  padding: 0.5em 0.75em;
+
+  font-family: var(--base-fontFamily--primary);
+  font-size: 1em;
+
+  border-radius: 8px;
+  background: var(--base-color--shade3);
+
+  box-sizing: border-box;
+}
+
+.TimecodeInput--large {
+  font-size: 1.1em;
+}
+
+.TimecodeInput-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input.TimecodeInput-field[type="text"] {
+  width: 1.8em;
+  padding: 0.1em 0;
+
+  font-size: 2em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  text-align: center;
+
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+input.TimecodeInput-field[type="text"]:hover {
+  background: var(--base-color--shade-7pct);
+  box-shadow: none;
+}
+
+input.TimecodeInput-field[type="text"]:focus {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--base-color);
+}
+
+.TimecodeInput-field::selection {
+  background: var(--base-color--accent5);
+}
+
+.TimecodeInput-label {
+  margin-top: 0.1em;
+
+  font-size: 0.8em;
+  color: var(--base-color--shade-30pct);
+  opacity: 0.5;
+}
+
+.TimecodeInput-separator {
+  font-size: 2em;
+  color: var(--base-color--shade-30pct);
+
+  /* Matches the field's height (line-height 1.2 + 2 * 0.1em padding) */
+  line-height: 1.4;
+}

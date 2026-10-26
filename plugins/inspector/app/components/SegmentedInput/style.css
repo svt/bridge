@@ -1,0 +1,61 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Axel Boberg
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.SegmentedInput {
+  display: flex;
+  width: 100%;
+  
+  border: 1px solid var(--base-color--grey3);
+  border-radius: 6px;
+  background: var(--base-color--background1);
+
+  box-sizing: border-box;
+}
+
+.SegmentedInput-option {
+  position: relative;
+  padding: 0.5em 0.75em;
+  min-width: 0;
+  flex: 1 1 0;
+
+  border: 1.5px solid transparent;
+  background: transparent;
+  border-radius: 6px;
+
+  font: inherit;
+  color: var(--base-color);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  cursor: pointer;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.SegmentedInput-option:hover {
+  background: var(--base-color--shade2);
+}
+
+/* Divider between neighbouring unselected options */
+.SegmentedInput-option:not(:first-child):not(.is-selected):not(.is-selected + .SegmentedInput-option)::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 25%;
+  bottom: 25%;
+  width: 1px;
+  background: var(--base-color--grey3);
+}
+
+.SegmentedInput-option.is-selected {
+  border-color: var(--base-color--accent1);
+  background: color-mix(in srgb, var(--base-color--accent1) 15%, transparent);
+}
+
+.SegmentedInput-option:focus-visible {
+  outline: 1px solid var(--base-color--accent1);
+  outline-offset: 1px;
+}

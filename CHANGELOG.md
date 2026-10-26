@@ -12,9 +12,13 @@
 - Commands can now be run from the palette
 - The ability to import legacy Caspar CG rundowns
 - Search in rundowns
+- Implemented a more user friendly SMPTE timecode input component in the inspector
+- A new segmented input option for enums in the inspector
+- The ability to change input controls for a specific type using ui.control
 ### Changed
 - Updated dependencies
 - Updated to Electron 45
+- Redesigned the play and stop buttons
 
 ## 1.0.3
 ### Added

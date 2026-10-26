@@ -64,7 +64,8 @@
             "default": "10:00:00:00",
             "allowsVariables": false,
             "ui.group": "Timecode",
-            "ui.readable": true
+            "ui.readable": true,
+            "ui.control": "timecode"
           }
         }
       }

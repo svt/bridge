@@ -96,12 +96,12 @@ export default function App () {
     <>
       <QueryPath path='play'>
         <ItemDropArea onDrop={itemId => handleItemChange(itemId)}>
-          <ItemButton label={label} color={item?.data?.color} onClick={() => handlePlayItem()} />
+          <ItemButton label={label} icon='play' color={item?.data?.color} onClick={() => handlePlayItem()} />
         </ItemDropArea>
       </QueryPath>
       <QueryPath path='stop'>
         <ItemDropArea onDrop={itemId => handleItemChange(itemId)}>
-          <ItemButton label={label} color={item?.data?.color} onClick={() => handleStopItem()} />
+          <ItemButton label={label} icon='stop' color={item?.data?.color} onClick={() => handleStopItem()} />
         </ItemDropArea>
       </QueryPath>
     </>
