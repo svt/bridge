@@ -12,6 +12,7 @@
 - Commands can now be run from the palette
 - The ability to import legacy Caspar CG rundowns
 - Search in rundowns
+- Implemented a more user friendly SMPTE timecode input component in the inspector
 ### Changed
 - Updated dependencies
 - Updated to Electron 45
